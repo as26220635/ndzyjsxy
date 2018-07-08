@@ -11,6 +11,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.w3c.dom.Attr;
 
+import javax.annotation.Nullable;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -21,23 +22,38 @@ import java.util.Map;
  * 下拉框通用组件
  */
 public class Combobox extends BaseTagSupport {
-    //自定义select参数
+    /**
+     * 自定义select参数
+     */
     private String custom = "";
-    //宽度默认为100%
+    /**
+     * 宽度默认为100%
+     */
     private String width = "100%";
-    //默认选中的值
+    /**
+     * 默认选中的值
+     */
     private String value = "";
     private String id = "";
     private String name = "";
     private String sdtCode = "";
     private String defaultValue = "";
-    //数据加载url,加载的url返回json格式数组 中有 NAME和VALUE字段
+    /**
+     * 数据加载url,加载的url返回json格式数组 中有 NAME和VALUE字段
+     */
+    @Nullable
     private String url;
-    //是否单选
+    /**
+     * 是否单选
+     */
     private boolean single = true;
-    //是否必填
+    /**
+     * 是否必填
+     */
     private boolean required;
-    //是否开启禁用不能选择
+    /**
+     * 是否开启禁用不能选择
+     */
     private boolean disabled = true;
 
     @Override
@@ -56,6 +72,28 @@ public class Combobox extends BaseTagSupport {
         } else {
             return multiple(pageContext.getOut());
         }
+    }
+
+    /**
+     * 清除参数
+     *
+     * @return
+     * @throws JspException
+     */
+    @Override
+    public int doEndTag() throws JspException {
+        custom = "";
+        width = "100%";
+        value = "";
+        id = "";
+        name = "";
+        sdtCode = "";
+        defaultValue = "";
+        url = null;
+        single = true;
+        required = false;
+        disabled = true;
+        return super.doEndTag();
     }
 
     /**

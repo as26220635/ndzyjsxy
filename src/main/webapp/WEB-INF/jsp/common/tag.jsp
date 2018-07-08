@@ -172,3 +172,9 @@
 <%--流程进度列表--%>
 <c:set var="PROCESS_SCHEDULE_BASE_URL" value="${PROCESS_BASE_URL}schedule/"/>
 <c:set var="PROCESS_SCHEDULE_CANCEL_URL" value="${PROCESS_SCHEDULE_BASE_URL}cancel"/>
+<%--部门--%>
+<c:set var="DIVISION_BASE_URL" value="${MANAGER_URL}division/"/>
+<c:set var="DIVISION_ADD_URL" value="${DIVISION_BASE_URL}add"/>
+<c:set var="DIVISION_UPDATE_URL" value="${DIVISION_BASE_URL}update"/>
+<c:set var="DIVISION_DELETE_URL" value="${DIVISION_BASE_URL}delete"/>
+<c:set var="DIVISION_TREE_DATA_URL" value="${DIVISION_BASE_URL}tree"/>

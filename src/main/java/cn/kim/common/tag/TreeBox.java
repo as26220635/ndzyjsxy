@@ -4,6 +4,7 @@ import cn.kim.entity.DictType;
 import cn.kim.util.DictUtil;
 import cn.kim.util.ValidateUtil;
 
+import javax.annotation.Nullable;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -14,7 +15,9 @@ import java.util.Map;
  * 点击弹出树菜单
  */
 public class TreeBox extends BaseTagSupport {
-    //默认选中的值
+    /**
+     * 默认选中的值
+     */
     private String custom = "";
     private String id = "";
     private String name = "";
@@ -24,12 +27,24 @@ public class TreeBox extends BaseTagSupport {
     private String title = "";
     private String sdtId = "";
     private String notId = "";
-    //小：modal-sm 大：modal-lg
+    /**
+     * 小：modal-sm 大：modal-lg
+     */
     private String modelSize = "";
-    //是否单选
+    /**
+     * 是否单选
+     */
     private boolean single = true;
-    //是否必填
+    /**
+     * 是否必填
+     */
     private boolean required;
+
+    /**
+     * url传递参数
+     */
+    @Nullable
+    private String requestParams;
 
     @Override
     public int doStartTagInternal() throws Exception {
@@ -51,7 +66,21 @@ public class TreeBox extends BaseTagSupport {
     @Override
     public int doEndTag() throws JspException {
         //清除参数
+        custom = "";
+        id = "";
         name = "";
+        value = "";
+        nameValue = "";
+        url = "";
+        title = "";
+        sdtId = "";
+        notId = "";
+        custom = "";
+        modelSize = "";
+        single = true;
+        required = false;
+        requestParams = null;
+
         return super.doEndTag();
     }
 
@@ -77,6 +106,8 @@ public class TreeBox extends BaseTagSupport {
                     "                ID: $('#" + id + "').val()," +
                     "                SDT_ID: '" + sdtId + "'," +
                     "                NOT_ID: '" + notId + "'," +
+                    //请求传递参数
+                    toString(requestParams) +
                     "            }," +
                     "            isConfirm: true," +
                     "            confirm: function ($model, nodes) {" +
@@ -203,6 +234,15 @@ public class TreeBox extends BaseTagSupport {
 
     public void setModelSize(String modelSize) {
         this.modelSize = modelSize;
+    }
+
+    @Nullable
+    public String getRequestParams() {
+        return requestParams;
+    }
+
+    public void setRequestParams(@Nullable String requestParams) {
+        this.requestParams = requestParams;
     }
 }
 

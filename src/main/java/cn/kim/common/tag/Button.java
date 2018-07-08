@@ -31,9 +31,13 @@ public class Button extends BaseTagSupport {
 
     private String contextPath;
 
-    //菜单ID
+    /**
+     * 菜单ID
+     */
     private String smId = "";
-    //按钮类型 0 顶部按钮 1 列表按钮
+    /**
+     * 按钮类型 0 顶部按钮 1 列表按钮
+     */
     private int type = 0;
 
     private boolean back = true;
@@ -83,6 +87,20 @@ public class Button extends BaseTagSupport {
         }
 
         return SKIP_BODY;
+    }
+
+    /**
+     * 清除参数
+     *
+     * @return
+     * @throws JspException
+     */
+    @Override
+    public int doEndTag() throws JspException {
+        smId = "";
+        type = 0;
+        back = true;
+        return super.doEndTag();
     }
 
     /**

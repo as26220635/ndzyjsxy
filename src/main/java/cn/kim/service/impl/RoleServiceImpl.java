@@ -73,7 +73,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
         //吧角色菜单转为MAP格式
         Map<String, String> roleMenuIds = toMapKey(roleMenus, "SM_ID");
 
-        return getOperatorMenuTree(baseDao, NameSpace.MenuMapper, "selectMenu", null, "0", null, roleMenuIds);
+        return getOperatorMenuTree(baseDao, NameSpace.MenuMapper, "selectMenu", null, "0", null, null, roleMenuIds);
     }
 
     /**
@@ -338,7 +338,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
             if (!isEmpty(oldRoleButtonIds)) {
                 for (String oldButtonId : oldRoleButtonIds.keySet()) {
                     if (!isEmpty(oldButtonId)) {
-                        if(isEmpty(newRoleButtonIds) || !newRoleButtonIds.containsKey(oldButtonId)){
+                        if (isEmpty(newRoleButtonIds) || !newRoleButtonIds.containsKey(oldButtonId)) {
                             //删除
                             paramMap.clear();
                             paramMap.put("SRM_ID", roleMenu.get("ID"));

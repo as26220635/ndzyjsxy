@@ -16,6 +16,8 @@ import cn.kim.util.CommonUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +80,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @param resultMap
      * @return 异常提示
      */
-    protected String catchException(Exception e, BaseDao baseDao, Map<String, Object> resultMap) {
+    protected String catchException(@NotNull Exception e, @NotNull BaseDao baseDao, @NotNull Map<String, Object> resultMap) {
         String desc = "";
         if (e instanceof CustomException) {
             desc = e.getMessage();
@@ -101,14 +103,20 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @param operatorId
      * @param menuParentId
      * @param selectId     选中菜单的ID
+     * @param notParentId  不显示父的ID
      * @param roleMenus    当前角色拥有的菜单
      * @return
      */
-    public List<Map<String, Object>> getOperatorMenuTree(BaseDao baseDao, NameSpace nameSpace, String sqlId, String operatorId, String menuParentId, String selectId, Map<String, String> roleMenus) {
+    public List<Map<String, Object>> getOperatorMenuTree(BaseDao baseDao, NameSpace nameSpace, String sqlId, String operatorId, String menuParentId, @Nullable String selectId, @Nullable String notParentId, @Nullable Map<String, String> roleMenus) {
         List<Map<String, Object>> trees = new ArrayList<>();
+        if (!isEmpty(notParentId) && menuParentId.equals(notParentId)) {
+            return trees;
+        }
+
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
         paramMap.put("SO_ID", operatorId);
         paramMap.put("SM_PARENTID", menuParentId);
+        paramMap.put("NOT_ID", notParentId);
 
         List<Map<String, Object>> menus = baseDao.selectList(nameSpace, sqlId, paramMap);
         if (!ValidateUtil.isEmpty(menus)) {
@@ -138,7 +146,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
 
         if (!ValidateUtil.isEmpty(trees)) {
             for (Map<String, Object> tree : trees) {
-                tree.put("CHILDREN_MENU", getOperatorMenuTree(baseDao, nameSpace, sqlId, operatorId, toString(tree.get("ID")), selectId, roleMenus));
+                tree.put("CHILDREN_MENU", getOperatorMenuTree(baseDao, nameSpace, sqlId, operatorId, toString(tree.get("ID")), selectId, notParentId, roleMenus));
             }
         }
         return trees;

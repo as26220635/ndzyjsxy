@@ -28,6 +28,9 @@
                 <if test="SC_ID != null and SC_ID != '' ">
                     AND SM.SC_ID = #{SC_ID}
                 </if>
+                <if test="NOT_ID != null and NOT_ID != '' ">
+                    AND SM.ID != #{NOT_ID}
+                </if>
             </where>
         )SM
         LEFT JOIN SYS_MENU SMP ON SMP.ID = SM.SM_PARENTID
@@ -37,7 +40,7 @@
     </select>
 
     <!--查询用户菜单权限数量-->
-    <select id="selectMenuCont" parameterType="java.util.Map" resultType="java.lang.Integer">
+    <select id="selectMenuCount" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM SYS_MENU
         <where>
@@ -47,9 +50,6 @@
             <if test="ID != null and ID != '' ">
                 AND ID = #{ID}
             </if>
-            <if test="NOT_ID != null and NOT_ID != '' ">
-                AND ID != #{NOT_ID}
-            </if>
             <if test="SM_TYPE != null and SM_TYPE != '' ">
                 AND SM_TYPE = #{SM_TYPE}
             </if>
@@ -58,6 +58,9 @@
             </if>
             <if test="SM_URL != null and SM_URL != '' ">
                 AND SM_URL = #{SM_URL}
+            </if>
+            <if test="NOT_ID != null and NOT_ID != '' ">
+                AND ID != #{NOT_ID}
             </if>
         </where>
     </select>

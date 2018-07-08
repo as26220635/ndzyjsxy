@@ -22,11 +22,17 @@ public class Datebox extends BaseTagSupport {
     private String name = "";
     private String value = "";
     private String placeholder = "";
-    //1 年 2年月日 3 年月日时分秒
+    /**
+     * 1 年 2年月日 3 年月日时分秒
+     */
     private int type = 1;
-    //是否要有清理的选项
+    /**
+     * 是否要有清理的选项
+     */
     private boolean clear;
-    //是否必填
+    /**
+     * 是否必填
+     */
     private boolean required;
 
     @Override
@@ -39,6 +45,25 @@ public class Datebox extends BaseTagSupport {
             required = toBoolean(customMap.get("required"));
         }
         return init(pageContext.getOut());
+    }
+
+    /**
+     * 清除参数
+     *
+     * @return
+     * @throws JspException
+     */
+    @Override
+    public int doEndTag() throws JspException {
+        custom = "";
+        id = "";
+        name = "";
+        value = "";
+        placeholder = "";
+        type = 1;
+        clear = false;
+        required = false;
+        return super.doEndTag();
     }
 
     /**

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -64,14 +65,15 @@ public class MenuController extends BaseController {
      * 拿到选中父菜单
      *
      * @param ID
+     * @param NOT_ID 不显示菜单ID
      * @return
      * @throws Exception
      */
     @GetMapping("/getMenuTreeData")
     @RequiresPermissions("SYSTEM:MENU")
     @ResponseBody
-    public List<Tree> getMenuTreeData(String ID) throws Exception {
-        List<Map<String, Object>> menus = menuService.selectMenuTreeSelectID(ID);
+    public List<Tree> getMenuTreeData(String ID, @Nullable String NOT_ID) throws Exception {
+        List<Map<String, Object>> menus = menuService.selectMenuTreeSelectID(ID, NOT_ID);
         List<Tree> trees = toMenuTreeData(menus);
         return trees;
     }

@@ -38,7 +38,9 @@ public enum NameSpace {
     //流程定义、步骤、启动角色（缓存）
     ProcessFixedMapper("cn.kim.mapper.ProcessFixedMapper"),
     //格式管理
-    FormatMapper("cn.kim.mapper.FormatMapper");
+    FormatMapper("cn.kim.mapper.FormatMapper"),
+    //部门管理
+    DivisionMapper("cn.kim.mapper.DivisionMapper");
 
     private final String value;
 

@@ -34,10 +34,11 @@ public interface MenuService extends BaseService {
     /**
      * 获取菜单树并且选中菜单
      *
-     * @param selectId
+     * @param selectId    选中ID
+     * @param notParentId 不显示父ID
      * @return
      */
-    List<Map<String, Object>> selectMenuTreeSelectID(String selectId);
+    List<Map<String, Object>> selectMenuTreeSelectID(String selectId, String notParentId);
 
     /**
      * 查询菜单
@@ -57,6 +58,7 @@ public interface MenuService extends BaseService {
 
     /**
      * 变更菜单状态
+     *
      * @param mapParam
      * @return
      */

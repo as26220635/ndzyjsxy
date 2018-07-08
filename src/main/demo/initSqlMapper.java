@@ -1,4 +1,5 @@
 import cn.kim.util.FuncUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,9 +9,9 @@ public class initSqlMapper {
 
     public static void main(String[] args) throws IOException {
         //字段
-        String str = "ID\tSPS_ID\tSO_ID\tSPSC_REASON\tSPSC_ENTRY_TIME";
+        String str = "ID\tBD_PARENT_ID\tBD_NAME\tBD_CONTACTS\tBD_PHONE\tBD_FIXED_PHONE\tBD_EMAIL\tBD_ADDRESS\tBD_DESCRIBE\tBD_ENTER_TIME";
         //表名
-        String tablename = "SYS_PROCESS_SCHEDULE_CANCEL";
+        String tablename = "BUS_DIVISION";
         creatsql(str, tablename);
     }
 
@@ -28,6 +29,7 @@ public class initSqlMapper {
 //        tablename2 = tablename2.substring(0, 1).toUpperCase() + tablename2.substring(1, tablename2.length());
         str = str.replace(" ", "").replaceAll("\t", ",");
         String[] strr = str.split(",");
+        System.out.println("字段数量：" + strr.length + "\n");
         String str2 = "";
         String select = "\t<!--查询-->\n\t<select id=\"select" + tablename2 + "\" parameterType=\"java.util.Map\" resultType=\"java.util.Map\">";
         String str3 = "\t<!--插入-->\n\t<insert id=\"insert" + tablename2 + "\" parameterType=\"java.util.Map\">" +

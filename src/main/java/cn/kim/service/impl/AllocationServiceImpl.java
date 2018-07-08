@@ -9,6 +9,7 @@ import cn.kim.service.AllocationService;
 import cn.kim.util.AESUtil;
 import cn.kim.util.DateUtil;
 import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class AllocationServiceImpl extends BaseServiceImpl implements Allocation
     }
 
     @Override
-    public String selectAllocation(String key) {
+    public String selectAllocation(@NotNull String key) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
         if (isEmpty(key)) {
             return "";
@@ -81,7 +82,7 @@ public class AllocationServiceImpl extends BaseServiceImpl implements Allocation
 
     @Override
     @Transactional
-    public Map<String, Object> insertAndUpdateAllocation(String key, Object value) {
+    public Map<String, Object> insertAndUpdateAllocation(@NotNull String key, Object value) {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(5);
         if (isEmpty(key) || isEmpty(value)) {
             return mapParam;
@@ -129,7 +130,7 @@ public class AllocationServiceImpl extends BaseServiceImpl implements Allocation
 
     @Override
     @Transactional
-    public Map<String, Object> deleteAllocation(String key) {
+    public Map<String, Object> deleteAllocation(@NotNull String key) {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         if (isEmpty(key)) {
             return mapParam;

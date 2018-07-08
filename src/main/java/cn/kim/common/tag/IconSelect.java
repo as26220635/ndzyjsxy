@@ -36,6 +36,21 @@ public class IconSelect extends BaseTagSupport {
     }
 
     /**
+     * 清除参数
+     *
+     * @return
+     * @throws JspException
+     */
+    @Override
+    public int doEndTag() throws JspException {
+        custom = "";
+        id = "";
+        name = "";
+        value = "";
+        return super.doEndTag();
+    }
+
+    /**
      * 选择图标
      *
      * @param out

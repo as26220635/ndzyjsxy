@@ -15,6 +15,7 @@ import cn.kim.util.*;
 import com.google.common.collect.Maps;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
+import javax.servlet.jsp.JspException;
 import java.security.InvalidKeyException;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,9 @@ import java.util.Random;
  * 文件上传
  */
 public class FileInput extends BaseTagSupport {
-
+    /**
+     * 预览类型
+     */
     private static final String FILE_TYPE_IMG = "image";
     private static final String FILE_TYPE_PDF = "pdf";
     private static final String FILE_TYPE_HTML = "html";
@@ -38,35 +41,66 @@ public class FileInput extends BaseTagSupport {
     private static final String FILE_TYPE_OBJECT = "object";
     private static final String FILE_TYPE_OTHER = "other";
 
+    /**
+     * 文件服务
+     */
     private FileService fileService;
 
-    //标题
+    /**
+     * 标题
+     */
     private String title = "";
-    //字典代码
+    /**
+     * 字典代码
+     */
     private String sdtCode = "";
-    //上传表主键
+    /**
+     * 上传表主键
+     */
     private String tableId = "";
-    //上传表名
+    /**
+     * 上传表名
+     */
     private String tableName = "";
-    //初始路径
+    /**
+     * 初始路径
+     */
     private String typeCode = "";
-    //是否可以不用登录查看 1 是 0 否
+    /**
+     * 是否可以不用登录查看 1 是 0 否
+     */
     private int seeType = Attribute.STATUS_SUCCESS;
-    //是否多选 默认多选
+    /**
+     * 是否多选 默认多选
+     */
     private boolean multiple = true;
-    //上传文件主题 默认为缩略预览  主题 : explorer
+    /**
+     * 上传文件主题 默认为缩略预览  主题 : explorer
+     */
     private String theme = "";
-    //是否开启异步上传
+    /**
+     * 是否开启异步上传
+     */
     private boolean showUpload = true;
-    //是否开启删除
+    /**
+     * 是否开启删除
+     */
     private boolean showRemove = true;
-    //最大上传数量
+    /**
+     * 最大上传数量
+     */
     private int maxFilesNum = 99;
-    //最大允许同时上传数量
+    /**
+     * 最大允许同时上传数量
+     */
     private int maxFileCount = 99;
-    //最大允许上传大小
+    /**
+     * 最大允许上传大小
+     */
     private long maxFileSize = 8000;
-    //上传类型 默认只能上传图片 为true可以上传文件
+    /**
+     * 上传类型 默认只能上传图片 为true可以上传文件
+     */
     private boolean allowFile = false;
 
     @Override
@@ -199,6 +233,31 @@ public class FileInput extends BaseTagSupport {
         pageContext.getOut().print(builder.toString());
 
         return SKIP_BODY;
+    }
+
+    /**
+     * 清除参数
+     *
+     * @return
+     * @throws JspException
+     */
+    @Override
+    public int doEndTag() throws JspException {
+        title = "";
+        sdtCode = "";
+        tableId = "";
+        tableName = "";
+        typeCode = "";
+        seeType = Attribute.STATUS_SUCCESS;
+        multiple = true;
+        theme = "";
+        showUpload = true;
+        showRemove = true;
+        maxFilesNum = 99;
+        maxFileCount = 99;
+        maxFileSize = 8000;
+        allowFile = false;
+        return super.doEndTag();
     }
 
     /**

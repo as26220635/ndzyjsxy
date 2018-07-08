@@ -117,4 +117,9 @@ public class TableName {
      * 验证正则
      */
     public static final String SYS_VALIDATE_REGEX = "SYS_VALIDATE_REGEX";
+
+    /**
+     * 部门
+     */
+    public static final String BUS_DIVISION = "BUS_DIVISION";
 }

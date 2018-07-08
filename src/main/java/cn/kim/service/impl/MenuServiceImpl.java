@@ -58,12 +58,13 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
     /**
      * 获取菜单树
      *
-     * @param selectId
+     * @param selectId    选中ID
+     * @param notParentId 不显示父ID
      * @return
      */
     @Override
-    public List<Map<String, Object>> selectMenuTreeSelectID(String selectId) {
-        return getOperatorMenuTree(baseDao, NameSpace.MenuMapper, "selectMenu", null, "0", selectId, null);
+    public List<Map<String, Object>> selectMenuTreeSelectID(String selectId, String notParentId) {
+        return getOperatorMenuTree(baseDao, NameSpace.MenuMapper, "selectMenu", null, "0", selectId, notParentId, null);
     }
 
     /**
@@ -102,7 +103,7 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
             if (!isEmpty(mapParam.get("SM_CODE"))) {
                 paramMap.put("NOT_ID", id);
                 paramMap.put("SM_CODE", mapParam.get("SM_CODE"));
-                int count = baseDao.selectOne(NameSpace.MenuMapper, "selectMenuCont", paramMap);
+                int count = baseDao.selectOne(NameSpace.MenuMapper, "selectMenuCount", paramMap);
                 if (count > 0) {
                     throw new CustomException("菜单权限编码重复,请检查!");
                 }
@@ -115,7 +116,8 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
             paramMap.put("ID", id);
             paramMap.put("SC_ID", mapParam.get("SC_ID"));
             paramMap.put("SM_NAME", mapParam.get("SM_NAME"));
-            paramMap.put("SM_PARENTID", mapParam.get("SM_PARENTID"));
+            //父ID默认为0
+            paramMap.put("SM_PARENTID", isEmpty(mapParam.get("SM_PARENTID")) ? MagicValue.ZERO : mapParam.get("SM_PARENTID"));
             paramMap.put("SM_CODE", mapParam.get("SM_CODE"));
             paramMap.put("SM_URL", mapParam.get("SM_URL"));
             paramMap.put("SM_CLASSICON", mapParam.get("SM_CLASSICON"));

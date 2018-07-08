@@ -124,7 +124,7 @@ public abstract class BaseController extends BaseData {
             Tree tree = new Tree();
             tree.setId(toString(menu.get("ID")));
             tree.setText(toString(menu.get("SM_NAME")));
-            tree.setTags(new String[]{toString(menu.get("SM_CODE"))});
+            tree.setTags(new String[]{"权限编码:" + toHtmlBColor(menu.get("SM_CODE"), "yellow")});
 
             TreeState state = new TreeState();
             //是否选中

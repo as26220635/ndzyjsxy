@@ -148,7 +148,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
         }
         //是否开启自定义过滤
         if (!isProcess && toString(configure.get("SC_IS_FILTER")).equals(toString(STATUS_SUCCESS))) {
-            querySet.setWhere(GridDataFilter.getInstance(configure).filterWhereSql());
+            querySet.setWhere(GridDataFilter.getInstance(configure, mapParam).filterWhereSql());
         }
 
         int offset = toInt(mapParam.get("start"));
