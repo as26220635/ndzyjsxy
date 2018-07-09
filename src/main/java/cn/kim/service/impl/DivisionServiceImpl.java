@@ -58,6 +58,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             paramMap.put("BD_EMAIL", mapParam.get("BD_EMAIL"));
             paramMap.put("BD_ADDRESS", mapParam.get("BD_ADDRESS"));
             paramMap.put("BD_DESCRIBE", mapParam.get("BD_DESCRIBE"));
+            paramMap.put("BD_ORDER", mapParam.get("BD_ORDER"));
 
             if (isEmpty(id)) {
                 id = getId();

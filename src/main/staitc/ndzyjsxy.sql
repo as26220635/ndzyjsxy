@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 09/07/2018 11:53:30
+ Date: 09/07/2018 18:49:29
 */
 
 SET NAMES utf8mb4;
@@ -31,6 +31,7 @@ CREATE TABLE `bus_division`  (
   `BD_EMAIL` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '部门联系人邮箱',
   `BD_ADDRESS` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '部门地址',
   `BD_DESCRIBE` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '部门描述',
+  `BD_ORDER` int(5) NULL DEFAULT NULL COMMENT '排序',
   `BD_ENTER_TIME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '录入时间',
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `BD_PARENT_ID`(`BD_PARENT_ID`) USING BTREE,
@@ -40,8 +41,8 @@ CREATE TABLE `bus_division`  (
 -- ----------------------------
 -- Records of bus_division
 -- ----------------------------
-INSERT INTO `bus_division` VALUES ('38344744014708736', '0', '院长', '有意义', '17012342032', '0591-12312312', '851758629@qq.com', '6楼', '12321', '2018-07-09 11:42:08');
-INSERT INTO `bus_division` VALUES ('38345402751123456', '38344744014708736', '副院长', '123', '', '', '', '12', '321312', '2018-07-09 11:44:45');
+INSERT INTO `bus_division` VALUES ('38344744014708736', '0', '院长', '有意义', '17012342032', '0591-12312312', '851758629@qq.com', '6楼', '12321', 1, '2018-07-09 11:42:08');
+INSERT INTO `bus_division` VALUES ('38345402751123456', '38344744014708736', '副院长', '123', '', '', '', '12', '321312', 1, '2018-07-09 11:44:45');
 
 -- ----------------------------
 -- Table structure for sys_account_info
@@ -330,6 +331,7 @@ INSERT INTO `sys_configure_column` VALUES ('38164146021203968', '381634895287418
 INSERT INTO `sys_configure_column` VALUES ('38164215797645312', '38163489528741888', '手机', 'BD_PHONE', 'center', '100px', '', '', '', '0', '1', '0', 30);
 INSERT INTO `sys_configure_column` VALUES ('38164484337958912', '38163489528741888', '描述', 'BD_DESCRIBE', 'left', '200px', '', '', '', '0', '1', '0', 40);
 INSERT INTO `sys_configure_column` VALUES ('38164554567385088', '38163489528741888', '操作', '', 'center', '160px', '', '', '', '1', '1', '0', 50);
+INSERT INTO `sys_configure_column` VALUES ('38446985522446336', '38163489528741888', '排序', 'BD_ORDER', 'center', '50px', '', '', '', '0', '1', '0', 45);
 INSERT INTO `sys_configure_column` VALUES ('4', '1', '操作', '', 'center', '320px', '', '', '', '1', '1', '0', 4);
 INSERT INTO `sys_configure_column` VALUES ('5', '2', '名称', 'SB_NAME', 'center', '150px', NULL, NULL, NULL, '0', '1', '0', 1);
 INSERT INTO `sys_configure_column` VALUES ('6', '2', '操作ID', 'SB_BUTTONID', 'center', '100px', NULL, NULL, NULL, '0', '1', '0', 2);
@@ -3090,6 +3092,12 @@ INSERT INTO `sys_log` VALUES ('38344578482307072', '1', NULL, '修改配置列�
 INSERT INTO `sys_log` VALUES ('38344744283144192', '1', NULL, '添加部门', '0:0:0:0:0:0:0:1', '成功', '2018-07-09 11:42:08', '1', 2);
 INSERT INTO `sys_log` VALUES ('38345403279605760', '1', NULL, '添加部门', '0:0:0:0:0:0:0:1', '成功', '2018-07-09 11:44:45', '1', 2);
 INSERT INTO `sys_log` VALUES ('38347430046990336', '1', NULL, '修改部门', '0:0:0:0:0:0:0:1', '成功', '2018-07-09 11:52:49', '1', 2);
+INSERT INTO `sys_log` VALUES ('38442486342877184', '1', NULL, '登录', '0:0:0:0:0:0:0:1', '成功', '2018-07-09 18:10:32', '1', 9);
+INSERT INTO `sys_log` VALUES ('38442667025104896', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', '成功', '2018-07-09 18:11:15', '1', 2);
+INSERT INTO `sys_log` VALUES ('38442701430980608', '1', NULL, '修改部门', '0:0:0:0:0:0:0:1', '成功', '2018-07-09 18:11:23', '1', 2);
+INSERT INTO `sys_log` VALUES ('38442718443077632', '1', NULL, '修改部门', '0:0:0:0:0:0:0:1', '成功', '2018-07-09 18:11:27', '1', 2);
+INSERT INTO `sys_log` VALUES ('38443905116536832', '1', NULL, '登录', '0:0:0:0:0:0:0:1', '成功', '2018-07-09 18:16:10', '1', 9);
+INSERT INTO `sys_log` VALUES ('38446986071900160', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', '成功', '2018-07-09 18:28:25', '1', 2);
 INSERT INTO `sys_log` VALUES ('4', '1', NULL, '登录', '0:0:0:0:0:0:0:1', '成功', '2018-03-22 16:51:49', '1', 9);
 INSERT INTO `sys_log` VALUES ('4084955915223040', '1', NULL, '登录', '0:0:0:0:0:0:0:1', '成功', '2018-04-05 22:45:58', '1', 9);
 INSERT INTO `sys_log` VALUES ('4084980321878016', '1', NULL, '查看操作员管理', '0:0:0:0:0:0:0:1', '失败', '2018-04-05 22:46:04', '1', 9);
@@ -5915,6 +5923,12 @@ INSERT INTO `sys_log_text` VALUES ('38344578511667200', '38344578482307072', '�
 INSERT INTO `sys_log_text` VALUES ('38344744308310016', '38344744283144192', '添加部门:{BD_CONTACTS=有意义, BD_FIXED_PHONE=, SVR_TABLE_NAME=BUS_DIVISION, BD_ADDRESS=6楼, BD_ENTER_TIME=2018-07-09 11:42:08, ID=38344744014708736, BD_NAME=院长, BD_PHONE=, BD_DESCRIBE=12321, BD_EMAIL=, BD_PARENT_ID=0}');
 INSERT INTO `sys_log_text` VALUES ('38345403304771584', '38345403279605760', '添加部门:{BD_CONTACTS=123, BD_FIXED_PHONE=, SVR_TABLE_NAME=BUS_DIVISION, BD_ADDRESS=12, BD_ENTER_TIME=2018-07-09 11:44:45, ID=38345402751123456, BD_NAME=副院长, BD_PHONE=, BD_DESCRIBE=321312, BD_EMAIL=, BD_PARENT_ID=38344744014708736}');
 INSERT INTO `sys_log_text` VALUES ('38347430088933376', '38347430046990336', '更新部门,更新前:{BD_CONTACTS=有意义, BD_FIXED_PHONE=, BD_ADDRESS=6楼, BD_ENTER_TIME=2018-07-09 11:42:08, ID=38344744014708736, BD_NAME=院长, BD_PHONE=, BD_DESCRIBE=12321, BD_EMAIL=, BD_PARENT_NAME=null, BD_PARENT_ID=0},更新后:{BD_CONTACTS=有意义, BD_FIXED_PHONE=0591-12312312, SVR_TABLE_NAME=BUS_DIVISION, BD_ADDRESS=6楼, ID=38344744014708736, BD_NAME=院长, BD_PHONE=17012342032, BD_DESCRIBE=12321, BD_EMAIL=851758629@qq.com, BD_PARENT_ID=0}');
+INSERT INTO `sys_log_text` VALUES ('38442486451929088', '38442486342877184', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('38442667054465024', '38442667025104896', '添加验证字段:{SVF_IS_REQUIRED=1, SVF_MAX_LENGTH=5, IS_STATUS=1, SVR_TABLE_NAME=sys_validate_field, SVF_MIN_LENGTH=, ID=38442666630840320, SVF_NAME=排序, SVF_FIELD=BD_ORDER, SV_ID=38170193364516864, SVR_ID=2510375538917376}');
+INSERT INTO `sys_log_text` VALUES ('38442701456146432', '38442701430980608', '更新部门,更新前:{BD_CONTACTS=有意义, BD_FIXED_PHONE=0591-12312312, BD_ADDRESS=6楼, BD_ENTER_TIME=2018-07-09 11:42:08, ID=38344744014708736, BD_NAME=院长, BD_PHONE=17012342032, BD_DESCRIBE=12321, BD_EMAIL=851758629@qq.com, BD_PARENT_NAME=null, BD_PARENT_ID=0},更新后:{BD_CONTACTS=有意义, BD_FIXED_PHONE=0591-12312312, BD_ORDER=1, SVR_TABLE_NAME=BUS_DIVISION, BD_ADDRESS=6楼, ID=38344744014708736, BD_NAME=院长, BD_PHONE=17012342032, BD_DESCRIBE=12321, BD_EMAIL=851758629@qq.com, BD_PARENT_ID=0}');
+INSERT INTO `sys_log_text` VALUES ('38442718472437760', '38442718443077632', '更新部门,更新前:{BD_CONTACTS=123, BD_FIXED_PHONE=, BD_ORDER=null, BD_ENTER_TIME=2018-07-09 11:44:45, BD_NAME=副院长, BD_PHONE=, BD_ADDRESS=12, ID=38345402751123456, BD_DESCRIBE=321312, BD_EMAIL=, BD_PARENT_NAME=院长, BD_PARENT_ID=38344744014708736},更新后:{BD_CONTACTS=123, BD_FIXED_PHONE=, BD_ORDER=1, SVR_TABLE_NAME=BUS_DIVISION, BD_ADDRESS=12, ID=38345402751123456, BD_NAME=副院长, BD_PHONE=, BD_DESCRIBE=321312, BD_EMAIL=, BD_PARENT_ID=38344744014708736}');
+INSERT INTO `sys_log_text` VALUES ('38443905145896960', '38443905116536832', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('38446986092871680', '38446986071900160', '添加配置列表字段,配置列表:基础信息管理-部门管理,字段参数{SCC_NAME=排序, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_ALIGN=center, SCC_IS_STATUS=0, SCC_WIDTH=50px, SCC_FIELD=BD_ORDER, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=0, ID=38446985522446336, SC_ID=38163489528741888, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=45}');
 INSERT INTO `sys_log_text` VALUES ('4', '1', '登录成功!登录地址:未知');
 INSERT INTO `sys_log_text` VALUES ('4084955973943296', '4084955915223040', '登录成功!登录地址:未知');
 INSERT INTO `sys_log_text` VALUES ('4084980388986880', '4084980321878016', '');
@@ -7131,6 +7145,7 @@ INSERT INTO `sys_validate_field` VALUES ('38170437598838784', '38170193364516864
 INSERT INTO `sys_validate_field` VALUES ('38170467474866176', '38170193364516864', '邮箱', 'BD_EMAIL', '0', '', '', '2511177288515584', 1);
 INSERT INTO `sys_validate_field` VALUES ('38170504644788224', '38170193364516864', '地址', 'BD_ADDRESS', '0', '', '150', '', 1);
 INSERT INTO `sys_validate_field` VALUES ('38170537758818304', '38170193364516864', '描述', 'BD_DESCRIBE', '0', '', '250', '', 1);
+INSERT INTO `sys_validate_field` VALUES ('38442666630840320', '38170193364516864', '排序', 'BD_ORDER', '1', '', '5', '2510375538917376', 1);
 
 -- ----------------------------
 -- Table structure for sys_validate_group
@@ -7314,6 +7329,10 @@ INSERT INTO `sys_value_record` VALUES ('38344578222260224', 'SYS_CONFIGURE', '38
 INSERT INTO `sys_value_record` VALUES ('38344744090206208', 'BUS_DIVISION', '38344744014708736', NULL, '{\"BD_CONTACTS\":\"有意义\",\"BD_FIXED_PHONE\":\"\",\"SVR_TABLE_NAME\":\"BUS_DIVISION\",\"BD_ADDRESS\":\"6楼\",\"BD_ENTER_TIME\":\"2018-07-09 11:42:08\",\"ID\":\"38344744014708736\",\"BD_NAME\":\"院长\",\"BD_PHONE\":\"\",\"BD_DESCRIBE\":\"12321\",\"BD_EMAIL\":\"\",\"BD_PARENT_ID\":\"0\"}', '2018-07-09 11:42:08', 1);
 INSERT INTO `sys_value_record` VALUES ('38345402809843712', 'BUS_DIVISION', '38345402751123456', NULL, '{\"BD_CONTACTS\":\"123\",\"BD_FIXED_PHONE\":\"\",\"SVR_TABLE_NAME\":\"BUS_DIVISION\",\"BD_ADDRESS\":\"12\",\"BD_ENTER_TIME\":\"2018-07-09 11:44:45\",\"ID\":\"38345402751123456\",\"BD_NAME\":\"副院长\",\"BD_PHONE\":\"\",\"BD_DESCRIBE\":\"321312\",\"BD_EMAIL\":\"\",\"BD_PARENT_ID\":\"38344744014708736\"}', '2018-07-09 11:44:45', 1);
 INSERT INTO `sys_value_record` VALUES ('38347429602394112', 'BUS_DIVISION', '38344744014708736', '{\"BD_CONTACTS\":\"有意义\",\"BD_FIXED_PHONE\":\"\",\"BD_ADDRESS\":\"6楼\",\"ID\":\"38344744014708736\",\"BD_NAME\":\"院长\",\"BD_PHONE\":\"\",\"BD_DESCRIBE\":\"12321\",\"BD_EMAIL\":\"\",\"BD_PARENT_ID\":\"0\"}', '{\"BD_CONTACTS\":\"有意义\",\"BD_FIXED_PHONE\":\"0591-12312312\",\"BD_NAME\":\"院长\",\"BD_PHONE\":\"17012342032\",\"BD_ADDRESS\":\"6楼\",\"ID\":\"38344744014708736\",\"BD_DESCRIBE\":\"12321\",\"BD_EMAIL\":\"851758629@qq.com\",\"BD_PARENT_ID\":\"0\"}', '2018-07-09 11:52:49', 2);
+INSERT INTO `sys_value_record` VALUES ('38442666714726400', 'sys_validate_field', '38442666630840320', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"5\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"38442666630840320\",\"SVF_NAME\":\"排序\",\"SVF_FIELD\":\"BD_ORDER\",\"SV_ID\":\"38170193364516864\",\"SVR_ID\":\"2510375538917376\"}', '2018-07-09 18:11:15', 1);
+INSERT INTO `sys_value_record` VALUES ('38442701196099584', 'BUS_DIVISION', '38344744014708736', '{\"BD_CONTACTS\":\"有意义\",\"BD_FIXED_PHONE\":\"0591-12312312\",\"BD_ADDRESS\":\"6楼\",\"ID\":\"38344744014708736\",\"BD_NAME\":\"院长\",\"BD_PHONE\":\"17012342032\",\"BD_DESCRIBE\":\"12321\",\"BD_EMAIL\":\"851758629@qq.com\",\"BD_PARENT_ID\":\"0\"}', '{\"BD_CONTACTS\":\"有意义\",\"BD_FIXED_PHONE\":\"0591-12312312\",\"BD_ORDER\":\"1\",\"BD_NAME\":\"院长\",\"BD_PHONE\":\"17012342032\",\"BD_ADDRESS\":\"6楼\",\"ID\":\"38344744014708736\",\"BD_DESCRIBE\":\"12321\",\"BD_EMAIL\":\"851758629@qq.com\",\"BD_PARENT_ID\":\"0\"}', '2018-07-09 18:11:23', 2);
+INSERT INTO `sys_value_record` VALUES ('38442718187225088', 'BUS_DIVISION', '38345402751123456', '{\"BD_CONTACTS\":\"123\",\"BD_FIXED_PHONE\":\"\",\"BD_ADDRESS\":\"12\",\"ID\":\"38345402751123456\",\"BD_NAME\":\"副院长\",\"BD_PHONE\":\"\",\"BD_DESCRIBE\":\"321312\",\"BD_EMAIL\":\"\",\"BD_PARENT_ID\":\"38344744014708736\"}', '{\"BD_CONTACTS\":\"123\",\"BD_FIXED_PHONE\":\"\",\"BD_ORDER\":\"1\",\"BD_NAME\":\"副院长\",\"BD_PHONE\":\"\",\"BD_ADDRESS\":\"12\",\"ID\":\"38345402751123456\",\"BD_DESCRIBE\":\"321312\",\"BD_EMAIL\":\"\",\"BD_PARENT_ID\":\"38344744014708736\"}', '2018-07-09 18:11:27', 2);
+INSERT INTO `sys_value_record` VALUES ('38446985593749504', 'SYS_CONFIGURE_COLUMN', '38446985522446336', NULL, '{\"SCC_NAME\":\"排序\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"50px\",\"SCC_FIELD\":\"BD_ORDER\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"38446985522446336\",\"SC_ID\":\"38163489528741888\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"45\"}', '2018-07-09 18:28:25', 1);
 
 -- ----------------------------
 -- Table structure for test_process
@@ -7381,7 +7400,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_dict_type` AS select `
 -- View structure for v_division
 -- ----------------------------
 DROP VIEW IF EXISTS `v_division`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_division` AS select `bd`.`ID` AS `ID`,`bd`.`BD_PARENT_ID` AS `BD_PARENT_ID`,`bd`.`BD_NAME` AS `BD_NAME`,`bd`.`BD_CONTACTS` AS `BD_CONTACTS`,`bd`.`BD_PHONE` AS `BD_PHONE`,`bd`.`BD_FIXED_PHONE` AS `BD_FIXED_PHONE`,`bd`.`BD_EMAIL` AS `BD_EMAIL`,`bd`.`BD_ADDRESS` AS `BD_ADDRESS`,`bd`.`BD_DESCRIBE` AS `BD_DESCRIBE`,`bd`.`BD_ENTER_TIME` AS `BD_ENTER_TIME`,`pbd`.`BD_NAME` AS `BD_PARENT_NAME` from (`bus_division` `bd` left join `bus_division` `pbd` on((`pbd`.`ID` = `bd`.`BD_PARENT_ID`)));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_division` AS select `bd`.`ID` AS `ID`,`bd`.`BD_PARENT_ID` AS `BD_PARENT_ID`,`bd`.`BD_NAME` AS `BD_NAME`,`bd`.`BD_CONTACTS` AS `BD_CONTACTS`,`bd`.`BD_PHONE` AS `BD_PHONE`,`bd`.`BD_FIXED_PHONE` AS `BD_FIXED_PHONE`,`bd`.`BD_EMAIL` AS `BD_EMAIL`,`bd`.`BD_ADDRESS` AS `BD_ADDRESS`,`bd`.`BD_DESCRIBE` AS `BD_DESCRIBE`,`bd`.`BD_ORDER` AS `BD_ORDER`,`bd`.`BD_ENTER_TIME` AS `BD_ENTER_TIME`,`pbd`.`BD_NAME` AS `BD_PARENT_NAME` from (`bus_division` `bd` left join `bus_division` `pbd` on((`pbd`.`ID` = `bd`.`BD_PARENT_ID`)));
 
 -- ----------------------------
 -- View structure for v_format

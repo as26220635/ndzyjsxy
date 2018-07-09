@@ -39,6 +39,7 @@
             <if test="BD_EMAIL != null">BD_EMAIL,</if>
             <if test="BD_ADDRESS != null">BD_ADDRESS,</if>
             <if test="BD_DESCRIBE != null">BD_DESCRIBE,</if>
+            <if test="BD_ORDER != null">BD_ORDER,</if>
             <if test="BD_ENTER_TIME != null">BD_ENTER_TIME,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -51,6 +52,7 @@
             <if test="BD_EMAIL != null">#{BD_EMAIL},</if>
             <if test="BD_ADDRESS != null">#{BD_ADDRESS},</if>
             <if test="BD_DESCRIBE != null">#{BD_DESCRIBE},</if>
+            <if test="BD_ORDER != null">#{BD_ORDER},</if>
             <if test="BD_ENTER_TIME != null">#{BD_ENTER_TIME},</if>
         </trim>
     </insert>
@@ -68,6 +70,7 @@
             <if test="BD_EMAIL != null">BD_EMAIL=#{BD_EMAIL},</if>
             <if test="BD_ADDRESS != null">BD_ADDRESS=#{BD_ADDRESS},</if>
             <if test="BD_DESCRIBE != null">BD_DESCRIBE=#{BD_DESCRIBE},</if>
+            <if test="BD_ORDER != null">BD_ORDER=#{BD_ORDER},</if>
             <if test="BD_ENTER_TIME != null">BD_ENTER_TIME=#{BD_ENTER_TIME},</if>
         </set>
         <where>

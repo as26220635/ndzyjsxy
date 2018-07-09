@@ -189,7 +189,7 @@
             params['SM_ID'] = '${MENU.ID}';
             params['processStatus'] = $('#processStatus').val();
         },
-        //对应上面thead里面的序列
+        <%--字段--%>
         columns: [
             <%--开启checkbox--%>
             <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
@@ -199,11 +199,17 @@
             },
             </c:if>
             {
-                data: null,//此列不绑定数据源，用来显示序号
+                <%--此列不绑定数据源，用来显示序号--%>
+                data: null,
                 title: '序号',
                 align: 'center',
                 width: '35px',
-                className: 'text-center dataTable-column-min-width-sort'
+                className: 'text-center dataTable-column-min-width-sort',
+                <%--设置列初始化行--%>
+                createdCell: function (td, cellData, rowData, row, col) {
+                    <%--设置最小宽度--%>
+                    $(td).css('min-width', '35px');
+                }
             },
             <c:forEach items="${COLUMN_LIST}" var="COLUMN">
             {

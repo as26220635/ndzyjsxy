@@ -54,6 +54,11 @@
                 class="form-control form-textarea"
                 rows="3">${division.BD_DESCRIBE}</textarea>
     </div>
+    <div class="form-group has-feedback ">
+        <label>排序:</label>
+        <input type="text" class="form-control" ${fns:validField("BUS_DIVISION", "BD_ORDER")}
+               value="${division.BD_ORDER}">
+    </div>
 </form>
 
 <script>
