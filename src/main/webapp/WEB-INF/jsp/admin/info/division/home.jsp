@@ -68,7 +68,7 @@
 
         model.show({
             title: '删除部门',
-            content: '是否删除部门:' + data.SB_NAME,
+            content: '是否删除部门:' + data.BD_NAME,
             class: model.class.DANGER,
             okBtnName: model.btnName.DEL,
             footerModel: model.footerModel.ADMIN,
