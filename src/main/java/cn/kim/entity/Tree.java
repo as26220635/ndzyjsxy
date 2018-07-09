@@ -1,5 +1,7 @@
 package cn.kim.entity;
 
+import cn.kim.util.TextUtil;
+
 import java.util.List;
 
 /**
@@ -51,6 +53,20 @@ public class Tree {
      * 子节点
      */
     private List<Tree> nodes;
+
+    public Tree() {
+    }
+
+    /**
+     * 初始化
+     *
+     * @param id
+     * @param text
+     */
+    public Tree(Object id, Object text) {
+        this.id = TextUtil.toString(id);
+        this.text = TextUtil.toString(text);
+    }
 
     public String getId() {
         return id;

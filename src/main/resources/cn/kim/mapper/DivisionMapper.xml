@@ -5,21 +5,25 @@
 
     <!--查询部门-->
     <select id="selectDivision" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM BUS_DIVISION
-        <where>
-            <if test="ID != NULL and ID != ''">
-                AND ID = #{ID}
-            </if>
-            <if test="BD_PARENT_ID != NULL and BD_PARENT_ID != ''">
-                AND BD_PARENT_ID = #{BD_PARENT_ID}
-            </if>
-            <if test="NOT_ID != NULL and NOT_ID != ''">
-                AND ID != #{NOT_ID}
-            </if>
-            <if test="NOT_PARENT_ID != NULL and NOT_PARENT_ID != ''">
-                AND BD_PARENT_ID != #{NOT_PARENT_ID}
-            </if>
-        </where>
+        SELECT BD.*,PBD.BD_NAME AS BD_PARENT_NAME
+        FROM(
+            SELECT * FROM BUS_DIVISION
+            <where>
+                <if test="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+                <if test="BD_PARENT_ID != NULL and BD_PARENT_ID != ''">
+                    AND BD_PARENT_ID = #{BD_PARENT_ID}
+                </if>
+                <if test="NOT_ID != NULL and NOT_ID != ''">
+                    AND ID != #{NOT_ID}
+                </if>
+                <if test="NOT_PARENT_ID != NULL and NOT_PARENT_ID != ''">
+                    AND BD_PARENT_ID != #{NOT_PARENT_ID}
+                </if>
+            </where>
+        )BD
+        LEFT JOIN BUS_DIVISION PBD ON PBD.ID = BD.BD_PARENT_ID
     </select>
 
     <!--插入部门-->

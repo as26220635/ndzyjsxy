@@ -32,7 +32,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
 
     @Override
     public List<Tree> selectDivisionTreeList(String id, String notId) {
-        return getDivisionTreeList("0", notId);
+        return getDivisionTreeList("0", id, notId);
     }
 
 
@@ -121,15 +121,16 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
     /**
      * 获取部门树
      *
+     * @param parentId 父ID
      * @param selectId 选中的ID
      * @param notId    不显示id和父类id
      * @return
      */
-    public List<Tree> getDivisionTreeList(String selectId, String notId) {
+    public List<Tree> getDivisionTreeList(String parentId, String selectId, String notId) {
         List<Tree> treeList = new ArrayList<>();
 
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
-        paramMap.put("BD_PARENT_ID", selectId);
+        paramMap.put("BD_PARENT_ID", parentId);
         paramMap.put("NOT_ID", notId);
         paramMap.put("NOT_PARENT_ID", notId);
         List<Map<String, Object>> divisionList = baseDao.selectList(NameSpace.DivisionMapper, "selectDivision", paramMap);
@@ -141,7 +142,10 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
                 Tree tree = new Tree();
                 tree.setId(id);
                 tree.setText(toString(button.get("BD_NAME")));
-                tree.setTags(new String[]{"联系人:" + toHtmlBColor(button.get("BD_CONTACTS"), "yellow"), "电话:" + toHtmlBColor(button.get("BD_PHONE"), "yellow")});
+                tree.setTags(new String[]{
+//                        "电话:" + toHtmlBColor(button.get("BD_PHONE"), "yellow"),
+                        "联系人:" + toHtmlBColor(button.get("BD_CONTACTS"), "yellow")
+                });
 
                 TreeState state = new TreeState();
                 //是否选中
@@ -155,7 +159,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
                 tree.setState(state);
 
                 //查询子类
-                List<Tree> childrenTreeList = getDivisionTreeList(id, notId);
+                List<Tree> childrenTreeList = getDivisionTreeList(id, selectId, notId);
                 if (!isEmpty(childrenTreeList)) {
                     tree.setNodes(childrenTreeList);
                 }
