@@ -317,8 +317,18 @@
                     var IS_STATUS = check ? STATUS_SUCCESS : STATUS_ERROR;
 
                     if (typeof onSwitchChange == 'function') {
-                        <%--1、按钮自身 2、按钮当前所属字段 3、按钮的状态 true false 4、格式化成 0 1的状态--%>
-                        onSwitchChange($this, $this.attr('data-field'), check, IS_STATUS);
+                        <%--确认弹出框--%>
+                        model.confirm({
+                            message: '是否切换状态为:' + getStatusName(IS_STATUS),
+                            callback: function (result) {
+                                if (result) {
+                                    <%--1、按钮自身 2、按钮当前所属字段 3、按钮的状态 true false 4、格式化成 0 1的状态--%>
+                                    onSwitchChange($this, $this.attr('data-field'), check, IS_STATUS);
+                                } else {
+                                    $this.bootstrapSwitch('toggleState', true);
+                                }
+                            }
+                        });
                     }
                 }
             });

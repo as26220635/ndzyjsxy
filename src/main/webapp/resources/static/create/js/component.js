@@ -928,6 +928,7 @@ model = {
             title: '操作提示',
             message: "是否确定?",
         }, options);
+        var isClick = false;
         model.show({
             title: settings.title,
             content: settings.message,
@@ -941,10 +942,11 @@ model = {
                 if (!isEmpty(options.callback)) {
                     options.callback(true);
                 }
+                isClick = true;
                 model.hide($model);
             },
             cancel: function () {
-                if (!isEmpty(options.callback)) {
+                if (!isClick && !isEmpty(options.callback)) {
                     options.callback(false);
                 }
             }
@@ -2105,17 +2107,15 @@ function suffix(file_name) {
 }
 
 /**
- * 根据type来获取状态
- * @param type
+ * 根据IS_STATUS来获取状态
+ * @param IS_STATUS
  * @returns {*}
  */
-function getStatusType(type) {
-    if (type == STATUS_NORMAL) {
-        return "正常";
-    } else if (type == STATUS_FROZEN) {
-        return "冻结";
-    } else if (type == STATUS_DELETE) {
-        return "删除";
+function getStatusName(IS_STATUS) {
+    if (IS_STATUS == STATUS_SUCCESS) {
+        return "开启";
+    } else if (IS_STATUS == STATUS_ERROR) {
+        return "关闭";
     } else {
         return "未知";
     }
