@@ -253,7 +253,7 @@ public class BaseDataController extends BaseController {
                 //连接自带额外参数
                 menuUrl = CommonUtil.getUrlParamsJoin(menuUrl, extraParams);
 
-                detail.put("SM_URL", menuUrl.startsWith("/") ? menuUrl : "/" + menuUrl);
+                detail.put("SM_URL", menuUrl.startsWith("/") ? menuUrl.substring(1,menuUrl.length()) : menuUrl);
             });
             //查询菜单
             model.addAttribute("MENU", menu);

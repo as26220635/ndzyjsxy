@@ -6,6 +6,8 @@ import cn.kim.common.attr.CacheName;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.shiro.cache.SpringCacheManagerWrapper;
 import cn.kim.entity.DictType;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.cache.Cache;
@@ -81,7 +83,7 @@ public class CacheUtil {
      * @param key
      * @param value
      */
-    public static void setParam(String key, Object value) {
+    public static void setParam(@NotNull String key, Object value) {
         put(CacheName.VALUE_COLLECTION, key, value);
     }
 }

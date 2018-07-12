@@ -16,8 +16,8 @@ import cn.kim.util.CommonUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Maps;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,6 @@
 package cn.kim.common.shiro;
 
+import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.Tips;
 import cn.kim.common.eu.UseType;
 import cn.kim.entity.ActiveUser;
@@ -87,13 +88,13 @@ public class CustomHashedCredentialsMatcher extends HashedCredentialsMatcher {
                 SessionUtil.set(Constants.SESSION_USERNAME, activeUser);
 
                 //记录日志
-                LogUtil.recordLog(HttpUtil.getRequest(), "登录", UseType.PERSONAL.getType(), activeUser.getType(), "登录成功!登录地址:" + loginAddress, Tips.LOG_SUCCESS);
+                LogUtil.recordLog(HttpUtil.getRequest(), "登录", UseType.PERSONAL.getType(), activeUser.getType(), "登录成功!登录地址:" + loginAddress, Attribute.STATUS_SUCCESS);
             } else {
                 retryCount.getAndIncrement();
                 cache.put(username, retryCount);
                 //记录日志
                 SessionUtil.set(Constants.SESSION_USERNAME, activeUser);
-                LogUtil.recordLog(HttpUtil.getRequest(), "登录", UseType.PERSONAL.getType(), activeUser.getType(), "登录失败!第" + retryCount.get() + "次!登录地址:" + loginAddress, Tips.LOG_ERROR);
+                LogUtil.recordLog(HttpUtil.getRequest(), "登录", UseType.PERSONAL.getType(), activeUser.getType(), "登录失败!第" + retryCount.get() + "次!登录地址:" + loginAddress, Attribute.STATUS_ERROR);
                 SessionUtil.remove(Constants.SESSION_USERNAME);
             }
             return matchs;

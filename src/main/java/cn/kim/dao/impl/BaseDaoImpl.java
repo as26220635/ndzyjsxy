@@ -1,8 +1,12 @@
 package cn.kim.dao.impl;
 
+import cn.kim.common.annotation.Validate;
 import cn.kim.common.eu.NameSpace;
+import cn.kim.common.eu.ValueRecordType;
 import cn.kim.common.sequence.Sequence;
 import cn.kim.dao.BaseDao;
+import cn.kim.entity.ActiveUser;
+import cn.kim.util.AuthcUtil;
 import cn.kim.util.DateUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
@@ -20,10 +24,6 @@ import java.util.Map;
 
 
 public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
-
-    private static final int TYPE_INSERT = 1;
-    private static final int TYPE_UPDATE = 2;
-    private static final int TYPE_DELETE = 3;
 
     @Autowired
     private BaseDao sqlSession;
@@ -64,8 +64,8 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
             //是否不需要记录
             boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
 
-            if (!notRecord && !ValidateUtil.isEmpty(tableName)) {
-                this.record(parameter.get("ID"), tableName, null, TextUtil.toJSONString(parameter), TYPE_INSERT);
+            if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
+                this.record(parameter.get("ID"), tableName, null, TextUtil.toJSONString(parameter), ValueRecordType.INSERT.getType());
             }
         } catch (Exception e) {
             throw e;
@@ -90,7 +90,7 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
             count = super.getSqlSession().update(getStatement(nameSpace, sqlId), parameter);
 
             //查询更新完后的新值
-            if (!notRecord && !ValidateUtil.isEmpty(tableName)) {
+            if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
                 Map<String, Object> newValue = Maps.newHashMapWithExpectedSize(16);
                 //把更新的字段取出来
                 oldValue.keySet().forEach(key -> {
@@ -101,7 +101,7 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
                 //移除未更新的字段
                 oldValue.keySet().removeIf(key -> !newValue.containsKey(key));
 
-                this.record(parameter.get("ID"), tableName, TextUtil.toJSONString(oldValue), TextUtil.toJSONString(newValue), TYPE_UPDATE);
+                this.record(parameter.get("ID"), tableName, TextUtil.toJSONString(oldValue), TextUtil.toJSONString(newValue), ValueRecordType.UPDATE.getType());
             }
         } catch (Exception e) {
             throw e;
@@ -120,8 +120,8 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
             //是否不需要记录
             boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
 
-            if (!notRecord && !ValidateUtil.isEmpty(tableName)) {
-                this.record(parameter.get("ID"), tableName, null, null, TYPE_DELETE);
+            if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
+                this.record(parameter.get("ID"), tableName, null, null, ValueRecordType.DELETE.getType());
             }
         } catch (Exception e) {
             throw e;
@@ -219,8 +219,13 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
         if (ValidateUtil.isEmpty(tableId) || ValidateUtil.isEmpty(tableName)) {
             return;
         }
+        ActiveUser activeUser = AuthcUtil.getCurrentUser();
+
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(8);
         paramMap.put("ID", Sequence.getId());
+        if (!ValidateUtil.isEmpty(activeUser)) {
+            paramMap.put("SO_ID", activeUser.getId());
+        }
         paramMap.put("SVR_TABLE_NAME", tableName);
         paramMap.put("SVR_TABLE_ID", tableId);
         paramMap.put("SVR_OLD_VALUE", oldValue);

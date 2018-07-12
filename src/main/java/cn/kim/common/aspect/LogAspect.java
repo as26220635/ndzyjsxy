@@ -78,7 +78,7 @@ public class LogAspect extends BaseData {
             int useType = systemControllerLog.useType().getType();
 
             String message = "";
-            String result = "";
+            int result = 0;
             String logType = null;
             if (activeUser != null) {
                 logType = activeUser.getType();
@@ -156,9 +156,9 @@ public class LogAspect extends BaseData {
             }
 
             if (code == Attribute.STATUS_SUCCESS) {
-                result = Tips.LOG_SUCCESS;
+                result = Attribute.STATUS_SUCCESS;
             } else {
-                result = Tips.LOG_ERROR;
+                result = Attribute.STATUS_ERROR;
             }
 
             //记录日志

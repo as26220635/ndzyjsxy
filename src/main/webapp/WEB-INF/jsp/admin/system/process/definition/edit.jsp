@@ -31,6 +31,7 @@
     </div>
 </section>
 <%--设置列表属性--%>
+<c:set scope="request" var="MENU_TITLE" value="${SPD.SPD_NAME}-"></c:set>
 <%@ include file="/WEB-INF/jsp/admin/component/setTitleParams.jsp" %>
 <script>
     $('#save').on('click', function () {

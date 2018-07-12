@@ -3,21 +3,19 @@ package cn.kim.controller.manager.info;
 import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.annotation.Token;
 import cn.kim.common.annotation.Validate;
-import cn.kim.common.attr.MagicValue;
 import cn.kim.common.eu.UseType;
 import cn.kim.controller.manager.BaseController;
 import cn.kim.entity.ResultState;
 import cn.kim.entity.Tree;
 import cn.kim.service.DivisionService;
 import com.google.common.collect.Maps;
+import com.sun.istack.internal.Nullable;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 

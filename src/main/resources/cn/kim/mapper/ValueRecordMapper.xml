@@ -28,6 +28,7 @@
         INSERT INTO SYS_VALUE_RECORD
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
             <if test="SVR_TABLE_NAME != null">SVR_TABLE_NAME,</if>
             <if test="SVR_TABLE_ID != null">SVR_TABLE_ID,</if>
             <if test="SVR_OLD_VALUE != null">SVR_OLD_VALUE,</if>
@@ -37,6 +38,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
             <if test="SVR_TABLE_NAME != null">#{SVR_TABLE_NAME},</if>
             <if test="SVR_TABLE_ID != null">#{SVR_TABLE_ID},</if>
             <if test="SVR_OLD_VALUE != null">#{SVR_OLD_VALUE},</if>
@@ -51,6 +53,7 @@
         UPDATE SYS_VALUE_RECORD
         <set>
             <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
             <if test="SVR_TABLE_NAME != null">SVR_TABLE_NAME=#{SVR_TABLE_NAME},</if>
             <if test="SVR_TABLE_ID != null">SVR_TABLE_ID=#{SVR_TABLE_ID},</if>
             <if test="SVR_OLD_VALUE != null">SVR_OLD_VALUE=#{SVR_OLD_VALUE},</if>

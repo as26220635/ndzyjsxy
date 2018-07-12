@@ -10,8 +10,8 @@
 
 <script>
     //设置列表属性
-    editTitle('${MENU.SM_NAME}');
+    editTitle('${MENU_TITLE}${MENU.SM_NAME}');
     editNavbarBrand('${MENU.SM_PARENT_NAME}', '${MENU.SM_NAME}');
-    editMenuTitle('${MENU.SM_NAME}');
+    editMenuTitle('${MENU_TITLE}${MENU.SM_NAME}');
     editMenuIcon('${MENU.SM_CLASSICON}');
 </script>

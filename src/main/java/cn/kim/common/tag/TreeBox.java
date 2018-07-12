@@ -1,13 +1,10 @@
 package cn.kim.common.tag;
 
-import cn.kim.entity.DictType;
-import cn.kim.util.DictUtil;
 import cn.kim.util.ValidateUtil;
+import com.sun.istack.internal.Nullable;
 
-import javax.annotation.Nullable;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
 import java.util.Map;
 
 /**
@@ -236,12 +233,11 @@ public class TreeBox extends BaseTagSupport {
         this.modelSize = modelSize;
     }
 
-    @Nullable
     public String getRequestParams() {
         return requestParams;
     }
 
-    public void setRequestParams(@Nullable String requestParams) {
+    public void setRequestParams(String requestParams) {
         this.requestParams = requestParams;
     }
 }

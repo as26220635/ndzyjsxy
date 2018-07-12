@@ -2,19 +2,13 @@ package cn.kim.common.tag;
 
 import cn.kim.common.attr.Attribute;
 import cn.kim.entity.DictType;
-import cn.kim.common.attr.Attribute;
-import cn.kim.entity.DictType;
 import cn.kim.util.DictUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.w3c.dom.Attr;
+import com.sun.istack.internal.Nullable;
 
-import javax.annotation.Nullable;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.TagSupport;
 import java.util.Map;
 
 /**

@@ -62,7 +62,8 @@ public class PjaxInterceptor implements HandlerInterceptor {
             String params = sb.length() > 1 ? sb.substring(0, sb.length() - 1) : "";
             request.setAttribute("params", params);
             request.setAttribute("path", path);
-            String url = "";//request.getContextPath()
+            //request.getContextPath()
+            String url = "";
             try {
                 //判断是哪里的pjax请求
                 if (path.contains(ManagerController.MANAGER_URL)) {

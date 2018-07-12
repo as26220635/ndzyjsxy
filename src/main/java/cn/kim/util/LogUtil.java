@@ -25,6 +25,10 @@ import java.util.Map;
 public class LogUtil {
 
     private static Logger logger = LogManager.getLogger(LogUtil.class.getName());
+    /**
+     * 上一次日志记录到session中的key
+     */
+    private static final String PREV_LOG_SAVE_KEY = "LOG_SAVE";
 
     @Autowired
     private LogService logService;
@@ -38,7 +42,6 @@ public class LogUtil {
     public void init() {
         logUtil = this;
         logUtil.logService = this.logService;
-
     }
 
     /**
@@ -49,9 +52,9 @@ public class LogUtil {
      * @param logUseType
      * @param logType
      * @param logTextContent
-     * @param logResult
+     * @param logResult      操作结果
      */
-    public static void recordLog(HttpServletRequest request, String logEvent, Integer logUseType, String logType, String logTextContent, String logResult) {
+    public static void recordLog(HttpServletRequest request, String logEvent, Integer logUseType, String logType, String logTextContent, int logResult) {
         if (ValidateUtil.isEmpty(logTextContent)) {
             return;
         }
@@ -72,13 +75,18 @@ public class LogUtil {
             paramMap.put("SL_USETYPE", logUseType);
             paramMap.put("SL_TYPE", logType);
 
-            paramMap.put("SLT_CONTENT", logTextContent);
             paramMap.put("SL_RESULT", logResult);
+            //日志内容
+            paramMap.put("SLT_CONTENT", logTextContent);
             //防止重复记录
-            if (!toString(paramMap).equals(SessionUtil.get("LOG_SAVE"))) {
-                SessionUtil.set("LOG_SAVE", toString(paramMap));
+            if (!toString(paramMap).equals(SessionUtil.get(PREV_LOG_SAVE_KEY))) {
+                SessionUtil.set(PREV_LOG_SAVE_KEY, toString(paramMap));
                 logUtil.logService.insertLog(paramMap);
-                logger.info("身份:" + ParamTypeResolve.getOpeatorTypeName(activeUser.getType()) + ",用户:" + activeUser.getUsername() + ",操作:" + logEvent + ",内容:" + logTextContent + ",结果:" + logResult);
+                logger.info("身份:" + (activeUser != null ? ParamTypeResolve.getOpeatorTypeName(activeUser.getType()) : "")
+                        + ",用户:" + activeUser.getUsername()
+                        + ",操作:" + logEvent
+                        + ",内容:" + logTextContent
+                        + ",结果:" + logResult);
             }
         } catch (Exception e) {
             logger.error("日志操作错误:" + e + "-------------" + e.getMessage());

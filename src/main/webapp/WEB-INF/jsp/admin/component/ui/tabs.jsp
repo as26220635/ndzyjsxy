@@ -23,7 +23,7 @@
                             <c:forEach items="${SFD_LIST}" var="SFD" varStatus="status">
                                 <li class="<c:if test="${status.index == 0}">active</c:if>">
                                     <a id="${SFD.ID}" href="#${SFD.ID}CONTENT" data-toggle="tab"
-                                       onclick="switchTab('${SFD.SM_URL}')">${SFD.SFD_NAME}</a>
+                                       onclick="switchTab('${BASE_URL}${SFD.SM_URL}')">${SFD.SFD_NAME}</a>
                                 </li>
                             </c:forEach>
                         </ul>
