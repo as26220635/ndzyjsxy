@@ -17,6 +17,7 @@ import cn.kim.service.ProcessService;
 import cn.kim.service.RoleService;
 import cn.kim.tools.ProcessTool;
 import cn.kim.util.DictUtil;
+import cn.kim.util.FuncUtil;
 import cn.kim.util.TextUtil;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.annotation.Logical;
@@ -213,8 +214,32 @@ public class ProcessController extends BaseController {
                 DEFAULT_OPINION = "退回";
                 processBtnType = ProcessType.BACK.toString();
             }
+            //查询流程步骤
+            paramMap.clear();
+            paramMap.put("SPD_ID", SPD_ID);
+            List<Map<String, Object>> stepList = processService.selectProcessStepList(paramMap);
+            //设置流程步骤
+            String stepId = toString(step.get("ID"));
+            String nextStepId = toString(nextStep.get("ID"));
+            StringBuilder stepGroupName = new StringBuilder();
+            stepGroupName.append(TextUtil.greaterThanHtml("开始", 3));
+            FuncUtil.forEach(stepList, (index, map) -> {
+                Object SPS_NAME = map.get("SPS_NAME");
+                if (toString(map.get("ID")).equals(stepId)) {
+                    stepGroupName.append(TextUtil.joinFirstTextSymbol("<span style='color:blue;'>" + TextUtil.greaterThanHtml(SPS_NAME + "(当前步骤)", 3) + "</span>", MagicValue.NBSP, 1));
+                } else if (toString(map.get("ID")).equals(nextStepId)) {
+                    if (index + 1 == stepList.size()) {
+                        stepGroupName.append(TextUtil.joinFirstTextSymbol("<span style='color:red;'>" + SPS_NAME + "(下一步骤)" + "</span>", MagicValue.NBSP, 1));
+                    } else {
+                        stepGroupName.append(TextUtil.joinFirstTextSymbol("<span style='color:red;'>" + TextUtil.greaterThanHtml(SPS_NAME + "(下一步骤)", 3) + "</span>", MagicValue.NBSP, 1));
+                    }
+                } else {
+                    stepGroupName.append(TextUtil.joinFirstTextSymbol(TextUtil.greaterThanHtml(SPS_NAME, 3), MagicValue.NBSP, 1));
+                }
+            });
 
-
+            //流程步骤
+            model.addAttribute("SPS_GROUP_NAME", TextUtil.interceptSymbol(stepGroupName.toString(), MagicValue.GREATER_THAN + MagicValue.GREATER_THAN + MagicValue.GREATER_THAN));
             //办理表ID
             model.addAttribute("SPS_TABLE_ID", ID);
             //下一步办理人

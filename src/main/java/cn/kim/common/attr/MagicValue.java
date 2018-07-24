@@ -48,4 +48,8 @@ public class MagicValue {
     public static final String ONE = "1";
     public static final String TWO = "2";
     public static final String THREE = "3";
+
+    public static final String GREATER_THAN = "&gt;";
+    public static final String LESS_THAN = "&lt;";
+    public static final String NBSP = "&nbsp;";
 }

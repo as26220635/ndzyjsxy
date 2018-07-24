@@ -644,6 +644,13 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         return baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessStep", paramMap);
     }
 
+    @Override
+    public List<Map<String, Object>> selectProcessStepList(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
+        return baseDao.selectList(NameSpace.ProcessFixedMapper, "selectProcessStep", paramMap);
+    }
+
 
     @Override
     @Transactional

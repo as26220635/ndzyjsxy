@@ -357,16 +357,18 @@ tableView = {
     //记录缓存的值
     saveCacheValue: function (key, queryForm) {
         var cache = {};
-        //获取select的值
-        queryForm.find('select').each(function () {
-            var $select = $(this);
-            cache[$select.prop('name')] = $select.val();
-        });
-        //获取input的值
-        queryForm.find('input').each(function () {
-            var $input = $(this);
-            cache[$input.prop('name')] = $input.val();
-        });
+        if (!isEmpty(queryForm)) {
+            //获取select的值
+            queryForm.find('select').each(function () {
+                var $select = $(this);
+                cache[$select.prop('name')] = $select.val();
+            });
+            //获取input的值
+            queryForm.find('input').each(function () {
+                var $input = $(this);
+                cache[$input.prop('name')] = $input.val();
+            });
+        }
         //记录缓存
         $.data(overallCache, 'tableView' + key, cache);
     },
@@ -377,27 +379,29 @@ tableView = {
         if (isEmpty(cache) || cache.length == 0) {
             return false;
         }
-        //设置select
-        queryForm.find('select').each(function () {
-            var $select = $(this);
-            var val = cache[$select.prop('name')];
-            //选中option
-            if (!isEmpty(val)) {
-                $select.find('option').each(function () {
-                    if ($(this).val() == val) {
-                        $select.val(val).trigger('change');
-                    }
-                });
-            }
-        });
-        //设置input
-        queryForm.find('input').each(function () {
-            var $input = $(this);
-            var val = cache[$input.prop('name')];
-            if (!isEmpty(val)) {
-                $input.val(val).trigger('hide');
-            }
-        });
+        if (!isEmpty(queryForm)) {
+            //设置select
+            queryForm.find('select').each(function () {
+                var $select = $(this);
+                var val = cache[$select.prop('name')];
+                //选中option
+                if (!isEmpty(val)) {
+                    $select.find('option').each(function () {
+                        if ($(this).val() == val) {
+                            $select.val(val).trigger('change');
+                        }
+                    });
+                }
+            });
+            //设置input
+            queryForm.find('input').each(function () {
+                var $input = $(this);
+                var val = cache[$input.prop('name')];
+                if (!isEmpty(val)) {
+                    $input.val(val).trigger('hide');
+                }
+            });
+        }
 
         //设置待审已审
         var processStatus = cache['processStatus'];
