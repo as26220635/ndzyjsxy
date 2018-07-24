@@ -1,5 +1,6 @@
 package cn.kim.util;
 
+import cn.kim.common.attr.Attribute;
 import com.alibaba.fastjson.JSON;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -102,6 +103,14 @@ public class TextUtil {
         }
 
         return "[" + clearFirstAndLastComma(str) + "]";
+    }
+
+    public static String toString(List<String> list) {
+        StringBuilder stringBuilder = new StringBuilder();
+        list.forEach(role -> {
+            stringBuilder.append(role + Attribute.SERVICE_SPLIT);
+        });
+        return clearFirstAndLastComma(stringBuilder.toString());
     }
 
     /**
