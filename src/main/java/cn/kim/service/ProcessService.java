@@ -32,7 +32,7 @@ public interface ProcessService extends BaseService {
     /**
      * 获取当前项目的下一步步骤
      *
-     * @param definitionId           流程定义ID
+     * @param definitionId        流程定义ID
      * @param scheduleAuditStatus 流程办理状态
      * @return
      */
@@ -41,7 +41,7 @@ public interface ProcessService extends BaseService {
     /**
      * 获取当前项目的上一步步骤
      *
-     * @param definitionId           流程定义ID
+     * @param definitionId        流程定义ID
      * @param scheduleAuditStatus 流程办理状态
      * @return
      */
@@ -49,6 +49,7 @@ public interface ProcessService extends BaseService {
 
     /**
      * 获取当前项目的之前全部步骤
+     *
      * @param definitionId
      * @param scheduleAuditStatus
      * @return
@@ -91,6 +92,8 @@ public interface ProcessService extends BaseService {
 
     /****   流程步骤    ***/
     Map<String, Object> selectProcessStep(Map<String, Object> mapParam);
+
+    List<Map<String, Object>> selectProcessStepList(Map<String, Object> mapParam);
 
     Map<String, Object> insertAndUpdateProcessStep(Map<String, Object> mapParam);
 

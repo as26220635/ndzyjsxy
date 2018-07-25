@@ -44,10 +44,15 @@
         <label>流程名称:</label>
         <span>${SPD.SPD_NAME}</span>
         <span>&nbsp;&nbsp;版本:${SPD.SPD_VERSION}</span>
-        <br/>
-        <label>当前执行步骤:</label>
-        <span>${STEP_NAME}</span>
     </div>
+    <div class="form-group has-feedback">
+        <label>流程步骤:</label>
+        <span>${SPS_GROUP_NAME}</span>
+    </div>
+    <%--<div class="form-group has-feedback">--%>
+        <%--<label>当前执行步骤:</label>--%>
+        <%--<span>${STEP_NAME}</span>--%>
+    <%--</div>--%>
     <div class="form-group has-feedback">
         <label>项目名称:</label>
         <span>${SPS_TABLE_NAME}</span>

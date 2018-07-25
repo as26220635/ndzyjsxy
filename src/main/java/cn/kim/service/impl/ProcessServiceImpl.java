@@ -299,11 +299,6 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                     ProcessCheck processCheck = new ProcessCheck();
                     error = processCheck.advanceCheck(executeMap);
                 }
-                //是否前进执行
-                if (toInt(step.get("SPS_IS_ADVANCE_EXECUTE")) == STATUS_SUCCESS) {
-                    ProcessExecute processExecute = new ProcessExecute();
-                    error = processExecute.advanceExecute(executeMap);
-                }
                 //如果有错误就抛出
                 if (!isEmpty(error)) {
                     throw new CustomException(error);
@@ -322,11 +317,6 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 if (toInt(step.get("SPS_IS_RETREAT_CHECK")) == STATUS_SUCCESS) {
                     ProcessCheck processCheck = new ProcessCheck();
                     error = processCheck.retreatCheck(executeMap);
-                }
-                //是否退回执行
-                if (toInt(step.get("SPS_IS_RETREAT_EXECUTE")) == STATUS_SUCCESS) {
-                    ProcessExecute processExecute = new ProcessExecute();
-                    error = processExecute.retreatExecute(executeMap);
                 }
                 //如果有错误就抛出
                 if (!isEmpty(error)) {
@@ -422,6 +412,25 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
 
                 resultIUMap = this.insertProcessLog(paramMap);
                 validateResultMap(resultIUMap);
+            }
+
+            //是否进行前进后退执行或验证
+            if (processType.equals(ProcessType.SUBMIT.toString())) {
+                //是否前进执行
+                if (toInt(step.get("SPS_IS_ADVANCE_EXECUTE")) == STATUS_SUCCESS) {
+                    ProcessExecute processExecute = new ProcessExecute();
+                    error = processExecute.advanceExecute(executeMap);
+                }
+            } else if (processType.equals(ProcessType.BACK.toString())) {
+                //是否退回执行
+                if (toInt(step.get("SPS_IS_RETREAT_EXECUTE")) == STATUS_SUCCESS) {
+                    ProcessExecute processExecute = new ProcessExecute();
+                    error = processExecute.retreatExecute(executeMap);
+                }
+            }
+            //如果有错误就抛出
+            if (!isEmpty(error)) {
+                throw new CustomException(error);
             }
             status = STATUS_SUCCESS;
             desc = Tips.PROCESS_SUCCESS;
@@ -633,6 +642,13 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
         paramMap.put("SPS_PROCESS_STATUS", mapParam.get("SPS_PROCESS_STATUS"));
         return baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessStep", paramMap);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectProcessStepList(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
+        return baseDao.selectList(NameSpace.ProcessFixedMapper, "selectProcessStep", paramMap);
     }
 
 

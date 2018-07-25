@@ -1,5 +1,7 @@
 package cn.kim.util;
 
+import cn.kim.common.attr.Attribute;
+import cn.kim.common.attr.MagicValue;
 import com.alibaba.fastjson.JSON;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -102,6 +104,14 @@ public class TextUtil {
         }
 
         return "[" + clearFirstAndLastComma(str) + "]";
+    }
+
+    public static String toString(List<String> list) {
+        StringBuilder stringBuilder = new StringBuilder();
+        list.forEach(role -> {
+            stringBuilder.append(role + Attribute.SERVICE_SPLIT);
+        });
+        return clearFirstAndLastComma(stringBuilder.toString());
     }
 
     /**
@@ -266,6 +276,56 @@ public class TextUtil {
             return content.substring(0, content.length() - split.length());
         }
         return content;
+    }
+
+    /**
+     * 加在文本后面
+     *
+     * @param text
+     * @param symbol
+     * @param size
+     * @return
+     */
+    public static String joinLastTextSymbol(Object text, String symbol, int size) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(toString(text));
+        for (int i = 0; i < size; i++) {
+            stringBuilder.append(symbol);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 加在文本前面
+     *
+     * @param text
+     * @param symbol
+     * @param size
+     * @return
+     */
+    public static String joinFirstTextSymbol(Object text, String symbol, int size) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            stringBuilder.append(symbol);
+        }
+        stringBuilder.append(toString(text));
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 在右边加上大于符号
+     *
+     * @param text 文本
+     * @param size 数量
+     * @return
+     */
+    public static String greaterThanHtml(Object text, int size) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(toString(text));
+        for (int i = 0; i < size; i++) {
+            stringBuilder.append(MagicValue.GREATER_THAN);
+        }
+        return stringBuilder.toString();
     }
 
     /**

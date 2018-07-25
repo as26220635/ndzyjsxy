@@ -116,11 +116,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                         paramMap.put("SPD_ID", processDefinitionId);
                         List<Map<String, Object>> stepList = baseDao.selectList(NameSpace.ProcessFixedMapper, "selectProcessStep", paramMap);
                         //获取需要查询的角色
-                        List<String> roleList = getExistRoleList(TextUtil.joinValue(stepList, "SR_ID", SERVICE_SPLIT));
-                        roleList.forEach(role -> {
-                            //查询角色
-                            stayBuilder.append(" UNION ALL " + baseWhere + " AND SPS_STEP_TYPE = 1 AND SPS_STEP_TRANSACTOR = '" + role + "' ");
-                        });
+                        stayBuilder.append(" UNION ALL " + baseWhere + " AND SPS_STEP_TYPE = 1 AND SPS_STEP_TRANSACTOR IN (" + TextUtil.toString(getExistRoleList(TextUtil.joinValue(stepList, "SR_ID", SERVICE_SPLIT))) + ") ");
 
                         stayBuilder.append(" UNION ALL " + baseWhere + " AND SPS_STEP_TYPE = 2 AND SPS_STEP_TRANSACTOR = '" + activeUser.getId() + "' ");
                     }
