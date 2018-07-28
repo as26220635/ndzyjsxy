@@ -4,9 +4,7 @@ import cn.kim.common.attr.ConfigProperties;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.controller.ManagerController;
 import cn.kim.controller.reception.home.MyHomeController;
-import cn.kim.common.attr.ConfigProperties;
-import cn.kim.controller.ManagerController;
-import cn.kim.controller.reception.home.MyHomeController;
+import cn.kim.tools.HttpClient;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import org.apache.shiro.cache.Cache;
@@ -18,7 +16,6 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -106,11 +103,11 @@ public class HttpUtil {
     public static Map<String, String> getIpAddressName(String ip) {
         Map<String, String> result = Maps.newHashMapWithExpectedSize(12);
 
-        Map<String, String> params =  Maps.newHashMapWithExpectedSize(1);
+        Map<String, String> params = Maps.newHashMapWithExpectedSize(1);
         params.put("ip", ip);
         HttpClient httpClient = new HttpClient();
-        String content = httpClient.get(ConfigProperties.TAOBAO_IP, params);
-        JSONObject jsonObject = JSONObject.parseObject(content);
+        Map<String, Object> getMap = httpClient.get(ConfigProperties.TAOBAO_IP, params);
+        JSONObject jsonObject = JSONObject.parseObject(TextUtil.toString(getMap.get(MagicValue.DESC)));
 
         if (ValidateUtil.isEmpty(jsonObject) || ValidateUtil.isEmpty(jsonObject.get("data"))) {
             result.put("code", "1");

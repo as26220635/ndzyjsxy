@@ -9,8 +9,15 @@ import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
-import java.util.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by 余庚鑫 on 2017/5/28.
@@ -139,7 +146,7 @@ public class TextUtil {
         }
     }
 
-    public static String toJSONString(Map<String, Object> map) {
+    public static String toJSONString(Map<?, ?> map) {
         return JSON.toJSONString(map);
     }
 
@@ -164,6 +171,14 @@ public class TextUtil {
             return ValidateUtil.isEmpty(l) ? null : Long.parseLong(l.toString());
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public static double toDouble(String obj) {
+        try {
+            return ValidateUtil.isEmpty(obj) ? 0 : Double.parseDouble(obj);
+        } catch (Exception e) {
+            return 0;
         }
     }
 
@@ -383,6 +398,7 @@ public class TextUtil {
             }
         }
 
+        System.out.println(str);
         return str;
     }
 
@@ -408,5 +424,33 @@ public class TextUtil {
         });
 
         return interceptSymbol(result.toString(), symbol);
+    }
+
+    /**
+     * BASE64加密
+     *
+     * @param src
+     * @return
+     */
+    public static String base64Encrypt(String src) {
+        try {
+            return (new BASE64Encoder()).encodeBuffer(src.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        }
+    }
+
+    /**
+     * Base64解密
+     *
+     * @param src
+     * @return
+     */
+    public static String base64Decrypt(String src) {
+        try {
+            return new String((new BASE64Decoder()).decodeBuffer(src), "UTF-8");
+        } catch (IOException e) {
+            return "";
+        }
     }
 }
