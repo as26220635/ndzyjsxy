@@ -122,4 +122,9 @@ public class TableName {
      * 部门
      */
     public static final String BUS_DIVISION = "BUS_DIVISION";
+
+    /**
+     * 部门人员
+     */
+    public static final String BUS_DIVISION_PERSONNEL = "bus_division_personnel";
 }

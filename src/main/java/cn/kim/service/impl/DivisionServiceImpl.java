@@ -8,6 +8,8 @@ import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.DivisionService;
 import cn.kim.service.DivisionService;
+import cn.kim.util.PasswordMd5;
+import cn.kim.util.RandomSalt;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,6 +121,113 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
         return resultMap;
     }
 
+
+    @Override
+    public Map<String, Object> selectDivisionPersonnel(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", mapParam.get("ID"));
+        return baseDao.selectOne(NameSpace.DivisionMapper, "selectDivisionPersonnel", paramMap);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insertAndUpdateDivisionPersonnel(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+            String id = toString(mapParam.get("ID"));
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION_PERSONNEL);
+
+            paramMap.put("ID", id);
+            //父类id默认为0
+            paramMap.put("SO_ID", mapParam.get("SO_ID"));
+            paramMap.put("BD_ID", mapParam.get("BD_ID"));
+            paramMap.put("BDP_NAME", mapParam.get("BDP_NAME"));
+
+            if (isEmpty(id)) {
+                id = getId();
+                paramMap.put("ID", id);
+                //插入账号和账号信息
+                String operatorId = getId();
+                paramMap.put("SO_ID", operatorId);
+
+                //插入账号和账号信息
+                Map<String, Object> operatorMap = Maps.newHashMapWithExpectedSize(10);
+                operatorMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR);
+                operatorMap.put("ID", operatorId);
+                //设置账号和盐
+                String salt = RandomSalt.salt();
+                operatorMap.put("SO_SALT", salt);
+                operatorMap.put("SO_PASSWORD", PasswordMd5.password("123456", salt));
+                operatorMap.put("IS_STATUS", STATUS_SUCCESS);
+                baseDao.insert(NameSpace.OperatorMapper, "insertOperator", operatorMap);
+
+                //添加accountinfo表
+                operatorMap.clear();
+                operatorMap.put("SVR_TABLE_NAME", TableName.SYS_ACCOUNT_INFO);
+                operatorMap.put("ID", getId());
+                operatorMap.put("SO_ID", operatorId);
+                operatorMap.put("SAI_NAME", mapParam.get("BDP_NAME"));
+                baseDao.insert(NameSpace.OperatorMapper, "insertAccountInfo", operatorMap);
+
+                //插入部门人员
+                baseDao.insert(NameSpace.DivisionMapper, "insertDivisionPersonnel", paramMap);
+                resultMap.put(MagicValue.LOG, "添加部门人员:" + toString(paramMap));
+            } else {
+                Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+                oldMap.put("ID", id);
+                oldMap = selectDivisionPersonnel(oldMap);
+
+                baseDao.update(NameSpace.DivisionMapper, "updateDivisionPersonnel", paramMap);
+                resultMap.put(MagicValue.LOG, "更新部门人员,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+            }
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteDivisionPersonnel(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = DELETE_ERROR;
+        try {
+            if (isEmpty(mapParam.get("ID"))) {
+                throw new CustomException("ID不能为空!");
+            }
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            String id = toString(mapParam.get("ID"));
+
+            //删除部门人员表
+            paramMap.clear();
+            paramMap.put("ID", id);
+            Map<String, Object> oldMap = selectDivisionPersonnel(paramMap);
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION_PERSONNEL);
+            baseDao.delete(NameSpace.DivisionMapper, "deleteDivisionPersonnel", paramMap);
+
+            resultMap.put(MagicValue.LOG, "删除部门人员,信息:" + toString(oldMap));
+            status = STATUS_SUCCESS;
+            desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
     /**
      * 获取部门树
      *
@@ -145,7 +254,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
                 tree.setText(toString(button.get("BD_NAME")));
                 tree.setTags(new String[]{
 //                        "电话:" + toHtmlBColor(button.get("BD_PHONE"), "yellow"),
-                        "联系人:" + toHtmlBColor(button.get("BD_CONTACTS"), "yellow")
+                        !isEmpty(button.get("BD_CONTACTS")) ? "联系人:" + toHtmlBColor(button.get("BD_CONTACTS"), "yellow") : null
                 });
 
                 TreeState state = new TreeState();

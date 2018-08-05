@@ -172,6 +172,8 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             String salt = RandomSalt.salt();
             paramMap.put("SO_SALT", salt);
             paramMap.put("SO_PASSWORD", PasswordMd5.password("123456", salt));
+            //是默认密码 第一次登陆需要修改
+            paramMap.put("IS_DEFAULT_PWD", STATUS_SUCCESS);
 
             Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
             oldMap.put("ID", id);
@@ -396,6 +398,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
     @Override
     public List<Tree> selectOperatorRole(Map<String, Object> mapParam) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("SR_TYPE", mapParam.get("SR_TYPE"));
         List<Map<String, Object>> roles = baseDao.selectList(NameSpace.RoleMapper, "selectRole", paramMap);
 
         paramMap.clear();

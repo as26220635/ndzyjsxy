@@ -55,8 +55,8 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         paramMap.put("SPD_ID", definitionId);
         paramMap.put("SPS_IS_CANCEL", toString(STATUS_ERROR));
         Map<String, Object> schedule = this.selectProcessSchedule(paramMap);
-        //2:判断是否进度为空，说明没有启动
-        if (!isEmpty(schedule)) {
+        //2:判断是否进度为空或者状态为0，说明没有启动
+        if (!isEmpty(schedule) && !MagicValue.ZERO.equals(schedule.get("SPS_AUDIT_STATUS"))) {
             //3:判断是否已完成
             if ("999".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
                 return ProcessType.NONE.toString();
@@ -868,6 +868,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
 
             paramMap.put("ID", mapParam.get("ID"));
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
+            paramMap.put("SHOW_SO_ID", mapParam.get("SHOW_SO_ID"));
             paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
             paramMap.put("SPS_TABLE_ID", mapParam.get("SPS_TABLE_ID"));
             paramMap.put("SPS_AUDIT_STATUS", mapParam.get("SPS_AUDIT_STATUS"));

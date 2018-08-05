@@ -1966,7 +1966,7 @@ $.fn.selectInput = function (callback) {
         var searchDivId = uuid();
         var searchBtn = '#' + searchBtnId;
         var searchDiv = '#' + searchDivId;
-        var searchBtnHtml = '<div  id="' + searchDivId + '" style="position: absolute;text-align: right;top:' + (isLabel ? 25 : 0) + 'px;width: 100%"><button id="' + searchBtnId + '" class="btn btn-default">选择</button></div>';
+        var searchBtnHtml = '<div  id="' + searchDivId + '" style="position: absolute;text-align: right;top:' + (isLabel ? 25 : 0) + 'px;width: 100%"><button id="' + searchBtnId + '" class="btn btn-default btn-select-input">选择</button></div>';
         $parent.append(searchBtnHtml);
         $input.css('background-color', '#fff');
 

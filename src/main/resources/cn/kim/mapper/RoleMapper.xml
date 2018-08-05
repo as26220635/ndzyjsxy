@@ -12,6 +12,9 @@
             <if test="IS_STATUS != NULL and IS_STATUS != ''">
                 AND IS_STATUS = #{IS_STATUS}
             </if>
+            <if test="SR_TYPE != NULL and SR_TYPE != ''">
+                AND SR_TYPE = #{SR_TYPE}
+            </if>
         </where>
     </select>
 

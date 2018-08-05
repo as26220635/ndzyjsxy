@@ -33,12 +33,14 @@
         INSERT INTO SYS_OPERATOR
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
+            <if test="IS_DEFAULT_PWD != null">IS_DEFAULT_PWD,</if>
             <if test="SO_PASSWORD != null">SO_PASSWORD,</if>
             <if test="SO_SALT != null">SO_SALT,</if>
             <if test="IS_STATUS != null">IS_STATUS,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
+            <if test="IS_DEFAULT_PWD != null">#{IS_DEFAULT_PWD},</if>
             <if test="SO_PASSWORD != null">#{SO_PASSWORD},</if>
             <if test="SO_SALT != null">#{SO_SALT},</if>
             <if test="IS_STATUS != null">#{IS_STATUS},</if>
@@ -50,6 +52,7 @@
         UPDATE SYS_OPERATOR
         <set>
             <if test="ID != null">ID=#{ID},</if>
+            <if test="IS_DEFAULT_PWD != null">IS_DEFAULT_PWD=#{IS_DEFAULT_PWD},</if>
             <if test="SO_PASSWORD != null">SO_PASSWORD=#{SO_PASSWORD},</if>
             <if test="SO_SALT != null">SO_SALT=#{SO_SALT},</if>
             <if test="IS_STATUS != null">IS_STATUS=#{IS_STATUS},</if>

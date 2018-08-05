@@ -316,6 +316,7 @@
             $selectMenu.parents('ul').css('display', 'block');
         }
         $menuTree.find('li').removeClass('active').removeClass('menu-open');
+        $menuTree.find('ul').css('display','');
         $selectMenu.parents('li').addClass('active').addClass('menu-open');
     }
 

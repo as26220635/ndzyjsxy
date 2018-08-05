@@ -178,3 +178,10 @@
 <c:set var="DIVISION_UPDATE_URL" value="${DIVISION_BASE_URL}update"/>
 <c:set var="DIVISION_DELETE_URL" value="${DIVISION_BASE_URL}delete"/>
 <c:set var="DIVISION_TREE_DATA_URL" value="${DIVISION_BASE_URL}tree"/>
+<%--部门人员--%>
+<c:set var="DIVISION_PERSONNEL_BASE_URL" value="${MANAGER_URL}division/personnel/"/>
+<c:set var="DIVISION_PERSONNEL_ADD_URL" value="${DIVISION_PERSONNEL_BASE_URL}add"/>
+<c:set var="DIVISION_PERSONNEL_UPDATE_URL" value="${DIVISION_PERSONNEL_BASE_URL}update"/>
+<c:set var="DIVISION_PERSONNEL_ADDOUNT_INFO_URL" value="${DIVISION_PERSONNEL_BASE_URL}accountInfo"/>
+<c:set var="DIVISION_PERSONNEL_RESET_PWD_URL" value="${DIVISION_PERSONNEL_BASE_URL}resetPwd"/>
+<c:set var="DIVISION_PERSONNEL_DELETE_URL" value="${DIVISION_PERSONNEL_BASE_URL}delete"/>

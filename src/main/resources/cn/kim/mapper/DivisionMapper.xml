@@ -82,4 +82,54 @@
     <delete id="deleteDivision" parameterType="java.util.Map">
         DELETE FROM BUS_DIVISION WHERE ID = #{ID}
     </delete>
+
+    <!--查询部门人员-->
+    <select id="selectDivisionPersonnel" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BDP.*,BD.BD_NAME
+        FROM(
+            SELECT * FROM BUS_DIVISION_PERSONNEL
+            <where>
+                <if test="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+            </where>
+        )BDP
+        INNER JOIN BUS_DIVISION BD ON BD.ID = BDP.BD_ID
+    </select>
+
+    <!--插入部门人员-->
+    <insert id="insertDivisionPersonnel" parameterType="java.util.Map">
+        INSERT INTO BUS_DIVISION_PERSONNEL
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BD_ID != null">BD_ID,</if>
+            <if test="BDP_NAME != null">BDP_NAME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BD_ID != null">#{BD_ID},</if>
+            <if test="BDP_NAME != null">#{BDP_NAME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑部门人员-->
+    <update id="updateDivisionPersonnel" parameterType="java.util.Map">
+        UPDATE BUS_DIVISION_PERSONNEL
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BD_ID != null">BD_ID=#{BD_ID},</if>
+            <if test="BDP_NAME != null">BDP_NAME=#{BDP_NAME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除部门人员-->
+    <delete id="deleteDivisionPersonnel" parameterType="java.util.Map">
+		DELETE FROM BUS_DIVISION_PERSONNEL WHERE ID = #{ID}
+	</delete>
 </mapper>

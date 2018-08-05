@@ -245,6 +245,9 @@
         width: 50%;
         margin-top: 7px;
     }
+    .btn-select-input{
+        margin-right:0px !important;
+    }
 
     .dataTable-column-min-width-sort {
         min-width: 40px;

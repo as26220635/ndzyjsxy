@@ -166,13 +166,13 @@ public class ProcessController extends BaseController {
                 DEFAULT_OPINION = "通过";
                 processBtnType = ProcessType.SUBMIT.toString();
             } else if (PROCESS_TYPE == ProcessType.BACK.getType()) {
+                //查询上一步骤办理人
+                nextStep = processService.processPrevStep(SPD_ID, SPS_AUDIT_STATUS);
+                if (isEmpty(nextStep)) {
+                    throw new CustomException("没有找到下一流程步骤！");
+                }
                 //是否允许多级退回
                 if (toInt(definition.get("IS_MULTISTAGE_BACK")) == STATUS_ERROR) {
-                    //查询上一步骤办理人
-                    nextStep = processService.processPrevStep(SPD_ID, SPS_AUDIT_STATUS);
-                    if (isEmpty(nextStep)) {
-                        throw new CustomException("没有找到下一流程步骤！");
-                    }
                     //查询日志查询流程对应状态办理人
                     paramMap.clear();
                     paramMap.put("SPL_TABLE_ID", ID);

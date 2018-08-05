@@ -43,5 +43,27 @@ public interface DivisionService extends BaseService {
      */
     Map<String, Object> deleteDivision(Map<String, Object> mapParam);
 
+    /**
+     * 查询部门人员
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> selectDivisionPersonnel(Map<String, Object> mapParam);
 
+    /**
+     * 插入或更新部门人员
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> insertAndUpdateDivisionPersonnel(Map<String, Object> mapParam);
+
+    /**
+     * 删除部门人员
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> deleteDivisionPersonnel(Map<String, Object> mapParam);
 }

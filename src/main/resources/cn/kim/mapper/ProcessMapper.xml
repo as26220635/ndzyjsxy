@@ -32,6 +32,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="SO_ID != null">SO_ID,</if>
+            <if test="SHOW_SO_ID != null">SHOW_SO_ID,</if>
             <if test="SPD_ID != null">SPD_ID,</if>
             <if test="SPS_TABLE_ID != null">SPS_TABLE_ID,</if>
             <if test="SPS_AUDIT_STATUS != null">SPS_AUDIT_STATUS,</if>
@@ -50,6 +51,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="SHOW_SO_ID != null">#{SHOW_SO_ID},</if>
             <if test="SPD_ID != null">#{SPD_ID},</if>
             <if test="SPS_TABLE_ID != null">#{SPS_TABLE_ID},</if>
             <if test="SPS_AUDIT_STATUS != null">#{SPS_AUDIT_STATUS},</if>
@@ -73,6 +75,7 @@
         <set>
             <if test="ID != null">ID=#{ID},</if>
             <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="SHOW_SO_ID != null">SHOW_SO_ID=#{SHOW_SO_ID},</if>
             <if test="SPD_ID != null">SPD_ID=#{SPD_ID},</if>
             <if test="SPS_TABLE_ID != null">SPS_TABLE_ID=#{SPS_TABLE_ID},</if>
             <if test="SPS_AUDIT_STATUS != null">SPS_AUDIT_STATUS=#{SPS_AUDIT_STATUS},</if>
