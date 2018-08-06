@@ -199,7 +199,14 @@
 <c:set var="DEPARTMENT_PERSONNEL_RESET_PWD_URL" value="${DEPARTMENT_PERSONNEL_BASE_URL}resetPwd"/>
 <c:set var="DEPARTMENT_PERSONNEL_DELETE_URL" value="${DEPARTMENT_PERSONNEL_BASE_URL}delete"/>
 <%--班级--%>
-<c:set var="CLASS_BASE_URL" value="${MANAGER_URL}class/"/>
+<c:set var="CLASS_BASE_URL" value="${MANAGER_URL}cls/"/>
 <c:set var="CLASS_ADD_URL" value="${CLASS_BASE_URL}add"/>
 <c:set var="CLASS_UPDATE_URL" value="${CLASS_BASE_URL}update"/>
 <c:set var="CLASS_DELETE_URL" value="${CLASS_BASE_URL}delete"/>
+<%--教师--%>
+<c:set var="TEACHER_BASE_URL" value="${MANAGER_URL}teacher/"/>
+<c:set var="TEACHER_ADD_URL" value="${TEACHER_BASE_URL}add"/>
+<c:set var="TEACHER_UPDATE_URL" value="${TEACHER_BASE_URL}update"/>
+<c:set var="TEACHER_ADDOUNT_INFO_URL" value="${TEACHER_BASE_URL}accountInfo"/>
+<c:set var="TEACHER_RESET_PWD_URL" value="${TEACHER_BASE_URL}resetPwd"/>
+<c:set var="TEACHER_DELETE_URL" value="${TEACHER_BASE_URL}delete"/>

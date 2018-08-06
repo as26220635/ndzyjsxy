@@ -30,4 +30,6 @@ public interface DictService extends BaseService {
     Map<String, Object> deleteDictInfo(Map<String, Object> mapParam);
 
     List<Tree> selectDictInfoTree(Map<String, Object> mapParam);
+
+    List<Tree> selectDictInfoTreeBox(Map<String, Object> mapParam);
 }

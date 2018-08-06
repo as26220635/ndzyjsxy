@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by 余庚鑫 on 2018/7/8
+ * Created by 余庚鑫 on 2018/8/6
  * 系部管理
  */
 @Controller
@@ -44,7 +44,7 @@ public class DepartmentController extends BaseController {
      * @throws Exception
      */
     @GetMapping("/tree")
-    @RequiresPermissions(value = {"INFO:DEPARTMENT", "INFO:DEPARTMENT_PERSONNEL"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"INFO:DEPARTMENT", "INFO:DEPARTMENT_PERSONNEL", "INFO:CLASS"}, logical = Logical.OR)
     @ResponseBody
     public List<Tree> treeList(String ID, @Nullable String NOT_ID) throws Exception {
         List<Tree> treeList = departmentService.selectDepartmentTreeList(ID, NOT_ID);

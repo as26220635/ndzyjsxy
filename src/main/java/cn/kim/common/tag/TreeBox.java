@@ -1,5 +1,6 @@
 package cn.kim.common.tag;
 
+import cn.kim.util.HttpUtil;
 import cn.kim.util.ValidateUtil;
 import com.sun.istack.internal.Nullable;
 
@@ -24,6 +25,10 @@ public class TreeBox extends BaseTagSupport {
     private String title = "";
     private String sdtId = "";
     private String notId = "";
+    /**
+     * 字典
+     */
+    private String sdtCode = "";
     /**
      * 小：modal-sm 大：modal-lg
      */
@@ -53,6 +58,10 @@ public class TreeBox extends BaseTagSupport {
             id = toString(customMap.get("id"));
             required = toBoolean(customMap.get("required"));
         }
+        //字典解析
+        if (!isEmpty(sdtCode)) {
+            url = HttpUtil.getContextPath() + "admin/dict/info/treeBox?SDT_CODE=" + sdtCode;
+        }
         if (single) {
             return single(pageContext.getOut());
         } else {
@@ -73,11 +82,11 @@ public class TreeBox extends BaseTagSupport {
         sdtId = "";
         notId = "";
         custom = "";
+        sdtCode = "";
         modelSize = "";
         single = true;
         required = false;
         requestParams = null;
-
         return super.doEndTag();
     }
 
@@ -101,6 +110,7 @@ public class TreeBox extends BaseTagSupport {
                     "            url: '" + url + "'," +
                     "            searchParams: {" +
                     "                ID: $('#" + id + "').val()," +
+                    "                SDI_CODE: $('#" + id + "').val()," +
                     "                SDT_ID: '" + sdtId + "'," +
                     "                NOT_ID: '" + notId + "'," +
                     //请求传递参数
@@ -109,7 +119,7 @@ public class TreeBox extends BaseTagSupport {
                     "            isConfirm: true," +
                     "            confirm: function ($model, nodes) {" +
                     "                if (nodes.length > 0) {" +
-                    "                    $('#" + id + "').val(nodes[0].id);" +
+                    "                    $('#" + id + "').val(nodes[0].sdiCode != '' ? nodes[0].sdiCode : nodes[0].id);" +
                     "                    $('#" + name + "').val(nodes[0].text);" +
                     "                } else {" +
                     "                    $('#" + id + "').val('');" +
@@ -239,6 +249,14 @@ public class TreeBox extends BaseTagSupport {
 
     public void setRequestParams(String requestParams) {
         this.requestParams = requestParams;
+    }
+
+    public String getSdtCode() {
+        return sdtCode;
+    }
+
+    public void setSdtCode(String sdtCode) {
+        this.sdtCode = sdtCode;
     }
 }
 

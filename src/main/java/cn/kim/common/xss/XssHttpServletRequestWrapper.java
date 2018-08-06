@@ -39,7 +39,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
                 try {
                     encodedValues[i] = TextUtil.toString(CommonUtil.idDecrypt(values[i]));
                 } catch (InvalidKeyException e) {
-                    e.printStackTrace();
                 }
             }
         } else {

@@ -295,6 +295,17 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
         return getDictInfoTree(dictInfos, toString(mapParam.get("SDI_PARENTID")));
     }
 
+    @Override
+    public List<Tree> selectDictInfoTreeBox(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
+        paramMap.put("SDI_PARENTID", "0");
+        paramMap.put("SDT_CODE", mapParam.get("SDT_CODE"));
+        paramMap.put("NOT_ID", mapParam.get("NOT_ID"));
+        List<DictInfo> dictInfos = setDictInfoChildrenList(baseDao, baseDao.selectList(NameSpace.DictMapper, "selectDictInfo", paramMap), toString(mapParam.get("NOT_ID")));
+
+        return getDictInfoTreeBox(dictInfos, toString(mapParam.get("SDI_CODE")));
+    }
+
     /**
      * 递归查询子菜单
      *
@@ -381,6 +392,51 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
             //递归
             if (!isEmpty(info.getChildren())) {
                 tree.setNodes(getDictInfoTree(info.getChildren(), dictInfoParentId));
+            }
+
+            dictInfoTrees.add(tree);
+        });
+
+        return dictInfoTrees;
+    }
+
+    /**
+     * 获取treebox使用
+     *
+     * @param dictInfs
+     * @param selectId
+     * @return
+     */
+    private List<Tree> getDictInfoTreeBox(List<DictInfo> dictInfs, String selectId) {
+        List<Tree> dictInfoTrees = new ArrayList<>();
+        dictInfs.forEach(info -> {
+            String id = toString(info.getId());
+            String sdiCode = toString(info.getSdiCode());
+
+            Tree tree = new Tree();
+            tree.setId(id);
+            tree.setSdiCode(sdiCode);
+            tree.setText(toString(info.getSdiName()));
+            tree.setTags(new String[]{"编码:" + toHtmlBColor(info.getSdiCode(), "yellow")});
+
+            TreeState state = new TreeState();
+            //是否选中
+            if (sdiCode.equals(selectId)) {
+                state.setChecked(true);
+                //选中的设置打开
+                state.setExpanded(true);
+            }
+            //是否禁用
+            if (info.getIsStatus() == STATUS_ERROR) {
+                tree.setSelectable(false);
+            }
+
+            //设置状态
+            tree.setState(state);
+
+            //递归
+            if (!isEmpty(info.getChildren())) {
+                tree.setNodes(getDictInfoTreeBox(info.getChildren(), selectId));
             }
 
             dictInfoTrees.add(tree);

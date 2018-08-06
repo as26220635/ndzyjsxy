@@ -1187,11 +1187,17 @@ treeBox = {
                     //取消其他选中
                     var checkeds = $tree.treeview('getChecked');
                     for (var i = 0; i < checkeds.length; i++) {
-                        if (checkeds[i].nodeId != node.nodeId) {
-                            $tree.treeview('uncheckNode', [checkeds[i], {silent: true}]);
+                        var checked = checkeds[i];
+                        if(checked.selectable == false){
+                            $tree.treeview('uncheckNode', [checked, {silent: true}]);
+                            return;
+                        }
+                        if (checked.nodeId != node.nodeId) {
+                            $tree.treeview('uncheckNode', [checked, {silent: true}]);
                         }
                     }
                 }
+
             },
             //取消选中节点
             onNodeUnchecked: function (event, node) {

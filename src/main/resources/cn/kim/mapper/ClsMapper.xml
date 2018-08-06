@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.kim.mapper.ClassMapper">
+<mapper namespace="cn.kim.mapper.ClsMapper">
     <cache type="org.mybatis.caches.redis.RedisCache"/>
 
     <!--查询班级-->
     <select id="selectClass" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM BUS_CLASS
-        <where>
-            <if test ="ID != NULL and ID != ''">
-                AND ID = #{ID}
-            </if>
-        </where>
+        SELECT BC.*,BDM.BDM_NAME,SDI.SDI_NAME AS BC_MAJOR_NAME
+        FROM(
+            SELECT * FROM BUS_CLASS
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+            </where>
+        )BC
+        INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BC.BDM_ID
+        LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'BUS_MAJOR' AND SDI.SDI_CODE = BC.BC_MAJOR
     </select>
 
     <!--插入班级-->

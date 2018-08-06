@@ -113,12 +113,24 @@ public class DictController extends BaseController {
     @GetMapping("/info/tree")
     @RequiresPermissions("SYSTEM:DICTINFO")
     @ResponseBody
-    public List<Tree> getDictInfoTree(String ID, String NOT_ID, String SDT_ID) throws Exception {
+    public List<Tree> getDictInfoTree(String SDT_CODE, String ID, String NOT_ID, String SDT_ID) throws Exception {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(3);
+        mapParam.put("SDT_CODE", SDT_CODE);
         mapParam.put("SDI_PARENTID", ID);
         mapParam.put("SDT_ID", SDT_ID);
         mapParam.put("NOT_ID", NOT_ID);
         List<Tree> dictInfos = dictService.selectDictInfoTree(mapParam);
+        return dictInfos;
+    }
+
+    @GetMapping("/info/treeBox")
+    @ResponseBody
+    public List<Tree> getDictInfoTreeBox(String SDT_CODE, String SDI_CODE, String NOT_ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(3);
+        mapParam.put("SDI_CODE", SDI_CODE);
+        mapParam.put("SDT_CODE", SDT_CODE);
+        mapParam.put("NOT_ID", NOT_ID);
+        List<Tree> dictInfos = dictService.selectDictInfoTreeBox(mapParam);
         return dictInfos;
     }
 

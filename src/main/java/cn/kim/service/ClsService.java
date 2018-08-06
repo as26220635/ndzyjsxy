@@ -9,7 +9,7 @@ import java.util.Map;
  * Created by 余庚鑫 on 2018/8/6
  * 班级管理
  */
-public interface ClassService extends BaseService {
+public interface ClsService extends BaseService {
     /**
      * 查询班级
      *

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kim.mapper.TeacherMapper">
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+
+    <!--查询教师-->
+    <select id="selectTeacher" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BT.*,BDM.BDM_NAME
+        FROM(
+            SELECT * FROM BUS_TEACHER
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+            </where>
+        )BT
+        INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BT.BDM_ID
+    </select>
+
+    <!--插入教师-->
+    <insert id="insertTeacher" parameterType="java.util.Map">
+        INSERT INTO BUS_TEACHER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BDM_ID != null">BDM_ID,</if>
+            <if test="BT_NAME != null">BT_NAME,</if>
+            <if test="BT_NUMBER != null">BT_NUMBER,</if>
+            <if test="BT_ENTRY_TIME != null">BT_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BDM_ID != null">#{BDM_ID},</if>
+            <if test="BT_NAME != null">#{BT_NAME},</if>
+            <if test="BT_NUMBER != null">#{BT_NUMBER},</if>
+            <if test="BT_ENTRY_TIME != null">#{BT_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑教师-->
+    <update id="updateTeacher" parameterType="java.util.Map">
+        UPDATE BUS_TEACHER
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BDM_ID != null">BDM_ID=#{BDM_ID},</if>
+            <if test="BT_NAME != null">BT_NAME=#{BT_NAME},</if>
+            <if test="BT_NUMBER != null">BT_NUMBER=#{BT_NUMBER},</if>
+            <if test="BT_ENTRY_TIME != null">BT_ENTRY_TIME=#{BT_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除教师-->
+    <delete id="deleteTeacher" parameterType="java.util.Map">
+		DELETE FROM BUS_TEACHER WHERE ID = #{ID}
+	</delete>
+</mapper>

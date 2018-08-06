@@ -14,6 +14,10 @@ public class Tree {
      */
     private String id;
     /**
+     * SDI_CODE
+     */
+    private String sdiCode;
+    /**
      * String(必选项)	列表树节点上的文本，通常是节点右边的小图标。
      */
     private String text;
@@ -70,6 +74,14 @@ public class Tree {
 
     public String getId() {
         return id;
+    }
+
+    public String getSdiCode() {
+        return sdiCode;
+    }
+
+    public void setSdiCode(String sdiCode) {
+        this.sdiCode = sdiCode;
     }
 
     public void setId(String id) {
