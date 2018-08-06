@@ -109,7 +109,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                     //查询没有流程和流程为未启动、撤回的
                     stayBuilder.append("SELECT SV.ID AS SPS_TABLE_ID FROM " + toString(configure.get("SC_VIEW")) + " SV " +
                             "   LEFT JOIN SYS_PROCESS_SCHEDULE SPS ON SPS.SPS_TABLE_ID = SV.ID AND SPS.SPS_IS_CANCEL = 0" +
-                            "   WHERE SV.SO_ID = '" + activeUser.getId() + "' AND (SPS.ID IS NULL OR SPS.SPS_AUDIT_STATUS = 0 OR (SPS.SPS_AUDIT_STATUS = -1 AND SPS.SPS_BACK_STATUS = 2))");
+                            "   WHERE (SV.SO_ID = '" + activeUser.getId() + "' OR SPS.SHOW_SO_ID = '" + activeUser.getId() + "') AND (SPS.ID IS NULL OR SPS.SPS_AUDIT_STATUS = 0 OR (SPS.SPS_AUDIT_STATUS = -1 AND SPS.SPS_BACK_STATUS = 2))");
                     if (!containsRole(roleId)) {
                         //查询自身角色是否在流程中
                         paramMap.clear();
