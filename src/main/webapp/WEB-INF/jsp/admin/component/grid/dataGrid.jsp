@@ -115,16 +115,13 @@
                                             <%--流程查看切换按钮--%>
                                         <c:if test="${!fns:isEmpty(SPD)}">
                                             <div class="btn-group" data-toggle="btn-toggle">
-                                                <c:if test="${isProcessAll == true}">
-                                                    <button id="processAllBtn" type="button"
-                                                            class="btn btn-default btn-sm active"
-                                                            data-process-status="${ProcessShowStatus.ALL.toString()}">
-                                                        <i class="fa fa-square text-yellow">全部</i>
-                                                    </button>
-                                                </c:if>
+                                                <button id="processAllBtn" type="button"
+                                                        class="btn btn-default btn-sm active"
+                                                        data-process-status="${ProcessShowStatus.ALL.toString()}">
+                                                    <i class="fa fa-square text-yellow">全部</i>
+                                                </button>
                                                 <button id="processStayBtn" type="button"
-                                                        class="btn btn-default btn-sm
-                                                    <c:if test="${isProcessAll != true}">active</c:if>"
+                                                        class="btn btn-default btn-sm"
                                                         data-process-status="${ProcessShowStatus.STAY.toString()}">
                                                     <i class="fa fa-square text-red">待审</i>
                                                 </button>

@@ -125,11 +125,8 @@ public class BaseDataController extends BaseController {
                 mapParam.clear();
                 mapParam.put("ID", definitionId);
                 Map<String, Object> processDefinition = processService.selectProcessDefinition(mapParam);
-                boolean isProcessAll = containsRole(toString(processDefinition.get("SR_ID")));
 
                 model.addAttribute("SPD", processDefinition);
-                model.addAttribute("isProcessAll", isProcessAll);
-                model.addAttribute("defaultProcessStatus", isProcessAll ? ProcessShowStatus.ALL.getType() : ProcessShowStatus.STAY.getType());
             }
 
             model.addAttribute("MENU", menu);
