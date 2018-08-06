@@ -9,9 +9,9 @@ public class initSqlMapper {
 
     public static void main(String[] args) throws IOException {
         //字段
-        String str = "ID\tSO_ID\tBDM_ID\tBDMP_NAME";
+        String str = "ID\tBDM_ID\tBC_MAJOR\tBC_NAME\tBC_YEAR\tBC_ENTRY_TIME";
         //表名
-        String tablename = "BUS_DEPARTMENT_PERSONNEL";
+        String tablename = "BUS_CLASS";
         creatsql(str, tablename);
     }
 

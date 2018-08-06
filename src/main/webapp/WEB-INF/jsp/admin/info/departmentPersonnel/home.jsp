@@ -95,7 +95,7 @@
         var data = getRowData(this);
         var SO_ID = data.SO_ID;
         //切换主界面
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:OPERATOR_SUB")}&SO_ID=' + SO_ID + '&SAI_NAME=' + encodeURIComponent(data.BDP_NAME));
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:OPERATOR_SUB")}&SO_ID=' + SO_ID + '&SAI_NAME=' + encodeURIComponent(data.BDMP_NAME));
     });
 
 
@@ -109,7 +109,7 @@
             url: '${OPERATOR_TREE_ROLE_DATA_URL}',
             searchParams: {
                 ID: id,
-                SR_TYPE: 2,
+                SR_TYPE: '${SystemEnum.DEPARTMENT.toString()}',
             },
             isConfirm: true,
             confirm: function ($model, nodes) {
@@ -135,7 +135,7 @@
 
         model.show({
             title: '重置密码',
-            content: '是否重置部门人员:' + data.BDP_NAME + '的密码',
+            content: '是否重置部门人员:' + data.BDMP_NAME + '的密码',
             class: model.class.WARNING,
             okBtnName: model.btnName.RESET,
             footerModel: model.footerModel.ADMIN,

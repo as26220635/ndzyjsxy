@@ -287,6 +287,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
     @Override
     public List<Tree> selectDictInfoTree(Map<String, Object> mapParam) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
+        paramMap.put("SDI_PARENTID", "0");
         paramMap.put("SDT_ID", mapParam.get("SDT_ID"));
         paramMap.put("NOT_ID", mapParam.get("NOT_ID"));
         List<DictInfo> dictInfos = setDictInfoChildrenList(baseDao, baseDao.selectList(NameSpace.DictMapper, "selectDictInfo", paramMap), toString(mapParam.get("NOT_ID")));

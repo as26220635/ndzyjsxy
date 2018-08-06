@@ -43,6 +43,8 @@ public enum NameSpace {
     DivisionMapper("cn.kim.mapper.DivisionMapper"),
     //系部管理
     DepartmentMapper("cn.kim.mapper.DepartmentMapper"),
+    //班级管理
+    ClassMapper("cn.kim.mapper.ClassMapper"),
     ;
 
     private final String value;

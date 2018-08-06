@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by 余庚鑫 on 2018/7/8
+ * Created by 余庚鑫 on 2018/8/6
  * 系部管理
  */
 public interface DepartmentService extends BaseService {

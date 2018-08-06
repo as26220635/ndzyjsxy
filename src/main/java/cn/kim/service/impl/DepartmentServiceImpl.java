@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by 余庚鑫 on 2018/7/8
+ * Created by 余庚鑫 on 2018/8/6
  * 系部管理
  */
 @Service
@@ -244,7 +244,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
 
                 Tree tree = new Tree();
                 tree.setId(id);
-                tree.setText(toString(button.get("BD_NAME")));
+                tree.setText(toString(button.get("BDM_NAME")));
                 tree.setTags(new String[]{
 //                        "电话:" + toHtmlBColor(button.get("BD_PHONE"), "yellow"),
                         !isEmpty(button.get("BDM_COLLEGE_NAME")) ? "院系:" + toHtmlBColor(button.get("BDM_COLLEGE_NAME"), "yellow") : null

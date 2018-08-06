@@ -23,7 +23,7 @@
     <!--插入系部-->
     <insert id="insertDepartment" parameterType="java.util.Map">
         INSERT INTO BUS_DEPARTMENT
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="BDM_COLLEGE != null">BDM_COLLEGE,</if>
             <if test="BDM_NAME != null">BDM_NAME,</if>
@@ -32,7 +32,7 @@
             <if test="BDM_ORDER != null">BDM_ORDER,</if>
             <if test="BDM_ENTER_TIME != null">BDM_ENTER_TIME,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="BDM_COLLEGE != null">#{BDM_COLLEGE},</if>
             <if test="BDM_NAME != null">#{BDM_NAME},</if>
@@ -67,24 +67,28 @@
 
     <!--查询系部人员-->
     <select id="selectDepartmentPersonnel" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM BUS_DEPARTMENT_PERSONNEL
-        <where>
-            <if test ="ID != NULL and ID != ''">
-                AND ID = #{ID}
-            </if>
-        </where>
+        SELECT BDMP.*,BDM.BDM_NAME
+        FROM(
+            SELECT * FROM BUS_DEPARTMENT_PERSONNEL
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+            </where>
+        )BDMP
+        INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BDMP.BDM_ID
     </select>
 
     <!--插入系部人员-->
     <insert id="insertDepartmentPersonnel" parameterType="java.util.Map">
         INSERT INTO BUS_DEPARTMENT_PERSONNEL
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="SO_ID != null">SO_ID,</if>
             <if test="BDM_ID != null">BDM_ID,</if>
             <if test="BDMP_NAME != null">BDMP_NAME,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="SO_ID != null">#{SO_ID},</if>
             <if test="BDM_ID != null">#{BDM_ID},</if>

@@ -137,4 +137,9 @@ public class TableName {
      * 系部人员
      */
     public static final String BUS_DEPARTMENT_PERSONNEL = "BUS_DEPARTMENT_PERSONNEL";
+
+    /**
+     * 班级
+     */
+    public static final String BUS_CLASS = "BUS_CLASS";
 }

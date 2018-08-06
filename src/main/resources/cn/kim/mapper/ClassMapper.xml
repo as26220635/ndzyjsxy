@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kim.mapper.ClassMapper">
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+
+    <!--查询班级-->
+    <select id="selectClass" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_CLASS
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入班级-->
+    <insert id="insertClass" parameterType="java.util.Map">
+        INSERT INTO BUS_CLASS
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BDM_ID != null">BDM_ID,</if>
+            <if test="BC_MAJOR != null">BC_MAJOR,</if>
+            <if test="BC_NAME != null">BC_NAME,</if>
+            <if test="BC_YEAR != null">BC_YEAR,</if>
+            <if test="BC_ENTRY_TIME != null">BC_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BDM_ID != null">#{BDM_ID},</if>
+            <if test="BC_MAJOR != null">#{BC_MAJOR},</if>
+            <if test="BC_NAME != null">#{BC_NAME},</if>
+            <if test="BC_YEAR != null">#{BC_YEAR},</if>
+            <if test="BC_ENTRY_TIME != null">#{BC_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑班级-->
+    <update id="updateClass" parameterType="java.util.Map">
+        UPDATE BUS_CLASS
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BDM_ID != null">BDM_ID=#{BDM_ID},</if>
+            <if test="BC_MAJOR != null">BC_MAJOR=#{BC_MAJOR},</if>
+            <if test="BC_NAME != null">BC_NAME=#{BC_NAME},</if>
+            <if test="BC_YEAR != null">BC_YEAR=#{BC_YEAR},</if>
+            <if test="BC_ENTRY_TIME != null">BC_ENTRY_TIME=#{BC_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除班级-->
+    <delete id="deleteClass" parameterType="java.util.Map">
+		DELETE FROM BUS_CLASS WHERE ID = #{ID}
+	</delete>
+</mapper>

@@ -109,7 +109,7 @@
             url: '${OPERATOR_TREE_ROLE_DATA_URL}',
             searchParams: {
                 ID: id,
-                SR_TYPE: 2,
+                SR_TYPE: '${SystemEnum.DIVISION.toString()}',
             },
             isConfirm: true,
             confirm: function ($model, nodes) {

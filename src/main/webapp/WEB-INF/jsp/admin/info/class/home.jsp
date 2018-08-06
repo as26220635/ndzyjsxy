@@ -6,9 +6,9 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${DEPARTMENT_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${CLASS_ADD_URL}', {}, function (html) {
                 model.show({
-                    title: '添加系部',
+                    title: '添加班级',
                     content: html,
                     footerModel: model.footerModel.ADMIN,
                     isConfirm: true,
@@ -21,7 +21,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${DEPARTMENT_ADD_URL}', params, function (data) {
+                        ajax.post('${CLASS_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -35,12 +35,12 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${DEPARTMENT_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${CLASS_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
-                    title: '修改系部',
+                    title: '修改班级',
                     content: html,
                     footerModel: model.footerModel.ADMIN,
-                    <shiro:hasPermission name="INFO:DEPARTMENT_UPDATE_SAVE">
+                    <shiro:hasPermission name="INFO:CLASS_UPDATE_SAVE">
                     isConfirm: true,
                     confirm: function ($model) {
                         var $form = $('#addAndEditForm');
@@ -51,7 +51,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${DEPARTMENT_UPDATE_URL}', params, function (data) {
+                        ajax.put('${CLASS_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -67,14 +67,14 @@
         var id = data.ID;
 
         model.show({
-            title: '删除系部',
-            content: '是否删除系部:' + data.BDM_NAME,
+            title: '删除班级',
+            content: '是否删除班级:' + data.BC_NAME,
             class: model.class.DANGER,
             okBtnName: model.btnName.DEL,
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${DEPARTMENT_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${CLASS_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }
