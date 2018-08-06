@@ -7,8 +7,7 @@ import cn.kim.common.eu.SystemEnum;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
-import cn.kim.service.DivisionService;
-import cn.kim.service.DivisionService;
+import cn.kim.service.DepartmentService;
 import cn.kim.util.PasswordMd5;
 import cn.kim.util.RandomSalt;
 import com.google.common.collect.Maps;
@@ -21,27 +20,27 @@ import java.util.Map;
 
 /**
  * Created by 余庚鑫 on 2018/7/8
- * 部门管理
+ * 系部管理
  */
 @Service
-public class DivisionServiceImpl extends BaseServiceImpl implements DivisionService {
+public class DepartmentServiceImpl extends BaseServiceImpl implements DepartmentService {
 
     @Override
-    public Map<String, Object> selectDivision(Map<String, Object> mapParam) {
+    public Map<String, Object> selectDepartment(Map<String, Object> mapParam) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
         paramMap.put("ID", mapParam.get("ID"));
-        return baseDao.selectOne(NameSpace.DivisionMapper, "selectDivision", paramMap);
+        return baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartment", paramMap);
     }
 
     @Override
-    public List<Tree> selectDivisionTreeList(String id, String notId) {
-        return getDivisionTreeList("0", id, notId);
+    public List<Tree> selectDepartmentTreeList(String id, String notId) {
+        return getDepartmentTreeList(id, notId);
     }
 
 
     @Override
     @Transactional
-    public Map<String, Object> insertAndUpdateDivision(Map<String, Object> mapParam) {
+    public Map<String, Object> insertAndUpdateDepartment(Map<String, Object> mapParam) {
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
         int status = STATUS_ERROR;
         String desc = SAVE_ERROR;
@@ -49,34 +48,30 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION);
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DEPARTMENT);
 
             paramMap.put("ID", id);
-            //父类id默认为0
-            paramMap.put("BD_PARENT_ID", isEmpty(mapParam.get("BD_PARENT_ID")) ? MagicValue.ZERO : mapParam.get("BD_PARENT_ID"));
-            paramMap.put("BD_NAME", mapParam.get("BD_NAME"));
-            paramMap.put("BD_CONTACTS", mapParam.get("BD_CONTACTS"));
-            paramMap.put("BD_PHONE", mapParam.get("BD_PHONE"));
-            paramMap.put("BD_FIXED_PHONE", mapParam.get("BD_FIXED_PHONE"));
-            paramMap.put("BD_EMAIL", mapParam.get("BD_EMAIL"));
-            paramMap.put("BD_ADDRESS", mapParam.get("BD_ADDRESS"));
-            paramMap.put("BD_DESCRIBE", mapParam.get("BD_DESCRIBE"));
-            paramMap.put("BD_ORDER", mapParam.get("BD_ORDER"));
+            paramMap.put("BDM_COLLEGE", mapParam.get("BDM_COLLEGE"));
+            paramMap.put("BDM_NAME", mapParam.get("BDM_NAME"));
+            paramMap.put("BDM_ADDRESS", mapParam.get("BDM_ADDRESS"));
+            paramMap.put("BDM_DESCRIBE", mapParam.get("BDM_DESCRIBE"));
+            paramMap.put("BDM_ORDER", mapParam.get("BDM_ORDER"));
+            paramMap.put("BDM_ENTER_TIME", mapParam.get("BDM_ENTER_TIME"));
 
             if (isEmpty(id)) {
                 id = getId();
                 paramMap.put("ID", id);
                 paramMap.put("BD_ENTER_TIME", getDate());
 
-                baseDao.insert(NameSpace.DivisionMapper, "insertDivision", paramMap);
-                resultMap.put(MagicValue.LOG, "添加部门:" + toString(paramMap));
+                baseDao.insert(NameSpace.DepartmentMapper, "insertDepartment", paramMap);
+                resultMap.put(MagicValue.LOG, "添加系部:" + toString(paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
-                oldMap = selectDivision(oldMap);
+                oldMap = selectDepartment(oldMap);
 
-                baseDao.update(NameSpace.DivisionMapper, "updateDivision", paramMap);
-                resultMap.put(MagicValue.LOG, "更新部门,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                baseDao.update(NameSpace.DepartmentMapper, "updateDepartment", paramMap);
+                resultMap.put(MagicValue.LOG, "更新系部,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -92,7 +87,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
 
     @Override
     @Transactional
-    public Map<String, Object> deleteDivision(Map<String, Object> mapParam) {
+    public Map<String, Object> deleteDepartment(Map<String, Object> mapParam) {
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
         int status = STATUS_ERROR;
         String desc = DELETE_ERROR;
@@ -103,15 +98,15 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));
 
-            //删除部门表
+            //删除系部表
             paramMap.clear();
             paramMap.put("ID", id);
-            Map<String, Object> oldMap = selectDivision(paramMap);
+            Map<String, Object> oldMap = selectDepartment(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION);
-            baseDao.delete(NameSpace.DivisionMapper, "deleteDivision", paramMap);
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DEPARTMENT);
+            baseDao.delete(NameSpace.DepartmentMapper, "deleteDepartment", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除部门,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除系部,信息:" + toString(oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -124,15 +119,15 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
 
 
     @Override
-    public Map<String, Object> selectDivisionPersonnel(Map<String, Object> mapParam) {
+    public Map<String, Object> selectDepartmentPersonnel(Map<String, Object> mapParam) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
         paramMap.put("ID", mapParam.get("ID"));
-        return baseDao.selectOne(NameSpace.DivisionMapper, "selectDivisionPersonnel", paramMap);
+        return baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartmentPersonnel", paramMap);
     }
 
     @Override
     @Transactional
-    public Map<String, Object> insertAndUpdateDivisionPersonnel(Map<String, Object> mapParam) {
+    public Map<String, Object> insertAndUpdateDepartmentPersonnel(Map<String, Object> mapParam) {
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
         int status = STATUS_ERROR;
         String desc = SAVE_ERROR;
@@ -140,13 +135,12 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION_PERSONNEL);
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DEPARTMENT_PERSONNEL);
 
             paramMap.put("ID", id);
-            //父类id默认为0
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
-            paramMap.put("BD_ID", mapParam.get("BD_ID"));
-            paramMap.put("BDP_NAME", mapParam.get("BDP_NAME"));
+            paramMap.put("BDM_ID", mapParam.get("BDM_ID"));
+            paramMap.put("BDMP_NAME", mapParam.get("BDMP_NAME"));
 
             if (isEmpty(id)) {
                 id = getId();
@@ -171,20 +165,20 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
                 operatorMap.put("SVR_TABLE_NAME", TableName.SYS_ACCOUNT_INFO);
                 operatorMap.put("ID", getId());
                 operatorMap.put("SO_ID", operatorId);
-                operatorMap.put("SAI_NAME", mapParam.get("BDP_NAME"));
-                operatorMap.put("SAI_TYPE", SystemEnum.DIVISION.getType());
+                operatorMap.put("SAI_NAME", mapParam.get("BDMP_NAME"));
+                operatorMap.put("SAI_TYPE", SystemEnum.DEPARTMENT.getType());
                 baseDao.insert(NameSpace.OperatorMapper, "insertAccountInfo", operatorMap);
 
-                //插入部门人员
-                baseDao.insert(NameSpace.DivisionMapper, "insertDivisionPersonnel", paramMap);
-                resultMap.put(MagicValue.LOG, "添加部门人员:" + toString(paramMap));
+                //插入系部人员
+                baseDao.insert(NameSpace.DepartmentMapper, "insertDepartmentPersonnel", paramMap);
+                resultMap.put(MagicValue.LOG, "添加系部人员:" + toString(paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
-                oldMap = selectDivisionPersonnel(oldMap);
+                oldMap = selectDepartmentPersonnel(oldMap);
 
-                baseDao.update(NameSpace.DivisionMapper, "updateDivisionPersonnel", paramMap);
-                resultMap.put(MagicValue.LOG, "更新部门人员,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                baseDao.update(NameSpace.DepartmentMapper, "updateDepartmentPersonnel", paramMap);
+                resultMap.put(MagicValue.LOG, "更新系部人员,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -200,7 +194,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
 
     @Override
     @Transactional
-    public Map<String, Object> deleteDivisionPersonnel(Map<String, Object> mapParam) {
+    public Map<String, Object> deleteDepartmentPersonnel(Map<String, Object> mapParam) {
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
         int status = STATUS_ERROR;
         String desc = DELETE_ERROR;
@@ -211,15 +205,15 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));
 
-            //删除部门人员表
+            //删除系部人员表
             paramMap.clear();
             paramMap.put("ID", id);
-            Map<String, Object> oldMap = selectDivisionPersonnel(paramMap);
+            Map<String, Object> oldMap = selectDepartmentPersonnel(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION_PERSONNEL);
-            baseDao.delete(NameSpace.DivisionMapper, "deleteDivisionPersonnel", paramMap);
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DEPARTMENT_PERSONNEL);
+            baseDao.delete(NameSpace.DepartmentMapper, "deleteDepartmentPersonnel", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除部门人员,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除系部人员,信息:" + toString(oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -231,21 +225,18 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
     }
 
     /**
-     * 获取部门树
+     * 获取系部树
      *
-     * @param parentId 父ID
      * @param selectId 选中的ID
      * @param notId    不显示id和父类id
      * @return
      */
-    public List<Tree> getDivisionTreeList(String parentId, String selectId, String notId) {
+    public List<Tree> getDepartmentTreeList(String selectId, String notId) {
         List<Tree> treeList = new ArrayList<>();
 
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
-        paramMap.put("BD_PARENT_ID", parentId);
         paramMap.put("NOT_ID", notId);
-        paramMap.put("NOT_PARENT_ID", notId);
-        List<Map<String, Object>> divisionList = baseDao.selectList(NameSpace.DivisionMapper, "selectDivision", paramMap);
+        List<Map<String, Object>> divisionList = baseDao.selectList(NameSpace.DepartmentMapper, "selectDepartment", paramMap);
 
         if (!isEmpty(divisionList)) {
             divisionList.forEach(button -> {
@@ -256,7 +247,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
                 tree.setText(toString(button.get("BD_NAME")));
                 tree.setTags(new String[]{
 //                        "电话:" + toHtmlBColor(button.get("BD_PHONE"), "yellow"),
-                        !isEmpty(button.get("BD_CONTACTS")) ? "联系人:" + toHtmlBColor(button.get("BD_CONTACTS"), "yellow") : null
+                        !isEmpty(button.get("BDM_COLLEGE_NAME")) ? "院系:" + toHtmlBColor(button.get("BDM_COLLEGE_NAME"), "yellow") : null
                 });
 
                 TreeState state = new TreeState();
@@ -269,12 +260,6 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
 
                 //设置状态
                 tree.setState(state);
-
-                //查询子类
-                List<Tree> childrenTreeList = getDivisionTreeList(id, selectId, notId);
-                if (!isEmpty(childrenTreeList)) {
-                    tree.setNodes(childrenTreeList);
-                }
 
                 treeList.add(tree);
             });

@@ -145,7 +145,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                             "   WHERE SPS.SPS_IS_CANCEL = 0  AND SPS.SPS_TABLE_ID NOT IN(" + stayBuilder.toString() + ") " +
                             "   GROUP BY SPS.SPS_TABLE_ID");
                 }
-                if (!isProcessAll) {
+                if (!isProcessAll || !ProcessShowStatus.ALL.toString().equals(processStatus)) {
                     processWhereBuilder.append(") ");
                 }
 

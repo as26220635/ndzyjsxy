@@ -13,14 +13,14 @@
     <input type="hidden" name="ID" value="${personnel.ID}">
     <div class="form-group has-feedback">
         <label>人员名称:</label>
-        <input type="text" class="form-control" ${fns:validField("BUS_DIVISION_PERSONNEL", "BDP_NAME")}
-               value="${personnel.BDP_NAME}">
+        <input type="text" class="form-control" ${fns:validField("BUS_DEPARTMENT_PERSONNEL", "BDMP_NAME")}
+               value="${personnel.BDMP_NAME}">
     </div>
     <div class="form-group has-feedback">
-        <label>所属部门:</label>
-        <s:treeBox custom='${fns:validField("BUS_DIVISION_PERSONNEL","BD_ID")}'
-                   value="${personnel.BD_ID}" nameValue="${personnel.BD_NAME}"
-                   url="${DIVISION_TREE_DATA_URL}" title="选择所属部门"></s:treeBox>
+        <label>所属系部:</label>
+        <s:treeBox custom='${fns:validField("BUS_DEPARTMENT_PERSONNEL","BDM_ID")}'
+                   value="${personnel.BDM_ID}" nameValue="${personnel.BDM_NAME}"
+                   url="${DEPARTMENT_TREE_DATA_URL}" title="选择所属系部"></s:treeBox>
     </div>
 </form>
 

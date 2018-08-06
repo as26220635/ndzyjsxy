@@ -6,20 +6,31 @@ package cn.kim.common.eu;
  */
 public enum SystemEnum {
     //系统
-    SYSTEM("0"),
+    SYSTEM(0),
     //管理员
-    MANAGER("1"),
-    //用户
-    MEMBER("2");
+    MANAGER(1),
+    //部门
+    DIVISION(2),
+    //系部
+    DEPARTMENT(3),
+    //学生
+    STUDENT(4),
+    //教师
+    TEACHER(5),
+    ;
 
-    private String type;
+    private int type;
 
-    private SystemEnum(String type) {
+    private SystemEnum(int type) {
         this.type = type;
     }
 
     @Override
     public String toString() {
-        return this.type.toString();
+        return String.valueOf(this.type);
+    }
+
+    public int getType() {
+        return this.type;
     }
 }

@@ -40,7 +40,10 @@ public enum NameSpace {
     //格式管理
     FormatMapper("cn.kim.mapper.FormatMapper"),
     //部门管理
-    DivisionMapper("cn.kim.mapper.DivisionMapper");
+    DivisionMapper("cn.kim.mapper.DivisionMapper"),
+    //系部管理
+    DepartmentMapper("cn.kim.mapper.DepartmentMapper"),
+    ;
 
     private final String value;
 

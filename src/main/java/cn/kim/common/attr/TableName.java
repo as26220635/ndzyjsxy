@@ -126,5 +126,15 @@ public class TableName {
     /**
      * 部门人员
      */
-    public static final String BUS_DIVISION_PERSONNEL = "bus_division_personnel";
+    public static final String BUS_DIVISION_PERSONNEL = "BUS_DIVISION_PERSONNEL";
+
+    /**
+     * 系部
+     */
+    public static final String BUS_DEPARTMENT = "BUS_DEPARTMENT";
+
+    /**
+     * 系部人员
+     */
+    public static final String BUS_DEPARTMENT_PERSONNEL = "BUS_DEPARTMENT_PERSONNEL";
 }

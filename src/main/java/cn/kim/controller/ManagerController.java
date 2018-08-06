@@ -35,9 +35,9 @@ public class ManagerController extends BaseController {
     public String manager(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
         ActiveUser activeUser = AuthcUtil.getCurrentUser();
         //如果是管理员就跳转到前台台去
-        if (activeUser != null && !activeUser.getType().equals(SystemEnum.MANAGER.toString())) {
-            WebUtils.issueRedirect(request, response, HttpUtil.getMyHomeUrl(), null, true);
-        }
+//        if (activeUser != null && !activeUser.getType().equals(SystemEnum.MANAGER.toString())) {
+//            WebUtils.issueRedirect(request, response, HttpUtil.getMyHomeUrl(), null, true);
+//        }
 
         return "admin/home";
     }

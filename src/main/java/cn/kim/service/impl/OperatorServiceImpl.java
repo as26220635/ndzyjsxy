@@ -4,6 +4,7 @@ import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.ParamTypeResolve;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.attr.Tips;
+import cn.kim.common.eu.SystemEnum;
 import cn.kim.entity.Tree;
 import cn.kim.exception.CustomException;
 import cn.kim.common.eu.NameSpace;
@@ -79,6 +80,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
                 paramMap.put("SAI_NAME", mapParam.get("SAI_NAME"));
                 paramMap.put("SAI_PHONE", mapParam.get("SAI_PHONE"));
                 paramMap.put("SAI_EMAIL", mapParam.get("SAI_EMAIL"));
+                paramMap.put("SAI_TYPE", SystemEnum.MANAGER.getType());
                 baseDao.insert(NameSpace.OperatorMapper, "insertAccountInfo", paramMap);
 
                 resultMap.put(MagicValue.LOG, "添加操作员:" + toString(paramMap));
@@ -271,7 +273,6 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
             paramMap.put("SOS_USERNAME", operatorUserName);
             paramMap.put("SOS_REMARK", mapParam.get("SOS_REMARK"));
-            paramMap.put("SOS_USERTYPE", mapParam.get("SOS_USERTYPE"));
             paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));
 
             if (isEmpty(id)) {

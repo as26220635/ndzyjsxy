@@ -11,7 +11,6 @@
 <form id="addAndEditForm">
     <input type="hidden" name="${SUBMIT_TOKEN_NAME}" value="${token}">
     <input type="hidden" name="ID" value="${OPERATOR.ID}">
-    <input type="hidden" name="SOS_USERTYPE" value="${SystemEnum.MANAGER}">
     <div class="form-group has-feedback">
         <label>姓名:</label>
         <input type="text" class="form-control" ${fns:validField("SYS_ACCOUNT_INFO", "SAI_NAME")}

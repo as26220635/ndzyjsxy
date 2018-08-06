@@ -456,13 +456,13 @@ tableView = {
         }
     },
     //刷新表单,true返回到第一页，false不会到
-    reload: function (table, isFirst) {
+    reload: throttle(function (table, isFirst) {
         if (isFirst == undefined || isFirst) {
             table.ajax.reload();
         } else {
             table.ajax.reload(null, false);
         }
-    },
+    }, 1),
     //返回列表的data数据
     rowData: function (table, row) {
         return table.row($(row).parents('tr')).data();
@@ -2211,7 +2211,7 @@ function throttle(func, duration) {
                 demo.showNotifyOptions({
                     color: ALERT_WARNING,
                     message: '操作过于频繁,请等待' + ((now - last) / 1e3) + '秒后在进行操作!',
-                    delay: 1000,
+                    delay: 500,
                 });
             } catch (e) {
             }

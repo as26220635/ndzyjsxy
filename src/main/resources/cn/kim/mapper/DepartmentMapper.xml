@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kim.mapper.DepartmentMapper">
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+
+    <!--查询系部-->
+    <select id="selectDepartment" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BDM.*,SDI.SDI_NAME AS BDM_COLLEGE_NAME
+        FROM(
+            SELECT * FROM BUS_DEPARTMENT
+            <where>
+                <if test="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+                <if test="NOT_ID != NULL and NOT_ID != ''">
+                    AND ID != #{NOT_ID}
+                </if>
+            </where>
+        )BDM
+        LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE ='BUS_COLLEGE' AND SDI.SDI_CODE = BDM.BDM_COLLEGE
+    </select>
+
+    <!--插入系部-->
+    <insert id="insertDepartment" parameterType="java.util.Map">
+        INSERT INTO BUS_DEPARTMENT
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BDM_COLLEGE != null">BDM_COLLEGE,</if>
+            <if test="BDM_NAME != null">BDM_NAME,</if>
+            <if test="BDM_ADDRESS != null">BDM_ADDRESS,</if>
+            <if test="BDM_DESCRIBE != null">BDM_DESCRIBE,</if>
+            <if test="BDM_ORDER != null">BDM_ORDER,</if>
+            <if test="BDM_ENTER_TIME != null">BDM_ENTER_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BDM_COLLEGE != null">#{BDM_COLLEGE},</if>
+            <if test="BDM_NAME != null">#{BDM_NAME},</if>
+            <if test="BDM_ADDRESS != null">#{BDM_ADDRESS},</if>
+            <if test="BDM_DESCRIBE != null">#{BDM_DESCRIBE},</if>
+            <if test="BDM_ORDER != null">#{BDM_ORDER},</if>
+            <if test="BDM_ENTER_TIME != null">#{BDM_ENTER_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑系部-->
+    <update id="updateDepartment" parameterType="java.util.Map">
+        UPDATE BUS_DEPARTMENT
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BDM_COLLEGE != null">BDM_COLLEGE=#{BDM_COLLEGE},</if>
+            <if test="BDM_NAME != null">BDM_NAME=#{BDM_NAME},</if>
+            <if test="BDM_ADDRESS != null">BDM_ADDRESS=#{BDM_ADDRESS},</if>
+            <if test="BDM_DESCRIBE != null">BDM_DESCRIBE=#{BDM_DESCRIBE},</if>
+            <if test="BDM_ORDER != null">BDM_ORDER=#{BDM_ORDER},</if>
+            <if test="BDM_ENTER_TIME != null">BDM_ENTER_TIME=#{BDM_ENTER_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除系部-->
+    <delete id="deleteDepartment" parameterType="java.util.Map">
+		DELETE FROM BUS_DEPARTMENT WHERE ID = #{ID}
+	</delete>
+
+    <!--查询系部人员-->
+    <select id="selectDepartmentPersonnel" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DEPARTMENT_PERSONNEL
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入系部人员-->
+    <insert id="insertDepartmentPersonnel" parameterType="java.util.Map">
+        INSERT INTO BUS_DEPARTMENT_PERSONNEL
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BDM_ID != null">BDM_ID,</if>
+            <if test="BDMP_NAME != null">BDMP_NAME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BDM_ID != null">#{BDM_ID},</if>
+            <if test="BDMP_NAME != null">#{BDMP_NAME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑系部人员-->
+    <update id="updateDepartmentPersonnel" parameterType="java.util.Map">
+        UPDATE BUS_DEPARTMENT_PERSONNEL
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BDM_ID != null">BDM_ID=#{BDM_ID},</if>
+            <if test="BDMP_NAME != null">BDMP_NAME=#{BDMP_NAME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除系部人员-->
+    <delete id="deleteDepartmentPersonnel" parameterType="java.util.Map">
+		DELETE FROM BUS_DEPARTMENT_PERSONNEL WHERE ID = #{ID}
+	</delete>
+</mapper>

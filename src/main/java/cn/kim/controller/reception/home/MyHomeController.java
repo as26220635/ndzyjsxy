@@ -33,9 +33,9 @@ public class MyHomeController extends BaseController {
     public String home(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
         ActiveUser activeUser = AuthcUtil.getCurrentUser();
         //如果是管理员就跳转到后台去
-        if (activeUser != null && activeUser.getType().equals(SystemEnum.MANAGER.toString())) {
+//        if (activeUser != null && activeUser.getType().equals(SystemEnum.MANAGER.toString())) {
             WebUtils.issueRedirect(request, response, HttpUtil.getManagerHomeUrl(), null, true);
-        }
+//        }
         System.out.println(HttpUtil.getUrl(request, false));
         return "reception/home_common/home_main";
     }

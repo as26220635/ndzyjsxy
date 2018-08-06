@@ -94,11 +94,11 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
     @Override
     protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
         //管理员跳转至主页 其他都默认返回登录前页面
-        if (AuthcUtil.getCurrentUser().getType().equals(SystemEnum.MANAGER.toString())) {
+//        if (AuthcUtil.getCurrentUser().getType().equals(SystemEnum.MANAGER.toString())) {
             WebUtils.issueRedirect(request, response, HttpUtil.getManagerHomeUrl(), null, true);
-        } else {
-            super.issueSuccessRedirect(request, response);
-        }
+//        } else {
+//            super.issueSuccessRedirect(request, response);
+//        }
     }
 
     //保存异常对象到request

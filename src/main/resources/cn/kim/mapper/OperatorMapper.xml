@@ -100,7 +100,6 @@
             <if test="SOS_USERNAME != null">SOS_USERNAME,</if>
             <if test="SOS_CREATETIME != null">SOS_CREATETIME,</if>
             <if test="SOS_REMARK != null">SOS_REMARK,</if>
-            <if test="SOS_USERTYPE != null">SOS_USERTYPE,</if>
             <if test="SOS_DEFAULT != null">SOS_DEFAULT,</if>
             <if test="IS_STATUS != null">IS_STATUS,</if>
         </trim>
@@ -110,7 +109,6 @@
             <if test="SOS_USERNAME != null">#{SOS_USERNAME},</if>
             <if test="SOS_CREATETIME != null">#{SOS_CREATETIME},</if>
             <if test="SOS_REMARK != null">#{SOS_REMARK},</if>
-            <if test="SOS_USERTYPE != null">#{SOS_USERTYPE},</if>
             <if test="SOS_DEFAULT != null">#{SOS_DEFAULT},</if>
             <if test="IS_STATUS != null">#{IS_STATUS},</if>
         </trim>
@@ -125,7 +123,6 @@
             <if test="SOS_USERNAME != null">SOS_USERNAME=#{SOS_USERNAME},</if>
             <if test="SOS_CREATETIME != null">SOS_CREATETIME=#{SOS_CREATETIME},</if>
             <if test="SOS_REMARK != null">SOS_REMARK=#{SOS_REMARK},</if>
-            <if test="SOS_USERTYPE != null">SOS_USERTYPE=#{SOS_USERTYPE},</if>
             <if test="SOS_DEFAULT != null">SOS_DEFAULT=#{SOS_DEFAULT},</if>
             <if test="IS_STATUS != null">IS_STATUS=#{IS_STATUS},</if>
         </set>
@@ -223,6 +220,7 @@
             <if test="SAI_NAME != null">SAI_NAME,</if>
             <if test="SAI_PHONE != null">SAI_PHONE,</if>
             <if test="SAI_EMAIL != null">SAI_EMAIL,</if>
+            <if test="SAI_TYPE != null">SAI_TYPE,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
@@ -230,6 +228,7 @@
             <if test="SAI_NAME != null">#{SAI_NAME},</if>
             <if test="SAI_PHONE != null">#{SAI_PHONE},</if>
             <if test="SAI_EMAIL != null">#{SAI_EMAIL},</if>
+            <if test="SAI_TYPE != null">#{SAI_TYPE},</if>
         </trim>
     </insert>
 
@@ -242,6 +241,7 @@
             <if test="SAI_NAME != null">SAI_NAME=#{SAI_NAME},</if>
             <if test="SAI_PHONE != null">SAI_PHONE=#{SAI_PHONE},</if>
             <if test="SAI_EMAIL != null">SAI_EMAIL=#{SAI_EMAIL},</if>
+            <if test="SAI_TYPE != null">SAI_TYPE=#{SAI_TYPE},</if>
         </set>
         <where>
             <if test="ID !=null">AND ID=#{ID}</if>

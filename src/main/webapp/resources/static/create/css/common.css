@@ -654,3 +654,7 @@ table.dataTable tbody tr.selected {
         margin-right: 0px;
     }
 }
+form.row{
+    margin-left: 0px;
+    margin-right: 0px;
+}

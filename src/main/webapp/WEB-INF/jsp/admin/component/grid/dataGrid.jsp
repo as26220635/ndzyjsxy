@@ -11,8 +11,8 @@
 <%@ page import="cn.kim.common.eu.ProcessShowStatus" %>
 <%@ page import="java.util.Random" %>
 <style>
-    .dataTable-column-min-width {
-        word-break: break-all;
+    .dataTable-column {
+        word-break:break-all;
     }
 </style>
 
@@ -35,8 +35,8 @@
                     </div>
                     <form id="queryForm${MENU.ID}" class="form-horizontal">
                         <%--流程查询状态 0 查看全部 1待审 2已审--%>
-                        <input type="hidden" id="processStatus" name="processStatus" value="${defaultProcessStatus}">
-                        <c:if test="${CONFIGURE.SC_IS_SEARCH == Attribute.STATUS_SUCCESS && SEARCH_LIST ne null && SEARCH_LIST.size() > 0 }">
+                        <input type="hidden" id="processStatus" name="processStatus" value="${ProcessShowStatus.ALL.toString()}">
+                        <c:if test="${defaultProcessStatus.SC_IS_SEARCH == Attribute.STATUS_SUCCESS && SEARCH_LIST ne null && SEARCH_LIST.size() > 0 }">
                             <%--搜索条件--%>
                             <c:forEach items="${SEARCH_LIST}" var="SEARCH">
                                 <c:choose>
@@ -223,7 +223,7 @@
                 <c:if test="${not empty COLUMN.SCC_WIDTH}">
                 width: '${COLUMN.SCC_WIDTH}',
                 </c:if>
-                className: 'text-${COLUMN.SCC_ALIGN} ' + '${fns:trueOrFalse(COLUMN.SCC_IS_OPERATION, "dataTable-column-min-width-operation" , "" )} ' + '${COLUMN.SCC_CLASS}',
+                className: 'dataTable-column text-${COLUMN.SCC_ALIGN} ' + '${fns:trueOrFalse(COLUMN.SCC_IS_OPERATION, "dataTable-column-min-width-operation" , "" )} ' + '${COLUMN.SCC_CLASS}',
                 visible: ${fns:trueOrFalse(COLUMN.SCC_IS_VISIBLE, true ,false )},
                 <%--设置列初始化行--%>
                 createdCell: function (td, cellData, rowData, row, col) {

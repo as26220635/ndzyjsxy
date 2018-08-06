@@ -58,7 +58,7 @@ public class CustomHashedCredentialsMatcher extends HashedCredentialsMatcher {
             //成功失败都记录日志
             ActiveUser activeUser = new ActiveUser();
             //设置类型
-            activeUser.setType(TextUtil.toString(user.get("SOS_USERTYPE")));
+            activeUser.setType(TextUtil.toString(user.get("SAI_TYPE")));
             activeUser.setId(TextUtil.toString(user.get("ID")));
             activeUser.setUsername(TextUtil.toString(user.get("SOS_USERNAME")));
             activeUser.setUsercode(TextUtil.toString(user.get("SAI_NAME")));

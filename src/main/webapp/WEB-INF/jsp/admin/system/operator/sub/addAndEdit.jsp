@@ -12,7 +12,6 @@
     <input type="hidden" name="${SUBMIT_TOKEN_NAME}" value="${token}">
     <input type="hidden" name="ID" value="${SUB.ID}">
     <input type="hidden" name="SO_ID" value="${fns:trueOrFalse(SUB != null ,SUB.SO_ID,SO_ID)}">
-    <input type="hidden" name="SOS_USERTYPE" value="${SystemEnum.MANAGER.toString()}">
     <div class="form-group has-feedback">
         <label>登录账号:</label>
         <input type="text" class="form-control" ${fns:validField("SYS_OPERATOR_SUB","SOS_USERNAME")}
