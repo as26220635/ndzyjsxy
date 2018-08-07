@@ -5,18 +5,25 @@
 
     <!--查询学生-->
     <select id="selectStudent" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM BUS_STUDENT
-        <where>
-            <if test ="ID != NULL and ID != ''">
-                AND ID = #{ID}
-            </if>
-        </where>
+        SELECT BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME
+        FROM(
+            SELECT * FROM BUS_STUDENT
+            <where>
+                <if test="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+            </where>
+        )BS
+        INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
+        INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
+        LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'BUS_SEX' AND SDI.SDI_CODE = BS.BS_SEX
+        LEFT JOIN SYS_DICT_INFO NDI ON NDI.SDT_CODE = 'BUS_NATION' AND NDI.SDI_CODE = BS.BS_NATION
     </select>
 
     <!--插入学生-->
     <insert id="insertStudent" parameterType="java.util.Map">
         INSERT INTO BUS_STUDENT
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="SO_ID != null">SO_ID,</if>
             <if test="BDM_ID != null">BDM_ID,</if>
@@ -36,7 +43,7 @@
             <if test="BS_HOME_ADDRESS != null">BS_HOME_ADDRESS,</if>
             <if test="BS_ENTRY_TIME != null">BS_ENTRY_TIME,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="SO_ID != null">#{SO_ID},</if>
             <if test="BDM_ID != null">#{BDM_ID},</if>

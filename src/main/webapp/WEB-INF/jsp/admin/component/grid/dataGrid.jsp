@@ -36,7 +36,7 @@
                     <form id="queryForm${MENU.ID}" class="form-horizontal">
                         <%--流程查询状态 0 查看全部 1待审 2已审--%>
                         <input type="hidden" id="processStatus" name="processStatus" value="${ProcessShowStatus.ALL.toString()}">
-                        <c:if test="${defaultProcessStatus.SC_IS_SEARCH == Attribute.STATUS_SUCCESS && SEARCH_LIST ne null && SEARCH_LIST.size() > 0 }">
+                        <c:if test="${CONFIGURE.SC_IS_SEARCH == Attribute.STATUS_SUCCESS && SEARCH_LIST ne null && SEARCH_LIST.size() > 0 }">
                             <%--搜索条件--%>
                             <c:forEach items="${SEARCH_LIST}" var="SEARCH">
                                 <c:choose>

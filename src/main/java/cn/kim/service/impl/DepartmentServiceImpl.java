@@ -1,5 +1,6 @@
 package cn.kim.service.impl;
 
+import cn.kim.common.attr.Constants;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.eu.NameSpace;
@@ -153,28 +154,8 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
                 id = getId();
                 paramMap.put("ID", id);
                 //插入账号和账号信息
-                String operatorId = getId();
+                String operatorId = insertOperator(baseDao, mapParam.get("BDMP_NAME"), SystemEnum.DEPARTMENT.getType());
                 paramMap.put("SO_ID", operatorId);
-
-                //插入账号和账号信息
-                Map<String, Object> operatorMap = Maps.newHashMapWithExpectedSize(10);
-                operatorMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR);
-                operatorMap.put("ID", operatorId);
-                //设置账号和盐
-                String salt = RandomSalt.salt();
-                operatorMap.put("SO_SALT", salt);
-                operatorMap.put("SO_PASSWORD", PasswordMd5.password("123456", salt));
-                operatorMap.put("IS_STATUS", STATUS_SUCCESS);
-                baseDao.insert(NameSpace.OperatorMapper, "insertOperator", operatorMap);
-
-                //添加accountinfo表
-                operatorMap.clear();
-                operatorMap.put("SVR_TABLE_NAME", TableName.SYS_ACCOUNT_INFO);
-                operatorMap.put("ID", getId());
-                operatorMap.put("SO_ID", operatorId);
-                operatorMap.put("SAI_NAME", mapParam.get("BDMP_NAME"));
-                operatorMap.put("SAI_TYPE", SystemEnum.DEPARTMENT.getType());
-                baseDao.insert(NameSpace.OperatorMapper, "insertAccountInfo", operatorMap);
 
                 //插入系部人员
                 baseDao.insert(NameSpace.DepartmentMapper, "insertDepartmentPersonnel", paramMap);

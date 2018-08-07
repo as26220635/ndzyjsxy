@@ -1,9 +1,6 @@
 package cn.kim.service.impl;
 
-import cn.kim.common.attr.MagicValue;
-import cn.kim.common.attr.ParamTypeResolve;
-import cn.kim.common.attr.TableName;
-import cn.kim.common.attr.Tips;
+import cn.kim.common.attr.*;
 import cn.kim.common.eu.SystemEnum;
 import cn.kim.entity.Tree;
 import cn.kim.exception.CustomException;
@@ -65,7 +62,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
                 //设置账号和盐
                 String salt = RandomSalt.salt();
                 paramMap.put("SO_SALT", salt);
-                paramMap.put("SO_PASSWORD", PasswordMd5.password("123456", salt));
+                paramMap.put("SO_PASSWORD", PasswordMd5.password(Constants.INITIAL_PASSWORD, salt));
 
                 paramMap.put("IS_STATUS", STATUS_SUCCESS);
                 baseDao.insert(NameSpace.OperatorMapper, "insertOperator", paramMap);
@@ -173,7 +170,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             //设置账号和盐
             String salt = RandomSalt.salt();
             paramMap.put("SO_SALT", salt);
-            paramMap.put("SO_PASSWORD", PasswordMd5.password("123456", salt));
+            paramMap.put("SO_PASSWORD", PasswordMd5.password(Constants.INITIAL_PASSWORD, salt));
             //是默认密码 第一次登陆需要修改
             paramMap.put("IS_DEFAULT_PWD", STATUS_SUCCESS);
 

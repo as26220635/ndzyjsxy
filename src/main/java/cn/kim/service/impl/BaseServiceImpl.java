@@ -1,10 +1,9 @@
 package cn.kim.service.impl;
 
 import cn.kim.common.BaseData;
-import cn.kim.common.attr.Attribute;
-import cn.kim.common.attr.MagicValue;
-import cn.kim.common.attr.Tips;
+import cn.kim.common.attr.*;
 import cn.kim.common.eu.NameSpace;
+import cn.kim.common.eu.SystemEnum;
 import cn.kim.common.sequence.Sequence;
 import cn.kim.common.shiro.CustomRealm;
 import cn.kim.dao.BaseDao;
@@ -12,9 +11,7 @@ import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.BaseService;
-import cn.kim.util.CommonUtil;
-import cn.kim.util.TextUtil;
-import cn.kim.util.ValidateUtil;
+import cn.kim.util.*;
 import com.google.common.collect.Maps;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
@@ -190,5 +187,39 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         }
 
         return operatorRoleTree;
+    }
+
+    /***
+     * 插入账号  SYS_OPERATOR SYS_ACCOUNT_INFO
+     * @param baseDao
+     * @param accountInfoName
+     * @param type
+     * @return
+     * @throws Exception
+     */
+    protected String insertOperator(BaseDao baseDao, Object accountInfoName, int type) throws Exception {
+        //插入账号和账号信息
+        String operatorId = getId();
+        //插入账号和账号信息
+        Map<String, Object> operatorMap = Maps.newHashMapWithExpectedSize(5);
+        operatorMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR);
+        operatorMap.put("ID", operatorId);
+        //设置账号和盐
+        String salt = RandomSalt.salt();
+        operatorMap.put("SO_SALT", salt);
+        operatorMap.put("SO_PASSWORD", PasswordMd5.password(Constants.INITIAL_PASSWORD, salt));
+        operatorMap.put("IS_STATUS", STATUS_SUCCESS);
+        baseDao.insert(NameSpace.OperatorMapper, "insertOperator", operatorMap);
+
+        //添加accountinfo表
+        operatorMap.clear();
+        operatorMap.put("SVR_TABLE_NAME", TableName.SYS_ACCOUNT_INFO);
+        operatorMap.put("ID", getId());
+        operatorMap.put("SO_ID", operatorId);
+        operatorMap.put("SAI_NAME", toString(accountInfoName));
+        operatorMap.put("SAI_TYPE", type);
+        baseDao.insert(NameSpace.OperatorMapper, "insertAccountInfo", operatorMap);
+
+        return operatorId;
     }
 }

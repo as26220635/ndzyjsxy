@@ -4,6 +4,11 @@ package cn.kim.common.attr;
  * Created by 余庚鑫 on 2018/3/21.
  */
 public class Constants {
+    /**
+     * 初始密码
+     */
+    public static final String INITIAL_PASSWORD = "123456";
+
     public static final String SESSION_USERNAME = "activeUser";
 
     public static final String SESSION_SQL_EXCEPTION = "sqlException";

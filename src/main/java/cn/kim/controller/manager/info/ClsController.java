@@ -38,27 +38,18 @@ public class ClsController extends BaseController {
      * @return
      * @throws Exception
      */
-    @PostMapping("/department/{mode}")
+    @GetMapping("/department/{mode}")
     @ResponseBody
-    public List<CustomParam> add(@PathVariable int mode, String BDM_ID) throws Exception {
+    public List<Map<String, Object>> add(@PathVariable int mode, String BDM_ID) throws Exception {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
-        mapParam.put("BDM_ID", "BDM_ID");
+        mapParam.put("BDM_ID", BDM_ID);
         List<Map<String, Object>> classList = clsService.selectClassList(mapParam);
 
-        List<CustomParam> resultList = new ArrayList<>();
-        classList.forEach(cls -> {
-            CustomParam customParam = new CustomParam();
-            customParam.setEncrypt(true);
-            if (mode == 1) {
-                customParam.setKey(toString(cls.get("BC_NAME")));
-                customParam.setValue(toString(cls.get("ID")));
-            } else {
-                customParam.setKey(toString(cls.get("ID")));
-                customParam.setValue(toString(cls.get("BC_NAME")));
-            }
-        });
-
-        return resultList;
+        if (mode == 1) {
+            return toComboboxValue(classList,"ID","BC_NAME");
+        } else {
+            return toComboboxValue(classList,"BC_NAME","ID");
+        }
     }
 
     @GetMapping("/add")

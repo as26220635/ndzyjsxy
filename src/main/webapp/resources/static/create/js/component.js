@@ -1605,17 +1605,19 @@ classSwitch = {
                 }
 
                 ajax.get(url, params, function (data) {
-                    var html = '';
+                    var html = splitOption({
+                        name: '请选择'
+                    });
                     for (var i in data) {
                         var obj = data[i];
                         html += splitOption({
-                            value: data.ID,
-                            name: data.NAME
+                            value: obj.ID,
+                            name: obj.NAME
                         });
                     }
                     $classObj.html(html);
                     if (!isEmpty(val)) {
-                        $classObj.val(val).trigger('change');
+                        $classObj.val(val).trigger('change').focus();
                     }
                 });
             } else {

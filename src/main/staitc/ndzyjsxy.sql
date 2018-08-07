@@ -1,7 +1,7 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : db
+ Source Server         : me
  Source Server Type    : MySQL
  Source Server Version : 80011
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 07/08/2018 15:02:18
+ Date: 07/08/2018 19:34:18
 */
 
 SET NAMES utf8mb4;
@@ -135,12 +135,12 @@ CREATE TABLE `bus_student`  (
   `BC_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '班级ID',
   `BS_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '姓名',
   `BS_NUMBER` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '学号',
-  `BS_LENGTH` int(1) NULL DEFAULT NULL COMMENT '学制',
+  `BS_LENGTH` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '学制',
   `BS_ENROLMENT_YEAR` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '入学年度',
   `BS_EXAMINEE_NUMBER` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '考生号',
   `BS_ID_CARD` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '身份证',
-  `BS_SEX` int(1) NULL DEFAULT NULL COMMENT '性别',
-  `BS_NATION` int(5) NULL DEFAULT NULL COMMENT '民族',
+  `BS_SEX` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '性别',
+  `BS_NATION` char(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '民族',
   `BS_BANK` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '银行',
   `BS_BANK_CARD` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '银行卡号',
   `BS_PHONE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '电话号码',
@@ -152,6 +152,11 @@ CREATE TABLE `bus_student`  (
   INDEX `BDM_ID`(`BDM_ID`) USING BTREE,
   INDEX `BC_ID`(`BC_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of bus_student
+-- ----------------------------
+INSERT INTO `bus_student` VALUES ('48944951878221824', '48944951878221825', '48601265252335616', '48656602449838080', 'student_test', '2018053105', '3', '2018', 'tt2018053105', '350122199605020114', '1', '1', '兴业银行', '454545454545452', '17012342032', 'test&middot;', 'test2', '2018-08-07 17:43:35');
 
 -- ----------------------------
 -- Table structure for bus_teacher
@@ -200,6 +205,7 @@ INSERT INTO `sys_account_info` VALUES ('4112733184196608', '4112733112893440', '
 INSERT INTO `sys_account_info` VALUES ('48303136338608128', '48303136200196097', 'devision_test', '17012342032', '851758629@qq.com', 2);
 INSERT INTO `sys_account_info` VALUES ('48601652139130880', '48601651874889729', 'department_test', '17012342031', '851758628@qq.com', 3);
 INSERT INTO `sys_account_info` VALUES ('48679555824615424', '48679555707174913', 'teacher_test', '17012342030', '851758627@qq.com', 5);
+INSERT INTO `sys_account_info` VALUES ('48944951974690816', '48944951878221825', 'student_test', '17012342035', '851758621@qq.com', 4);
 
 -- ----------------------------
 -- Table structure for sys_allocation
@@ -259,8 +265,8 @@ INSERT INTO `sys_button` VALUES ('3008659554566144', '设置角色', 'setRole', 
 INSERT INTO `sys_button` VALUES ('33081849764904960', '作废', 'cancel', '', 'btn btn-danger', 'mdi mdi-cancel', 'CANCEL', 98, '1');
 INSERT INTO `sys_button` VALUES ('33267466964566016', '作废信息', 'cancelInfo', '', 'btn btn-info', 'mdi mdi-information-outline', 'CANCEL_INFO', 98, '1');
 INSERT INTO `sys_button` VALUES ('3375831514611712', '设置账号', 'setSub', '', 'btn btn-primary', 'mdi mdi-account-group', 'SET_SUB', 10, '1');
-INSERT INTO `sys_button` VALUES ('48286237202579456', '导入', 'import', '', 'btn btn-info', 'mdi mdi-import', 'IMPORT', 7, '0');
-INSERT INTO `sys_button` VALUES ('48286450940116992', '导出', 'export', '', 'btn btn-info', 'mdi mdi-export', 'EXPORT', 8, '0');
+INSERT INTO `sys_button` VALUES ('48286237202579456', '导入', 'import', '', 'btn btn-success', 'mdi mdi-import', 'IMPORT', 7, '0');
+INSERT INTO `sys_button` VALUES ('48286450940116992', '导出', 'export', '', 'btn btn-success', 'mdi mdi-export', 'EXPORT', 8, '0');
 INSERT INTO `sys_button` VALUES ('48287050272604160', '账号信息', 'accountInfo', '', 'btn btn-info', 'mdi mdi-account-edit', 'ACCOUNT_INFO', 9, '1');
 INSERT INTO `sys_button` VALUES ('763206804963328', '保存', 'save', '', 'btn btn-primary', 'mdi mdi-content-save', 'SAVE', 2, '0');
 INSERT INTO `sys_button` VALUES ('793562643955712', '编辑', 'edit', '', 'btn btn-success', 'mdi mdi-table-edit', 'UPDATE', 1, '1');
@@ -498,11 +504,11 @@ INSERT INTO `sys_configure_column` VALUES ('48666968101748736', '486667032272568
 INSERT INTO `sys_configure_column` VALUES ('48667014041960448', '48666703227256832', '工号', 'BT_NUMBER', 'center', '150px', '', '', '', '0', '', '1', '0', 30);
 INSERT INTO `sys_configure_column` VALUES ('48667074221834240', '48666703227256832', '操作', '', 'center', '400px', '', '', '', '1', '', '1', '0', 40);
 INSERT INTO `sys_configure_column` VALUES ('48890805737226240', '48890586014416896', '姓名', 'BS_NAME', 'center', '120px', '', '', '', '0', '', '1', '0', 1);
-INSERT INTO `sys_configure_column` VALUES ('48890888293711872', '48890586014416896', '系部', 'BDM_NAME', 'left', '180px', '', '', '', '0', '', '1', '0', 10);
-INSERT INTO `sys_configure_column` VALUES ('48890941183885312', '48890586014416896', '班级', 'BC_NAME', 'left', '180px', '', '', '', '0', '', '1', '0', 20);
+INSERT INTO `sys_configure_column` VALUES ('48890888293711872', '48890586014416896', '系部', 'BDM_NAME', 'left', '160px', '', '', '', '0', '', '1', '0', 10);
+INSERT INTO `sys_configure_column` VALUES ('48890941183885312', '48890586014416896', '班级', 'BC_NAME', 'left', '160px', '', '', '', '0', '', '1', '0', 20);
 INSERT INTO `sys_configure_column` VALUES ('48891009236467712', '48890586014416896', '学号', 'BS_NUMBER', 'center', '100px', '', '', '', '0', '', '1', '0', 30);
 INSERT INTO `sys_configure_column` VALUES ('48891051766710272', '48890586014416896', '学制', 'BS_LENGTH', 'center', '50px', '', '', '', '0', '', '1', '0', 40);
-INSERT INTO `sys_configure_column` VALUES ('48891120653959168', '48890586014416896', '身份证', 'BS_ID_CARD', 'center', '120px', '', '', '', '0', '', '1', '0', 50);
+INSERT INTO `sys_configure_column` VALUES ('48891120653959168', '48890586014416896', '身份证', 'BS_ID_CARD', 'center', '140px', '', '', '', '0', '', '1', '0', 50);
 INSERT INTO `sys_configure_column` VALUES ('48891194926694400', '48890586014416896', '性别', 'BS_SEX_NAME', 'center', '50px', '', '', '', '0', '', '1', '0', 5);
 INSERT INTO `sys_configure_column` VALUES ('48891240950792192', '48890586014416896', '民族', 'BS_NATION_NAME', 'center', '60px', '', '', '', '0', '', '1', '0', 6);
 INSERT INTO `sys_configure_column` VALUES ('48891335788199936', '48890586014416896', '操作', '', 'center', '80px', '', '', '', '1', '1', '1', '0', 60);
@@ -592,6 +598,7 @@ INSERT INTO `sys_configure_search` VALUES ('48891543850844160', '488905860144168
 INSERT INTO `sys_configure_search` VALUES ('48891578202193920', '48890586014416896', '身份证', 'BS_ID_CARD', '', '4', '1', '', '1', 40);
 INSERT INTO `sys_configure_search` VALUES ('48891829847851008', '48890586014416896', '性别', 'BS_SEX', 'BUS_SEX', '1', '2', '', '1', 50);
 INSERT INTO `sys_configure_search` VALUES ('48891880963833856', '48890586014416896', '民族', 'BS_NATION', 'BUS_NATION', '1', '2', '', '1', 60);
+INSERT INTO `sys_configure_search` VALUES ('48946558678335488', '3316994321416192', '类型', 'SAI_TYPE', 'SYS_OPERATOR_TYPE', '1', '2', '', '1', 5);
 
 -- ----------------------------
 -- Table structure for sys_dict_info
@@ -4022,6 +4029,27 @@ INSERT INTO `sys_log` VALUES ('48892526731460608', '1', NULL, '添加角色', '0
 INSERT INTO `sys_log` VALUES ('48892542711758848', '1', NULL, '修改角色', '0:0:0:0:0:0:0:1', 1, '2018-08-07 14:15:19', '1', 2);
 INSERT INTO `sys_log` VALUES ('48892642905292800', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-07 14:15:43', '1', 9);
 INSERT INTO `sys_log` VALUES ('48894160593223680', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-07 14:21:45', '1', 2);
+INSERT INTO `sys_log` VALUES ('48931941465980928', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-07 16:51:53', '1', 9);
+INSERT INTO `sys_log` VALUES ('48933389599768576', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-07 16:57:38', '1', 9);
+INSERT INTO `sys_log` VALUES ('48940213753348096', '1', NULL, '添加学生', '0:0:0:0:0:0:0:1', 0, '2018-08-07 17:24:45', '1', 2);
+INSERT INTO `sys_log` VALUES ('48940247496523776', '1', NULL, '添加学生', '0:0:0:0:0:0:0:1', 0, '2018-08-07 17:24:53', '1', 2);
+INSERT INTO `sys_log` VALUES ('48942988646154240', '1', NULL, '修改验证正则', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:35:47', '1', 2);
+INSERT INTO `sys_log` VALUES ('48943829386002432', '1', NULL, '添加学生', '0:0:0:0:0:0:0:1', 0, '2018-08-07 17:39:07', '1', 2);
+INSERT INTO `sys_log` VALUES ('48944017827692544', '1', NULL, '添加学生', '0:0:0:0:0:0:0:1', 0, '2018-08-07 17:39:52', '1', 2);
+INSERT INTO `sys_log` VALUES ('48944640581173248', '1', NULL, '添加学生', '0:0:0:0:0:0:0:1', 0, '2018-08-07 17:42:21', '1', 2);
+INSERT INTO `sys_log` VALUES ('48944952503173120', '1', NULL, '添加学生', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:43:35', '1', 2);
+INSERT INTO `sys_log` VALUES ('48945055108431872', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:43:59', '1', 2);
+INSERT INTO `sys_log` VALUES ('48945074037325824', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:44:04', '1', 2);
+INSERT INTO `sys_log` VALUES ('48945118899601408', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:44:15', '1', 2);
+INSERT INTO `sys_log` VALUES ('48945163606687744', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:44:25', '1', 2);
+INSERT INTO `sys_log` VALUES ('48946559177457664', '1', NULL, '添加配置列表搜索', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:49:58', '1', 2);
+INSERT INTO `sys_log` VALUES ('48946768775217152', '1', NULL, '修改学生账号信息', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:50:48', '1', 2);
+INSERT INTO `sys_log` VALUES ('48946968851906560', '1', NULL, '添加操作员账号', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:51:36', '1', 2);
+INSERT INTO `sys_log` VALUES ('48946996194574336', '1', NULL, '设置操作员角色', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:51:42', '1', 2);
+INSERT INTO `sys_log` VALUES ('48948423721746432', '1', NULL, '设置菜单按钮', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:57:23', '1', 2);
+INSERT INTO `sys_log` VALUES ('48948488133672960', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:57:38', '1', 2);
+INSERT INTO `sys_log` VALUES ('48948569557696512', '1', NULL, '修改按钮', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:57:57', '1', 2);
+INSERT INTO `sys_log` VALUES ('48948591825256448', '1', NULL, '修改按钮', '0:0:0:0:0:0:0:1', 1, '2018-08-07 17:58:03', '1', 2);
 INSERT INTO `sys_log` VALUES ('489979637661696', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-03-27 00:40:49', '0', 0);
 INSERT INTO `sys_log` VALUES ('490109103243264', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-03-27 00:41:06', '0', 0);
 INSERT INTO `sys_log` VALUES ('490342155550720', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-03-27 00:42:16', '0', 0);
@@ -7229,6 +7257,27 @@ INSERT INTO `sys_log_text` VALUES ('48892526744043520', '48892526731460608', '�
 INSERT INTO `sys_log_text` VALUES ('48892542728536064', '48892542711758848', '更新角色,更新前:{SR_CODE=TEACHER, IS_STATUS=1, SR_EXPLAIN=, SR_NAME=教师, ID=48678292462501888, SR_REMARK=, SR_TYPE=5},更新后:{SR_CODE=TEACHER, IS_STATUS=null, SVR_TABLE_NAME=SYS_ROLE, SR_EXPLAIN=基础角色, SR_NAME=教师, ID=48678292462501888, SR_REMARK=, SR_TYPE=5}');
 INSERT INTO `sys_log_text` VALUES ('48892643068870656', '48892642905292800', '登录成功!登录地址:未知');
 INSERT INTO `sys_log_text` VALUES ('48894160618389504', '48894160593223680', '更新配置列表字段,配置列表:基础信息管理-学生管理,更新前:,更新后:{SCC_NAME=班级, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_IS_MERGE=, SCC_ALIGN=left, SCC_IS_STATUS=0, SCC_WIDTH=180px, SCC_FIELD=BC_NAME, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=0, ID=48890941183885312, SC_ID=48890586014416896, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=20}');
+INSERT INTO `sys_log_text` VALUES ('48931941696667648', '48931941465980928', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('48933389721403392', '48933389599768576', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('48940213828845568', '48940213753348096', '身份证:请输入正确的身份证号码!<br/>');
+INSERT INTO `sys_log_text` VALUES ('48940247525883904', '48940247496523776', '身份证:请输入正确的身份证号码!<br/>');
+INSERT INTO `sys_log_text` VALUES ('48942988688097280', '48942988646154240', '更新验证正则,更新前:{IS_STATUS=1, SVR_REGEX=\\d{17}[\\d|x]|\\d{15}, SVR_REGEX_MESSAGE=请输入正确的身份证号码!, ID=2512257846083584, SVR_NAME=身份证},更新后:{IS_STATUS=null, SVR_TABLE_NAME=SYS_VALIDATE_REGEX, ID=2512257846083584, SVR_REGEX=^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$, SVR_NAME=身份证, SVR_REGEX_MESSAGE=请输入正确的身份证号码!}');
+INSERT INTO `sys_log_text` VALUES ('48943829423751168', '48943829386002432', '身份证:请输入正确的身份证号码!<br/>');
+INSERT INTO `sys_log_text` VALUES ('48944017869635584', '48944017827692544', '身份证:请输入正确的身份证号码!<br/>');
+INSERT INTO `sys_log_text` VALUES ('48944640652476416', '48944640581173248', '网络异常,请联系管理员!');
+INSERT INTO `sys_log_text` VALUES ('48944952540921856', '48944952503173120', '添加学生:{SVR_TABLE_NAME=BUS_STUDENT, BS_LENGTH=3, BS_ENROLMENT_YEAR=2018, BS_NAME=student_test, BS_SEX=1, BS_BANK_CARD=454545454545452, SO_ID=48944951878221825, BDM_ID=48601265252335616, BS_EXAMINEE_NUMBER=tt2018053105, BS_ENTRY_TIME=2018-08-07 17:43:35, BS_NUMBER=2018053105, BC_ID=48656602449838080, BS_PHONE=17012342032, ID=48944951878221824, BS_PERMANENT_ADDRESS=test&middot;, BS_HOME_ADDRESS=test2, BS_BANK=兴业银行, BS_NATION=1, BS_ID_CARD=350122199605020114}');
+INSERT INTO `sys_log_text` VALUES ('48945055137792000', '48945055108431872', '更新配置列表字段,配置列表:基础信息管理-学生管理,更新前:,更新后:{SCC_NAME=班级, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_IS_MERGE=, SCC_ALIGN=left, SCC_IS_STATUS=0, SCC_WIDTH=160px, SCC_FIELD=BC_NAME, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=0, ID=48890941183885312, SC_ID=48890586014416896, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=20}');
+INSERT INTO `sys_log_text` VALUES ('48945074079268864', '48945074037325824', '更新配置列表字段,配置列表:基础信息管理-学生管理,更新前:,更新后:{SCC_NAME=系部, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_IS_MERGE=, SCC_ALIGN=left, SCC_IS_STATUS=0, SCC_WIDTH=160px, SCC_FIELD=BDM_NAME, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=0, ID=48890888293711872, SC_ID=48890586014416896, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=10}');
+INSERT INTO `sys_log_text` VALUES ('48945118937350144', '48945118899601408', '更新配置列表字段,配置列表:基础信息管理-学生管理,更新前:,更新后:{SCC_NAME=身份证, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_IS_MERGE=, SCC_ALIGN=center, SCC_IS_STATUS=0, SCC_WIDTH=130px, SCC_FIELD=BS_ID_CARD, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=0, ID=48891120653959168, SC_ID=48890586014416896, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=50}');
+INSERT INTO `sys_log_text` VALUES ('48945163640242176', '48945163606687744', '更新配置列表字段,配置列表:基础信息管理-学生管理,更新前:,更新后:{SCC_NAME=身份证, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_IS_MERGE=, SCC_ALIGN=center, SCC_IS_STATUS=0, SCC_WIDTH=140px, SCC_FIELD=BS_ID_CARD, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=0, ID=48891120653959168, SC_ID=48890586014416896, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=50}');
+INSERT INTO `sys_log_text` VALUES ('48946559206817792', '48946559177457664', '添加配置列表搜索,配置列表:操作员管理,搜索参数{SCS_METHOD_TYPE=1, SCS_TYPE=2, SCS_FIELD=SAI_TYPE, SVR_TABLE_NAME=SYS_CONFIGURE_SEARCH, SCS_NAME=类型, SCS_SDT_CODE=SYS_OPERATOR_TYPE, SCC_IS_VISIBLE=1, ID=48946558678335488, SC_ID=3316994321416192, SCS_REMARK=, SCS_ORDER=5}');
+INSERT INTO `sys_log_text` VALUES ('48946768825548800', '48946768775217152', '更新操作员,更新前:{IS_STATUS=1, SAI_PHONE=null, SAI_EMAIL=null, SAI_NAME=student_test, SO_PASSWORD=b696cf2470ac88242758ac3a253c62ad, ID=48944951878221825, IS_DEFAULT_PWD=1, SO_SALT=iHkUI,},更新后:{SAI_NAME=student_test, SAI_PHONE=17012342035, SEARCH_SO_ID=48944951878221825, SAI_EMAIL=851758621@qq.com}');
+INSERT INTO `sys_log_text` VALUES ('48946968877072384', '48946968851906560', '添加账号信息:{IS_STATUS=1, SOS_CREATETIME=2018-08-07 17:51:36, SVR_TABLE_NAME=SYS_OPERATOR_SUB, SOS_REMARK=, SOS_DEFAULT=1, SO_ID=48944951878221825, ID=48946968478613504, SOS_USERNAME=student_test}');
+INSERT INTO `sys_log_text` VALUES ('48946996228128768', '48946996194574336', '操作员:student_test,旧角色:,新角色:[48892526509162496]');
+INSERT INTO `sys_log_text` VALUES ('48948423755300864', '48948423721746432', '菜单:学生管理,旧按钮:[1, 48287050272604160, 793777245519872, 3008659554566144, 28283426524102656, 793562643955712, 3375831514611712],新按钮:[1, 793777245519872, 48287050272604160, 3008659554566144, 28283426524102656, 793562643955712, 3375831514611712, 48286237202579456]');
+INSERT INTO `sys_log_text` VALUES ('48948488158838784', '48948488133672960', '角色:超级管理员,菜单名称:学生管理,旧按钮:[1, 793777245519872, 48287050272604160, 3008659554566144, 28283426524102656, 793562643955712, 3375831514611712],新按钮:[1, 793777245519872, 48287050272604160, 3008659554566144, 28283426524102656, 793562643955712, 3375831514611712, 48286237202579456]');
+INSERT INTO `sys_log_text` VALUES ('48948569578668032', '48948569557696512', '更新按钮,更新前:{SB_CODE=IMPORT, SB_FUNC=, SB_CLASS=btn btn-info, SB_ORDER=7, SB_BUTTONID=import, SB_ICON=mdi mdi-import, ID=48286237202579456, SB_TYPE_NAME=顶部按钮, SB_TYPE=0, SB_NAME=导入},更新后:{SB_CODE=IMPORT, SVR_TABLE_NAME=SYS_BUTTON, SB_FUNC=, SB_CLASS=btn btn-success, SB_ORDER=7, SB_BUTTONID=import, SB_ICON=mdi mdi-import, ID=48286237202579456, SB_TYPE=0, SB_NAME=导入}');
+INSERT INTO `sys_log_text` VALUES ('48948591854616576', '48948591825256448', '更新按钮,更新前:{SB_CODE=EXPORT, SB_FUNC=, SB_CLASS=btn btn-info, SB_ORDER=8, SB_BUTTONID=export, SB_ICON=mdi mdi-export, ID=48286450940116992, SB_TYPE_NAME=顶部按钮, SB_TYPE=0, SB_NAME=导出},更新后:{SB_CODE=EXPORT, SVR_TABLE_NAME=SYS_BUTTON, SB_FUNC=, SB_CLASS=btn btn-success, SB_ORDER=8, SB_BUTTONID=export, SB_ICON=mdi mdi-export, ID=48286450940116992, SB_TYPE=0, SB_NAME=导出}');
 INSERT INTO `sys_log_text` VALUES ('489979750907904', '489979637661696', '文件：Collectors.java，错误行数：133，方法：lambda$throwingMerger$0，错误内容：Duplicate key 1');
 INSERT INTO `sys_log_text` VALUES ('490128443179008', '490109103243264', '文件：Collectors.java，错误行数：133，方法：lambda$throwingMerger$0，错误内容：Duplicate key 1');
 INSERT INTO `sys_log_text` VALUES ('490342256214016', '490342155550720', '文件：Collectors.java，错误行数：133，方法：lambda$throwingMerger$0，错误内容：Duplicate key 1');
@@ -7534,6 +7583,7 @@ INSERT INTO `sys_menu_button` VALUES ('48892356635656192', '48892124845834240', 
 INSERT INTO `sys_menu_button` VALUES ('48892356644044800', '48892124845834240', '793562643955712');
 INSERT INTO `sys_menu_button` VALUES ('48892356652433408', '48892124845834240', '3375831514611712');
 INSERT INTO `sys_menu_button` VALUES ('48892368832692224', '48892279221387264', '763206804963328');
+INSERT INTO `sys_menu_button` VALUES ('48948423222624256', '48892124845834240', '48286237202579456');
 
 -- ----------------------------
 -- Table structure for sys_operator
@@ -7561,6 +7611,7 @@ INSERT INTO `sys_operator` VALUES ('4112733112893440', '0b332f7310964946a1db4993
 INSERT INTO `sys_operator` VALUES ('48303136200196097', '262ff9c34663d5a82e45ebe5b8c27a74', 'P2jSvy', 1, 1);
 INSERT INTO `sys_operator` VALUES ('48601651874889729', '87fbc3c502b40a90e978465a49effe23', '-WECW3', 1, 1);
 INSERT INTO `sys_operator` VALUES ('48679555707174913', 'bcac1195eef6ce7ce8f45425580bdf41', 'fW.Ydv', 1, 1);
+INSERT INTO `sys_operator` VALUES ('48944951878221825', 'b696cf2470ac88242758ac3a253c62ad', 'iHkUI,', 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_operator_role
@@ -7587,6 +7638,7 @@ INSERT INTO `sys_operator_role` VALUES ('4113478558154752', '4095556896948224', 
 INSERT INTO `sys_operator_role` VALUES ('48307877735038976', '48307839919194112', '48303136200196097');
 INSERT INTO `sys_operator_role` VALUES ('48603182229618688', '48309528801837056', '48601651874889729');
 INSERT INTO `sys_operator_role` VALUES ('48682102345957376', '48678292462501888', '48679555707174913');
+INSERT INTO `sys_operator_role` VALUES ('48946995997442048', '48892526509162496', '48944951878221825');
 
 -- ----------------------------
 -- Table structure for sys_operator_sub
@@ -7618,6 +7670,7 @@ INSERT INTO `sys_operator_sub` VALUES ('48306353327833088', '48303136200196097',
 INSERT INTO `sys_operator_sub` VALUES ('48529046765568000', '48303136200196097', 'division_test2', '2018-08-06 14:10:55', '', 0, 1);
 INSERT INTO `sys_operator_sub` VALUES ('48602665436839936', '48601651874889729', 'department_test', '2018-08-06 19:03:27', '', 1, 1);
 INSERT INTO `sys_operator_sub` VALUES ('48682071438131200', '48679555707174913', 'teacher_test', '2018-08-07 00:18:59', '', 1, 1);
+INSERT INTO `sys_operator_sub` VALUES ('48946968478613504', '48944951878221825', 'student_test', '2018-08-07 17:51:36', '', 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_process_definition
@@ -8048,6 +8101,7 @@ INSERT INTO `sys_role_button` VALUES ('48892443042512896', '48892402647171072', 
 INSERT INTO `sys_role_button` VALUES ('48892443151564800', '48892402647171072', '793562643955712');
 INSERT INTO `sys_role_button` VALUES ('48892443164147712', '48892402647171072', '3375831514611712');
 INSERT INTO `sys_role_button` VALUES ('48892453326946304', '48892402613616640', '763206804963328');
+INSERT INTO `sys_role_button` VALUES ('48948487978483712', '48892402647171072', '48286237202579456');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -8410,7 +8464,7 @@ INSERT INTO `sys_validate_regex` VALUES ('2511687219412992', '浮点数', '^(-?\
 INSERT INTO `sys_validate_regex` VALUES ('2511798490103808', 'QQ号', '[1-9]([0-9]{5,11})', '请输入正确的QQ号!', '1');
 INSERT INTO `sys_validate_regex` VALUES ('2511926852583424', '邮政编码', '\\d{6}', '请输入正确的邮政编码!', '1');
 INSERT INTO `sys_validate_regex` VALUES ('2512132734189568', 'IP', '(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)\\.(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)', '请输入正确的IP地址!', '1');
-INSERT INTO `sys_validate_regex` VALUES ('2512257846083584', '身份证', '\\d{17}[\\d|x]|\\d{15}', '请输入正确的身份证号码!', '1');
+INSERT INTO `sys_validate_regex` VALUES ('2512257846083584', '身份证', '^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$', '请输入正确的身份证号码!', '1');
 INSERT INTO `sys_validate_regex` VALUES ('2512496095133696', '年月日日期', '\\d{4}(\\-|\\\\/|.)\\d{1,2}\\1\\d{1,2}', '请输入正确的日期(如1970-01-01)!', '1');
 INSERT INTO `sys_validate_regex` VALUES ('2512815759818752', '用户名', '[A-Za-z0-9_\\-\\u4e00-\\u9fa5]+', '请输入正确的用户名(支持的标点符号-、_)', '1');
 INSERT INTO `sys_validate_regex` VALUES ('2521757806231552', '正浮点数', '^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$', '请输入正确的带小数点的正数!', '1');
@@ -8833,6 +8887,19 @@ INSERT INTO `sys_value_record` VALUES ('48892279259136000', '1', 'SYS_MENU', '48
 INSERT INTO `sys_value_record` VALUES ('48892526555299840', '1', 'SYS_ROLE', '48892526509162496', NULL, '{\"SR_CODE\":\"STUDENT\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_ROLE\",\"SR_EXPLAIN\":\"基础角色\",\"SR_NAME\":\"学生\",\"ID\":\"48892526509162496\",\"SR_REMARK\":\"\",\"SR_TYPE\":\"4\"}', '2018-08-07 14:15:16', 1);
 INSERT INTO `sys_value_record` VALUES ('48892542598512640', '1', 'SYS_ROLE', '48678292462501888', '{\"SR_CODE\":\"TEACHER\",\"IS_STATUS\":1,\"SR_EXPLAIN\":\"\",\"SR_NAME\":\"教师\",\"ID\":\"48678292462501888\",\"SR_REMARK\":\"\",\"SR_TYPE\":\"5\"}', '{\"SR_CODE\":\"TEACHER\",\"SR_TYPE\":\"5\",\"SR_EXPLAIN\":\"基础角色\",\"SR_NAME\":\"教师\",\"ID\":\"48678292462501888\",\"SR_REMARK\":\"\"}', '2018-08-07 14:15:19', 2);
 INSERT INTO `sys_value_record` VALUES ('48894160370925568', '1', 'SYS_CONFIGURE_COLUMN', '48890941183885312', '{\"SCC_NAME\":\"班级\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"180px\",\"SCC_FIELD\":\"BC_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48890941183885312\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":20}', '{\"SCC_NAME\":\"班级\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"left\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"180px\",\"SCC_FIELD\":\"BC_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48890941183885312\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"20\"}', '2018-08-07 14:21:45', 2);
+INSERT INTO `sys_value_record` VALUES ('48942988365135872', '1', 'SYS_VALIDATE_REGEX', '2512257846083584', '{\"IS_STATUS\":\"1\",\"SVR_REGEX\":\"\\\\d{17}[\\\\d|x]|\\\\d{15}\",\"SVR_REGEX_MESSAGE\":\"请输入正确的身份证号码!\",\"ID\":\"2512257846083584\",\"SVR_NAME\":\"身份证\"}', '{\"SVR_REGEX\":\"^[1-9]\\\\d{5}(18|19|([23]\\\\d))\\\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\\\d{3}[0-9Xx]$\",\"SVR_REGEX_MESSAGE\":\"请输入正确的身份证号码!\",\"ID\":\"2512257846083584\",\"SVR_NAME\":\"身份证\"}', '2018-08-07 17:35:47', 2);
+INSERT INTO `sys_value_record` VALUES ('48944951924359168', '1', 'SYS_OPERATOR', '48944951878221825', NULL, '{\"SO_PASSWORD\":\"b696cf2470ac88242758ac3a253c62ad\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_OPERATOR\",\"ID\":\"48944951878221825\",\"SO_SALT\":\"iHkUI,\"}', '2018-08-07 17:43:35', 1);
+INSERT INTO `sys_value_record` VALUES ('48944952016633856', '1', 'SYS_ACCOUNT_INFO', '48944951974690816', NULL, '{\"SO_ID\":\"48944951878221825\",\"SAI_NAME\":\"student_test\",\"SVR_TABLE_NAME\":\"SYS_ACCOUNT_INFO\",\"ID\":\"48944951974690816\",\"SAI_TYPE\":4}', '2018-08-07 17:43:35', 1);
+INSERT INTO `sys_value_record` VALUES ('48944952129880064', '1', 'BUS_STUDENT', '48944951878221824', NULL, '{\"SVR_TABLE_NAME\":\"BUS_STUDENT\",\"BS_LENGTH\":\"3\",\"BS_ENROLMENT_YEAR\":\"2018\",\"BS_NAME\":\"student_test\",\"BS_SEX\":\"1\",\"BS_BANK_CARD\":\"454545454545452\",\"SO_ID\":\"48944951878221825\",\"BDM_ID\":\"48601265252335616\",\"BS_EXAMINEE_NUMBER\":\"tt2018053105\",\"BS_ENTRY_TIME\":\"2018-08-07 17:43:35\",\"BS_NUMBER\":\"2018053105\",\"BC_ID\":\"48656602449838080\",\"BS_PHONE\":\"17012342032\",\"ID\":\"48944951878221824\",\"BS_PERMANENT_ADDRESS\":\"test&middot;\",\"BS_HOME_ADDRESS\":\"test2\",\"BS_BANK\":\"兴业银行\",\"BS_NATION\":\"1\",\"BS_ID_CARD\":\"350122199605020114\"}', '2018-08-07 17:43:35', 1);
+INSERT INTO `sys_value_record` VALUES ('48945054781276160', '1', 'SYS_CONFIGURE_COLUMN', '48890941183885312', '{\"SCC_NAME\":\"班级\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"left\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"180px\",\"SCC_FIELD\":\"BC_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48890941183885312\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":20}', '{\"SCC_NAME\":\"班级\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"left\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"160px\",\"SCC_FIELD\":\"BC_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48890941183885312\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"20\"}', '2018-08-07 17:43:59', 2);
+INSERT INTO `sys_value_record` VALUES ('48945073856970752', '1', 'SYS_CONFIGURE_COLUMN', '48890888293711872', '{\"SCC_NAME\":\"系部\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"left\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"180px\",\"SCC_FIELD\":\"BDM_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48890888293711872\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":10}', '{\"SCC_NAME\":\"系部\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"left\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"160px\",\"SCC_FIELD\":\"BDM_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48890888293711872\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"10\"}', '2018-08-07 17:44:04', 2);
+INSERT INTO `sys_value_record` VALUES ('48945118786355200', '1', 'SYS_CONFIGURE_COLUMN', '48891120653959168', '{\"SCC_NAME\":\"身份证\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"120px\",\"SCC_FIELD\":\"BS_ID_CARD\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48891120653959168\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":50}', '{\"SCC_NAME\":\"身份证\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"130px\",\"SCC_FIELD\":\"BS_ID_CARD\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48891120653959168\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"50\"}', '2018-08-07 17:44:15', 2);
+INSERT INTO `sys_value_record` VALUES ('48945163241783296', '1', 'SYS_CONFIGURE_COLUMN', '48891120653959168', '{\"SCC_NAME\":\"身份证\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"130px\",\"SCC_FIELD\":\"BS_ID_CARD\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48891120653959168\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":50}', '{\"SCC_NAME\":\"身份证\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"140px\",\"SCC_FIELD\":\"BS_ID_CARD\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"48891120653959168\",\"SC_ID\":\"48890586014416896\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"50\"}', '2018-08-07 17:44:25', 2);
+INSERT INTO `sys_value_record` VALUES ('48946558724472832', '1', 'SYS_CONFIGURE_SEARCH', '48946558678335488', NULL, '{\"SCS_METHOD_TYPE\":\"1\",\"SCS_TYPE\":\"2\",\"SCS_FIELD\":\"SAI_TYPE\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_SEARCH\",\"SCS_NAME\":\"类型\",\"SCS_SDT_CODE\":\"SYS_OPERATOR_TYPE\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"48946558678335488\",\"SC_ID\":\"3316994321416192\",\"SCS_REMARK\":\"\",\"SCS_ORDER\":\"5\"}', '2018-08-07 17:49:58', 1);
+INSERT INTO `sys_value_record` VALUES ('48946768385146880', '1', 'SYS_OPERATOR', '48944951878221825', '{\"IS_STATUS\":1,\"ID\":\"48944951878221825\"}', '{\"ID\":\"48944951878221825\"}', '2018-08-07 17:50:48', 2);
+INSERT INTO `sys_value_record` VALUES ('48946968554110976', '1', 'SYS_OPERATOR_SUB', '48946968478613504', NULL, '{\"IS_STATUS\":1,\"SOS_CREATETIME\":\"2018-08-07 17:51:36\",\"SVR_TABLE_NAME\":\"SYS_OPERATOR_SUB\",\"SOS_REMARK\":\"\",\"SOS_DEFAULT\":1,\"SO_ID\":\"48944951878221825\",\"ID\":\"48946968478613504\",\"SOS_USERNAME\":\"student_test\"}', '2018-08-07 17:51:36', 1);
+INSERT INTO `sys_value_record` VALUES ('48948569184403456', '1', 'SYS_BUTTON', '48286237202579456', '{\"SB_CODE\":\"IMPORT\",\"SB_FUNC\":\"\",\"SB_CLASS\":\"btn btn-info\",\"SB_ORDER\":7,\"SB_BUTTONID\":\"import\",\"SB_ICON\":\"mdi mdi-import\",\"ID\":\"48286237202579456\",\"SB_TYPE\":\"0\",\"SB_NAME\":\"导入\"}', '{\"SB_CODE\":\"IMPORT\",\"SB_CLASS\":\"btn btn-success\",\"SB_ORDER\":\"7\",\"SB_BUTTONID\":\"import\",\"SB_ICON\":\"mdi mdi-import\",\"SB_TYPE\":\"0\",\"SB_FUNC\":\"\",\"ID\":\"48286237202579456\",\"SB_NAME\":\"导入\"}', '2018-08-07 17:57:57', 2);
+INSERT INTO `sys_value_record` VALUES ('48948591607152640', '1', 'SYS_BUTTON', '48286450940116992', '{\"SB_CODE\":\"EXPORT\",\"SB_FUNC\":\"\",\"SB_CLASS\":\"btn btn-info\",\"SB_ORDER\":8,\"SB_BUTTONID\":\"export\",\"SB_ICON\":\"mdi mdi-export\",\"ID\":\"48286450940116992\",\"SB_TYPE\":\"0\",\"SB_NAME\":\"导出\"}', '{\"SB_CODE\":\"EXPORT\",\"SB_CLASS\":\"btn btn-success\",\"SB_ORDER\":\"8\",\"SB_BUTTONID\":\"export\",\"SB_ICON\":\"mdi mdi-export\",\"SB_TYPE\":\"0\",\"SB_FUNC\":\"\",\"ID\":\"48286450940116992\",\"SB_NAME\":\"导出\"}', '2018-08-07 17:58:03', 2);
 
 -- ----------------------------
 -- Table structure for test_process
@@ -8990,7 +9057,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_role` AS select `sr`.`
 -- View structure for v_student
 -- ----------------------------
 DROP VIEW IF EXISTS `v_student`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_student` AS select `bs`.`ID` AS `ID`,`bs`.`BDM_ID` AS `BDM_ID`,`bs`.`BC_ID` AS `BC_ID`,`bs`.`BS_NAME` AS `BS_NAME`,`bs`.`BS_NUMBER` AS `BS_NUMBER`,`bs`.`BS_LENGTH` AS `BS_LENGTH`,`bs`.`BS_ID_CARD` AS `BS_ID_CARD`,`bs`.`BS_SEX` AS `BS_SEX`,`bs`.`BS_NATION` AS `BS_NATION`,`sdi`.`SDI_NAME` AS `BS_SEX_NAME`,`ndi`.`SDI_NAME` AS `BS_NATION_NAME`,`bdm`.`BDM_NAME` AS `BDM_NAME`,`bc`.`BC_NAME` AS `BC_NAME` from ((((`bus_student` `bs` join `bus_department` `bdm` on((`bdm`.`ID` = `bs`.`BDM_ID`))) join `bus_class` `bc` on((`bc`.`ID` = `bs`.`BC_ID`))) left join `sys_dict_info` `sdi` on(((`sdi`.`SDT_CODE` = 'BUS_SEX') and (`sdi`.`SDI_CODE` = `bs`.`BS_SEX`)))) left join `sys_dict_info` `ndi` on(((`ndi`.`SDT_CODE` = 'BUS_NATION') and (`ndi`.`SDI_CODE` = `bs`.`BS_NATION`))));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_student` AS select `bs`.`ID` AS `ID`,`bs`.`BDM_ID` AS `BDM_ID`,`bs`.`BC_ID` AS `BC_ID`,`bs`.`BS_NAME` AS `BS_NAME`,`bs`.`BS_NUMBER` AS `BS_NUMBER`,`bs`.`BS_LENGTH` AS `BS_LENGTH`,`bs`.`BS_ID_CARD` AS `BS_ID_CARD`,`bs`.`BS_SEX` AS `BS_SEX`,`bs`.`BS_NATION` AS `BS_NATION`,`bs`.`SO_ID` AS `SO_ID`,`sdi`.`SDI_NAME` AS `BS_SEX_NAME`,`ndi`.`SDI_NAME` AS `BS_NATION_NAME`,`bdm`.`BDM_NAME` AS `BDM_NAME`,`bc`.`BC_NAME` AS `BC_NAME` from ((((`bus_student` `bs` join `bus_department` `bdm` on((`bdm`.`ID` = `bs`.`BDM_ID`))) join `bus_class` `bc` on((`bc`.`ID` = `bs`.`BC_ID`))) left join `sys_dict_info` `sdi` on(((`sdi`.`SDT_CODE` = 'BUS_SEX') and (convert(`sdi`.`SDI_CODE` using utf8mb4) = `bs`.`BS_SEX`)))) left join `sys_dict_info` `ndi` on(((`ndi`.`SDT_CODE` = 'BUS_NATION') and (convert(`ndi`.`SDI_CODE` using utf8mb4) = `bs`.`BS_NATION`))));
 
 -- ----------------------------
 -- View structure for v_teacher

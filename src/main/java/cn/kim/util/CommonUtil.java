@@ -52,6 +52,7 @@ public class CommonUtil {
     static {
         NO_ENCRYPT_FIELDS.put("SCC_WIDTH", "SCC_WIDTH");
         NO_ENCRYPT_FIELDS.put("SB_BUTTONID", "SB_BUTTONID");
+        NO_ENCRYPT_FIELDS.put("BS_ID_CARD", "BS_ID_CARD");
     }
 
     @Autowired

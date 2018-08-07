@@ -122,7 +122,7 @@
                 <%--<img class="img-circle">--%>
                 <%--</div>--%>
                 <div class="pull-left info" style="left: 0px;">
-                    <p>尊敬的管理员: ${activeUser.username}</p>
+                    <p>用户:${activeUser.username}</p>
                     <p>角色:${activeUser.role}</p>
                 </div>
             </div>

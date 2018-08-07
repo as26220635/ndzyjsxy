@@ -1,5 +1,6 @@
 package cn.kim.service.impl;
 
+import cn.kim.common.attr.Constants;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.eu.NameSpace;
@@ -66,6 +67,9 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 id = getId();
                 paramMap.put("ID", id);
                 paramMap.put("BS_ENTRY_TIME", getDate());
+                //插入账号和账号信息
+                String operatorId = insertOperator(baseDao, mapParam.get("BS_NAME"), SystemEnum.STUDENT.getType());
+                paramMap.put("SO_ID", operatorId);
 
                 baseDao.insert(NameSpace.StudentMapper, "insertStudent", paramMap);
                 resultMap.put(MagicValue.LOG, "添加学生:" + toString(paramMap));
