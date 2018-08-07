@@ -107,7 +107,7 @@ public class OperatorController extends BaseController {
 
     /***********    sub登录账号信息表  ***********/
     @GetMapping("/sub/add")
-    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_INSERT", "INFO:DIVISION_PERSONNEL_SET_SUB"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_INSERT", "INFO:DIVISION_PERSONNEL_SET_SUB", "INFO:DEPARTMENT_PERSONNEL_SET_SUB", "INFO:CLASS_SET_SUB", "INFO:TEACHER_SET_SUB", "INFO:STUDENT_SET_SUB"}, logical = Logical.OR)
     @Token(save = true)
     public String addHtmlSub(String SO_ID, Model model) throws Exception {
         model.addAttribute("SO_ID", SO_ID);
@@ -116,7 +116,7 @@ public class OperatorController extends BaseController {
 
 
     @PostMapping("/sub/add")
-    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_INSERT", "INFO:DIVISION_PERSONNEL_SET_SUB"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_INSERT", "INFO:DIVISION_PERSONNEL_SET_SUB", "INFO:DEPARTMENT_PERSONNEL_SET_SUB", "INFO:CLASS_SET_SUB", "INFO:TEACHER_SET_SUB", "INFO:STUDENT_SET_SUB"}, logical = Logical.OR)
     @SystemControllerLog(useType = UseType.USE, event = "添加操作员账号")
     @Token(remove = true)
     @Validate("SYS_OPERATOR_SUB")
@@ -129,7 +129,7 @@ public class OperatorController extends BaseController {
 
 
     @GetMapping("/sub/update/{ID}")
-    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_UPDATE", "INFO:DIVISION_PERSONNEL_SET_SUB"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_UPDATE", "INFO:DIVISION_PERSONNEL_SET_SUB", "INFO:DEPARTMENT_PERSONNEL_SET_SUB", "INFO:CLASS_SET_SUB", "INFO:TEACHER_SET_SUB", "INFO:STUDENT_SET_SUB"}, logical = Logical.OR)
     public String updateHtmlSub(@PathVariable("ID") String ID, Model model) throws Exception {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         mapParam.put("ID", ID);
@@ -138,7 +138,7 @@ public class OperatorController extends BaseController {
     }
 
     @PutMapping("/sub/update")
-    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_UPDATE", "INFO:DIVISION_PERSONNEL_SET_SUB"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_UPDATE", "INFO:DIVISION_PERSONNEL_SET_SUB", "INFO:DEPARTMENT_PERSONNEL_SET_SUB", "INFO:CLASS_SET_SUB", "INFO:TEACHER_SET_SUB", "INFO:STUDENT_SET_SUB"}, logical = Logical.OR)
     @SystemControllerLog(useType = UseType.USE, event = "修改操作员账号")
     @Validate("SYS_OPERATOR_SUB")
     @ResponseBody
@@ -149,7 +149,7 @@ public class OperatorController extends BaseController {
 
 
     @PutMapping("/sub/switchStatus")
-    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_UPDATE", "INFO:DIVISION_PERSONNEL_SET_SUB"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_UPDATE", "INFO:DIVISION_PERSONNEL_SET_SUB", "INFO:DEPARTMENT_PERSONNEL_SET_SUB", "INFO:CLASS_SET_SUB", "INFO:TEACHER_SET_SUB", "INFO:STUDENT_SET_SUB"}, logical = Logical.OR)
     @SystemControllerLog(useType = UseType.USE, event = "修改操作员账号状态")
     @ResponseBody
     public ResultState switchStatusSub(@RequestParam Map<String, Object> mapParam) throws Exception {
@@ -159,7 +159,7 @@ public class OperatorController extends BaseController {
     }
 
     @DeleteMapping("/sub/delete/{ID}")
-    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_DELETE", "INFO:DIVISION_PERSONNEL_SET_SUB"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SUB_DELETE", "INFO:DIVISION_PERSONNEL_SET_SUB", "INFO:DEPARTMENT_PERSONNEL_SET_SUB", "INFO:CLASS_SET_SUB", "INFO:TEACHER_SET_SUB", "INFO:STUDENT_SET_SUB"}, logical = Logical.OR)
     @SystemControllerLog(useType = UseType.USE, event = "删除操作员账号")
     @ResponseBody
     public ResultState deleteSub(@PathVariable("ID") String ID) throws Exception {
@@ -172,7 +172,7 @@ public class OperatorController extends BaseController {
     /***********    设置角色  ***********/
 
     @GetMapping("/roles")
-    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SET_ROLE", "INFO:DIVISION_PERSONNEL_SET_ROLE"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SET_ROLE", "INFO:DIVISION_PERSONNEL_SET_ROLE", "INFO:DEPARTMENT_PERSONNEL_SET_ROLE", "INFO:CLASS_SET_ROLE", "INFO:TEACHER_SET_ROLE", "INFO:STUDENT_SET_ROLE"}, logical = Logical.OR)
     @ResponseBody
     public List<Tree> getRoles(String ID, Integer SR_TYPE) throws Exception {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
@@ -184,7 +184,7 @@ public class OperatorController extends BaseController {
     }
 
     @PutMapping("/updateOperatorRoles")
-    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SET_ROLE", "INFO:DIVISION_PERSONNEL_SET_ROLE"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"SYSTEM:OPERATOR_SET_ROLE", "INFO:DIVISION_PERSONNEL_SET_ROLE", "INFO:DEPARTMENT_PERSONNEL_SET_ROLE", "INFO:CLASS_SET_ROLE", "INFO:TEACHER_SET_ROLE", "INFO:STUDENT_SET_ROLE"}, logical = Logical.OR)
     @SystemControllerLog(useType = UseType.USE, event = "设置操作员角色")
     @ResponseBody
     public ResultState updateOperatorRoles(@RequestParam Map<String, Object> mapParam) throws Exception {

@@ -19,6 +19,14 @@ public interface DepartmentService extends BaseService {
     Map<String, Object> selectDepartment(Map<String, Object> mapParam);
 
     /**
+     * 查询系部
+     *
+     * @param mapParam
+     * @return
+     */
+    List<Map<String, Object>> selectDepartmentList(Map<String, Object> mapParam);
+
+    /**
      * 获取系部树
      *
      * @param id

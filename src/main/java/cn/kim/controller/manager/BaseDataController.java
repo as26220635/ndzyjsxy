@@ -137,6 +137,7 @@ public class BaseDataController extends BaseController {
             model.addAttribute("LIST_BUTTON", listButton);
             //URL额外参数
             model.addAttribute("EXTRA", extra);
+
             return toString(configure.get("SC_JSP"));
         } catch (Exception e) {
             e.printStackTrace();

@@ -59,13 +59,15 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
         try {
             count = super.getSqlSession().insert(getStatement(nameSpace, sqlId), parameter);
 
-            //记录数据
-            String tableName = TextUtil.toString(parameter.get("SVR_TABLE_NAME"));
-            //是否不需要记录
-            boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
+            if (parameter != null) {
+                //记录数据
+                String tableName = TextUtil.toString(parameter.get("SVR_TABLE_NAME"));
+                //是否不需要记录
+                boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
 
-            if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
-                this.record(parameter.get("ID"), tableName, null, TextUtil.toJSONString(parameter), ValueRecordType.INSERT.getType());
+                if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
+                    this.record(parameter.get("ID"), tableName, null, TextUtil.toJSONString(parameter), ValueRecordType.INSERT.getType());
+                }
             }
         } catch (Exception e) {
             throw e;
@@ -78,30 +80,33 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
         int count = 0;
         try {
             Map<String, Object> oldValue = null;
-            //记录数据
-            String tableName = TextUtil.toString(parameter.get("SVR_TABLE_NAME"));
-            //是否不需要记录
-            boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
-            //查询旧值
-            if (!notRecord && !ValidateUtil.isEmpty(tableName)) {
-                oldValue = selectValue(parameter.get("ID"), tableName);
-            }
-            //更新
-            count = super.getSqlSession().update(getStatement(nameSpace, sqlId), parameter);
 
-            //查询更新完后的新值
-            if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
-                Map<String, Object> newValue = Maps.newHashMapWithExpectedSize(16);
-                //把更新的字段取出来
-                oldValue.keySet().forEach(key -> {
-                    if (parameter.containsKey(key)) {
-                        newValue.put(key, parameter.get(key));
-                    }
-                });
-                //移除未更新的字段
-                oldValue.keySet().removeIf(key -> !newValue.containsKey(key));
+            if (parameter != null) {
+                //记录数据
+                String tableName = TextUtil.toString(parameter.get("SVR_TABLE_NAME"));
+                //是否不需要记录
+                boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
+                //查询旧值
+                if (!notRecord && !ValidateUtil.isEmpty(tableName)) {
+                    oldValue = selectValue(parameter.get("ID"), tableName);
+                }
+                //更新
+                count = super.getSqlSession().update(getStatement(nameSpace, sqlId), parameter);
 
-                this.record(parameter.get("ID"), tableName, TextUtil.toJSONString(oldValue), TextUtil.toJSONString(newValue), ValueRecordType.UPDATE.getType());
+                //查询更新完后的新值
+                if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
+                    Map<String, Object> newValue = Maps.newHashMapWithExpectedSize(16);
+                    //把更新的字段取出来
+                    oldValue.keySet().forEach(key -> {
+                        if (parameter.containsKey(key)) {
+                            newValue.put(key, parameter.get(key));
+                        }
+                    });
+                    //移除未更新的字段
+                    oldValue.keySet().removeIf(key -> !newValue.containsKey(key));
+
+                    this.record(parameter.get("ID"), tableName, TextUtil.toJSONString(oldValue), TextUtil.toJSONString(newValue), ValueRecordType.UPDATE.getType());
+                }
             }
         } catch (Exception e) {
             throw e;
@@ -115,13 +120,15 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
         try {
             count = super.getSqlSession().delete(getStatement(nameSpace, sqlId), parameter);
 
-            //记录数据
-            String tableName = TextUtil.toString(parameter.get("SVR_TABLE_NAME"));
-            //是否不需要记录
-            boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
+            if (parameter != null) {
+                //记录数据
+                String tableName = TextUtil.toString(parameter.get("SVR_TABLE_NAME"));
+                //是否不需要记录
+                boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
 
-            if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
-                this.record(parameter.get("ID"), tableName, null, null, ValueRecordType.DELETE.getType());
+                if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
+                    this.record(parameter.get("ID"), tableName, null, null, ValueRecordType.DELETE.getType());
+                }
             }
         } catch (Exception e) {
             throw e;

@@ -1156,6 +1156,7 @@ treeBox = {
                     settings.data = data;
                     treeBox.create(settings);
                     //监听输入框回车事件
+                    $(searchInput).unbind('keypress');
                     $(searchInput).bind('keypress', function (event) {
                         if (event.keyCode == 13) {
                             $(searchInput + 'btn').click();
@@ -1188,7 +1189,7 @@ treeBox = {
                     var checkeds = $tree.treeview('getChecked');
                     for (var i = 0; i < checkeds.length; i++) {
                         var checked = checkeds[i];
-                        if(checked.selectable == false){
+                        if (checked.selectable == false) {
                             $tree.treeview('uncheckNode', [checked, {silent: true}]);
                             return;
                         }
@@ -1590,6 +1591,7 @@ classSwitch = {
         var $classObj = options.cObj;
         var dVal = options.dVal;
         var val = options.val;
+        var url = options.url + '/' + (isEmpty(options.model) ? '1' : '2');
         var model = isEmpty(options.model) ? classSwitch.model.VAL : options.model;
 
         $departmentObj.on('change', function () {
@@ -1597,14 +1599,20 @@ classSwitch = {
             if (departmentName != "") {
                 var params = {};
                 if (model == classSwitch.model.VAL) {
-                    params.departmentId = departmentName;
+                    params.BDM_ID = departmentName;
                 } else {
-                    params.departmentName = departmentName;
+                    params.BDM_NAME = departmentName;
                 }
 
-                var url = model == classSwitch.model.VAL ? CLASS_SELECT_LIST : CLASS_SELECT_NAME_LIST;
-
-                ajax.getHtml(url, params, function (html) {
+                ajax.get(url, params, function (data) {
+                    var html = '';
+                    for (var i in data) {
+                        var obj = data[i];
+                        html += splitOption({
+                            value: data.ID,
+                            name: data.NAME
+                        });
+                    }
                     $classObj.html(html);
                     if (!isEmpty(val)) {
                         $classObj.val(val).trigger('change');
@@ -1620,6 +1628,21 @@ classSwitch = {
         }
     }
 }
+
+/**
+ * 凭借option
+ * @param options
+ * @returns {string}
+ */
+function splitOption(options) {
+    var settings = $.extend({
+        value: '',
+        name: '',
+        options: ''
+    }, options);
+    return '<option value="' + settings.value + '" ' + settings.options + '>' + settings.name + '</option>';
+}
+
 /**
  * 通知
  * @type {{model: {ADMIN: string, RECEPTION: string}, init: notifyMsg.init, obtainCount: notifyMsg.obtainCount, delayCount: Function}}

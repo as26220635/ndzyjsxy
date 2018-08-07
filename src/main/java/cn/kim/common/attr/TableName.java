@@ -147,4 +147,9 @@ public class TableName {
      * 教师
      */
     public static final String BUS_TEACHER = "BUS_TEACHER";
+
+    /**
+     * 学生
+     */
+    public static final String BUS_STUDENT = "BUS_STUDENT";
 }

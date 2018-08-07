@@ -1,6 +1,7 @@
 package cn.kim.common.tag;
 
 import cn.kim.common.attr.Attribute;
+import cn.kim.entity.CustomParam;
 import cn.kim.entity.DictType;
 import cn.kim.util.DictUtil;
 import cn.kim.util.TextUtil;
@@ -9,6 +10,7 @@ import com.sun.istack.internal.Nullable;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,6 +51,10 @@ public class Combobox extends BaseTagSupport {
      * 是否开启禁用不能选择
      */
     private boolean disabled = true;
+    /**
+     * 参数
+     */
+    private List<Map<String, Object>> dataList;
 
     @Override
     protected int doStartTagInternal() throws Exception {
@@ -87,6 +93,7 @@ public class Combobox extends BaseTagSupport {
         single = true;
         required = false;
         disabled = true;
+        dataList = null;
         return super.doEndTag();
     }
 
@@ -145,7 +152,7 @@ public class Combobox extends BaseTagSupport {
             builder.append("<script>$('#" + id + "').select2({language: 'zh-CN'});</script>");
             if (!isEmpty(sdtCode)) {
                 builder.append("<script>$('#" + id + "').prop('readonly','false');</script>");
-            } else {
+            } else if (!isEmpty(url)) {
                 String[] selects = value.split(Attribute.SERVICE_SPLIT);
                 builder.append("<script>var SELECT_" + id + " = " + TextUtil.toString(selects) + "; ajax.get('" + url + "',{},function (data) {for(var i in data){var obj = data[i];$('#" + id + "').append('<option value=\"'+obj.ID+'\" '+ ($.inArray(obj.ID, SELECT_" + id + ") == '-1' ? '' : 'selected')+'>' + obj.NAME +'</option>')}$('#" + id + "').prop('readonly','false');});</script>");
             }
@@ -186,6 +193,10 @@ public class Combobox extends BaseTagSupport {
                     builder.append("<option value='" + info.getSdiCode() + "' " + selected + (disabled && info.getIsStatus() == Attribute.STATUS_ERROR ? " disabled " : "") + ">" + info.getSdiName() + "</option>");
                 });
             }
+        } else if (!isEmpty(dataList)) {
+            dataList.forEach(map -> {
+                builder.append("<option value='" + toString(map.get("ID")) + "' >" + toString(map.get("NAME")) + "</option>");
+            });
         }
     }
 
@@ -279,6 +290,12 @@ public class Combobox extends BaseTagSupport {
         this.url = url;
     }
 
+    public List<Map<String, Object>> getDataList() {
+        return dataList;
+    }
 
+    public void setDataList(List<Map<String, Object>> dataList) {
+        this.dataList = dataList;
+    }
 }
 

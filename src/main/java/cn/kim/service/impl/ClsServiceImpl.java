@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,6 +24,13 @@ public class ClsServiceImpl extends BaseServiceImpl implements ClsService {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
         paramMap.put("ID", mapParam.get("ID"));
         return baseDao.selectOne(NameSpace.ClsMapper, "selectClass", paramMap);
+    }
+
+    @Override
+    public List<Map<String, Object>> selectClassList(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("BDM_ID", mapParam.get("BDM_ID"));
+        return baseDao.selectList(NameSpace.ClsMapper, "selectClass", paramMap);
     }
 
     @Override

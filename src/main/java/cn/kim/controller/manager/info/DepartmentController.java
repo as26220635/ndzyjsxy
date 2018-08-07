@@ -44,7 +44,7 @@ public class DepartmentController extends BaseController {
      * @throws Exception
      */
     @GetMapping("/tree")
-    @RequiresPermissions(value = {"INFO:DEPARTMENT", "INFO:DEPARTMENT_PERSONNEL", "INFO:CLASS"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"INFO:DEPARTMENT", "INFO:DEPARTMENT_PERSONNEL", "INFO:CLASS", "INFO:STUDENT"}, logical = Logical.OR)
     @ResponseBody
     public List<Tree> treeList(String ID, @Nullable String NOT_ID) throws Exception {
         List<Tree> treeList = departmentService.selectDepartmentTreeList(ID, NOT_ID);

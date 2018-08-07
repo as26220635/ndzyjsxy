@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kim.mapper.StudentMapper">
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+
+    <!--查询学生-->
+    <select id="selectStudent" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_STUDENT
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入学生-->
+    <insert id="insertStudent" parameterType="java.util.Map">
+        INSERT INTO BUS_STUDENT
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BDM_ID != null">BDM_ID,</if>
+            <if test="BC_ID != null">BC_ID,</if>
+            <if test="BS_NAME != null">BS_NAME,</if>
+            <if test="BS_NUMBER != null">BS_NUMBER,</if>
+            <if test="BS_LENGTH != null">BS_LENGTH,</if>
+            <if test="BS_ENROLMENT_YEAR != null">BS_ENROLMENT_YEAR,</if>
+            <if test="BS_EXAMINEE_NUMBER != null">BS_EXAMINEE_NUMBER,</if>
+            <if test="BS_ID_CARD != null">BS_ID_CARD,</if>
+            <if test="BS_SEX != null">BS_SEX,</if>
+            <if test="BS_NATION != null">BS_NATION,</if>
+            <if test="BS_BANK != null">BS_BANK,</if>
+            <if test="BS_BANK_CARD != null">BS_BANK_CARD,</if>
+            <if test="BS_PHONE != null">BS_PHONE,</if>
+            <if test="BS_PERMANENT_ADDRESS != null">BS_PERMANENT_ADDRESS,</if>
+            <if test="BS_HOME_ADDRESS != null">BS_HOME_ADDRESS,</if>
+            <if test="BS_ENTRY_TIME != null">BS_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BDM_ID != null">#{BDM_ID},</if>
+            <if test="BC_ID != null">#{BC_ID},</if>
+            <if test="BS_NAME != null">#{BS_NAME},</if>
+            <if test="BS_NUMBER != null">#{BS_NUMBER},</if>
+            <if test="BS_LENGTH != null">#{BS_LENGTH},</if>
+            <if test="BS_ENROLMENT_YEAR != null">#{BS_ENROLMENT_YEAR},</if>
+            <if test="BS_EXAMINEE_NUMBER != null">#{BS_EXAMINEE_NUMBER},</if>
+            <if test="BS_ID_CARD != null">#{BS_ID_CARD},</if>
+            <if test="BS_SEX != null">#{BS_SEX},</if>
+            <if test="BS_NATION != null">#{BS_NATION},</if>
+            <if test="BS_BANK != null">#{BS_BANK},</if>
+            <if test="BS_BANK_CARD != null">#{BS_BANK_CARD},</if>
+            <if test="BS_PHONE != null">#{BS_PHONE},</if>
+            <if test="BS_PERMANENT_ADDRESS != null">#{BS_PERMANENT_ADDRESS},</if>
+            <if test="BS_HOME_ADDRESS != null">#{BS_HOME_ADDRESS},</if>
+            <if test="BS_ENTRY_TIME != null">#{BS_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑学生-->
+    <update id="updateStudent" parameterType="java.util.Map">
+        UPDATE BUS_STUDENT
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BDM_ID != null">BDM_ID=#{BDM_ID},</if>
+            <if test="BC_ID != null">BC_ID=#{BC_ID},</if>
+            <if test="BS_NAME != null">BS_NAME=#{BS_NAME},</if>
+            <if test="BS_NUMBER != null">BS_NUMBER=#{BS_NUMBER},</if>
+            <if test="BS_LENGTH != null">BS_LENGTH=#{BS_LENGTH},</if>
+            <if test="BS_ENROLMENT_YEAR != null">BS_ENROLMENT_YEAR=#{BS_ENROLMENT_YEAR},</if>
+            <if test="BS_EXAMINEE_NUMBER != null">BS_EXAMINEE_NUMBER=#{BS_EXAMINEE_NUMBER},</if>
+            <if test="BS_ID_CARD != null">BS_ID_CARD=#{BS_ID_CARD},</if>
+            <if test="BS_SEX != null">BS_SEX=#{BS_SEX},</if>
+            <if test="BS_NATION != null">BS_NATION=#{BS_NATION},</if>
+            <if test="BS_BANK != null">BS_BANK=#{BS_BANK},</if>
+            <if test="BS_BANK_CARD != null">BS_BANK_CARD=#{BS_BANK_CARD},</if>
+            <if test="BS_PHONE != null">BS_PHONE=#{BS_PHONE},</if>
+            <if test="BS_PERMANENT_ADDRESS != null">BS_PERMANENT_ADDRESS=#{BS_PERMANENT_ADDRESS},</if>
+            <if test="BS_HOME_ADDRESS != null">BS_HOME_ADDRESS=#{BS_HOME_ADDRESS},</if>
+            <if test="BS_ENTRY_TIME != null">BS_ENTRY_TIME=#{BS_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除学生-->
+    <delete id="deleteStudent" parameterType="java.util.Map">
+		DELETE FROM BUS_STUDENT WHERE ID = #{ID}
+	</delete>
+</mapper>

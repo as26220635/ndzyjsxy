@@ -12,6 +12,11 @@
         <tag-class>cn.kim.common.tag.Combobox</tag-class>
         <body-content>JSP</body-content>
         <attribute>
+            <name>dataList</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <name>sdtCode</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>

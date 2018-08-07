@@ -125,6 +125,7 @@ public class TreeBox extends BaseTagSupport {
                     "                    $('#" + id + "').val('');" +
                     "                    $('#" + name + "').val('');" +
                     "                }" +
+                    "                $('#" + id + "').change();" +
                     "                $('#" + name + "').focus();" +
                     "                model.hide($model);" +
                     "            }" +

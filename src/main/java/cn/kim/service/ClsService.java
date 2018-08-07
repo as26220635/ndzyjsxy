@@ -19,6 +19,14 @@ public interface ClsService extends BaseService {
     Map<String, Object> selectClass(Map<String, Object> mapParam);
 
     /**
+     * 查询班级
+     *
+     * @param mapParam
+     * @return
+     */
+    List<Map<String, Object>> selectClassList(Map<String, Object> mapParam);
+
+    /**
      * 插入或更新班级
      *
      * @param mapParam

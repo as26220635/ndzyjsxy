@@ -38,13 +38,4 @@ function animateScrollTop(topObj) {
 }
 
 
-function splitOption(options) {
-    var settings = $.extend({
-        value: '',
-        name: '',
-        options: ''
-    }, options);
-    return '<option value="' + settings.value + '" ' + settings.options + '>' + settings.name + '</option>';
-}
-
 

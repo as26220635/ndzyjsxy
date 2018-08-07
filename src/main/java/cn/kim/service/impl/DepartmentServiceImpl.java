@@ -33,6 +33,13 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
     }
 
     @Override
+    public List<Map<String, Object>> selectDepartmentList(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", mapParam.get("ID"));
+        return baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartment", paramMap);
+    }
+
+    @Override
     public List<Tree> selectDepartmentTreeList(String id, String notId) {
         return getDepartmentTreeList(id, notId);
     }

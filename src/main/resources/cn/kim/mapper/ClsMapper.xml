@@ -12,6 +12,9 @@
                 <if test ="ID != NULL and ID != ''">
                     AND ID = #{ID}
                 </if>
+                <if test ="BDM_ID != NULL and BDM_ID != ''">
+                    AND BDM_ID = #{BDM_ID}
+                </if>
             </where>
         )BC
         INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BC.BDM_ID
