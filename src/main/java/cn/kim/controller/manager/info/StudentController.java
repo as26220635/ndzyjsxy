@@ -34,7 +34,7 @@ public class StudentController extends BaseController {
     private OperatorService operatorService;
 
     @GetMapping("/add")
-    @RequiresPermissions("INFO:STUDENT_INSERT")
+    @RequiresPermissions("STUDENT:BASE_INSERT")
     @Token(save = true)
     public String addHtml(Model model) throws Exception {
         return "admin/info/student/addAndEdit";
@@ -42,7 +42,7 @@ public class StudentController extends BaseController {
 
 
     @PostMapping("/add")
-    @RequiresPermissions("INFO:STUDENT_INSERT")
+    @RequiresPermissions("STUDENT:BASE_INSERT")
     @SystemControllerLog(useType = UseType.USE, event = "添加学生")
     @Token(remove = true)
     @Validate(value = "BUS_STUDENT", required = true)
@@ -55,7 +55,7 @@ public class StudentController extends BaseController {
 
 
     @GetMapping("/update/{ID}")
-    @RequiresPermissions("INFO:STUDENT_UPDATE")
+    @RequiresPermissions("STUDENT:BASE_UPDATE")
     public String updateHtml(Model model, @PathVariable("ID") String ID) throws Exception {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         mapParam.put("ID", ID);
@@ -64,7 +64,7 @@ public class StudentController extends BaseController {
     }
 
     @PutMapping("/update")
-    @RequiresPermissions("INFO:STUDENT_UPDATE_SAVE")
+    @RequiresPermissions("STUDENT:BASE_UPDATE_SAVE")
     @SystemControllerLog(useType = UseType.USE, event = "修改学生")
     @Validate(value = "BUS_STUDENT", required = true)
     @ResponseBody
@@ -74,7 +74,7 @@ public class StudentController extends BaseController {
     }
 
     @GetMapping("/accountInfo/{ID}")
-    @RequiresPermissions("INFO:STUDENT_ACCOUNT_INFO")
+    @RequiresPermissions("STUDENT:BASE_ACCOUNT_INFO")
     public String updateHtmlAccountInfo(Model model, @PathVariable("ID") String ID) throws Exception {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         mapParam.put("ID", ID);
@@ -83,7 +83,7 @@ public class StudentController extends BaseController {
     }
 
     @PutMapping("/accountInfo")
-    @RequiresPermissions("INFO:STUDENT_ACCOUNT_INFO")
+    @RequiresPermissions("STUDENT:BASE_ACCOUNT_INFO")
     @SystemControllerLog(useType = UseType.USE, event = "修改学生账号信息")
     @Validate("SYS_ACCOUNT_INFO")
     @ResponseBody
@@ -95,7 +95,7 @@ public class StudentController extends BaseController {
     }
 
     @PutMapping("/resetPwd")
-    @RequiresPermissions("INFO:STUDENT_RESET_PWD")
+    @RequiresPermissions("STUDENT:BASE_RESET_PWD")
     @SystemControllerLog(useType = UseType.USE, event = "重置学生人员密码")
     @ResponseBody
     public ResultState resetPwdAccountInfo(@RequestParam Map<String, Object> mapParam) throws Exception {
@@ -105,7 +105,7 @@ public class StudentController extends BaseController {
     }
 
     @DeleteMapping("/delete/{ID}")
-    @RequiresPermissions("INFO:STUDENT_DELETE")
+    @RequiresPermissions("STUDENT:BASE_DELETE")
     @SystemControllerLog(useType = UseType.USE, event = "删除学生")
     @ResponseBody
     public ResultState delete(@PathVariable("ID") String ID) throws Exception {

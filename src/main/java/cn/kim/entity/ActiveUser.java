@@ -35,6 +35,11 @@ public class ActiveUser implements java.io.Serializable {
     private String roleIds;
 
     /**
+     * 是否是默认密码
+     */
+    private int isDefaultPwd;
+
+    /**
      * 菜单
      */
     private List<Map<String, Object>> menus;
@@ -105,5 +110,13 @@ public class ActiveUser implements java.io.Serializable {
 
     public void setRoleIds(String roleIds) {
         this.roleIds = roleIds;
+    }
+
+    public int getIsDefaultPwd() {
+        return isDefaultPwd;
+    }
+
+    public void setIsDefaultPwd(int isDefaultPwd) {
+        this.isDefaultPwd = isDefaultPwd;
     }
 }

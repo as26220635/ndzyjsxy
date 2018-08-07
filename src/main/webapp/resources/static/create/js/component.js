@@ -806,11 +806,12 @@ model = {
         var settings = $.extend({
             isConfirm: false,
             okBtnName: model.btnName.SAVE,
-            closeBtnName: model.btnName.CLOSE
+            closeBtnName: model.btnName.CLOSE,
+            id : uuid(),
         }, options);
 
         //对象
-        var id = uuid();
+        var id = settings.id;
         var confirmBtnId = 'confirm' + id;
         var cancelBtnId = 'cancel' + id;
         var jquery = '#' + id;

@@ -109,6 +109,7 @@
         dObj: $('#BDM_ID'),
         cObj: $('#BC_ID'),
         val: '${student.BC_ID}',
+        dVal: '${student.BDM_ID}',
         url: '${CLASS_SELECT_DEPARTMENT_URL}'
     });
 </script>

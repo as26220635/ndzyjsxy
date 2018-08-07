@@ -64,6 +64,7 @@ public class CustomHashedCredentialsMatcher extends HashedCredentialsMatcher {
             activeUser.setUsercode(TextUtil.toString(user.get("SAI_NAME")));
             activeUser.setRole(TextUtil.toString(user.get("SR_NAME")));
             activeUser.setRoleIds(TextUtil.toString(user.get("SR_ID")));
+            activeUser.setIsDefaultPwd(TextUtil.toInt(user.get("IS_DEFAULT_PWD")));
 
 //            Map<String, String> ipMap = HttpUtil.getIpAddressName(HttpUtil.getIpAddr(HttpUtil.getRequest()));
             //获得登录地址

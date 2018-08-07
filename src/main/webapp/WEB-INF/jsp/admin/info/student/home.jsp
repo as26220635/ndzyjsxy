@@ -40,7 +40,7 @@
                     title: '修改学生',
                     content: html,
                     footerModel: model.footerModel.ADMIN,
-                    <shiro:hasPermission name="INFO:STUDENT_UPDATE_SAVE">
+                    <shiro:hasPermission name="STUDENT:BASE_UPDATE_SAVE">
                     isConfirm: true,
                     confirm: function ($model) {
                         var $form = $('#addAndEditForm');

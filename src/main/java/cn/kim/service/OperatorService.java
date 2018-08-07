@@ -51,6 +51,13 @@ public interface OperatorService extends BaseService {
     Map<String, Object> resetOperatorPassword(Map<String, Object> mapParam);
 
     /**
+     * 修改操作员密码
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> updateOperatorPassword(Map<String, Object> mapParam);
+    /**
      * 删除操作员
      *
      * @param mapParam

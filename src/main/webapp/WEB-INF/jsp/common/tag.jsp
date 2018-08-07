@@ -23,6 +23,8 @@
 <%--URL地址--%>
 <c:set var="BASE_URL" value="${pageContext.request.contextPath}/"/>
 <c:set var="MANAGER_URL" value="${BASE_URL}admin/"/>
+<c:set var="EDIT_USER" value="${MANAGER_URL}editUser"/>
+<c:set var="EDIT_PASSWORD" value="${MANAGER_URL}editPwd"/>
 <%--图片地址url--%>
 <c:set var="IMG_URL" value="${BASE_URL}${AttributePath.FILE_PREVIEW_URL}"/>
 <c:set var="DOWN_URL" value="${BASE_URL}${AttributePath.FILE_DOWNLOAD_URL}"/>

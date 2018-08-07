@@ -124,6 +124,7 @@
                 <div class="pull-left info" style="left: 0px;">
                     <p>用户:${activeUser.username}</p>
                     <p>角色:${activeUser.role}</p>
+                    <input type="hidden" id="IS_DEFAULT_PWD" value="${activeUser.isDefaultPwd}">
                 </div>
             </div>
             <%--<!--菜单-->--%>
@@ -235,14 +236,14 @@
 
     //修改用户信息
     $('#editActiveUserBtn').on('click', function () {
-
-        ajax.getHtml(FIRST_QUERYUSER, {}, function (html) {
+        ajax.getHtml('${EDIT_USER}', {}, function (html) {
             model.show({
                 title: '修改用户信息',
                 content: html,
                 footerModel: model.footerModel.ADMIN,
+                isConfirm: true,
                 confirm: function (model) {
-                    var $form = $('#editUserForm');
+                    var $form = $('#addAndEditForm');
                     //验证
                     if (!validator.formValidate($form)) {
                         demo.showNotify(ALERT_WARNING, VALIDATE_FAIL);
@@ -251,21 +252,24 @@
 
                     var params = packFormParams($form);
 
-                    ajax.post(FIRST_EDITUSER, params, function (data) {
+                    ajax.post('${EDIT_USER}', params, function (data) {
                         ajaxReturn.data(data, model, null, null);
                     })
                 }
             });
         });
     });
+    var editPasswordModelId = 'editPasswordModel';
     //修改密码
     $('#editPasswordBtn').on('click', function () {
-
-        ajax.getHtml(FIRST_PASSWORD_HTML, {}, function (html) {
+        ajax.getHtml('${EDIT_PASSWORD}', {}, function (html) {
             model.show({
+                id: editPasswordModelId,
                 title: '修改密码',
                 content: html,
                 footerModel: model.footerModel.ADMIN,
+                tips: $('#IS_DEFAULT_PWD').val() == STATUS_SUCCESS ? '初始密码请修改!' : '',
+                isConfirm: true,
                 confirm: function (model) {
                     var $form = $('#editPasswordForm');
                     //验证
@@ -276,13 +280,30 @@
 
                     var params = packFormParams($form);
 
-                    ajax.post(FIRST_PASSWORD, params, function (data) {
+                    ajax.post('${EDIT_PASSWORD}', params, function (data) {
+                        if (data.code == STATUS_SUCCESS) {
+                            $('#IS_DEFAULT_PWD').val(STATUS_ERROR);
+                        }
                         ajaxReturn.data(data, model, null, null);
                     })
                 }
             });
         });
     });
+    //没有修改过密码的循环弹出修改密码
+    showEditPwdModel();
+
+    function showEditPwdModel() {
+        //是否默认密码
+        if ($('#IS_DEFAULT_PWD').val() == STATUS_SUCCESS) {
+            if ($("#" + editPasswordModelId).length == 0) {
+                $('#editPasswordBtn').click();
+            }
+            setTimeout(function () {
+                showEditPwdModel();
+            }, 1100);
+        }
+    }
 
     <%-- 菜单点击 --%>
     $(document).on('ready pjax:end', function (event) {
@@ -316,7 +337,7 @@
             $selectMenu.parents('ul').css('display', 'block');
         }
         $menuTree.find('li').removeClass('active').removeClass('menu-open');
-        $menuTree.find('ul').css('display','');
+        $menuTree.find('ul').css('display', '');
         $selectMenu.parents('li').addClass('active').addClass('menu-open');
     }
 
@@ -329,7 +350,7 @@
     function getParentName() {
         return $('#parentName').text();
     }
-    
+
     //修改标题
     function editTitle(content) {
         $('title').html(content);

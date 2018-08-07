@@ -1,24 +1,20 @@
 package cn.kim.service.impl;
 
 import cn.kim.common.attr.*;
-import cn.kim.common.eu.SystemEnum;
-import cn.kim.entity.Tree;
-import cn.kim.exception.CustomException;
 import cn.kim.common.eu.NameSpace;
+import cn.kim.common.eu.SystemEnum;
+import cn.kim.entity.ActiveUser;
 import cn.kim.entity.Tree;
-import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.OperatorService;
-import cn.kim.service.OperatorService;
-import cn.kim.util.DateUtil;
-import cn.kim.util.PasswordMd5;
-import cn.kim.util.RandomSalt;
+import cn.kim.util.*;
 import com.google.common.collect.Maps;
-import org.springframework.expression.spel.ast.Operator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -185,6 +181,68 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
 
             status = STATUS_SUCCESS;
             desc = Tips.RESET_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param mapParam
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> updateOperatorPassword(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = Tips.UPDATE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+            String id = toString(mapParam.get("ID"));
+            String password = toString(mapParam.get("password"));
+            String oldPassword = toString(mapParam.get("oldPassword"));
+            if (isEmpty(password) || isEmpty(oldPassword)) {
+                throw new CustomException("参数错误!");
+            }
+            //验证旧密码
+            paramMap.put("ID", id);
+            Map<String, Object> operator = this.selectOperator(paramMap);
+            if (!toString(operator.get("SO_PASSWORD")).equals(PasswordMd5.password(oldPassword, toString(operator.get("SO_SALT"))))) {
+                throw new CustomException("旧密码错误!");
+            }
+
+            //验证密码强度
+            if (ValidateUtil.checkPassword(password) == 0) {
+                throw new CustomException("弱口令,请重新输入密码!");
+            }
+
+            paramMap.clear();
+            paramMap.put("ID", id);
+            //设置账号和盐
+            String salt = RandomSalt.salt();
+            paramMap.put("SO_SALT", salt);
+            paramMap.put("SO_PASSWORD", PasswordMd5.password(password, salt));
+            paramMap.put("IS_DEFAULT_PWD", STATUS_ERROR);
+
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR);
+
+            baseDao.update(NameSpace.OperatorMapper, "updateOperator", paramMap);
+            resultMap.put(MagicValue.LOG, "修改密码");
+
+            ActiveUser activeUser =getActiveUser();
+            activeUser.setIsDefaultPwd(STATUS_ERROR);
+            AuthcUtil.setCurrentUser(activeUser);
+
+            status = STATUS_SUCCESS;
+            desc = Tips.UPDATE_SUCCESS;
 
             resultMap.put("ID", id);
         } catch (Exception e) {

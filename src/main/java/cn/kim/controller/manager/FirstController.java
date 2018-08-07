@@ -1,26 +1,44 @@
 package cn.kim.controller.manager;
 
 import cn.kim.common.annotation.SystemControllerLog;
+import cn.kim.common.annotation.Validate;
 import cn.kim.common.eu.UseType;
 import cn.kim.entity.ResultState;
+import cn.kim.service.OperatorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
 public class FirstController extends BaseController {
 
-    @GetMapping("/queryUser")
+    @Autowired
+    private OperatorService operatorService;
+
+    @GetMapping("/editUser")
     public String queryUser(Model model) throws Exception {
-        model.addAttribute("accountInfo",getAccountInfo());
+        model.addAttribute("accountInfo", getAccountInfo());
         return "admin/system/first/editActiveUser";
     }
+
+
+    @PostMapping("/editUser")
+    @SystemControllerLog(useType = UseType.USE, event = "修改信息")
+    @Validate("SYS_ACCOUNT_INFO")
+    @ResponseBody
+    public ResultState editUser(@RequestParam Map<String, Object> mapParam) throws Exception {
+        String id = activeUser().getId();
+        mapParam.put("ID", id);
+        return fairLock(id, () -> {
+            Map<String, Object> resultMap = operatorService.insertAndUpdateOperator(mapParam);
+            return resultState(resultMap);
+        });
+    }
+
 
     /**
      * 后台修改密码
@@ -29,9 +47,9 @@ public class FirstController extends BaseController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/editPswd")
-    public String editPswd(Model model) throws Exception {
-        return "admin/system/first/editPswd";
+    @GetMapping("/editPwd")
+    public String editPswdHtml(Model model) throws Exception {
+        return "admin/system/first/editPwd";
     }
 
     /**
@@ -41,23 +59,22 @@ public class FirstController extends BaseController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/editPswdR")
+    @GetMapping("/editPwdR")
     public String editPswdR(Model model) throws Exception {
-        return "admin/system/first/editPswdR";
+        return "admin/system/first/editPwdR";
     }
 
-    @PostMapping("/editUser")
-    @SystemControllerLog(useType = UseType.USE, event = "修改信息")
-    @ResponseBody
-    public ResultState editUser() throws Exception {
-        return ResultState.success("修改个人信息成功！", "修改个人信息成功！");
-    }
 
-    @PostMapping("/password")
+    @PostMapping("/editPwd")
     @SystemControllerLog(useType = UseType.USE, event = "修改密码")
     @ResponseBody
-    public ResultState password(HttpServletRequest request, String password, String oldPassword) throws Exception {
-        return null;
+    public ResultState editPwd(@RequestParam Map<String, Object> mapParam) throws Exception {
+        String id = activeUser().getId();
+        mapParam.put("ID", id);
+        return fairLock(id, () -> {
+            Map<String, Object> resultMap = operatorService.updateOperatorPassword(mapParam);
+            return resultState(resultMap);
+        });
     }
 
 }
