@@ -21,45 +21,65 @@
         <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_VERSION")}
                value="${SPD.SPD_VERSION}">
     </div>
-    <div class="form-group has-feedback form-group-md-6">
-        <label>流程更新表名:</label>
-        <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_UPDATE_TABLE")}
-               value="${SPD.SPD_UPDATE_TABLE}">
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>流程大类:</label>
+            <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_PROCESS_DEFINITION","BUS_PROCESS")}'
+                        value="${SPD.BUS_PROCESS}"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>流程小类:</label>
+            <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_PROCESS_DEFINITION","BUS_PROCESS2")}'
+                        value="${SPD.BUS_PROCESS2}" level="1"></s:combobox>
+        </div>
     </div>
-    <div class="form-group has-feedback form-group-md-6">
-        <label>流程更新表名称字段:</label>
-        <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_UPDATE_NAME")}
-               value="${SPD.SPD_UPDATE_NAME}">
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>流程更新表名:</label>
+            <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_UPDATE_TABLE")}
+                   value="${SPD.SPD_UPDATE_TABLE}">
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>流程更新表名称字段:</label>
+            <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_UPDATE_NAME")}
+                   value="${SPD.SPD_UPDATE_NAME}">
+        </div>
     </div>
-    <div class="form-group has-feedback form-group-md-6">
-        <label>部门字段(BD_ID):</label>
-        <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_DIVISION_FIELD")}
-               value="${SPD.SPD_DIVISION_FIELD}">
-    </div>
-    <div class="form-group has-feedback form-group-md-6">
-        <label>系部字段(BDM_ID):</label>
-        <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_DEPARTMENT_FIELD")}
-               value="${SPD.SPD_DEPARTMENT_FIELD}">
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>部门字段(BD_ID):</label>
+            <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_DIVISION_FIELD")}
+                   value="${SPD.SPD_DIVISION_FIELD}">
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>系部字段(BDM_ID):</label>
+            <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_DEPARTMENT_FIELD")}
+                   value="${SPD.SPD_DEPARTMENT_FIELD}">
+        </div>
     </div>
     <div class="form-group has-feedback">
         <label>流程描述:</label>
         <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_DESCRIBE")}
                value="${SPD.SPD_DESCRIBE}">
     </div>
-    <div class="form-group has-feedback form-group-md-6">
-        <label>查看全部记录角色:</label>
-        <s:treeBox id="SR_ID" name="SR_NAME" value="${SPD.SR_ID}" nameValue="${SPD.SR_NAME}"
-                   url="${ROLE_TREE_DATA_URL}" title="选择查看记录角色"></s:treeBox>
-    </div>
-    <div class="form-group has-feedback form-group-md-6">
-        <label>是否多级退回:</label>
-        <s:combobox sdtCode="SYS_YES_NO"
-                    custom='${fns:validField("SYS_PROCESS_DEFINITION","IS_MULTISTAGE_BACK")}'
-                    value="${SPD.IS_MULTISTAGE_BACK}" defaultValue="0"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>查看全部记录角色:</label>
+            <s:treeBox id="SR_ID" name="SR_NAME" value="${SPD.SR_ID}" nameValue="${SPD.SR_NAME}"
+                       url="${ROLE_TREE_DATA_URL}" title="选择查看记录角色"></s:treeBox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否多级退回:</label>
+            <s:combobox sdtCode="SYS_YES_NO"
+                        custom='${fns:validField("SYS_PROCESS_DEFINITION","IS_MULTISTAGE_BACK")}'
+                        value="${SPD.IS_MULTISTAGE_BACK}" defaultValue="0"></s:combobox>
+        </div>
     </div>
 </form>
 
 <script>
+    initCombobxSelectDisabled('BUS_PROCESS', 'BUS_PROCESS2','${SPD.BUS_PROCESS2}');
+
     validator.init({
         //验证表单
         form: $('#addAndEditForm'),

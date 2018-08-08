@@ -187,11 +187,12 @@ public class Combobox extends BaseTagSupport {
                         builder.append(splitOption(info.getSdiCode(), info.getSdiName(), getSelected(info.getSdiCode()), info.getIsStatus()));
                     });
                 } else if (level == 1) {
-                    List<DictInfo> infoList = new ArrayList<>();
                     dictType.getInfos().forEach(info -> {
+//                        builder.append("<optgroup label='" + info.getSdiName() + "'>");
                         info.getChildren().forEach(children -> {
-                            builder.append(splitOption(children.getSdiCode(), children.getSdiName(), getSelected(children.getSdiCode()), children.getIsStatus(), "data-parent-id=" + children.getSdiParentid()));
+                            builder.append(splitOption(children.getSdiCode(), children.getSdiName(), getSelected(children.getSdiCode()), children.getIsStatus(), "data-parent-id=" + info.getSdiCode()));
                         });
+//                        builder.append("</optgroup>");
                     });
                 }
             }
@@ -213,7 +214,7 @@ public class Combobox extends BaseTagSupport {
      * @return
      */
     public String splitOption(String infoCode, String infoName, String selected, int isStatus, String... attrs) {
-        return "<option value='" + infoCode + "' " + selected + (disabled && isStatus == Attribute.STATUS_ERROR ? " disabled " : "") + toString(attrs) + ">" + infoName + "</option>";
+        return "<option value='" + infoCode + "' " + selected + (disabled && isStatus == Attribute.STATUS_ERROR ? " disabled " : "") + " " + toString(attrs) + ">" + infoName + "</option>";
     }
 
     /**

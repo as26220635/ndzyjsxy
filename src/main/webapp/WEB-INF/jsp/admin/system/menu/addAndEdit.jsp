@@ -33,12 +33,12 @@
     <div class="form-group has-feedback">
     <label>流程大类:</label>
         <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_MENU","BUS_PROCESS")}'
-                value="${MENU.BUS_PROCESS}" defaultValue="0"></s:combobox>
+                value="${MENU.BUS_PROCESS}"></s:combobox>
     </div>
     <div class="form-group has-feedback">
     <label>流程小类:</label>
         <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_MENU","BUS_PROCESS2")}'
-                value="${MENU.BUS_PROCESS2}" defaultValue="0" level="1"></s:combobox>
+                value="${MENU.BUS_PROCESS2}"  level="1"></s:combobox>
     </div>
     <div class="form-group has-feedback">
         <label>是否叶节点:</label>
@@ -74,12 +74,11 @@
 </form>
 
 <script>
+    initCombobxSelectDisabled('BUS_PROCESS','BUS_PROCESS2','${MENU.BUS_PROCESS2}');
+
     validator.init({
         //验证表单
         form: $('#addAndEditForm'),
     });
-    
-    $('#BUS_PROCESS').on('change',function() {
 
-    });
 </script>

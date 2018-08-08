@@ -50,21 +50,23 @@ public class ProcessController extends BaseController {
     private OperatorService operatorService;
 
     /********   流程    ********/
+
     /**
      * 获取当前流程拥有的按钮
      *
      * @param ID
-     * @param SPD_ID
+     * @param BUS_PROCESS
+     * @param BUS_PROCESS2
      * @return
      * @throws Exception
      */
     @GetMapping("/showDataGridBtn")
     @NotEmptyLogin
     @ResponseBody
-    public Map<String, Object> showDataGridBtn(String ID, String SPD_ID) throws Exception {
+    public Map<String, Object> showDataGridBtn(String ID, String BUS_PROCESS, String BUS_PROCESS2) throws Exception {
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(1);
         //查询当前角色拥有的按钮
-        String btnTypes = processService.showDataGridProcessBtn(ID, SPD_ID);
+        String btnTypes = processService.showDataGridProcessBtn(ID, BUS_PROCESS, BUS_PROCESS2);
         resultMap.put("html", ProcessTool.getProcessButtonListHtml(btnTypes, false));
         return resultMap;
     }
@@ -73,8 +75,9 @@ public class ProcessController extends BaseController {
      * 获取流程提交退回界面
      *
      * @param ID
-     * @param SPD_ID
-     * @param PROCESS_TYPE 办理类型
+     * @param BUS_PROCESS
+     * @param BUS_PROCESS2
+     * @param PROCESS_TYPE
      * @param model
      * @return
      * @throws Exception
@@ -82,14 +85,16 @@ public class ProcessController extends BaseController {
     @GetMapping("/showDataGrid")
     @NotEmptyLogin
     @Token(save = true)
-    public String showDataGrid(String ID, String SPD_ID, int PROCESS_TYPE, Model model) throws Exception {
+    public String showDataGrid(String ID, String BUS_PROCESS, String BUS_PROCESS2, int PROCESS_TYPE, Model model) throws Exception {
         try {
             String processBtnType = ProcessType.SUBMIT.toString();
             List<Map<String, Object>> transactorList = new ArrayList<>();
 
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
-            paramMap.put("ID", SPD_ID);
+            paramMap.put("BUS_PROCESS", BUS_PROCESS);
+            paramMap.put("BUS_PROCESS2", BUS_PROCESS2);
             Map<String, Object> definition = processService.selectProcessDefinition(paramMap);
+            String SPD_ID = toString(definition.get("ID"));
             //查询当前流程办理步骤
             paramMap.clear();
             paramMap.put("SPS_TABLE_ID", ID);
@@ -315,9 +320,9 @@ public class ProcessController extends BaseController {
 
     /**
      * 流程日志
-     *
      * @param ID
-     * @param SPD_ID
+     * @param BUS_PROCESS
+     * @param BUS_PROCESS2
      * @param SPS_ID
      * @param model
      * @return
@@ -325,9 +330,15 @@ public class ProcessController extends BaseController {
      */
     @GetMapping("/log")
     @NotEmptyLogin
-    public String log(String ID, String SPD_ID, String SPS_ID, Model model) throws Exception {
+    public String log(String ID, String BUS_PROCESS, String BUS_PROCESS2, String SPS_ID, Model model) throws Exception {
         if (isEmpty(SPS_ID)) {
             Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(3);
+            mapParam.put("BUS_PROCESS", BUS_PROCESS);
+            mapParam.put("BUS_PROCESS2", BUS_PROCESS2);
+            Map<String, Object> definition = processService.selectProcessDefinition(mapParam);
+            String SPD_ID = toString(definition.get("ID"));
+
+            mapParam.clear();
             mapParam.put("SPS_TABLE_ID", ID);
             mapParam.put("SPD_ID", SPD_ID);
             mapParam.put("SPS_IS_CANCEL", toString(STATUS_ERROR));

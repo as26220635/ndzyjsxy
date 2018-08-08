@@ -22,12 +22,12 @@ public interface ProcessService extends BaseService {
 
     /**
      * -1 无 0 提交按钮 1 撤回按钮
-     *
      * @param id
-     * @param definitionId
+     * @param process
+     * @param process2
      * @return
      */
-    String showDataGridProcessBtn(String id, String definitionId);
+    String showDataGridProcessBtn(String id, String process,String process2);
 
     /**
      * 获取当前项目的下一步步骤

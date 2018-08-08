@@ -83,14 +83,16 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
         //是否拥有流程
         boolean isProcess = false;
         //查询是否拥有流程
-        String processDefinitionId = toString(menu.get("SPD_ID"));
-        if (!isEmpty(processDefinitionId)) {
+        String process = toString(menu.get("BUS_PROCESS"));
+        String process2 = toString(menu.get("BUS_PROCESS2"));
+        if (!isEmpty(process)) {
             paramMap.clear();
-            paramMap.put("ID", processDefinitionId);
-            Map<String, Object> definition = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinition", paramMap);
+            paramMap.put("BUS_PROCESS", process);
+            paramMap.put("process2", process2);
+            Map<String, Object> definition = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinitionJoin", paramMap);
 
-            //流程没有停用
-            if (!isDiscontinuation(definition)) {
+            if (!isEmpty(definition)) {
+                String processDefinitionId = toString(definition.get("ID"));
                 String roleId = toString(definition.get("SR_ID"));
                 //是否有查看全部的权限
                 boolean isProcessAll = containsRole(roleId);
@@ -102,7 +104,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                 //流程过滤
                 ActiveUser activeUser = getActiveUser();
 
-                String baseWhere = "SELECT SPS_TABLE_ID FROM SYS_PROCESS_SCHEDULE WHERE SPD_ID = '" + processDefinitionId + "' AND SPS_IS_CANCEL = 0 ";
+                String baseWhere = "SELECT SPS_TABLE_ID FROM SYS_PROCESS_SCHEDULE WHERE SPD_ID IN(" + processDefinitionId + ") AND SPS_IS_CANCEL = 0 ";
                 //WHERE过滤语句
                 StringBuilder processWhereBuilder = new StringBuilder();
                 //待审SQL语句
@@ -114,7 +116,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                 if (!containsRole(roleId)) {
                     //查询自身角色是否在流程中
                     paramMap.clear();
-                    paramMap.put("SPD_ID", processDefinitionId);
+                    paramMap.put("SPD_ID_IN", processDefinitionId);
                     List<Map<String, Object>> stepList = baseDao.selectList(NameSpace.ProcessFixedMapper, "selectProcessStep", paramMap);
                     //获取需要查询的角色
                     stayBuilder.append(" UNION ALL " + baseWhere + " AND SPS_STEP_TYPE = 1 AND SPS_STEP_TRANSACTOR IN (" + TextUtil.toString(getExistRoleList(TextUtil.joinValue(stepList, "SR_ID", SERVICE_SPLIT))) + ") ");

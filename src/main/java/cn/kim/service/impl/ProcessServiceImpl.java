@@ -10,6 +10,7 @@ import cn.kim.exception.CustomException;
 import cn.kim.service.ProcessService;
 import cn.kim.service.util.ProcessCheck;
 import cn.kim.service.util.ProcessExecute;
+import cn.kim.util.CacheUtil;
 import cn.kim.util.DateUtil;
 import cn.kim.util.TextUtil;
 import com.google.common.collect.Maps;
@@ -38,19 +39,25 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
      * -1 无 0 提交按钮 1 退回按钮 2 撤回按钮
      *
      * @param id
-     * @param definitionId
+     * @param process
+     * @param process2
      * @return
      */
     @Override
-    public String showDataGridProcessBtn(String id, String definitionId) {
+    public String showDataGridProcessBtn(String id, String process, String process2) {
         String resultBtn = "";
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
+        paramMap.put("BUS_PROCESS", process);
+        paramMap.put("BUS_PROCESS", process2);
+        Map<String, Object> definition = this.selectProcessDefinition(paramMap);
         //流程停用就没有按钮
-        if (isProcessDiscontinuation(definitionId)) {
+        if (isEmpty(definition) || isDiscontinuation(definition)) {
             return resultBtn;
         }
+        String definitionId = toString(definition.get("ID"));
 
-        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
         //1:查询是否流程记录表拥有记录
+        paramMap.clear();
         paramMap.put("SPS_TABLE_ID", id);
         paramMap.put("SPD_ID", definitionId);
         paramMap.put("SPS_IS_CANCEL", toString(STATUS_ERROR));
@@ -459,15 +466,19 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         String desc = Tips.PROCESS_ERROR;
 
         try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+            paramMap.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
+            paramMap.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
+            Map<String, Object> definition = this.selectProcessDefinition(paramMap);
+
             //流程定义ID
-            String definitionId = toString(mapParam.get("SPD_ID"));
+            String definitionId = toString(definition.get("ID"));
             //流程办理ID
             String scheduleTableId = toString(mapParam.get("SPS_TABLE_ID"));
 
 
             Map<String, Object> resultIUMap = null;
             //查询流程进度
-            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
             paramMap.put("SPD_ID", definitionId);
             paramMap.put("SPS_TABLE_ID", scheduleTableId);
             paramMap.put("SPS_IS_CANCEL", toString(STATUS_ERROR));
@@ -554,12 +565,23 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(14);
             String id = toString(mapParam.get("ID"));
+            //查询大小类是否重复
+            paramMap.put("NOT_ID", id);
+            paramMap.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
+            paramMap.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
+            int count = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinitionCount", paramMap);
+            if (count > 0) {
+                throw new CustomException("流程大小类重复!");
+            }
             //记录日志
+            paramMap.clear();
             paramMap.put("SVR_TABLE_NAME", TableName.SYS_PROCESS_DEFINITION);
 
             paramMap.put("ID", id);
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
             paramMap.put("SR_ID", mapParam.get("SR_ID"));
+            paramMap.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
+            paramMap.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
             paramMap.put("SPD_NAME", mapParam.get("SPD_NAME"));
             paramMap.put("SPD_VERSION", mapParam.get("SPD_VERSION"));
             paramMap.put("SPD_UPDATE_TABLE", mapParam.get("SPD_UPDATE_TABLE"));
@@ -621,6 +643,9 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
 
             baseDao.update(NameSpace.ProcessFixedMapper, "updateProcessDefinition", paramMap);
             resultMap.put(MagicValue.LOG, "更新流程定义状态,流程定义名:" + toString(oldMap.get("SPD_NAME")) + ",状态更新为:" + ParamTypeResolve.statusExplain(mapParam.get("IS_STATUS")));
+
+            //清除缓存
+            CacheUtil.clear(NameSpace.MenuMapper.getValue());
 
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;

@@ -26,7 +26,8 @@
             }
             ajax.getHtml('${PROCESS_SHOW_HOME}', {
                 ID: option.ID,
-                SPD_ID: option.SPD_ID,
+                BUS_PROCESS: option.BUS_PROCESS,
+                BUS_PROCESS2: option.BUS_PROCESS2,
                 PROCESS_TYPE: option.PROCESS_TYPE
             }, function (html) {
                 model.show({
@@ -77,7 +78,8 @@
                     if (result) {
                         ajax.put('${PROCESS_WITHDRAW}', {
                             SPS_TABLE_ID: option.ID,
-                            SPD_ID: option.SPD_ID
+                            BUS_PROCESS: option.BUS_PROCESS,
+                            BUS_PROCESS2: option.BUS_PROCESS2,
                         }, function (data) {
                             ajaxReturn.data(data, null, option.dataGrid, false);
                         })
@@ -89,7 +91,12 @@
          * 显示log日志
          */
         processLog: throttle(function (option) {
-            ajax.getHtml('${PROCESS_LOG}', {ID: option.ID, SPD_ID: option.SPD_ID, SPS_ID: option.SPS_ID}, function (html) {
+            ajax.getHtml('${PROCESS_LOG}', {
+                    ID: option.ID,
+                    BUS_PROCESS: option.BUS_PROCESS,
+                    BUS_PROCESS2: option.BUS_PROCESS2,
+                    SPS_ID: option.SPS_ID
+                }, function (html) {
                     model.show({
                         title: '流程日志',
                         content: html,

@@ -39,6 +39,24 @@
         ORDER BY SPST.SPS_ORDER DESC
         LIMIT 0,1
     </select>
+
+    <!--查询流程定义拼接-->
+    <select id="selectProcessDefinitionJoin" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT CONCAT(ID) AS ID ,CONCAT(SR_ID) AS SR_ID  FROM SYS_PROCESS_DEFINITION
+        <where>
+            <if test="IS_STATUS != NULL and IS_STATUS != ''">
+                AND IS_STATUS = #{IS_STATUS}
+            </if>
+            <if test="BUS_PROCESS != NULL and BUS_PROCESS != ''">
+                AND BUS_PROCESS = #{BUS_PROCESS}
+            </if>
+            <if test="BUS_PROCESS2 != NULL and BUS_PROCESS2 != ''">
+                AND BUS_PROCESS2 = #{BUS_PROCESS2}
+            </if>
+        </where>
+        GROUP BY BUS_PROCESS
+    </select>
+
     <!--查询流程定义-->
     <select id="selectProcessDefinition" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT SPD.*,SR.SR_NAME,SAI.SAI_NAME
@@ -51,19 +69,42 @@
                 <if test="IS_STATUS != NULL and IS_STATUS != ''">
                     AND IS_STATUS = #{IS_STATUS}
                 </if>
+                <if test="BUS_PROCESS != NULL and BUS_PROCESS != ''">
+                    AND BUS_PROCESS = #{BUS_PROCESS}
+                </if>
+                <if test="BUS_PROCESS2 != NULL and BUS_PROCESS2 != ''">
+                    AND BUS_PROCESS2 = #{BUS_PROCESS2}
+                </if>
             </where>
         )SPD
         LEFT JOIN SYS_ROLE SR ON SR.ID = SPD.SR_ID
         LEFT JOIN SYS_ACCOUNT_INFO SAI ON SAI.SO_ID = SPD.SO_ID
     </select>
 
+    <!--查询流程定义数量-->
+    <select id="selectProcessDefinitionCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM SYS_PROCESS_DEFINITION
+        <where>
+            <if test="NOT_ID != NULL and NOT_ID != ''">
+                AND ID != #{NOT_ID}
+            </if>
+            <if test="BUS_PROCESS != NULL and BUS_PROCESS != ''">
+                AND BUS_PROCESS = #{BUS_PROCESS}
+            </if>
+            <if test="BUS_PROCESS2 != NULL and BUS_PROCESS2 != ''">
+                AND BUS_PROCESS2 = #{BUS_PROCESS2}
+            </if>
+        </where>
+    </select>
     <!--插入流程定义-->
     <insert id="insertProcessDefinition" parameterType="java.util.Map">
         INSERT INTO SYS_PROCESS_DEFINITION
-        <trim prefix="(" suffix=")" suffixOverrides=",">
+        <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="ID != null">ID,</if>
             <if test="SO_ID != null">SO_ID,</if>
             <if test="SR_ID != null">SR_ID,</if>
+            <if test="BUS_PROCESS != null">BUS_PROCESS,</if>
+            <if test="BUS_PROCESS2 != null">BUS_PROCESS2,</if>
             <if test="SPD_NAME != null">SPD_NAME,</if>
             <if test="SPD_VERSION != null">SPD_VERSION,</if>
             <if test="SPD_UPDATE_TABLE != null">SPD_UPDATE_TABLE,</if>
@@ -75,10 +116,12 @@
             <if test="IS_STATUS != null">IS_STATUS,</if>
             <if test="IS_MULTISTAGE_BACK != null">IS_MULTISTAGE_BACK,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="ID != null">#{ID},</if>
             <if test="SO_ID != null">#{SO_ID},</if>
             <if test="SR_ID != null">#{SR_ID},</if>
+            <if test="BUS_PROCESS != null">#{BUS_PROCESS},</if>
+            <if test="BUS_PROCESS2 != null">#{BUS_PROCESS2},</if>
             <if test="SPD_NAME != null">#{SPD_NAME},</if>
             <if test="SPD_VERSION != null">#{SPD_VERSION},</if>
             <if test="SPD_UPDATE_TABLE != null">#{SPD_UPDATE_TABLE},</if>
@@ -99,6 +142,8 @@
             <if test="ID != null">ID=#{ID},</if>
             <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
             <if test="SR_ID != null">SR_ID=#{SR_ID},</if>
+            <if test="BUS_PROCESS != null">BUS_PROCESS=#{BUS_PROCESS},</if>
+            <if test="BUS_PROCESS2 != null">BUS_PROCESS2=#{BUS_PROCESS2},</if>
             <if test="SPD_NAME != null">SPD_NAME=#{SPD_NAME},</if>
             <if test="SPD_VERSION != null">SPD_VERSION=#{SPD_VERSION},</if>
             <if test="SPD_UPDATE_TABLE != null">SPD_UPDATE_TABLE=#{SPD_UPDATE_TABLE},</if>
@@ -131,6 +176,9 @@
                 </if>
                 <if test="SPD_ID != NULL and SPD_ID != ''">
                     AND SPD_ID = #{SPD_ID}
+                </if>
+                <if test="SPD_ID_IN != NULL and SPD_ID_IN != ''">
+                    AND SPD_ID IN (${SPD_ID_IN})
                 </if>
                 <if test="SR_ID != NULL and SR_ID != ''">
                     AND SR_ID = #{SR_ID}

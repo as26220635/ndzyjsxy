@@ -114,7 +114,7 @@
                                                 class="fa fa-refresh"></i>刷新
                                         </button>
                                             <%--流程查看切换按钮--%>
-                                        <c:if test="${!fns:isEmpty(menu.SM_IS_PROCESS) && menu.SM_IS_PROCESS == Attribute.STATUS_SUCCESS}">
+                                        <c:if test="${!fns:isEmpty(MENU.BUS_PROCESS)}">
                                             <div class="btn-group" data-toggle="btn-toggle">
                                                 <button id="processAllBtn" type="button"
                                                         class="btn btn-default btn-sm active"
@@ -234,10 +234,10 @@
                     </c:if>
                     <c:if test="${COLUMN.SCC_IS_OPERATION eq Attribute.STATUS_SUCCESS }">
                     <%--是否查询流程操作按钮--%>
-                    <c:if test="${!fns:isEmpty(menu.SM_IS_PROCESS) && menu.SM_IS_PROCESS == Attribute.STATUS_SUCCESS}">
+                    <c:if test="${!fns:isEmpty(MENU.BUS_PROCESS)}">
                     <%--查询权限菜单--%>
                     if (rowData.SPS_AUDIT_STATUS != 999) {
-                        ajax.get('${PROCESS_DATAGRID_BTN}', {ID: cellData, SPD_ID: rowData.SPD_ID}, function (data) {
+                        ajax.get('${PROCESS_DATAGRID_BTN}', {ID: cellData, BUS_PROCESS: rowData.BUS_PROCESS, BUS_PROCESS2: rowData.BUS_PROCESS2}, function (data) {
                             $(td).append(data.html);
                         });
                     }
@@ -398,16 +398,18 @@
     });
     </c:if>
 
-    <c:if test="${!fns:isEmpty(menu.SM_IS_PROCESS) && menu.SM_IS_PROCESS == Attribute.STATUS_SUCCESS}">
+    <c:if test="${!fns:isEmpty(MENU.BUS_PROCESS)}">
     //流程提交
     $dataGridTable.find('tbody').on('click', '#PROCESS_SUBMIT', function () {
         var data = getRowData(this);
         var id = data.ID;
-        var SPD_ID = data.SPD_ID;
+        var BUS_PROCESS = data.BUS_PROCESS;
+        var BUS_PROCESS2 = data.BUS_PROCESS2;
 
         process.showProcessHome({
             ID: id,
-            SPD_ID: SPD_ID,
+            BUS_PROCESS: BUS_PROCESS,
+            BUS_PROCESS2: BUS_PROCESS2,
             PROCESS_TYPE: '${ProcessType.SUBMIT.toString()}',
             dataGrid: $dataGrid
         });
@@ -417,11 +419,13 @@
     $dataGridTable.find('tbody').on('click', '#PROCESS_BACK', function () {
         var data = getRowData(this);
         var id = data.ID;
-        var SPD_ID = data.SPD_ID;
+        var BUS_PROCESS = data.BUS_PROCESS;
+        var BUS_PROCESS2 = data.BUS_PROCESS2;
 
         process.showProcessHome({
             ID: id,
-            SPD_ID: SPD_ID,
+            BUS_PROCESS: BUS_PROCESS,
+            BUS_PROCESS2: BUS_PROCESS2,
             PROCESS_TYPE: '${ProcessType.BACK.toString()}',
             dataGrid: $dataGrid
         });
@@ -431,11 +435,13 @@
     $dataGridTable.find('tbody').on('click', '#PROCESS_WITHDRAW', function () {
         var data = getRowData(this);
         var id = data.ID;
-        var SPD_ID = data.SPD_ID;
+        var BUS_PROCESS = data.BUS_PROCESS;
+        var BUS_PROCESS2 = data.BUS_PROCESS2;
 
         process.processWithdraw({
             ID: id,
-            SPD_ID: SPD_ID,
+            BUS_PROCESS: BUS_PROCESS,
+            BUS_PROCESS2: BUS_PROCESS2,
             dataGrid: $dataGrid
         });
     });
@@ -444,11 +450,13 @@
     $dataGridTable.find('tbody').on('click', '#PROCESS_LOG', function () {
         var data = getRowData(this);
         var id = data.ID;
-        var SPD_ID = data.SPD_ID;
+        var BUS_PROCESS = data.BUS_PROCESS;
+        var BUS_PROCESS2 = data.BUS_PROCESS2;
 
         process.processLog({
             ID: id,
-            SPD_ID: SPD_ID,
+            BUS_PROCESS: BUS_PROCESS,
+            BUS_PROCESS2: BUS_PROCESS2,
         });
     });
 

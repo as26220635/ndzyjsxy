@@ -1632,6 +1632,36 @@ classSwitch = {
     }
 }
 
+/***
+ * 自动禁用子类的选择
+ * @param parentId
+ * @param childrenId
+ */
+function initCombobxSelectDisabled(parentId,childrenId,childrenVal) {
+    //吧option放入var中
+    var $parent = $('#'+parentId);
+    var $children = $('#'+childrenId);
+    var options = [];
+    $children.find('option').each(function (index,element) {
+        options[index] = $(this).prop('outerHTML');
+    });
+    $children.find('option[data-parent-id!="' + $parent.val() + '"][value!=""]').remove();
+    if(!isEmpty(childrenVal)){
+        $children.val(childrenVal).trigger("change");
+    }
+    $parent.on('change',function() {
+        var id = $(this).val();
+        $children.val('').trigger("change");
+        $children.find('option').remove();
+        for(var i in options){
+            var option = options[i];
+            $children.append(option);
+        }
+        $children.find('option[data-parent-id!="'+id+'"][value!=""]').remove();
+        $children.change();
+    });
+}
+
 /**
  * 凭借option
  * @param options
