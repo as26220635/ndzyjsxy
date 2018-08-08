@@ -30,7 +30,7 @@
     <div class="form-group has-feedback">
         <label>宽度:</label>
         <input type="text" class="form-control" ${fns:validField("SYS_CONFIGURE_COLUMN","SCC_WIDTH")}
-               value="${COLUMN.SCC_WIDTH}">
+               value="${empty COLUMN ? '100px' :COLUMN.SCC_WIDTH}">
     </div>
     <div class="form-group has-feedback">
         <label>样式CLASS:</label>

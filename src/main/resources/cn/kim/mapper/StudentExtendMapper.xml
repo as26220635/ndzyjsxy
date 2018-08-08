@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kim.mapper.StudentExtendMapper">
+
+    <!--查询学生考勤-->
+    <select id="selectStudentAttendance" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BSA.*,BS.BS_NAME
+        FROM(
+            SELECT * FROM BUS_STUDENT_ATTENDANCE
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+            </where>
+        )BSA
+        INNER JOIN BUS_STUDENT BS ON BS.ID = BSA.BS_ID
+    </select>
+
+    <!--插入学生考勤-->
+    <insert id="insertStudentAttendance" parameterType="java.util.Map">
+        INSERT INTO BUS_STUDENT_ATTENDANCE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ID != null">ID,</if>
+            <if test="BS_ID != null">BS_ID,</if>
+            <if test="BSA_YEAR != null">BSA_YEAR,</if>
+            <if test="BSA_SEMESTER != null">BSA_SEMESTER,</if>
+            <if test="BSA_WEEK != null">BSA_WEEK,</if>
+            <if test="BSA_LATE != null">BSA_LATE,</if>
+            <if test="BSA_ABSENTEEISM != null">BSA_ABSENTEEISM,</if>
+            <if test="BSA_ENTRY_TIME != null">BSA_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ID != null">#{ID},</if>
+            <if test="BS_ID != null">#{BS_ID},</if>
+            <if test="BSA_YEAR != null">#{BSA_YEAR},</if>
+            <if test="BSA_SEMESTER != null">#{BSA_SEMESTER},</if>
+            <if test="BSA_WEEK != null">#{BSA_WEEK},</if>
+            <if test="BSA_LATE != null">#{BSA_LATE},</if>
+            <if test="BSA_ABSENTEEISM != null">#{BSA_ABSENTEEISM},</if>
+            <if test="BSA_ENTRY_TIME != null">#{BSA_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑学生考勤-->
+    <update id="updateStudentAttendance" parameterType="java.util.Map">
+        UPDATE BUS_STUDENT_ATTENDANCE
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BS_ID != null">BS_ID=#{BS_ID},</if>
+            <if test="BSA_YEAR != null">BSA_YEAR=#{BSA_YEAR},</if>
+            <if test="BSA_SEMESTER != null">BSA_SEMESTER=#{BSA_SEMESTER},</if>
+            <if test="BSA_WEEK != null">BSA_WEEK=#{BSA_WEEK},</if>
+            <if test="BSA_LATE != null">BSA_LATE=#{BSA_LATE},</if>
+            <if test="BSA_ABSENTEEISM != null">BSA_ABSENTEEISM=#{BSA_ABSENTEEISM},</if>
+            <if test="BSA_ENTRY_TIME != null">BSA_ENTRY_TIME=#{BSA_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除学生考勤-->
+    <delete id="deleteStudentAttendance" parameterType="java.util.Map">
+		DELETE FROM BUS_STUDENT_ATTENDANCE WHERE ID = #{ID}
+	</delete>
+</mapper>

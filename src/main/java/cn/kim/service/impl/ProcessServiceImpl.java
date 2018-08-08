@@ -44,7 +44,11 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
      * @return
      */
     @Override
-    public String showDataGridProcessBtn(String id, String process, String process2) {
+    public String showDataGridProcessBtn(String id, String process, String process2) throws Exception {
+        if (isEmpty(id) || isEmpty(process) || isEmpty(process2)) {
+            throw new CustomException("参数错误!");
+        }
+
         String resultBtn = "";
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
         paramMap.put("BUS_PROCESS", process);
@@ -261,6 +265,10 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             //办理意见
             String logOpinion = toString(mapParam.get("SPL_OPINION"));
 
+            if (isEmpty(scheduleTableId) || isEmpty(definitionId) || isEmpty(processType)) {
+                throw new CustomException("参数错误!");
+            }
+
             //流程停用就没有按钮
             if (isProcessDiscontinuation(definitionId)) {
                 throw new CustomException("流程已经停用!");
@@ -476,6 +484,9 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             //流程办理ID
             String scheduleTableId = toString(mapParam.get("SPS_TABLE_ID"));
 
+            if (isEmpty(definitionId) || isEmpty(scheduleTableId)) {
+                throw new CustomException("参数错误!");
+            }
 
             Map<String, Object> resultIUMap = null;
             //查询流程进度
@@ -554,7 +565,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
 
         return getDefinitionTree(definitionList, toString(mapParam.get("ID")));
     }
-
+    
 
     @Override
     @Transactional

@@ -744,7 +744,7 @@ tableView = {
 }
 /**
  * 验证
- * @type {{validationDate: validator.validationDate, formValidate: validator.formValidate, fieidValidate: validator.fieidValidate, init: validator.init}}
+ * @type {{validationDate: validator.validationDate, formValidate: validator.formValidate, fieldValidate: validator.fieldValidate, init: validator.init}}
  */
 validator = {
     //验证2个日期大小
@@ -760,7 +760,7 @@ validator = {
         return form.data("bootstrapValidator").isValid();
     },
     //验证字段
-    fieidValidate: function (form, id) {
+    fieldValidate: function (form, id) {
         form.data('bootstrapValidator')
             .updateStatus(id, 'NOT_VALIDATED', null)
             .validateField(id);
@@ -807,7 +807,7 @@ model = {
             isConfirm: false,
             okBtnName: model.btnName.SAVE,
             closeBtnName: model.btnName.CLOSE,
-            id : uuid(),
+            id: uuid(),
         }, options);
 
         //对象
@@ -976,6 +976,7 @@ choiceBox = {
             url: '',
             modelSize: model.size.NONE,
             footerModel: model.footerModel.ADMIN,
+            isCancel: true
         }, options);
 
         //初始化table
@@ -985,7 +986,8 @@ choiceBox = {
         var tableFields = '';
         //tabel查询字段
         var tableDatas = [];
-        //添加序号字段
+        //添加选择框 序号字段
+        settings.fields.unshift({min_width: 30, name: '', data: null});
         settings.fields.unshift({min_width: 30, name: '序号', data: null});
 
         for (var i in settings.fields) {
@@ -1000,7 +1002,7 @@ choiceBox = {
         }
 
         var tableClass = tableDatas.length > 2 ? 'table-overflow-x' : '';
-        var tableContent = '<table id="' + tableId + '" class="table table-bordered table-striped ' + tableClass + '" style="width: 100%"><thead><tr>' + tableFields + '</tr></thead></table>';
+        var tableContent = '<table id="' + tableId + '" class="table table-bordered table-striped table-overflow-x ' + tableClass + '" style="width: 100%"><thead><tr>' + tableFields + '</tr></thead></table>';
 
         //初始化搜索框
         var searchInputs = '';
@@ -1016,7 +1018,7 @@ choiceBox = {
                 // 扩展input的参数
                 var extend = map.extend;
 
-                searchInputs += '<div class="form-group form-group-search"><label for="' + name + '" class="col-sm-4 control-label">' + label + '</label><div class="col-sm-8"><input name="' + name + '" type="text" class="form-control form-control-input-search" ' + extend + '></div></div>';
+                searchInputs += '<div class="form-group col-sm-6"><label for="' + name + '" class="col-sm-4 control-label">' + label + '</label><div class="col-sm-8"><input name="' + name + '" type="text" class="form-control form-control-input-search" ' + extend + '></div></div>';
             }
         }
 
@@ -1042,6 +1044,7 @@ choiceBox = {
             content: html,
             footerModel: settings.footerModel,
             size: settings.modelSize,
+            isConfirm: true,
             //HTML加载完成回调
             loadContentComplete: function () {
                 $table = tableView.init({
@@ -1057,6 +1060,12 @@ choiceBox = {
                     url: settings.url,
                     //对应上面thead里面的序列
                     columns: tableDatas,
+                    columnDefs: [
+                        {
+                            className: 'select-checkbox',
+                            targets: 0
+                        },
+                    ],
                     //关闭缓存
                     cache: false,
                     //添加搜索参数
@@ -1065,10 +1074,9 @@ choiceBox = {
                             param[i] = settings.searchParams[i];
                         }
                     },
-                    endCallback: function () {
-                        $table.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-                            cell.innerHTML = i + 1;
-                        });
+                    endCallback: function (api) {
+                        tableView.choiceBox(api, 0);
+                        tableView.orderNumber(api, 1);
                     },
                     //设置
                     setting: function ($table) {
@@ -1096,8 +1104,20 @@ choiceBox = {
                 ;
             },
             //点击回调
-            confirm: function (model) {
-                options.confirm(model, $table.rows('.selected').data());
+            confirm: function ($model) {
+                var data = $table.rows('.selected').data();
+                if(settings.isCancel == true && data.length != 0){
+                    model.hide($model);
+                }
+                if(settings.isCancel == true && data.length == 0){
+                    demo.showNotify(ALERT_WARNING, '请选择!');
+                    return;
+                }
+                if (settings.selectMode == choiceBox.mode.SINGLE) {
+                    options.confirm($model, data[0]);
+                } else if (settings.selectMode == choiceBox.mode.MULTIPLE) {
+                    options.confirm($model, data);
+                }
             }
         });
     }
@@ -1637,27 +1657,27 @@ classSwitch = {
  * @param parentId
  * @param childrenId
  */
-function initCombobxSelectDisabled(parentId,childrenId,childrenVal) {
+function initCombobxSelectDisabled(parentId, childrenId, childrenVal) {
     //吧option放入var中
-    var $parent = $('#'+parentId);
-    var $children = $('#'+childrenId);
+    var $parent = $('#' + parentId);
+    var $children = $('#' + childrenId);
     var options = [];
-    $children.find('option').each(function (index,element) {
+    $children.find('option').each(function (index, element) {
         options[index] = $(this).prop('outerHTML');
     });
     $children.find('option[data-parent-id!="' + $parent.val() + '"][value!=""]').remove();
-    if(!isEmpty(childrenVal)){
+    if (!isEmpty(childrenVal)) {
         $children.val(childrenVal).trigger("change");
     }
-    $parent.on('change',function() {
+    $parent.on('change', function () {
         var id = $(this).val();
         $children.val('').trigger("change");
         $children.find('option').remove();
-        for(var i in options){
+        for (var i in options) {
             var option = options[i];
             $children.append(option);
         }
-        $children.find('option[data-parent-id!="'+id+'"][value!=""]').remove();
+        $children.find('option[data-parent-id!="' + id + '"][value!=""]').remove();
         $children.change();
     });
 }

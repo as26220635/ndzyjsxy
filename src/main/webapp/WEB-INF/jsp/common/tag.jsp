@@ -215,8 +215,14 @@
 <c:set var="TEACHER_DELETE_URL" value="${TEACHER_BASE_URL}delete"/>
 <%--学生--%>
 <c:set var="STUDENT_BASE_URL" value="${MANAGER_URL}student/"/>
+<c:set var="STUDENT_LIST_URL" value="${STUDENT_BASE_URL}list"/>
 <c:set var="STUDENT_ADD_URL" value="${STUDENT_BASE_URL}add"/>
 <c:set var="STUDENT_UPDATE_URL" value="${STUDENT_BASE_URL}update"/>
 <c:set var="STUDENT_ADDOUNT_INFO_URL" value="${STUDENT_BASE_URL}accountInfo"/>
 <c:set var="STUDENT_RESET_PWD_URL" value="${STUDENT_BASE_URL}resetPwd"/>
 <c:set var="STUDENT_DELETE_URL" value="${STUDENT_BASE_URL}delete"/>
+<%--学生考勤--%>
+<c:set var="STUDENT_ATTENDANCE_BASE_URL" value="${STUDENT_BASE_URL}attendance/"/>
+<c:set var="STUDENT_ATTENDANCE_ADD_URL" value="${STUDENT_ATTENDANCE_BASE_URL}add"/>
+<c:set var="STUDENT_ATTENDANCE_UPDATE_URL" value="${STUDENT_ATTENDANCE_BASE_URL}update"/>
+<c:set var="STUDENT_ATTENDANCE_DELETE_URL" value="${STUDENT_ATTENDANCE_BASE_URL}delete"/>

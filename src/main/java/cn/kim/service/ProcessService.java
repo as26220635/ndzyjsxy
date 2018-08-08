@@ -1,6 +1,7 @@
 package cn.kim.service;
 
 import cn.kim.entity.Tree;
+import cn.kim.exception.CustomException;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public interface ProcessService extends BaseService {
      * @param process2
      * @return
      */
-    String showDataGridProcessBtn(String id, String process,String process2);
+    String showDataGridProcessBtn(String id, String process,String process2) throws Exception;
 
     /**
      * 获取当前项目的下一步步骤

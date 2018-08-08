@@ -79,6 +79,7 @@ public class Datebox extends BaseTagSupport {
             builder.append("<input " + toTagId(custom, id, name) + " type='text' class='form-control form-control-input-search' placeholder='" + placeholder + "' value='" + value + "'>");
 
             builder.append("<script>datepick.init({obj: $('#" + id + "'),model:" + getFormat(type) + ",clear: " + TextUtil.toString(clear) + "});</script>");
+            builder.append("<script>$('#"+id+"').on('hide', function (e) {validator.fieldValidate($('#"+id+"').parents('form:first'), '"+id+"');});</script>");
             out.print(builder.toString());
         } catch (Exception e) {
             e.printStackTrace();

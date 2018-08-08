@@ -5,21 +5,64 @@
 
     <!--查询学生-->
     <select id="selectStudent" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME
+        SELECT BS.*
         FROM(
+            SELECT BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME
+            FROM(
             SELECT * FROM BUS_STUDENT
             <where>
                 <if test="ID != NULL and ID != ''">
                     AND ID = #{ID}
                 </if>
             </where>
+            )BS
+            INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
+            INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
+            LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'BUS_SEX' AND SDI.SDI_CODE = BS.BS_SEX
+            LEFT JOIN SYS_DICT_INFO NDI ON NDI.SDT_CODE = 'BUS_NATION' AND NDI.SDI_CODE = BS.BS_NATION
         )BS
-        INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
-        INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
-        LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'BUS_SEX' AND SDI.SDI_CODE = BS.BS_SEX
-        LEFT JOIN SYS_DICT_INFO NDI ON NDI.SDT_CODE = 'BUS_NATION' AND NDI.SDI_CODE = BS.BS_NATION
+        <where>
+            <if test="whereClause != null and whereClause != ''">
+                ${whereClause}
+            </if>
+        </where>
+        <if test="orderByClause != null and orderByClause != ''">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
     </select>
 
+    <!--查询学生数量-->
+    <select id="selectStudentCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM(
+            SELECT BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME
+            FROM(
+            SELECT * FROM BUS_STUDENT
+            <where>
+                <if test="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+            </where>
+            )BS
+            INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
+            INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
+            LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'BUS_SEX' AND SDI.SDI_CODE = BS.BS_SEX
+            LEFT JOIN SYS_DICT_INFO NDI ON NDI.SDT_CODE = 'BUS_NATION' AND NDI.SDI_CODE = BS.BS_NATION
+        )BS
+        <where>
+            <if test="whereClause != null and whereClause != ''">
+                ${whereClause}
+            </if>
+        </where>
+    </select>
     <!--插入学生-->
     <insert id="insertStudent" parameterType="java.util.Map">
         INSERT INTO BUS_STUDENT

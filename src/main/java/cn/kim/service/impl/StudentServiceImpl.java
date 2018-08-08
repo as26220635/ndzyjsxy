@@ -5,10 +5,13 @@ import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.SystemEnum;
+import cn.kim.entity.DataTablesView;
+import cn.kim.entity.QuerySet;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.StudentService;
+import cn.kim.util.CommonUtil;
 import cn.kim.util.PasswordMd5;
 import cn.kim.util.RandomSalt;
 import com.google.common.collect.Maps;
@@ -25,6 +28,47 @@ import java.util.Map;
  */
 @Service
 public class StudentServiceImpl extends BaseServiceImpl implements StudentService {
+
+    @Override
+    public DataTablesView<?> selectStudentDataTablesView(Map<String, Object> mapParam) {
+        DataTablesView<Map<String, Object>> dataTablesView = new DataTablesView<>();
+        QuerySet querySet = new QuerySet();
+
+        //学生姓名
+        if (!isEmpty(mapParam.get("BS_NAME"))) {
+            querySet.set(QuerySet.LIKE, "BS_NAME", mapParam.get("BS_NAME"));
+        }
+
+        //学号
+        if (!isEmpty(mapParam.get("BS_NUMBER"))) {
+            querySet.set(QuerySet.LIKE, "BS_NUMBER", mapParam.get("BS_NUMBER"));
+        }
+
+        //身份证
+        if (!isEmpty(mapParam.get("BS_ID_CARD"))) {
+            querySet.set(QuerySet.LIKE, "BS_ID_CARD", mapParam.get("BS_ID_CARD"));
+        }
+
+        int offset = toInt(mapParam.get("start"));
+        int limit = toInt(mapParam.get("length"));
+
+        if (limit != -1) {
+            querySet.setOffset(offset);
+            querySet.setLimit(limit);
+        }
+        querySet.setOrderByClause("CONVERT(ID,SIGNED) DESC");
+
+        long count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCount", querySet.getWhereMap());
+        dataTablesView.setRecordsTotal(count);
+        if (limit != -1) {
+            dataTablesView.setTotalPages(CommonUtil.getPage(count, limit));
+        }
+
+        List<Map<String, Object>> dataList = baseDao.selectList(NameSpace.StudentMapper, "selectStudent", querySet.getWhereMap());
+        dataTablesView.setData(dataList);
+
+        return dataTablesView;
+    }
 
     @Override
     public Map<String, Object> selectStudent(Map<String, Object> mapParam) {
@@ -125,4 +169,88 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         return resultMap;
     }
 
+    /***********    学生考勤    *********/
+
+    @Override
+    public Map<String, Object> selectStudentAttendance(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", mapParam.get("ID"));
+        return baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentAttendance", paramMap);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insertAndUpdateStudentAttendance(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+            String id = toString(mapParam.get("ID"));
+
+            paramMap.put("BS_ID", mapParam.get("BS_ID"));
+            paramMap.put("BSA_YEAR", mapParam.get("BSA_YEAR"));
+            paramMap.put("BSA_SEMESTER", mapParam.get("BSA_SEMESTER"));
+            paramMap.put("BSA_WEEK", mapParam.get("BSA_WEEK"));
+            paramMap.put("BSA_LATE", mapParam.get("BSA_LATE"));
+            paramMap.put("BSA_ABSENTEEISM", mapParam.get("BSA_ABSENTEEISM"));
+            paramMap.put("BSA_ENTRY_TIME", mapParam.get("BSA_ENTRY_TIME"));
+
+            if (isEmpty(id)) {
+                id = getId();
+                paramMap.put("ID", id);
+                paramMap.put("BSA_ENTRY_TIME", getDate());
+
+                baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentAttendance", paramMap);
+                resultMap.put(MagicValue.LOG, "添加学生考勤:" + toString(paramMap));
+            } else {
+                Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+                oldMap.put("ID", id);
+                oldMap = selectStudentAttendance(oldMap);
+
+                baseDao.update(NameSpace.StudentExtendMapper, "updateStudentAttendance", paramMap);
+                resultMap.put(MagicValue.LOG, "更新学生考勤,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+            }
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteStudentAttendance(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = DELETE_ERROR;
+        try {
+            if (isEmpty(mapParam.get("ID"))) {
+                throw new CustomException("ID不能为空!");
+            }
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            String id = toString(mapParam.get("ID"));
+
+            //删除学生考勤表
+            paramMap.clear();
+            paramMap.put("ID", id);
+            Map<String, Object> oldMap = selectStudentAttendance(paramMap);
+
+            baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentAttendance", paramMap);
+
+            resultMap.put(MagicValue.LOG, "删除学生考勤,信息:" + toString(oldMap));
+            status = STATUS_SUCCESS;
+            desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
 }
