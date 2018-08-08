@@ -31,10 +31,14 @@
                    url="${CONFIGURE_TREE_DATA_URL}" title="选择配置列表"></s:treeBox>
     </div>
     <div class="form-group has-feedback">
-        <label>流程定义:</label>
-        <s:treeBox custom='${fns:validField("SYS_MENU","SPD_ID")}'
-                   value="${MENU.SPD_ID}" nameValue="${MENU.SPD_NAME}"
-                   url="${PROCESS_DEFINITION_TREE_DATA}" title="选择流程定义" modelSize="modal-lg"></s:treeBox>
+    <label>流程大类:</label>
+        <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_MENU","BUS_PROCESS")}'
+                value="${MENU.BUS_PROCESS}" defaultValue="0"></s:combobox>
+    </div>
+    <div class="form-group has-feedback">
+    <label>流程小类:</label>
+        <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_MENU","BUS_PROCESS2")}'
+                value="${MENU.BUS_PROCESS2}" defaultValue="0" level="1"></s:combobox>
     </div>
     <div class="form-group has-feedback">
         <label>是否叶节点:</label>
@@ -74,5 +78,8 @@
         //验证表单
         form: $('#addAndEditForm'),
     });
+    
+    $('#BUS_PROCESS').on('change',function() {
 
+    });
 </script>

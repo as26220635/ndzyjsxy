@@ -77,6 +77,17 @@ public abstract class BaseTagSupport extends RequestContextAwareTag {
         return TextUtil.toString(o);
     }
 
+    protected String toString(String[] strs) {
+        if (isEmpty(strs)) {
+            return "";
+        }
+        StringBuilder builder = new StringBuilder();
+        for (String str : strs) {
+            builder.append(str);
+        }
+        return builder.toString();
+    }
+
     protected boolean toBoolean(Object o) {
         return TextUtil.toBoolean(o);
     }

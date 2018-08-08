@@ -120,13 +120,15 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
             paramMap.put("SM_PARENTID", isEmpty(mapParam.get("SM_PARENTID")) ? MagicValue.ZERO : mapParam.get("SM_PARENTID"));
             paramMap.put("SM_CODE", mapParam.get("SM_CODE"));
             paramMap.put("SM_URL", mapParam.get("SM_URL"));
+            paramMap.put("SM_URL_PARAMS", mapParam.get("SM_URL_PARAMS"));
             paramMap.put("SM_CLASSICON", mapParam.get("SM_CLASSICON"));
+            paramMap.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
+            paramMap.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
             paramMap.put("SM_IS_LEAF", mapParam.get("SM_IS_LEAF"));
             paramMap.put("SM_IS_EXPAND", mapParam.get("SM_IS_EXPAND"));
+            paramMap.put("SM_TYPE", mapParam.get("SM_TYPE"));
             paramMap.put("SM_ORDER", mapParam.get("SM_ORDER"));
             paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));
-            paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
-            paramMap.put("SM_URL_PARAMS", mapParam.get("SM_URL_PARAMS"));
 
             if (isEmpty(id)) {
                 id = getId();

@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 07/08/2018 23:27:00
+ Date: 08/08/2018 14:55:47
 */
 
 SET NAMES utf8mb4;
@@ -790,6 +790,7 @@ INSERT INTO `sys_dict_type` VALUES ('5', '系统_按钮样式', 'SYS_BUTTON_CLAS
 INSERT INTO `sys_dict_type` VALUES ('6', '系统_对齐方式', 'SYS_ALIGN', NULL, NULL, 1, 0);
 INSERT INTO `sys_dict_type` VALUES ('7', '系统_角色类型', 'SYS_ROLE_TYPE', NULL, NULL, 1, 0);
 INSERT INTO `sys_dict_type` VALUES ('8', '系统_搜索类型', 'SYS_SEARCH_TYPE', NULL, NULL, 1, 0);
+INSERT INTO `sys_dict_type` VALUES ('9', '系统_流程定义', 'SYS_PROCESS_TYPE', NULL, NULL, 1, 0);
 
 -- ----------------------------
 -- Table structure for sys_file
@@ -4105,6 +4106,10 @@ INSERT INTO `sys_log` VALUES ('490383335227392', '1', NULL, '系统发现异常'
 INSERT INTO `sys_log` VALUES ('490804086833152', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-03-27 00:44:06', '0', 0);
 INSERT INTO `sys_log` VALUES ('491650866479104', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-03-27 00:47:28', '0', 0);
 INSERT INTO `sys_log` VALUES ('491735029383168', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-03-27 00:47:48', '0', 0);
+INSERT INTO `sys_log` VALUES ('49253346141274112', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 0, '2018-08-08 14:09:02', '1', 9);
+INSERT INTO `sys_log` VALUES ('49253371143520256', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-08 14:09:08', '1', 9);
+INSERT INTO `sys_log` VALUES ('49253507240296448', '1', NULL, '修改密码', '0:0:0:0:0:0:0:1', 0, '2018-08-08 14:09:40', '1', 2);
+INSERT INTO `sys_log` VALUES ('49253522876661760', '1', NULL, '修改密码', '0:0:0:0:0:0:0:1', 1, '2018-08-08 14:09:44', '1', 2);
 INSERT INTO `sys_log` VALUES ('493974145990656', '1', NULL, 'SQL运行错误', '0:0:0:0:0:0:0:1', 0, '2018-03-27 00:56:41', '0', 0);
 INSERT INTO `sys_log` VALUES ('493974145990657', '1', NULL, 'SQL运行错误', '0:0:0:0:0:0:0:1', 0, '2018-03-27 00:56:42', '0', 0);
 INSERT INTO `sys_log` VALUES ('5', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-03-22 16:54:08', '1', 9);
@@ -7380,6 +7385,10 @@ INSERT INTO `sys_log_text` VALUES ('490383385559040', '490383335227392', '文件
 INSERT INTO `sys_log_text` VALUES ('490804120387584', '490804086833152', '文件：Collectors.java，错误行数：133，方法：lambda$throwingMerger$0，错误内容：Duplicate key 1');
 INSERT INTO `sys_log_text` VALUES ('491651596288000', '491650866479104', '文件：Collectors.java，错误行数：133，方法：lambda$throwingMerger$0，错误内容：Duplicate key 1');
 INSERT INTO `sys_log_text` VALUES ('491735092297728', '491735029383168', '文件：Collectors.java，错误行数：133，方法：lambda$throwingMerger$0，错误内容：Duplicate key 1');
+INSERT INTO `sys_log_text` VALUES ('49253346317434880', '49253346141274112', '登录失败!第1次!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('49253371214823424', '49253371143520256', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('49253507278045184', '49253507240296448', '弱口令,请重新输入密码!');
+INSERT INTO `sys_log_text` VALUES ('49253523208011776', '49253522876661760', '修改密码');
 INSERT INTO `sys_log_text` VALUES ('493974255042560', '493974145990656', 'SQL运行错误:Unknown column \'bn.id\' in \'order clause\'');
 INSERT INTO `sys_log_text` VALUES ('493974305374208', '493974145990657', 'SQL运行错误:Unknown column \'bn.id\' in \'order clause\'');
 INSERT INTO `sys_log_text` VALUES ('5', '1', '登录成功!登录地址:未知');
@@ -7452,13 +7461,14 @@ DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu`  (
   `ID` char(59) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `SC_ID` char(59) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '配置列表ID',
-  `SPD_ID` char(59) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '流程定义ID',
   `SM_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限名称',
   `SM_PARENTID` char(59) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '父权限ID',
   `SM_CODE` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限编码',
   `SM_URL` varchar(400) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问URL',
   `SM_URL_PARAMS` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '访问URL所带的参数',
   `SM_CLASSICON` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'icon图片class',
+  `BUS_PROCESS` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '流程大类',
+  `BUS_PROCESS2` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '流程小类',
   `SM_IS_LEAF` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否是叶节点',
   `SM_IS_EXPAND` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '是否默认张开节点',
   `SM_TYPE` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户类型:1管理员 2会员',
@@ -7471,65 +7481,65 @@ CREATE TABLE `sys_menu`  (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', '', NULL, '系统管理', '0', 'SYSTEM', '', NULL, 'mdi mdi-laptop', '1', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('13358417838080', '3316994321416192', '', '操作员管理', '1', 'SYSTEM:OPERATOR', 'admin/dataGrid/', '', 'mdi mdi-account-group', '0', '', '1', 7, 1);
-INSERT INTO `sys_menu` VALUES ('1427690443767808', '', NULL, '编辑', '2', 'SYSTEM:MENU_UPDATE', '', NULL, '', '0', NULL, '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('1448716162564096', '', NULL, '编辑', '3', 'SYSTEM:BUTTON_UPDATE', '', NULL, '', '0', NULL, '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('1451155909509120', '2910894828814336', NULL, '字典管理', '1', 'SYSTEM:DICT_TYPE', 'admin/dataGrid/', '', 'mdi mdi-zip-box', '0', '', '1', 5, 1);
-INSERT INTO `sys_menu` VALUES ('1560059138015232', '', NULL, '编辑', '8', 'SYSTEM:CONFIGURE_UPDATE', '', NULL, '', '0', NULL, '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('1757509987598336', '1758638922268672', NULL, '设置字段', '8', 'SYSTEM:CONFIGURE_SET_COLUMN', 'admin/dataGrid/', NULL, '', '0', NULL, '1', 2, 1);
-INSERT INTO `sys_menu` VALUES ('1846593582006272', '', NULL, '编辑', '1757509987598336', 'SYSTEM:CONFIGURE_SET_COLUMN_UPDATE', '', NULL, '', '0', NULL, '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('2', '2997414705233920', NULL, '菜单管理', '1', 'SYSTEM:MENU', 'admin/dataGrid/', NULL, 'mdi mdi-menu', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('20766815625936896', '20764730981351424', NULL, '组', '7', 'SYSTEM:VALIDATE_GROUP', 'admin/dataGrid/', NULL, '', '0', '0', '1', 4, 1);
-INSERT INTO `sys_menu` VALUES ('21130604443598848', '', NULL, '系统配置', '1', 'SYSTEM:ALLOCATION', '', NULL, 'mdi mdi-settings', '1', '', '1', 99, 1);
-INSERT INTO `sys_menu` VALUES ('21131205961318400', '', NULL, '邮箱管理', '21130604443598848', 'SYSTEM:ALLOCATION_EMAIL', 'admin/allocation/email', NULL, 'mdi mdi-email-secure', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('2163592187084800', '1870969903775744', NULL, '设置搜索', '8', 'SYSTEM:CONFIGURE_SET_SEARCH', 'admin/dataGrid/', NULL, '', '0', NULL, '1', 3, 1);
-INSERT INTO `sys_menu` VALUES ('2163861868249088', '', NULL, '编辑', '2163592187084800', 'SYSTEM:CONFIGURE_SET_SEARCH_UPDATE', '', NULL, '', '0', NULL, '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('2258672239509504', '', NULL, '编辑', '7', 'SYSTEM:VALIDATE_UPDATE', '', NULL, '', '0', NULL, '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('2258969972178944', '2265709233045504', NULL, '设置字段', '7', 'SYSTEM:VALIDATE_SET_FIELD', 'admin/dataGrid/', NULL, '', '0', NULL, '1', 2, 1);
-INSERT INTO `sys_menu` VALUES ('2269941063483392', '2268726246244352', NULL, '正则管理', '7', 'SYSTEM:VALIDATE_REGEX', 'admin/dataGrid/', NULL, '', '0', NULL, '1', 3, 1);
-INSERT INTO `sys_menu` VALUES ('23657888534757376', '', NULL, '文件上传测试', '21130604443598848', '', 'admin/allocation/fileInputTest', NULL, '', '0', '', '1', 90, 1);
-INSERT INTO `sys_menu` VALUES ('26476504758091776', '26491587483664384', NULL, '格式管理', '1', 'SYSTEM:FORMAT', 'admin/dataGrid/', '', 'mdi mdi-format-align-left', '0', '', '1', 8, 1);
-INSERT INTO `sys_menu` VALUES ('26511186237325312', '', NULL, '编辑', '26476504758091776', 'SYSTEM:FORMAT_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('26571410583322624', '26568354160443392', NULL, '格式详细', '26476504758091776', 'SYSTEM:FORMAT_DETAIL', 'admin/dataGrid/', '', '', '0', '', '1', 10, 1);
-INSERT INTO `sys_menu` VALUES ('26571551922978816', '', NULL, '编辑', '26571410583322624', 'SYSTEM:FORMAT_DETAIL_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('26577007949119488', '', NULL, '流程管理', '1', 'SYSTEM:PROCESS', '', '', 'mdi mdi-stack-overflow', '1', '', '1', 9, 1);
-INSERT INTO `sys_menu` VALUES ('26577844645658624', '26721805670547456', NULL, '流程定义', '26577007949119488', 'SYSTEM:PROCESS_DEFINITION', 'admin/dataGrid/', '', 'mdi mdi-book-open', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('26579469829406720', '', NULL, '标签列表', '26577844645658624', 'SYSTEM:PROCESS_DEFINITION_TABS', 'admin/tabs', 'SF_CODE=SYS_PROCESS_DEFINITION', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('26714856669315072', '27187947212111872', NULL, '流程步骤', '26579469829406720', 'SYSTEM:PROCESS_STEP', 'admin/dataGrid/', '', '', '0', '', '1', 20, 1);
-INSERT INTO `sys_menu` VALUES ('26715728707059712', '27999782165282816', NULL, '启动角色', '26579469829406720', 'SYSTEM:PROCESS_START', 'admin/dataGrid/', '', '', '0', '', '1', 30, 1);
-INSERT INTO `sys_menu` VALUES ('26845813934129152', '', NULL, '流程定义', '26579469829406720', 'SYSTEM:PROCESS_DEFINITION_UPDATE', 'admin/process/definition/update', '', '', '0', '', '1', 10, 1);
-INSERT INTO `sys_menu` VALUES ('28019952082485248', '28020396255084544', '26816452786913280', '测试流程', '21130604443598848', '', 'admin/dataGrid/', '', '', '0', '', '1', 91, 1);
-INSERT INTO `sys_menu` VALUES ('2910350022279168', '2912701923721216', NULL, '字典信息', '1451155909509120', 'SYSTEM:DICTINFO', 'admin/dataGrid/', NULL, '', '0', '1', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('3', '2', NULL, '按钮管理', '1', 'SYSTEM:BUTTON', 'admin/dataGrid/', NULL, 'mdi mdi-equal-box', '0', NULL, '1', 2, 1);
-INSERT INTO `sys_menu` VALUES ('33081241360138240', '33080508233547776', '', '流程进度', '26577007949119488', 'SYSTEM:PROCESS_SCHEDULE', 'admin/dataGrid/', '', 'mdi mdi-stack-overflow', '0', '', '1', 10, 1);
-INSERT INTO `sys_menu` VALUES ('3316536806735872', '', NULL, '编辑', '13358417838080', 'SYSTEM:OPERATOR_UPDATE', '', NULL, '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('3547951557246976', '3545555946962944', NULL, '账户管理', '13358417838080', 'SYSTEM:OPERATOR_SUB', 'admin/dataGrid/', NULL, '', '0', '', '1', 2, 1);
-INSERT INTO `sys_menu` VALUES ('38116041032728576', '', '', '基础信息管理', '0', 'INFO', '', '', 'mdi mdi-information-variant', '1', '', '1', 20, 1);
-INSERT INTO `sys_menu` VALUES ('38161659570683904', '38163489528741888', '', '部门管理', '38116041032728576', 'INFO:DIVISION', 'admin/dataGrid/', '', 'mdi mdi-division', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('38161659570683905', '38163489528741889', '', '系部管理', '38116041032728576', 'INFO:DEPARTMENT', 'admin/dataGrid/', '', 'mdi mdi-division', '0', '', '1', 30, 1);
-INSERT INTO `sys_menu` VALUES ('38162771866550272', '', '', '编辑', '38161659570683904', 'INFO:DIVISION_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('38162771866550273', '', '', '编辑', '38161659570683905', 'INFO:DEPARTMENT_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('4103758959083520', '', NULL, '编辑', '9', 'SYSTEM:ROLE_UPDATE', '', NULL, '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('48295058385928192', '48293001511829504', '', '部门人员管理', '38116041032728576', 'INFO:DIVISION_PERSONNEL', 'admin/dataGrid/', '', 'mdi mdi-account-multiple', '0', '', '1', 20, 1);
-INSERT INTO `sys_menu` VALUES ('48295058385928193', '48293001511829505', '', '系部人员管理', '38116041032728576', 'INFO:DEPARTMENT_PERSONNEL', 'admin/dataGrid/', '', 'mdi mdi-account-multiple', '0', '', '1', 40, 1);
-INSERT INTO `sys_menu` VALUES ('48304916703215616', '', '', '编辑', '48295058385928192', 'INFO:DIVISION_PERSONNEL_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('48304916703215617', '', '', '编辑', '48295058385928193', 'INFO:DEPARTMENT_PERSONNEL_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('48614104260149248', '48612439985487872', '', '班级管理', '38116041032728576', 'INFO:CLASS', 'admin/dataGrid/', '', 'mdi mdi-desktop-classic', '0', '', '1', 50, 1);
-INSERT INTO `sys_menu` VALUES ('48614229862776832', '', '', '编辑', '48614104260149248', 'INFO:CLASS_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('48667624430632960', '48666703227256832', '', '教师管理', '38116041032728576', 'INFO:TEACHER', 'admin/dataGrid/', '', 'mdi mdi-school', '0', '', '1', 60, 1);
-INSERT INTO `sys_menu` VALUES ('48673777285857280', '', '', '编辑', '48667624430632960', 'INFO:TEACHER_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('48892124845834240', '48890586014416896', '', '学生管理', '49027088874733568', 'STUDENT:BASE', 'admin/dataGrid/', '', 'mdi mdi-account-multiple-outline', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('48892279221387264', '', '', '编辑', '48892124845834240', 'STUDENT:BASE_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('49027088874733568', '', '', '学生管理', '0', 'STUDENT', '', '', 'mdi mdi-account-multiple-outline', '1', '', '1', 30, 1);
-INSERT INTO `sys_menu` VALUES ('49027774555357184', '', '', '考勤管理', '49027088874733568', 'STUDENT:ATTENDANCE', 'admin/dataGrid/', '', 'mdi mdi-book-open', '0', '', '1', 10, 1);
-INSERT INTO `sys_menu` VALUES ('49028146267160576', '', '', '处分管理', '49027088874733568', 'STUDENT:PUNISHMENT', 'admin/dataGrid/', '', 'mdi mdi-book-multiple', '0', '', '1', 20, 1);
-INSERT INTO `sys_menu` VALUES ('49029176400805888', '', '', '编辑', '49027774555357184', 'STUDENT:ATTENDANCE_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('49029256612675584', '', '', '编辑', '49028146267160576', 'STUDENT:PUNISHMENT_UPDATE', '', '', '', '0', '', '1', 1, 1);
-INSERT INTO `sys_menu` VALUES ('49030149684854784', '', '', '迟到旷课处分配置', '21130604443598848', 'SYSTEM:ALLOCATION_ABSENTEEISM', 'admin/allocation/absenteeism', '', 'mdi mdi-close-outline', '0', '', '1', 20, 1);
-INSERT INTO `sys_menu` VALUES ('7', '2244279544053760', NULL, '验证管理', '1', 'SYSTEM:VALIDATE', 'admin/dataGrid/', NULL, 'mdi mdi-security', '0', NULL, '1', 3, 1);
-INSERT INTO `sys_menu` VALUES ('8', '1', NULL, '配置列表管理', '1', 'SYSTEM:CONFIGURE', 'admin/dataGrid/', NULL, 'mdi mdi-view-list', '0', NULL, '1', 4, 1);
-INSERT INTO `sys_menu` VALUES ('9', '3', NULL, '角色管理', '1', 'SYSTEM:ROLE', 'admin/dataGrid/', NULL, 'mdi mdi-account-settings-variant', '0', '', '1', 6, 1);
+INSERT INTO `sys_menu` VALUES ('1', '', '系统管理', '0', 'SYSTEM', '', NULL, 'mdi mdi-laptop', NULL, NULL, '1', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('13358417838080', '3316994321416192', '操作员管理', '1', 'SYSTEM:OPERATOR', 'admin/dataGrid/', '', 'mdi mdi-account-group', NULL, NULL, '0', '', '1', 7, 1);
+INSERT INTO `sys_menu` VALUES ('1427690443767808', '', '编辑', '2', 'SYSTEM:MENU_UPDATE', '', NULL, '', NULL, NULL, '0', NULL, '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('1448716162564096', '', '编辑', '3', 'SYSTEM:BUTTON_UPDATE', '', NULL, '', NULL, NULL, '0', NULL, '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('1451155909509120', '2910894828814336', '字典管理', '1', 'SYSTEM:DICT_TYPE', 'admin/dataGrid/', '', 'mdi mdi-zip-box', NULL, NULL, '0', '', '1', 5, 1);
+INSERT INTO `sys_menu` VALUES ('1560059138015232', '', '编辑', '8', 'SYSTEM:CONFIGURE_UPDATE', '', NULL, '', NULL, NULL, '0', NULL, '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('1757509987598336', '1758638922268672', '设置字段', '8', 'SYSTEM:CONFIGURE_SET_COLUMN', 'admin/dataGrid/', NULL, '', NULL, NULL, '0', NULL, '1', 2, 1);
+INSERT INTO `sys_menu` VALUES ('1846593582006272', '', '编辑', '1757509987598336', 'SYSTEM:CONFIGURE_SET_COLUMN_UPDATE', '', NULL, '', NULL, NULL, '0', NULL, '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('2', '2997414705233920', '菜单管理', '1', 'SYSTEM:MENU', 'admin/dataGrid/', NULL, 'mdi mdi-menu', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('20766815625936896', '20764730981351424', '组', '7', 'SYSTEM:VALIDATE_GROUP', 'admin/dataGrid/', NULL, '', NULL, NULL, '0', '0', '1', 4, 1);
+INSERT INTO `sys_menu` VALUES ('21130604443598848', '', '系统配置', '1', 'SYSTEM:ALLOCATION', '', NULL, 'mdi mdi-settings', NULL, NULL, '1', '', '1', 99, 1);
+INSERT INTO `sys_menu` VALUES ('21131205961318400', '', '邮箱管理', '21130604443598848', 'SYSTEM:ALLOCATION_EMAIL', 'admin/allocation/email', NULL, 'mdi mdi-email-secure', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('2163592187084800', '1870969903775744', '设置搜索', '8', 'SYSTEM:CONFIGURE_SET_SEARCH', 'admin/dataGrid/', NULL, '', NULL, NULL, '0', NULL, '1', 3, 1);
+INSERT INTO `sys_menu` VALUES ('2163861868249088', '', '编辑', '2163592187084800', 'SYSTEM:CONFIGURE_SET_SEARCH_UPDATE', '', NULL, '', NULL, NULL, '0', NULL, '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('2258672239509504', '', '编辑', '7', 'SYSTEM:VALIDATE_UPDATE', '', NULL, '', NULL, NULL, '0', NULL, '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('2258969972178944', '2265709233045504', '设置字段', '7', 'SYSTEM:VALIDATE_SET_FIELD', 'admin/dataGrid/', NULL, '', NULL, NULL, '0', NULL, '1', 2, 1);
+INSERT INTO `sys_menu` VALUES ('2269941063483392', '2268726246244352', '正则管理', '7', 'SYSTEM:VALIDATE_REGEX', 'admin/dataGrid/', NULL, '', NULL, NULL, '0', NULL, '1', 3, 1);
+INSERT INTO `sys_menu` VALUES ('23657888534757376', '', '文件上传测试', '21130604443598848', '', 'admin/allocation/fileInputTest', NULL, '', NULL, NULL, '0', '', '1', 90, 1);
+INSERT INTO `sys_menu` VALUES ('26476504758091776', '26491587483664384', '格式管理', '1', 'SYSTEM:FORMAT', 'admin/dataGrid/', '', 'mdi mdi-format-align-left', NULL, NULL, '0', '', '1', 8, 1);
+INSERT INTO `sys_menu` VALUES ('26511186237325312', '', '编辑', '26476504758091776', 'SYSTEM:FORMAT_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('26571410583322624', '26568354160443392', '格式详细', '26476504758091776', 'SYSTEM:FORMAT_DETAIL', 'admin/dataGrid/', '', '', NULL, NULL, '0', '', '1', 10, 1);
+INSERT INTO `sys_menu` VALUES ('26571551922978816', '', '编辑', '26571410583322624', 'SYSTEM:FORMAT_DETAIL_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('26577007949119488', '', '流程管理', '1', 'SYSTEM:PROCESS', '', '', 'mdi mdi-stack-overflow', NULL, NULL, '1', '', '1', 9, 1);
+INSERT INTO `sys_menu` VALUES ('26577844645658624', '26721805670547456', '流程定义', '26577007949119488', 'SYSTEM:PROCESS_DEFINITION', 'admin/dataGrid/', '', 'mdi mdi-book-open', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('26579469829406720', '', '标签列表', '26577844645658624', 'SYSTEM:PROCESS_DEFINITION_TABS', 'admin/tabs', 'SF_CODE=SYS_PROCESS_DEFINITION', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('26714856669315072', '27187947212111872', '流程步骤', '26579469829406720', 'SYSTEM:PROCESS_STEP', 'admin/dataGrid/', '', '', NULL, NULL, '0', '', '1', 20, 1);
+INSERT INTO `sys_menu` VALUES ('26715728707059712', '27999782165282816', '启动角色', '26579469829406720', 'SYSTEM:PROCESS_START', 'admin/dataGrid/', '', '', NULL, NULL, '0', '', '1', 30, 1);
+INSERT INTO `sys_menu` VALUES ('26845813934129152', '', '流程定义', '26579469829406720', 'SYSTEM:PROCESS_DEFINITION_UPDATE', 'admin/process/definition/update', '', '', NULL, NULL, '0', '', '1', 10, 1);
+INSERT INTO `sys_menu` VALUES ('28019952082485248', '28020396255084544', '测试流程', '21130604443598848', '', 'admin/dataGrid/', '', '', NULL, NULL, '0', '', '1', 91, 1);
+INSERT INTO `sys_menu` VALUES ('2910350022279168', '2912701923721216', '字典信息', '1451155909509120', 'SYSTEM:DICTINFO', 'admin/dataGrid/', NULL, '', NULL, NULL, '0', '1', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('3', '2', '按钮管理', '1', 'SYSTEM:BUTTON', 'admin/dataGrid/', NULL, 'mdi mdi-equal-box', NULL, NULL, '0', NULL, '1', 2, 1);
+INSERT INTO `sys_menu` VALUES ('33081241360138240', '33080508233547776', '流程进度', '26577007949119488', 'SYSTEM:PROCESS_SCHEDULE', 'admin/dataGrid/', '', 'mdi mdi-stack-overflow', NULL, NULL, '0', '', '1', 10, 1);
+INSERT INTO `sys_menu` VALUES ('3316536806735872', '', '编辑', '13358417838080', 'SYSTEM:OPERATOR_UPDATE', '', NULL, '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('3547951557246976', '3545555946962944', '账户管理', '13358417838080', 'SYSTEM:OPERATOR_SUB', 'admin/dataGrid/', NULL, '', NULL, NULL, '0', '', '1', 2, 1);
+INSERT INTO `sys_menu` VALUES ('38116041032728576', '', '基础信息管理', '0', 'INFO', '', '', 'mdi mdi-information-variant', NULL, NULL, '1', '', '1', 20, 1);
+INSERT INTO `sys_menu` VALUES ('38161659570683904', '38163489528741888', '部门管理', '38116041032728576', 'INFO:DIVISION', 'admin/dataGrid/', '', 'mdi mdi-division', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('38161659570683905', '38163489528741889', '系部管理', '38116041032728576', 'INFO:DEPARTMENT', 'admin/dataGrid/', '', 'mdi mdi-division', NULL, NULL, '0', '', '1', 30, 1);
+INSERT INTO `sys_menu` VALUES ('38162771866550272', '', '编辑', '38161659570683904', 'INFO:DIVISION_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('38162771866550273', '', '编辑', '38161659570683905', 'INFO:DEPARTMENT_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('4103758959083520', '', '编辑', '9', 'SYSTEM:ROLE_UPDATE', '', NULL, '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('48295058385928192', '48293001511829504', '部门人员管理', '38116041032728576', 'INFO:DIVISION_PERSONNEL', 'admin/dataGrid/', '', 'mdi mdi-account-multiple', NULL, NULL, '0', '', '1', 20, 1);
+INSERT INTO `sys_menu` VALUES ('48295058385928193', '48293001511829505', '系部人员管理', '38116041032728576', 'INFO:DEPARTMENT_PERSONNEL', 'admin/dataGrid/', '', 'mdi mdi-account-multiple', NULL, NULL, '0', '', '1', 40, 1);
+INSERT INTO `sys_menu` VALUES ('48304916703215616', '', '编辑', '48295058385928192', 'INFO:DIVISION_PERSONNEL_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('48304916703215617', '', '编辑', '48295058385928193', 'INFO:DEPARTMENT_PERSONNEL_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('48614104260149248', '48612439985487872', '班级管理', '38116041032728576', 'INFO:CLASS', 'admin/dataGrid/', '', 'mdi mdi-desktop-classic', NULL, NULL, '0', '', '1', 50, 1);
+INSERT INTO `sys_menu` VALUES ('48614229862776832', '', '编辑', '48614104260149248', 'INFO:CLASS_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('48667624430632960', '48666703227256832', '教师管理', '38116041032728576', 'INFO:TEACHER', 'admin/dataGrid/', '', 'mdi mdi-school', NULL, NULL, '0', '', '1', 60, 1);
+INSERT INTO `sys_menu` VALUES ('48673777285857280', '', '编辑', '48667624430632960', 'INFO:TEACHER_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('48892124845834240', '48890586014416896', '学生管理', '49027088874733568', 'STUDENT:BASE', 'admin/dataGrid/', '', 'mdi mdi-account-multiple-outline', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('48892279221387264', '', '编辑', '48892124845834240', 'STUDENT:BASE_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('49027088874733568', '', '学生管理', '0', 'STUDENT', '', '', 'mdi mdi-account-multiple-outline', NULL, NULL, '1', '', '1', 30, 1);
+INSERT INTO `sys_menu` VALUES ('49027774555357184', '', '考勤管理', '49027088874733568', 'STUDENT:ATTENDANCE', 'admin/dataGrid/', '', 'mdi mdi-book-open', NULL, NULL, '0', '', '1', 10, 1);
+INSERT INTO `sys_menu` VALUES ('49028146267160576', '', '处分管理', '49027088874733568', 'STUDENT:PUNISHMENT', 'admin/dataGrid/', '', 'mdi mdi-book-multiple', NULL, NULL, '0', '', '1', 20, 1);
+INSERT INTO `sys_menu` VALUES ('49029176400805888', '', '编辑', '49027774555357184', 'STUDENT:ATTENDANCE_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('49029256612675584', '', '编辑', '49028146267160576', 'STUDENT:PUNISHMENT_UPDATE', '', '', '', NULL, NULL, '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('49030149684854784', '', '迟到旷课处分配置', '21130604443598848', 'SYSTEM:ALLOCATION_ABSENTEEISM', 'admin/allocation/absenteeism', '', 'mdi mdi-close-outline', NULL, NULL, '0', '', '1', 20, 1);
+INSERT INTO `sys_menu` VALUES ('7', '2244279544053760', '验证管理', '1', 'SYSTEM:VALIDATE', 'admin/dataGrid/', NULL, 'mdi mdi-security', NULL, NULL, '0', NULL, '1', 3, 1);
+INSERT INTO `sys_menu` VALUES ('8', '1', '配置列表管理', '1', 'SYSTEM:CONFIGURE', 'admin/dataGrid/', NULL, 'mdi mdi-view-list', NULL, NULL, '0', NULL, '1', 4, 1);
+INSERT INTO `sys_menu` VALUES ('9', '3', '角色管理', '1', 'SYSTEM:ROLE', 'admin/dataGrid/', NULL, 'mdi mdi-account-settings-variant', NULL, NULL, '0', '', '1', 6, 1);
 
 -- ----------------------------
 -- Table structure for sys_menu_button
@@ -7543,7 +7553,7 @@ CREATE TABLE `sys_menu_button`  (
   INDEX `SM_ID`(`SM_ID`) USING BTREE,
   INDEX `SB_ID`(`SB_ID`) USING BTREE,
   CONSTRAINT `SB_ID` FOREIGN KEY (`SB_ID`) REFERENCES `sys_button` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `SM_ID` FOREIGN KEY (`SM_ID`) REFERENCES `sys_menu` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `SM_ID` FOREIGN KEY (`SM_ID`) REFERENCES `sys_menu` (`ID`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -7714,7 +7724,7 @@ CREATE TABLE `sys_operator`  (
 -- ----------------------------
 -- Records of sys_operator
 -- ----------------------------
-INSERT INTO `sys_operator` VALUES ('1', '75dd1eda323cd6bbef5dd39e8d65da8b', 'g5wH;+', 1, 0);
+INSERT INTO `sys_operator` VALUES ('1', '3060177a2cc22475a8b9c0be4d6ba6f3', 'fdb.4Q', 1, 0);
 INSERT INTO `sys_operator` VALUES ('28281555327647744', 'd95e3e4dd0ccf22106945632ab230cad', 'xiClTm', 1, 1);
 INSERT INTO `sys_operator` VALUES ('28281967912943616', '0c4f06052e5786bd53ec3022ede3de1e', 'zdzTNR', 1, 1);
 INSERT INTO `sys_operator` VALUES ('28281983868076032', '75fc31f96deafe4e064df15672abf32f', '66KteH', 1, 1);
@@ -9054,6 +9064,7 @@ INSERT INTO `sys_value_record` VALUES ('49030149726797824', '1', 'SYS_MENU', '49
 INSERT INTO `sys_value_record` VALUES ('49030571317264384', '1', 'SYS_MENU', '49030149684854784', '{\"SM_URL\":\"\",\"SM_URL_PARAMS\":\"\",\"SM_IS_LEAF\":\"0\",\"IS_STATUS\":1,\"SM_ORDER\":20,\"SM_CODE\":\"\",\"SM_NAME\":\"迟到旷课处分配置\",\"SM_PARENTID\":\"21130604443598848\",\"SPD_ID\":\"\",\"ID\":\"49030149684854784\",\"SC_ID\":\"\",\"SM_CLASSICON\":\"\",\"SM_IS_EXPAND\":\"\"}', '{\"SM_URL\":\"\",\"SM_URL_PARAMS\":\"\",\"SM_IS_LEAF\":\"0\",\"SM_ORDER\":\"20\",\"SM_CODE\":\"SYSTEM:ABSENTEEISM\",\"SM_NAME\":\"迟到旷课处分配置\",\"SM_PARENTID\":\"21130604443598848\",\"SPD_ID\":\"\",\"ID\":\"49030149684854784\",\"SC_ID\":\"\",\"SM_CLASSICON\":\"mdi mdi-close-outline\",\"SM_IS_EXPAND\":\"\"}', '2018-08-07 23:23:48', 2);
 INSERT INTO `sys_value_record` VALUES ('49030661062787072', '1', 'SYS_MENU', '49030149684854784', '{\"SM_URL\":\"\",\"SM_URL_PARAMS\":\"\",\"SM_IS_LEAF\":\"0\",\"IS_STATUS\":1,\"SM_ORDER\":20,\"SM_CODE\":\"SYSTEM:ABSENTEEISM\",\"SM_NAME\":\"迟到旷课处分配置\",\"SM_PARENTID\":\"21130604443598848\",\"SPD_ID\":\"\",\"ID\":\"49030149684854784\",\"SC_ID\":\"\",\"SM_CLASSICON\":\"mdi mdi-close-outline\",\"SM_IS_EXPAND\":\"\"}', '{\"SM_URL\":\"\",\"SM_URL_PARAMS\":\"\",\"SM_IS_LEAF\":\"0\",\"SM_ORDER\":\"20\",\"SM_CODE\":\"SYSTEM:ALLOCATION_ABSENTEEISM\",\"SM_NAME\":\"迟到旷课处分配置\",\"SM_PARENTID\":\"21130604443598848\",\"SPD_ID\":\"\",\"ID\":\"49030149684854784\",\"SC_ID\":\"\",\"SM_CLASSICON\":\"mdi mdi-close-outline\",\"SM_IS_EXPAND\":\"\"}', '2018-08-07 23:24:09', 2);
 INSERT INTO `sys_value_record` VALUES ('49030716884779008', '1', 'SYS_MENU', '49030149684854784', '{\"SM_URL\":\"\",\"SM_URL_PARAMS\":\"\",\"SM_IS_LEAF\":\"0\",\"IS_STATUS\":1,\"SM_ORDER\":20,\"SM_CODE\":\"SYSTEM:ALLOCATION_ABSENTEEISM\",\"SM_NAME\":\"迟到旷课处分配置\",\"SM_PARENTID\":\"21130604443598848\",\"SPD_ID\":\"\",\"ID\":\"49030149684854784\",\"SC_ID\":\"\",\"SM_CLASSICON\":\"mdi mdi-close-outline\",\"SM_IS_EXPAND\":\"\"}', '{\"SM_URL\":\"admin/allocation/absenteeism\",\"SM_URL_PARAMS\":\"\",\"SM_IS_LEAF\":\"0\",\"SM_ORDER\":\"20\",\"SM_CODE\":\"SYSTEM:ALLOCATION_ABSENTEEISM\",\"SM_NAME\":\"迟到旷课处分配置\",\"SM_PARENTID\":\"21130604443598848\",\"SPD_ID\":\"\",\"ID\":\"49030149684854784\",\"SC_ID\":\"\",\"SM_CLASSICON\":\"mdi mdi-close-outline\",\"SM_IS_EXPAND\":\"\"}', '2018-08-07 23:24:23', 2);
+INSERT INTO `sys_value_record` VALUES ('49253522570477568', '1', 'SYS_OPERATOR', '1', '{\"SO_PASSWORD\":\"75dd1eda323cd6bbef5dd39e8d65da8b\",\"ID\":\"1\",\"IS_DEFAULT_PWD\":0,\"SO_SALT\":\"g5wH;+\"}', '{\"IS_DEFAULT_PWD\":0,\"SO_SALT\":\"fdb.4Q\",\"SO_PASSWORD\":\"3060177a2cc22475a8b9c0be4d6ba6f3\",\"ID\":\"1\"}', '2018-08-08 14:09:44', 2);
 
 -- ----------------------------
 -- Table structure for test_process
@@ -9063,23 +9074,25 @@ CREATE TABLE `test_process`  (
   `ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `NAME` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `SO_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `BUS_PROCESS` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `BUS_PROCESS2` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of test_process
 -- ----------------------------
-INSERT INTO `test_process` VALUES ('1', '测试流程1', '4112733112893440');
-INSERT INTO `test_process` VALUES ('10', '10', '4112733112893440');
-INSERT INTO `test_process` VALUES ('11', '11', '4112733112893440');
-INSERT INTO `test_process` VALUES ('2', '2', '4112733112893440');
-INSERT INTO `test_process` VALUES ('3', '3', '4112733112893440');
-INSERT INTO `test_process` VALUES ('4', '4', '4112733112893440');
-INSERT INTO `test_process` VALUES ('5', '5', '4112733112893440');
-INSERT INTO `test_process` VALUES ('6', '6', '4112733112893440');
-INSERT INTO `test_process` VALUES ('7', '7', '28281555327647744');
-INSERT INTO `test_process` VALUES ('8', '8', '28281555327647744');
-INSERT INTO `test_process` VALUES ('9', '9', '28281555327647744');
+INSERT INTO `test_process` VALUES ('1', '测试流程1', '4112733112893440', NULL, NULL);
+INSERT INTO `test_process` VALUES ('10', '10', '4112733112893440', NULL, NULL);
+INSERT INTO `test_process` VALUES ('11', '11', '4112733112893440', NULL, NULL);
+INSERT INTO `test_process` VALUES ('2', '2', '4112733112893440', NULL, NULL);
+INSERT INTO `test_process` VALUES ('3', '3', '4112733112893440', NULL, NULL);
+INSERT INTO `test_process` VALUES ('4', '4', '4112733112893440', NULL, NULL);
+INSERT INTO `test_process` VALUES ('5', '5', '4112733112893440', NULL, NULL);
+INSERT INTO `test_process` VALUES ('6', '6', '4112733112893440', NULL, NULL);
+INSERT INTO `test_process` VALUES ('7', '7', '28281555327647744', NULL, NULL);
+INSERT INTO `test_process` VALUES ('8', '8', '28281555327647744', NULL, NULL);
+INSERT INTO `test_process` VALUES ('9', '9', '28281555327647744', NULL, NULL);
 
 -- ----------------------------
 -- View structure for v_button

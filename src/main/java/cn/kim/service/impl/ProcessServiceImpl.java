@@ -1125,6 +1125,9 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
      * @return
      */
     private boolean isProcessDiscontinuation(String id) {
+        if (isEmpty(id)) {
+            return true;
+        }
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
         paramMap.put("ID", id);
         paramMap = this.selectProcessDefinition(paramMap);

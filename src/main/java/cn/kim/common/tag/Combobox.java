@@ -2,6 +2,7 @@ package cn.kim.common.tag;
 
 import cn.kim.common.attr.Attribute;
 import cn.kim.entity.CustomParam;
+import cn.kim.entity.DictInfo;
 import cn.kim.entity.DictType;
 import cn.kim.util.DictUtil;
 import cn.kim.util.TextUtil;
@@ -10,6 +11,7 @@ import com.sun.istack.internal.Nullable;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +58,11 @@ public class Combobox extends BaseTagSupport {
      */
     private List<Map<String, Object>> dataList;
 
+    /**
+     * 显示级别 0 全部 1 第一级 2 第二级
+     */
+    private int level = 0;
+
     @Override
     protected int doStartTagInternal() throws Exception {
         value = !ValidateUtil.isEmpty(value) ? value : defaultValue;
@@ -94,6 +101,7 @@ public class Combobox extends BaseTagSupport {
         required = false;
         disabled = true;
         dataList = null;
+        level = 0;
         return super.doEndTag();
     }
 
@@ -173,31 +181,65 @@ public class Combobox extends BaseTagSupport {
         if (!isEmpty(sdtCode)) {
             DictType dictType = DictUtil.getDictType(sdtCode);
             if (!isEmpty(dictType)) {
-                dictType.getInfos().forEach(info -> {
-                    String selected = "";
-                    //选中已选
-                    if (isSingle()) {
-                        //单选
-                        if (info.getSdiCode().equals(value)) {
-                            selected = "selected";
-                        }
-                    } else {
-                        //多选
-                        for (String val : value.split(Attribute.SERVICE_SPLIT)) {
-                            if (info.getSdiCode().equals(val)) {
-                                selected = "selected";
-                                break;
-                            }
-                        }
-                    }
-                    builder.append("<option value='" + info.getSdiCode() + "' " + selected + (disabled && info.getIsStatus() == Attribute.STATUS_ERROR ? " disabled " : "") + ">" + info.getSdiName() + "</option>");
-                });
+                if (level == 0) {
+                    List<DictInfo> infoList = dictType.getInfos();
+                    infoList.forEach(info -> {
+                        builder.append(splitOption(info.getSdiCode(), info.getSdiName(), getSelected(info.getSdiCode()), info.getIsStatus()));
+                    });
+                } else if (level == 1) {
+                    List<DictInfo> infoList = new ArrayList<>();
+                    dictType.getInfos().forEach(info -> {
+                        info.getChildren().forEach(children -> {
+                            builder.append(splitOption(children.getSdiCode(), children.getSdiName(), getSelected(children.getSdiCode()), children.getIsStatus(), "data-parent-id=" + children.getSdiParentid()));
+                        });
+                    });
+                }
             }
         } else if (!isEmpty(dataList)) {
             dataList.forEach(map -> {
-                builder.append("<option value='" + toString(map.get("ID")) + "' >" + toString(map.get("NAME")) + "</option>");
+                builder.append(splitOption(toString(map.get("ID")), toString(map.get("NAME")), "", Attribute.STATUS_SUCCESS));
             });
         }
+    }
+
+    /**
+     * 拼接选择
+     *
+     * @param infoCode
+     * @param infoName
+     * @param selected
+     * @param isStatus
+     * @param attrs
+     * @return
+     */
+    public String splitOption(String infoCode, String infoName, String selected, int isStatus, String... attrs) {
+        return "<option value='" + infoCode + "' " + selected + (disabled && isStatus == Attribute.STATUS_ERROR ? " disabled " : "") + toString(attrs) + ">" + infoName + "</option>";
+    }
+
+    /**
+     * 获取选择
+     *
+     * @param infoCode
+     * @return
+     */
+    public String getSelected(String infoCode) {
+        String selected = "";
+        //选中已选
+        if (isSingle()) {
+            //单选
+            if (infoCode.equals(value)) {
+                selected = "selected";
+            }
+        } else {
+            //多选
+            for (String val : value.split(Attribute.SERVICE_SPLIT)) {
+                if (infoCode.equals(val)) {
+                    selected = "selected";
+                    break;
+                }
+            }
+        }
+        return selected;
     }
 
     public String getCustom() {
@@ -296,6 +338,15 @@ public class Combobox extends BaseTagSupport {
 
     public void setDataList(List<Map<String, Object>> dataList) {
         this.dataList = dataList;
+    }
+
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }
 

@@ -119,15 +119,6 @@ public class BaseDataController extends BaseController {
                     }
                 }
             }
-            //查询是否拥有流程
-            String definitionId = toString(menu.get("SPD_ID"));
-            if (!isEmpty(definitionId)) {
-                mapParam.clear();
-                mapParam.put("ID", definitionId);
-                Map<String, Object> processDefinition = processService.selectProcessDefinition(mapParam);
-
-                model.addAttribute("SPD", processDefinition);
-            }
 
             model.addAttribute("MENU", menu);
             model.addAttribute("CONFIGURE", configure);

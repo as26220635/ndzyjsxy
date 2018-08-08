@@ -68,37 +68,39 @@
     <!--插入菜单-->
     <insert id="insertMenu" parameterType="java.util.Map">
         INSERT INTO SYS_MENU
-        <trim prefix="(" suffix=")" suffixOverrides=",">
+        <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="ID != null">ID,</if>
-            <if test="SPD_ID != null">SPD_ID,</if>
+            <if test="SC_ID != null">SC_ID,</if>
             <if test="SM_NAME != null">SM_NAME,</if>
             <if test="SM_PARENTID != null">SM_PARENTID,</if>
             <if test="SM_CODE != null">SM_CODE,</if>
             <if test="SM_URL != null">SM_URL,</if>
+            <if test="SM_URL_PARAMS != null">SM_URL_PARAMS,</if>
             <if test="SM_CLASSICON != null">SM_CLASSICON,</if>
+            <if test="BUS_PROCESS != null">BUS_PROCESS,</if>
+            <if test="BUS_PROCESS2 != null">BUS_PROCESS2,</if>
+            <if test="SM_IS_LEAF != null">SM_IS_LEAF,</if>
+            <if test="SM_IS_EXPAND != null">SM_IS_EXPAND,</if>
             <if test="SM_TYPE != null">SM_TYPE,</if>
             <if test="SM_ORDER != null">SM_ORDER,</if>
             <if test="IS_STATUS != null">IS_STATUS,</if>
-            <if test="SC_ID != null">SC_ID,</if>
-            <if test="SM_IS_LEAF != null">SM_IS_LEAF,</if>
-            <if test="SM_IS_EXPAND != null">SM_IS_EXPAND,</if>
-            <if test="SM_URL_PARAMS != null">SM_URL_PARAMS,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="ID != null">#{ID},</if>
-            <if test="SPD_ID != null">#{SPD_ID},</if>
+            <if test="SC_ID != null">#{SC_ID},</if>
             <if test="SM_NAME != null">#{SM_NAME},</if>
             <if test="SM_PARENTID != null">#{SM_PARENTID},</if>
             <if test="SM_CODE != null">#{SM_CODE},</if>
             <if test="SM_URL != null">#{SM_URL},</if>
+            <if test="SM_URL_PARAMS != null">#{SM_URL_PARAMS},</if>
             <if test="SM_CLASSICON != null">#{SM_CLASSICON},</if>
+            <if test="BUS_PROCESS != null">#{BUS_PROCESS},</if>
+            <if test="BUS_PROCESS2 != null">#{BUS_PROCESS2},</if>
+            <if test="SM_IS_LEAF != null">#{SM_IS_LEAF},</if>
+            <if test="SM_IS_EXPAND != null">#{SM_IS_EXPAND},</if>
             <if test="SM_TYPE != null">#{SM_TYPE},</if>
             <if test="SM_ORDER != null">#{SM_ORDER},</if>
             <if test="IS_STATUS != null">#{IS_STATUS},</if>
-            <if test="SC_ID != null">#{SC_ID},</if>
-            <if test="SM_IS_LEAF != null">#{SM_IS_LEAF},</if>
-            <if test="SM_IS_EXPAND != null">#{SM_IS_EXPAND},</if>
-            <if test="SM_URL_PARAMS != null">#{SM_URL_PARAMS},</if>
         </trim>
     </insert>
 
@@ -107,19 +109,20 @@
         UPDATE SYS_MENU
         <set>
             <if test="ID != null">ID=#{ID},</if>
-            <if test="SPD_ID != null">SPD_ID=#{SPD_ID},</if>
+            <if test="SC_ID != null">SC_ID=#{SC_ID},</if>
             <if test="SM_NAME != null">SM_NAME=#{SM_NAME},</if>
             <if test="SM_PARENTID != null">SM_PARENTID=#{SM_PARENTID},</if>
             <if test="SM_CODE != null">SM_CODE=#{SM_CODE},</if>
             <if test="SM_URL != null">SM_URL=#{SM_URL},</if>
+            <if test="SM_URL_PARAMS != null">SM_URL_PARAMS=#{SM_URL_PARAMS},</if>
             <if test="SM_CLASSICON != null">SM_CLASSICON=#{SM_CLASSICON},</if>
+            <if test="BUS_PROCESS != null">BUS_PROCESS=#{BUS_PROCESS},</if>
+            <if test="BUS_PROCESS2 != null">BUS_PROCESS2=#{BUS_PROCESS2},</if>
+            <if test="SM_IS_LEAF != null">SM_IS_LEAF=#{SM_IS_LEAF},</if>
+            <if test="SM_IS_EXPAND != null">SM_IS_EXPAND=#{SM_IS_EXPAND},</if>
             <if test="SM_TYPE != null">SM_TYPE=#{SM_TYPE},</if>
             <if test="SM_ORDER != null">SM_ORDER=#{SM_ORDER},</if>
             <if test="IS_STATUS != null">IS_STATUS=#{IS_STATUS},</if>
-            <if test="SC_ID != null">SC_ID=#{SC_ID},</if>
-            <if test="SM_IS_LEAF != null">SM_IS_LEAF=#{SM_IS_LEAF},</if>
-            <if test="SM_IS_EXPAND != null">SM_IS_EXPAND=#{SM_IS_EXPAND},</if>
-            <if test="SM_URL_PARAMS != null">SM_URL_PARAMS=#{SM_URL_PARAMS},</if>
         </set>
         <where>
             <if test="ID !=null">ID=#{ID}</if>

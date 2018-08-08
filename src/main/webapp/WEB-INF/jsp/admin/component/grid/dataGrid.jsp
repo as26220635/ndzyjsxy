@@ -12,7 +12,7 @@
 <%@ page import="java.util.Random" %>
 <style>
     .dataTable-column {
-        word-break:break-all;
+        word-break: break-all;
     }
 </style>
 
@@ -35,7 +35,8 @@
                     </div>
                     <form id="queryForm${MENU.ID}" class="form-horizontal">
                         <%--流程查询状态 0 查看全部 1待审 2已审--%>
-                        <input type="hidden" id="processStatus" name="processStatus" value="${ProcessShowStatus.ALL.toString()}">
+                        <input type="hidden" id="processStatus" name="processStatus"
+                               value="${ProcessShowStatus.ALL.toString()}">
                         <c:if test="${CONFIGURE.SC_IS_SEARCH == Attribute.STATUS_SUCCESS && SEARCH_LIST ne null && SEARCH_LIST.size() > 0 }">
                             <%--搜索条件--%>
                             <c:forEach items="${SEARCH_LIST}" var="SEARCH">
@@ -113,7 +114,7 @@
                                                 class="fa fa-refresh"></i>刷新
                                         </button>
                                             <%--流程查看切换按钮--%>
-                                        <c:if test="${!fns:isEmpty(SPD)}">
+                                        <c:if test="${!fns:isEmpty(menu.SM_IS_PROCESS) && menu.SM_IS_PROCESS == Attribute.STATUS_SUCCESS}">
                                             <div class="btn-group" data-toggle="btn-toggle">
                                                 <button id="processAllBtn" type="button"
                                                         class="btn btn-default btn-sm active"
@@ -233,10 +234,10 @@
                     </c:if>
                     <c:if test="${COLUMN.SCC_IS_OPERATION eq Attribute.STATUS_SUCCESS }">
                     <%--是否查询流程操作按钮--%>
-                    <c:if test="${!fns:isEmpty(SPD)}">
+                    <c:if test="${!fns:isEmpty(menu.SM_IS_PROCESS) && menu.SM_IS_PROCESS == Attribute.STATUS_SUCCESS}">
                     <%--查询权限菜单--%>
                     if (rowData.SPS_AUDIT_STATUS != 999) {
-                        ajax.get('${PROCESS_DATAGRID_BTN}', {ID: cellData, SPD_ID: '${SPD.ID}'}, function (data) {
+                        ajax.get('${PROCESS_DATAGRID_BTN}', {ID: cellData, SPD_ID: rowData.SPD_ID}, function (data) {
                             $(td).append(data.html);
                         });
                     }
@@ -284,9 +285,9 @@
                     <c:choose>
                     <%--合并操作按钮--%>
                     <c:when test="${COLUMN.SCC_IS_MERGE eq Attribute.STATUS_SUCCESS}">
-                    operate+='<div class="btn-group">';
-                    operate+='<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">操作 <span class="caret"></span></button>';
-                    operate+='<ul class="dropdown-menu" role="menu">';
+                    operate += '<div class="btn-group">';
+                    operate += '<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">操作 <span class="caret"></span></button>';
+                    operate += '<ul class="dropdown-menu" role="menu">';
                     <c:forEach items="${LIST_BUTTON}" var="BUTTON" varStatus="status">
                     var btn${status.index} = '<li><a href="javascript:void(0);" id="${BUTTON.SB_BUTTONID}" value="' + row.ID + '" onclick="${fns:formatFunc(COLUMN.SCC_FUNC,status.index + 1,COLUMN.SCC_FIELD)}"><i class="${BUTTON.SB_ICON}"></i>${BUTTON.SB_NAME}</button></li>';
                     if (typeof dataGridButtonFormat == 'function') {
@@ -295,8 +296,8 @@
                         operate += btn${status.index};
                     }
                     </c:forEach>
-                    operate+='</ul>';
-                    operate+='</div>';
+                    operate += '</ul>';
+                    operate += '</div>';
                     </c:when>
                     <c:otherwise>
                     <c:forEach items="${LIST_BUTTON}" var="BUTTON" varStatus="status">
@@ -365,10 +366,10 @@
             var columnsWidth = 0;
             //获取宽度
             $dataGrid.columns().nodes().each(function (cell, i) {
-                columnsWidth +=$(cell).width();
+                columnsWidth += $(cell).width();
             });
-            if($('#dataGrid${MENU.ID}').width() < columnsWidth){
-                $dataGridTable.css('display','inline-block');
+            if ($('#dataGrid${MENU.ID}').width() < columnsWidth) {
+                $dataGridTable.css('display', 'inline-block');
             }
         }
     });
@@ -397,7 +398,7 @@
     });
     </c:if>
 
-    <c:if test="${!fns:isEmpty(SPD)}">
+    <c:if test="${!fns:isEmpty(menu.SM_IS_PROCESS) && menu.SM_IS_PROCESS == Attribute.STATUS_SUCCESS}">
     //流程提交
     $dataGridTable.find('tbody').on('click', '#PROCESS_SUBMIT', function () {
         var data = getRowData(this);
