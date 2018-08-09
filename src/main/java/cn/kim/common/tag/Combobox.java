@@ -54,6 +54,10 @@ public class Combobox extends BaseTagSupport {
      */
     private boolean disabled = true;
     /**
+     * 只读
+     */
+    private boolean readonly = false;
+    /**
      * 参数
      */
     private List<Map<String, Object>> dataList;
@@ -74,6 +78,12 @@ public class Combobox extends BaseTagSupport {
             required = toBoolean(customMap.get("required"));
         }
 
+        if (isEmpty(id)) {
+            id = uuid();
+        }
+        if (isEmpty(name)) {
+            name = id;
+        }
         if (single) {
             return single(pageContext.getOut());
         } else {
@@ -100,6 +110,7 @@ public class Combobox extends BaseTagSupport {
         single = true;
         required = false;
         disabled = true;
+        readonly = false;
         dataList = null;
         level = 0;
         return super.doEndTag();
@@ -122,7 +133,7 @@ public class Combobox extends BaseTagSupport {
 //                                    </c:forEach>
 //                                </select>
 
-            builder.append("<select " + (isEmpty(id) ? "" : "id = '" + id + "'") + " " + (isEmpty(name) ? "" : "name = '" + name + "'") + " " + custom + " class='form-control select2' style='width:" + width + ";' " + (required ? "required" : "") + ">");
+            builder.append("<select " + (isEmpty(id) ? "" : "id = '" + id + "'") + " " + (isEmpty(name) ? "" : "name = '" + name + "'") + " " + custom + " class='form-control select2' style='width:" + width + ";' " + (required ? "required" : "") + " " + (readonly ? " disabled " : "") + ">");
 
             if (!required) {
                 builder.append("<option value='' selected>请选择</option>");
@@ -348,6 +359,14 @@ public class Combobox extends BaseTagSupport {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public boolean isReadonly() {
+        return readonly;
+    }
+
+    public void setReadonly(boolean readonly) {
+        this.readonly = readonly;
     }
 }
 

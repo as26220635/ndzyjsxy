@@ -41,7 +41,7 @@
                     content: html,
                     footerModel: model.footerModel.ADMIN,
                     <shiro:hasPermission name="STUDENT:PUNISHMENT_UPDATE_SAVE">
-                    isConfirm: true,
+                    isConfirm: data.BSP_IS_CANCEL == '是' ? false : true,
                     confirm: function ($model) {
                         var $form = $('#addAndEditForm');
                         //验证
@@ -59,6 +59,29 @@
                 });
             }
         );
+    });
+
+    //撤销
+    $dataGridTable.find('tbody').on('click', '#revoke', function () {
+        var data = getRowData(this);
+        var id = data.ID;
+        if (data.BSP_IS_CANCEL == '是') {
+            demo.showNotify(ALERT_WARNING, '已经撤销!');
+            return;
+        }
+        model.show({
+            title: '撤销学生处分',
+            content: '是否撤销学生处分:' + data.BS_NAME + ',撤销后不能编辑!',
+            class: model.class.WARNING,
+            okBtnName: model.btnName.OK,
+            footerModel: model.footerModel.ADMIN,
+            isConfirm: true,
+            confirm: function ($model) {
+                ajax.put('${STUDENT_PUNISHMENT_REVOKE_URL}/' + id, {}, function (data) {
+                    ajaxReturn.data(data, $model, $dataGrid, false);
+                })
+            }
+        });
     });
 
     //删除

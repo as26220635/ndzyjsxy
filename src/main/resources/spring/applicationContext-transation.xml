@@ -42,7 +42,7 @@
     <!-- aop -->
     <aop:config>
         <aop:advisor advice-ref="txAdvice"
-                     pointcut="execution(* cn.kim.service.impl.*.*(..))"/>
+                     pointcut="@annotation(org.springframework.transaction.annotation.Transactional)"/>
     </aop:config>
 
     <!--Druid连接监控-->

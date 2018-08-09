@@ -315,7 +315,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
 
     @Override
     @Transactional
-    public Map<String, Object> cancelStudentPunishment(Map<String, Object> mapParam) {
+    public Map<String, Object> revokeStudentPunishment(Map<String, Object> mapParam) {
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
         int status = STATUS_ERROR;
         String desc = SAVE_ERROR;
@@ -328,6 +328,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
 
             paramMap.put("ID", id);
             paramMap.put("BSP_IS_CANCEL", STATUS_SUCCESS);
+            paramMap.put("BSP_CANCEL_TIME", getDate());
 
             Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
             oldMap.put("ID", id);
@@ -369,6 +370,112 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentPunishment", paramMap);
 
             resultMap.put(MagicValue.LOG, "删除学生处分,信息:" + toString(oldMap));
+            status = STATUS_SUCCESS;
+            desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /***********    学生综合素质评测    *********/
+
+    @Override
+    public Map<String, Object> selectStudentComprehensive(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(4);
+        paramMap.put("ID", mapParam.get("ID"));
+        paramMap.put("BS_ID", mapParam.get("BS_ID"));
+        paramMap.put("BSC_YEAR", mapParam.get("BSC_YEAR"));
+        paramMap.put("BSC_SEMESTER", mapParam.get("BSC_SEMESTER"));
+        return baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensive", paramMap);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insertAndUpdateStudentComprehensive(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+            String id = toString(mapParam.get("ID"));
+
+            paramMap.put("ID", id);
+            paramMap.put("BS_ID", mapParam.get("BS_ID"));
+            paramMap.put("BSC_YEAR", mapParam.get("BSC_YEAR"));
+            paramMap.put("BSC_SEMESTER", mapParam.get("BSC_SEMESTER"));
+            paramMap.put("BSC_TOTAL", mapParam.get("BSC_TOTAL"));
+            paramMap.put("BSC_RANK", mapParam.get("BSC_RANK"));
+            paramMap.put("BSC_POLITICAL_ATTITUDE", mapParam.get("BSC_POLITICAL_ATTITUDE"));
+            paramMap.put("BSC_LABOR_ATTITUDE", mapParam.get("BSC_LABOR_ATTITUDE"));
+            paramMap.put("BSC_COMPLIANCE", mapParam.get("BSC_COMPLIANCE"));
+            paramMap.put("BSC_COLLECTIVE", mapParam.get("BSC_COLLECTIVE"));
+            paramMap.put("BSC_DECORUM", mapParam.get("BSC_DECORUM"));
+            paramMap.put("BSC_CARE", mapParam.get("BSC_CARE"));
+            paramMap.put("BSC_PERSONAL_QUALITY", mapParam.get("BSC_PERSONAL_QUALITY"));
+            paramMap.put("BSC_SERVICE_SPIRIT", mapParam.get("BSC_SERVICE_SPIRIT"));
+            paramMap.put("BSC_FULL_WORK", mapParam.get("BSC_FULL_WORK"));
+            paramMap.put("BSC_BONUS_POINTS", mapParam.get("BSC_BONUS_POINTS"));
+            paramMap.put("BSC_EDUCATION_DEDUCTION", mapParam.get("BSC_EDUCATION_DEDUCTION"));
+            paramMap.put("BSC_EDUCATION_TOTAL", mapParam.get("BSC_EDUCATION_TOTAL"));
+            paramMap.put("BSC_EDUCATION_SCORE", mapParam.get("BSC_EDUCATION_SCORE"));
+            paramMap.put("BSC_ACADEMIC_RECORD", mapParam.get("BSC_ACADEMIC_RECORD"));
+            paramMap.put("BSC_INTELLECTUAL_POINTS", mapParam.get("BSC_INTELLECTUAL_POINTS"));
+            paramMap.put("BSC_INTELLECTUAL_SCORE", mapParam.get("BSC_INTELLECTUAL_SCORE"));
+            paramMap.put("BSC_INTELLECTUAL_RANK", mapParam.get("BSC_INTELLECTUAL_RANK"));
+            paramMap.put("BSC_VOLUNTEER_TOTAL", mapParam.get("BSC_VOLUNTEER_TOTAL"));
+            paramMap.put("BSC_VOLUNTEER_SCORE", mapParam.get("BSC_VOLUNTEER_SCORE"));
+            paramMap.put("BSC_REMARKS", mapParam.get("BSC_REMARKS"));
+
+            if (isEmpty(id)) {
+                id = getId();
+                paramMap.put("ID", id);
+
+                baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentComprehensive", paramMap);
+                resultMap.put(MagicValue.LOG, "添加学生综合素质评测:" + toString(paramMap));
+            } else {
+                Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+                oldMap.put("ID", id);
+                oldMap = selectStudentComprehensive(oldMap);
+
+                baseDao.update(NameSpace.StudentExtendMapper, "updateStudentComprehensive", paramMap);
+                resultMap.put(MagicValue.LOG, "更新学生综合素质评测,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+            }
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteStudentComprehensive(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = DELETE_ERROR;
+        try {
+            if (isEmpty(mapParam.get("ID"))) {
+                throw new CustomException("ID不能为空!");
+            }
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            String id = toString(mapParam.get("ID"));
+
+            //删除学生综合素质评测表
+            paramMap.clear();
+            paramMap.put("ID", id);
+            Map<String, Object> oldMap = selectStudentComprehensive(paramMap);
+
+            baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentComprehensive", paramMap);
+
+            resultMap.put(MagicValue.LOG, "删除学生综合素质评测,信息:" + toString(oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

@@ -53,23 +53,25 @@
                 class="form-control form-textarea"
                 rows="3">${punishment.BSP_DESCRIBE}</textarea>
     </div>
-    <c:if test="${not empty punishment}">
+    <c:if test="${not empty punishment and punishment.BSP_IS_CANCEL == Attribute.STATUS_SUCCESS}">
         <div class="row">
             <div class="form-group has-feedback form-group-md-6">
-                <label>是否作废:</label>
-                <s:combobox sdtCode="SYS_YES_NO" value="${punishment.BSP_IS_CANCEL}"></s:combobox>
+                <label>是否撤销:</label>
+                <s:combobox sdtCode="SYS_YES_NO" value="${punishment.BSP_IS_CANCEL}" readonly="true"></s:combobox>
             </div>
             <div class="form-group has-feedback form-group-md-6">
-                <label>作废时间:</label>
-                <input type="text" class="form-control" value="${punishment.BSP_CANCEL_TIME}">
+                <label>撤销时间:</label>
+                <input type="text" class="form-control" value="${punishment.BSP_CANCEL_TIME}" disabled>
             </div>
         </div>
     </c:if>
     <%--附件--%>
     <div class="row">
         <s:fileInput title="附件" sdtCode="BUS_FILE_DEFAULT" tableId="${not empty punishment ? punishment.ID: insertId}"
-                     tableName="${TableName.BUS_STUDENT_PUNISHMENT}" typeCode="punishment"
-                     allowFile="true"></s:fileInput>
+                     tableName="${TableName.BUS_STUDENT_PUNISHMENT}" typeCode="punishment" allowFile="true"
+                     showUpload="${fns:trueOrFalse(punishment.BSP_IS_CANCEL,'false','true')}"
+                     showRemove="${fns:trueOrFalse(punishment.BSP_IS_CANCEL,'false','true')}"
+        ></s:fileInput>
     </div>
 </form>
 

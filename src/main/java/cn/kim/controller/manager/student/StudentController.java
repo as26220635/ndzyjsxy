@@ -192,6 +192,8 @@ public class StudentController extends BaseController {
     @RequiresPermissions("STUDENT:PUNISHMENT_INSERT")
     @Token(save = true)
     public String addHtmlPunishment(Model model) throws Exception {
+        //设置初始化ID
+        setInsertId(model);
         return "admin/student/punishment/addAndEdit";
     }
 
@@ -217,8 +219,6 @@ public class StudentController extends BaseController {
         Map<String, Object> punishment = studentService.selectStudentPunishment(mapParam);
 
         model.addAttribute("punishment", punishment);
-        //设置初始化ID
-        setInsertId(model, punishment);
         return "admin/student/punishment/addAndEdit";
     }
 
@@ -232,12 +232,14 @@ public class StudentController extends BaseController {
         return resultState(resultMap);
     }
 
-    @PutMapping("/punishment/cancel")
-    @RequiresPermissions("STUDENT:PUNISHMENT_CANCEL")
-    @SystemControllerLog(useType = UseType.USE, event = "作废学生处分")
+    @PutMapping("/punishment/revoke/{ID}")
+    @RequiresPermissions("STUDENT:PUNISHMENT_REVOKE")
+    @SystemControllerLog(useType = UseType.USE, event = "撤销学生处分")
     @ResponseBody
-    public ResultState cancelPunishment(@RequestParam Map<String, Object> mapParam) throws Exception {
-        Map<String, Object> resultMap = studentService.cancelStudentPunishment(mapParam);
+    public ResultState revokePunishment(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = studentService.revokeStudentPunishment(mapParam);
         return resultState(resultMap);
     }
 

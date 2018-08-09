@@ -85,12 +85,12 @@ public interface StudentService extends BaseService {
     Map<String, Object> insertAndUpdateStudentPunishment(Map<String, Object> mapParam);
 
     /**
-     * 作废学生处分
+     * 撤销学生处分
      *
      * @param mapParam
      * @return
      */
-    Map<String, Object> cancelStudentPunishment(Map<String, Object> mapParam);
+    Map<String, Object> revokeStudentPunishment(Map<String, Object> mapParam);
 
     /**
      * 删除学生处分
@@ -99,4 +99,28 @@ public interface StudentService extends BaseService {
      * @return
      */
     Map<String, Object> deleteStudentPunishment(Map<String, Object> mapParam);
+
+    /**
+     * 查询学生综合素质评测
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> selectStudentComprehensive(Map<String, Object> mapParam);
+
+    /**
+     * 插入或更新学生综合素质评测
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> insertAndUpdateStudentComprehensive(Map<String, Object> mapParam);
+
+    /**
+     * 删除学生综合素质评测
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> deleteStudentComprehensive(Map<String, Object> mapParam);
 }

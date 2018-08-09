@@ -72,6 +72,11 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
         <attribute>
+            <name>readonly</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
             <name>level</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
@@ -288,6 +293,11 @@
         </attribute>
         <attribute>
             <name>showUpload</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>showRemove</name>
             <required>false</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

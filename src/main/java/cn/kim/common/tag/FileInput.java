@@ -105,6 +105,11 @@ public class FileInput extends BaseTagSupport {
 
     @Override
     protected int doStartTagInternal() throws Exception {
+        if (isEmpty(tableId)) {
+            return SKIP_BODY;
+        }
+        tableId = toString(CommonUtil.idDecrypt(tableId));
+
         //获取bean
         this.fileService = this.getRequestContext().getWebApplicationContext().getBean(FileService.class);
 

@@ -1386,7 +1386,7 @@ ajax = {
                 if (textStatus == 'timeout') {
                     demo.showNotify(ALERT_WARNING, '访问服务器超时!');
                 } else {
-                    demo.showNotify(ALERT_WARNING, '发送AJAX请求到"' + this.url + '"时出错[' + jqXHR.status + ']：' + errorMsg);
+                    demo.showNotify(ALERT_WARNING, '发送AJAX时出错[' + jqXHR.status + ']：' + errorMsg);
                 }
             }
         });
@@ -1880,7 +1880,7 @@ file = {
             initialPreviewConfig: [],
         }, options);
 
-        return $(settings.id).fileinput({
+        var fileInput = $(settings.id).fileinput({
             theme: settings.theme,
             language: 'zh', //设置语言
             uploadUrl: settings.uploadUrl, //
@@ -1910,6 +1910,10 @@ file = {
                 //隐藏自带的上传
                 $(".kv-file-upload.btn.btn-kv.btn-default.btn-outline-secondary").remove();
             }
+            if (!settings.showRemove) {
+                //隐藏自带的删除
+                $(settings.id).parents('.file-preview:first').find('.kv-file-remove').remove();
+            }
         }).on('filebeforedelete', function () {
             return new Promise(function (resolve, reject) {
                 model.confirm({
@@ -1927,6 +1931,19 @@ file = {
         }).on('filedeleted', function (event, key, jqXHR, data) {
             demo.showNotify(ALERT_SUCCESS, '删除文件' + data.caption + '成功!');
         });
+
+        if (!settings.showUpload) {
+            //隐藏自带的删除
+            $(settings.id).parents('.input-group.file-caption-main:first').css('pointer-events','none');
+        }
+        if (!settings.showRemove) {
+            //隐藏自带的删除
+            $(settings.id).parents('.input-group.file-caption-main:first').siblings(".file-preview").find('.kv-file-remove.btn').each(function () {
+                $(this).remove();
+            });
+        }
+
+        return fileInput;
     },
     //验证方法,返回object对象，flag ture为通过验证 false没有通过有message消息
     validate: function () {

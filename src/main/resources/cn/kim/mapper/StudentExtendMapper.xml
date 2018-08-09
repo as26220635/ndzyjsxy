@@ -67,12 +67,16 @@
 
     <!--查询处分-->
     <select id="selectStudentPunishment" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BSP.*,BS.BS_NAME
+        FROM(
         SELECT * FROM BUS_STUDENT_PUNISHMENT
-        <where>
-            <if test ="ID != NULL and ID != ''">
-                AND ID = #{ID}
-            </if>
-        </where>
+            <where>
+                <if test="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+            </where>
+        )BSP
+        INNER JOIN BUS_STUDENT BS ON BS.ID = BSP.BS_ID
     </select>
 
     <!--插入处分-->
@@ -127,8 +131,158 @@
         </where>
     </update>
 
+    <!--撤销到期处分-->
+    <update id="refreshStudentRevokePunishment" parameterType="java.util.Map">
+        UPDATE BUS_STUDENT_PUNISHMENT SET BSP_IS_CANCEL = 1 , BSP_CANCEL_TIME = NOW()
+        WHERE BSP_IS_CANCEL != 1 AND BSP_REVOKE_TIME &lt;= NOW()
+    </update>
+
     <!--删除处分-->
     <delete id="deleteStudentPunishment" parameterType="java.util.Map">
 		DELETE FROM BUS_STUDENT_PUNISHMENT WHERE ID = #{ID}
+	</delete>
+
+    <!--查询综合素质测评-->
+    <select id="selectStudentComprehensive" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BSC.*,BS.BS_NAME
+        FROM(
+            SELECT * FROM BUS_STUDENT_COMPREHENSIVE
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+                <if test ="BS_ID != NULL and BS_ID != ''">
+                    AND BS_ID = #{BS_ID}
+                </if>
+                <if test ="BSC_YEAR != NULL and BSC_YEAR != ''">
+                    AND BSC_YEAR = #{BSC_YEAR}
+                </if>
+                <if test ="BSC_SEMESTER != NULL and BSC_SEMESTER != ''">
+                    AND BSC_SEMESTER = #{BSC_SEMESTER}
+                </if>
+            </where>
+        )BSC
+        INNER JOIN BUS_STUDENT BS ON BS.ID = BSC.BS_ID
+    </select>
+
+    <!--查询综合素质测评数量-->
+    <select id="selectStudentComprehensiveCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BUS_STUDENT_COMPREHENSIVE
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="BS_ID != NULL and BS_ID != ''">
+                AND BS_ID = #{BS_ID}
+            </if>
+            <if test="BSC_YEAR != NULL and BSC_YEAR != ''">
+                AND BSC_YEAR = #{BSC_YEAR}
+            </if>
+            <if test="BSC_SEMESTER != NULL and BSC_SEMESTER != ''">
+                AND BSC_SEMESTER = #{BSC_SEMESTER}
+            </if>
+        </where>
+    </select>
+
+    <!--插入综合素质测评-->
+    <insert id="insertStudentComprehensive" parameterType="java.util.Map">
+        INSERT INTO BUS_STUDENT_COMPREHENSIVE
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BS_ID != null">BS_ID,</if>
+            <if test="BSC_YEAR != null">BSC_YEAR,</if>
+            <if test="BSC_SEMESTER != null">BSC_SEMESTER,</if>
+            <if test="BSC_TOTAL != null">BSC_TOTAL,</if>
+            <if test="BSC_RANK != null">BSC_RANK,</if>
+            <if test="BSC_POLITICAL_ATTITUDE != null">BSC_POLITICAL_ATTITUDE,</if>
+            <if test="BSC_LABOR_ATTITUDE != null">BSC_LABOR_ATTITUDE,</if>
+            <if test="BSC_COMPLIANCE != null">BSC_COMPLIANCE,</if>
+            <if test="BSC_COLLECTIVE != null">BSC_COLLECTIVE,</if>
+            <if test="BSC_DECORUM != null">BSC_DECORUM,</if>
+            <if test="BSC_CARE != null">BSC_CARE,</if>
+            <if test="BSC_PERSONAL_QUALITY != null">BSC_PERSONAL_QUALITY,</if>
+            <if test="BSC_SERVICE_SPIRIT != null">BSC_SERVICE_SPIRIT,</if>
+            <if test="BSC_FULL_WORK != null">BSC_FULL_WORK,</if>
+            <if test="BSC_BONUS_POINTS != null">BSC_BONUS_POINTS,</if>
+            <if test="BSC_EDUCATION_DEDUCTION != null">BSC_EDUCATION_DEDUCTION,</if>
+            <if test="BSC_EDUCATION_TOTAL != null">BSC_EDUCATION_TOTAL,</if>
+            <if test="BSC_EDUCATION_SCORE != null">BSC_EDUCATION_SCORE,</if>
+            <if test="BSC_ACADEMIC_RECORD != null">BSC_ACADEMIC_RECORD,</if>
+            <if test="BSC_INTELLECTUAL_POINTS != null">BSC_INTELLECTUAL_POINTS,</if>
+            <if test="BSC_INTELLECTUAL_SCORE != null">BSC_INTELLECTUAL_SCORE,</if>
+            <if test="BSC_INTELLECTUAL_RANK != null">BSC_INTELLECTUAL_RANK,</if>
+            <if test="BSC_VOLUNTEER_TOTAL != null">BSC_VOLUNTEER_TOTAL,</if>
+            <if test="BSC_VOLUNTEER_SCORE != null">BSC_VOLUNTEER_SCORE,</if>
+            <if test="BSC_REMARKS != null">BSC_REMARKS,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BS_ID != null">#{BS_ID},</if>
+            <if test="BSC_YEAR != null">#{BSC_YEAR},</if>
+            <if test="BSC_SEMESTER != null">#{BSC_SEMESTER},</if>
+            <if test="BSC_TOTAL != null">#{BSC_TOTAL},</if>
+            <if test="BSC_RANK != null">#{BSC_RANK},</if>
+            <if test="BSC_POLITICAL_ATTITUDE != null">#{BSC_POLITICAL_ATTITUDE},</if>
+            <if test="BSC_LABOR_ATTITUDE != null">#{BSC_LABOR_ATTITUDE},</if>
+            <if test="BSC_COMPLIANCE != null">#{BSC_COMPLIANCE},</if>
+            <if test="BSC_COLLECTIVE != null">#{BSC_COLLECTIVE},</if>
+            <if test="BSC_DECORUM != null">#{BSC_DECORUM},</if>
+            <if test="BSC_CARE != null">#{BSC_CARE},</if>
+            <if test="BSC_PERSONAL_QUALITY != null">#{BSC_PERSONAL_QUALITY},</if>
+            <if test="BSC_SERVICE_SPIRIT != null">#{BSC_SERVICE_SPIRIT},</if>
+            <if test="BSC_FULL_WORK != null">#{BSC_FULL_WORK},</if>
+            <if test="BSC_BONUS_POINTS != null">#{BSC_BONUS_POINTS},</if>
+            <if test="BSC_EDUCATION_DEDUCTION != null">#{BSC_EDUCATION_DEDUCTION},</if>
+            <if test="BSC_EDUCATION_TOTAL != null">#{BSC_EDUCATION_TOTAL},</if>
+            <if test="BSC_EDUCATION_SCORE != null">#{BSC_EDUCATION_SCORE},</if>
+            <if test="BSC_ACADEMIC_RECORD != null">#{BSC_ACADEMIC_RECORD},</if>
+            <if test="BSC_INTELLECTUAL_POINTS != null">#{BSC_INTELLECTUAL_POINTS},</if>
+            <if test="BSC_INTELLECTUAL_SCORE != null">#{BSC_INTELLECTUAL_SCORE},</if>
+            <if test="BSC_INTELLECTUAL_RANK != null">#{BSC_INTELLECTUAL_RANK},</if>
+            <if test="BSC_VOLUNTEER_TOTAL != null">#{BSC_VOLUNTEER_TOTAL},</if>
+            <if test="BSC_VOLUNTEER_SCORE != null">#{BSC_VOLUNTEER_SCORE},</if>
+            <if test="BSC_REMARKS != null">#{BSC_REMARKS},</if>
+        </trim>
+    </insert>
+
+    <!--编辑综合素质测评-->
+    <update id="updateStudentComprehensive" parameterType="java.util.Map">
+        UPDATE BUS_STUDENT_COMPREHENSIVE
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BS_ID != null">BS_ID=#{BS_ID},</if>
+            <if test="BSC_YEAR != null">BSC_YEAR=#{BSC_YEAR},</if>
+            <if test="BSC_SEMESTER != null">BSC_SEMESTER=#{BSC_SEMESTER},</if>
+            <if test="BSC_TOTAL != null">BSC_TOTAL=#{BSC_TOTAL},</if>
+            <if test="BSC_RANK != null">BSC_RANK=#{BSC_RANK},</if>
+            <if test="BSC_POLITICAL_ATTITUDE != null">BSC_POLITICAL_ATTITUDE=#{BSC_POLITICAL_ATTITUDE},</if>
+            <if test="BSC_LABOR_ATTITUDE != null">BSC_LABOR_ATTITUDE=#{BSC_LABOR_ATTITUDE},</if>
+            <if test="BSC_COMPLIANCE != null">BSC_COMPLIANCE=#{BSC_COMPLIANCE},</if>
+            <if test="BSC_COLLECTIVE != null">BSC_COLLECTIVE=#{BSC_COLLECTIVE},</if>
+            <if test="BSC_DECORUM != null">BSC_DECORUM=#{BSC_DECORUM},</if>
+            <if test="BSC_CARE != null">BSC_CARE=#{BSC_CARE},</if>
+            <if test="BSC_PERSONAL_QUALITY != null">BSC_PERSONAL_QUALITY=#{BSC_PERSONAL_QUALITY},</if>
+            <if test="BSC_SERVICE_SPIRIT != null">BSC_SERVICE_SPIRIT=#{BSC_SERVICE_SPIRIT},</if>
+            <if test="BSC_FULL_WORK != null">BSC_FULL_WORK=#{BSC_FULL_WORK},</if>
+            <if test="BSC_BONUS_POINTS != null">BSC_BONUS_POINTS=#{BSC_BONUS_POINTS},</if>
+            <if test="BSC_EDUCATION_DEDUCTION != null">BSC_EDUCATION_DEDUCTION=#{BSC_EDUCATION_DEDUCTION},</if>
+            <if test="BSC_EDUCATION_TOTAL != null">BSC_EDUCATION_TOTAL=#{BSC_EDUCATION_TOTAL},</if>
+            <if test="BSC_EDUCATION_SCORE != null">BSC_EDUCATION_SCORE=#{BSC_EDUCATION_SCORE},</if>
+            <if test="BSC_ACADEMIC_RECORD != null">BSC_ACADEMIC_RECORD=#{BSC_ACADEMIC_RECORD},</if>
+            <if test="BSC_INTELLECTUAL_POINTS != null">BSC_INTELLECTUAL_POINTS=#{BSC_INTELLECTUAL_POINTS},</if>
+            <if test="BSC_INTELLECTUAL_SCORE != null">BSC_INTELLECTUAL_SCORE=#{BSC_INTELLECTUAL_SCORE},</if>
+            <if test="BSC_INTELLECTUAL_RANK != null">BSC_INTELLECTUAL_RANK=#{BSC_INTELLECTUAL_RANK},</if>
+            <if test="BSC_VOLUNTEER_TOTAL != null">BSC_VOLUNTEER_TOTAL=#{BSC_VOLUNTEER_TOTAL},</if>
+            <if test="BSC_VOLUNTEER_SCORE != null">BSC_VOLUNTEER_SCORE=#{BSC_VOLUNTEER_SCORE},</if>
+            <if test="BSC_REMARKS != null">BSC_REMARKS=#{BSC_REMARKS},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除综合素质测评-->
+    <delete id="deleteStudentComprehensive" parameterType="java.util.Map">
+		DELETE FROM BUS_STUDENT_COMPREHENSIVE WHERE ID = #{ID}
 	</delete>
 </mapper>
