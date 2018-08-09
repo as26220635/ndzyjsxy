@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="cn.kim.common.attr.Attribute " %>
 <%@ page import="cn.kim.common.attr.AttributePath" %>
+<%@ page import="cn.kim.common.attr.TableName " %>
 <%@ page import="cn.kim.common.attr.Tips" %>
 <%@ page import="cn.kim.common.eu.SystemEnum" %>
 <%@ page import="cn.kim.common.eu.ProcessType" %>
@@ -226,3 +227,8 @@
 <c:set var="STUDENT_ATTENDANCE_ADD_URL" value="${STUDENT_ATTENDANCE_BASE_URL}add"/>
 <c:set var="STUDENT_ATTENDANCE_UPDATE_URL" value="${STUDENT_ATTENDANCE_BASE_URL}update"/>
 <c:set var="STUDENT_ATTENDANCE_DELETE_URL" value="${STUDENT_ATTENDANCE_BASE_URL}delete"/>
+<%--学生处分--%>
+<c:set var="STUDENT_PUNISHMENT_BASE_URL" value="${STUDENT_BASE_URL}punishment/"/>
+<c:set var="STUDENT_PUNISHMENT_ADD_URL" value="${STUDENT_PUNISHMENT_BASE_URL}add"/>
+<c:set var="STUDENT_PUNISHMENT_UPDATE_URL" value="${STUDENT_PUNISHMENT_BASE_URL}update"/>
+<c:set var="STUDENT_PUNISHMENT_DELETE_URL" value="${STUDENT_PUNISHMENT_BASE_URL}delete"/>

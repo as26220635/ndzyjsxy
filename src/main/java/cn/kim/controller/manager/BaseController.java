@@ -83,6 +83,26 @@ public abstract class BaseController extends BaseData {
     }
 
     /******************     公用方法    *********************/
+    /**
+     * 设置默认ID
+     *
+     * @param model
+     */
+    protected void setInsertId(Model model) {
+        model.addAttribute("insertId", getId());
+    }
+
+    /**
+     * 设置默认ID
+     *
+     * @param model
+     * @param isNull 传来参数为空的情况添加ID到model中
+     */
+    protected void setInsertId(Model model, Object isNull) {
+        if (ValidateUtil.isEmpty(isNull)) {
+            setInsertId(model);
+        }
+    }
 
     /**
      * redission 公平锁

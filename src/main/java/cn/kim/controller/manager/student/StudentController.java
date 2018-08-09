@@ -37,11 +37,12 @@ public class StudentController extends BaseController {
 
     /**
      * 获取学生列表
+     *
      * @param mapParam
      * @return
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"STUDENT:ATTENDANCE"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"STUDENT:ATTENDANCE", "STUDENT:PUNISHMENT"}, logical = Logical.OR)
     @ResponseBody
     public DataTablesView<?> list(@RequestParam Map<String, Object> mapParam) {
         DataTablesView<?> view = studentService.selectStudentDataTablesView(mapParam);
@@ -182,6 +183,73 @@ public class StudentController extends BaseController {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         mapParam.put("ID", ID);
         Map<String, Object> resultMap = studentService.deleteStudentAttendance(mapParam);
+        return resultState(resultMap);
+    }
+
+    /**********     学生处分    ********/
+
+    @GetMapping("/punishment/add")
+    @RequiresPermissions("STUDENT:PUNISHMENT_INSERT")
+    @Token(save = true)
+    public String addHtmlPunishment(Model model) throws Exception {
+        return "admin/student/punishment/addAndEdit";
+    }
+
+
+    @PostMapping("/punishment/add")
+    @RequiresPermissions("STUDENT:PUNISHMENT_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加学生处分")
+    @Token(remove = true)
+    @Validate(value = "BUS_STUDENT_PUNISHMENT", required = true)
+    @ResponseBody
+    public ResultState addPunishment(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = studentService.insertAndUpdateStudentPunishment(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/punishment/update/{ID}")
+    @RequiresPermissions("STUDENT:PUNISHMENT_UPDATE")
+    public String updateHtmlPunishment(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> punishment = studentService.selectStudentPunishment(mapParam);
+
+        model.addAttribute("punishment", punishment);
+        //设置初始化ID
+        setInsertId(model, punishment);
+        return "admin/student/punishment/addAndEdit";
+    }
+
+    @PutMapping("/punishment/update")
+    @RequiresPermissions("STUDENT:PUNISHMENT_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改学生处分")
+    @Validate(value = "BUS_STUDENT_PUNISHMENT", required = true)
+    @ResponseBody
+    public ResultState updatePunishment(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = studentService.insertAndUpdateStudentPunishment(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PutMapping("/punishment/cancel")
+    @RequiresPermissions("STUDENT:PUNISHMENT_CANCEL")
+    @SystemControllerLog(useType = UseType.USE, event = "作废学生处分")
+    @ResponseBody
+    public ResultState cancelPunishment(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = studentService.cancelStudentPunishment(mapParam);
+        return resultState(resultMap);
+    }
+
+
+    @DeleteMapping("/punishment/delete/{ID}")
+    @RequiresPermissions("STUDENT:PUNISHMENT_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除学生处分")
+    @ResponseBody
+    public ResultState deletePunishment(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = studentService.deleteStudentPunishment(mapParam);
         return resultState(resultMap);
     }
 }

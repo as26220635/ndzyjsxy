@@ -188,6 +188,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
 
+            paramMap.put("ID", id);
             paramMap.put("BS_ID", mapParam.get("BS_ID"));
             paramMap.put("BSA_YEAR", mapParam.get("BSA_YEAR"));
             paramMap.put("BSA_SEMESTER", mapParam.get("BSA_SEMESTER"));
@@ -244,6 +245,130 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentAttendance", paramMap);
 
             resultMap.put(MagicValue.LOG, "删除学生考勤,信息:" + toString(oldMap));
+            status = STATUS_SUCCESS;
+            desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /***********    学生处分    *********/
+
+    @Override
+    public Map<String, Object> selectStudentPunishment(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", mapParam.get("ID"));
+        return baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentPunishment", paramMap);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insertAndUpdateStudentPunishment(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+            String id = toString(mapParam.get("ID"));
+            String insertId = toString(mapParam.get("insertId"));
+
+            paramMap.put("ID", id);
+            paramMap.put("BS_ID", mapParam.get("BS_ID"));
+            paramMap.put("BSP_TITLE", mapParam.get("BSP_TITLE"));
+            paramMap.put("BSP_FILE_NUMBER", mapParam.get("BSP_FILE_NUMBER"));
+            paramMap.put("BSP_RELEASE_TIME", mapParam.get("BSP_RELEASE_TIME"));
+            paramMap.put("BSP_TYPE", mapParam.get("BSP_TYPE"));
+            paramMap.put("BSP_REVOKE_TIME", mapParam.get("BSP_REVOKE_TIME"));
+            paramMap.put("BSP_DESCRIBE", mapParam.get("BSP_DESCRIBE"));
+            paramMap.put("BSP_IS_CANCEL", mapParam.get("BSP_IS_CANCEL"));
+            paramMap.put("BSP_CANCEL_TIME", mapParam.get("BSP_CANCEL_TIME"));
+
+            if (isEmpty(id)) {
+                id = insertId;
+                paramMap.put("ID", id);
+                paramMap.put("BSP_ENTRY_TIME", getDate());
+
+                baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentPunishment", paramMap);
+                resultMap.put(MagicValue.LOG, "添加学生处分:" + toString(paramMap));
+            } else {
+                Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+                oldMap.put("ID", id);
+                oldMap = selectStudentPunishment(oldMap);
+
+                baseDao.update(NameSpace.StudentExtendMapper, "updateStudentPunishment", paramMap);
+                resultMap.put(MagicValue.LOG, "更新学生处分,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+            }
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> cancelStudentPunishment(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+            String id = toString(mapParam.get("ID"));
+            if (isEmpty(id)) {
+                throw new CustomException("参数错误!");
+            }
+
+            paramMap.put("ID", id);
+            paramMap.put("BSP_IS_CANCEL", STATUS_SUCCESS);
+
+            Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+            oldMap.put("ID", id);
+            oldMap = selectStudentPunishment(oldMap);
+
+            baseDao.update(NameSpace.StudentExtendMapper, "updateStudentPunishment", paramMap);
+            resultMap.put(MagicValue.LOG, "作废学生处分,处分标题:" + oldMap.get("BSP_TITLE"));
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteStudentPunishment(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = DELETE_ERROR;
+        try {
+            if (isEmpty(mapParam.get("ID"))) {
+                throw new CustomException("ID不能为空!");
+            }
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            String id = toString(mapParam.get("ID"));
+
+            //删除学生处分表
+            paramMap.clear();
+            paramMap.put("ID", id);
+            Map<String, Object> oldMap = selectStudentPunishment(paramMap);
+
+            baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentPunishment", paramMap);
+
+            resultMap.put(MagicValue.LOG, "删除学生处分,信息:" + toString(oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

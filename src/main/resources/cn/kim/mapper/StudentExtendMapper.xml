@@ -63,4 +63,72 @@
     <delete id="deleteStudentAttendance" parameterType="java.util.Map">
 		DELETE FROM BUS_STUDENT_ATTENDANCE WHERE ID = #{ID}
 	</delete>
+
+
+    <!--查询处分-->
+    <select id="selectStudentPunishment" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_STUDENT_PUNISHMENT
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入处分-->
+    <insert id="insertStudentPunishment" parameterType="java.util.Map">
+        INSERT INTO BUS_STUDENT_PUNISHMENT
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BS_ID != null">BS_ID,</if>
+            <if test="BSP_TITLE != null">BSP_TITLE,</if>
+            <if test="BSP_FILE_NUMBER != null">BSP_FILE_NUMBER,</if>
+            <if test="BSP_RELEASE_TIME != null">BSP_RELEASE_TIME,</if>
+            <if test="BSP_TYPE != null">BSP_TYPE,</if>
+            <if test="BSP_REVOKE_TIME != null">BSP_REVOKE_TIME,</if>
+            <if test="BSP_DESCRIBE != null">BSP_DESCRIBE,</if>
+            <if test="BSP_IS_CANCEL != null">BSP_IS_CANCEL,</if>
+            <if test="BSP_CANCEL_TIME != null">BSP_CANCEL_TIME,</if>
+            <if test="BSP_ENTRY_TIME != null">BSP_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BS_ID != null">#{BS_ID},</if>
+            <if test="BSP_TITLE != null">#{BSP_TITLE},</if>
+            <if test="BSP_FILE_NUMBER != null">#{BSP_FILE_NUMBER},</if>
+            <if test="BSP_RELEASE_TIME != null">#{BSP_RELEASE_TIME},</if>
+            <if test="BSP_TYPE != null">#{BSP_TYPE},</if>
+            <if test="BSP_REVOKE_TIME != null">#{BSP_REVOKE_TIME},</if>
+            <if test="BSP_DESCRIBE != null">#{BSP_DESCRIBE},</if>
+            <if test="BSP_IS_CANCEL != null">#{BSP_IS_CANCEL},</if>
+            <if test="BSP_CANCEL_TIME != null">#{BSP_CANCEL_TIME},</if>
+            <if test="BSP_ENTRY_TIME != null">#{BSP_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑处分-->
+    <update id="updateStudentPunishment" parameterType="java.util.Map">
+        UPDATE BUS_STUDENT_PUNISHMENT
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BS_ID != null">BS_ID=#{BS_ID},</if>
+            <if test="BSP_TITLE != null">BSP_TITLE=#{BSP_TITLE},</if>
+            <if test="BSP_FILE_NUMBER != null">BSP_FILE_NUMBER=#{BSP_FILE_NUMBER},</if>
+            <if test="BSP_RELEASE_TIME != null">BSP_RELEASE_TIME=#{BSP_RELEASE_TIME},</if>
+            <if test="BSP_TYPE != null">BSP_TYPE=#{BSP_TYPE},</if>
+            <if test="BSP_REVOKE_TIME != null">BSP_REVOKE_TIME=#{BSP_REVOKE_TIME},</if>
+            <if test="BSP_DESCRIBE != null">BSP_DESCRIBE=#{BSP_DESCRIBE},</if>
+            <if test="BSP_IS_CANCEL != null">BSP_IS_CANCEL=#{BSP_IS_CANCEL},</if>
+            <if test="BSP_CANCEL_TIME != null">BSP_CANCEL_TIME=#{BSP_CANCEL_TIME},</if>
+            <if test="BSP_ENTRY_TIME != null">BSP_ENTRY_TIME=#{BSP_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除处分-->
+    <delete id="deleteStudentPunishment" parameterType="java.util.Map">
+		DELETE FROM BUS_STUDENT_PUNISHMENT WHERE ID = #{ID}
+	</delete>
 </mapper>

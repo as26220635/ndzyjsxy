@@ -48,6 +48,7 @@
                    value="${attendance.BSA_ABSENTEEISM}">
         </div>
     </div>
+
 </form>
 
 <script>
@@ -57,48 +58,9 @@
     });
 
     //选择学生
-    $('#BS_NAME').selectInput(function () {
-        choiceBox.init({
-            modelSize: model.size.LG,
-            url: '${STUDENT_LIST_URL}',
-            title: '选择学生',
-            searchLabel: '学生姓名',
-            searchFields:[
-                {
-                    label:'姓名',
-                    name:'BS_NAME',
-                },
-                {
-                    label:'学号',
-                    name:'BS_NUMBER',
-                },
-                {
-                    label:'身份证',
-                    name:'BS_ID_CARD',
-                },
-            ],
-            fields: [
-                {
-                    min_width: 100,
-                    name: '学生',
-                    data: 'BS_NAME',
-                },
-                {
-                    min_width: 150,
-                    name: '学号',
-                    data: 'BS_NUMBER',
-                },
-                {
-                    min_width: 170,
-                    name: '班级名称',
-                    data: 'BC_NAME',
-                },
-            ],
-            confirm: function ($model, data) {
-                $('#BS_ID').val(data.ID);
-                $('#BS_NAME').val(data.BS_NAME);
-            }
-        })
+    choiceBox.student({
+        id: 'BS_ID',
+        name: 'BS_NAME',
+        url: '${STUDENT_LIST_URL}'
     });
-
 </script>

@@ -961,7 +961,7 @@ model = {
 
 /**
  * 选择搜索列表
- * @type {{mode: {MULTIPLE: string, SINGLE: string}, init: choiceBox.init}}
+ * @type {{mode: {MULTIPLE: string, SINGLE: string}, init: choiceBox.init, student: choiceBox.student}}
  */
 choiceBox = {
     mode: {MULTIPLE: 'MULTIPLE', SINGLE: 'SINGLE'},
@@ -1106,10 +1106,10 @@ choiceBox = {
             //点击回调
             confirm: function ($model) {
                 var data = $table.rows('.selected').data();
-                if(settings.isCancel == true && data.length != 0){
+                if (settings.isCancel == true && data.length != 0) {
                     model.hide($model);
                 }
-                if(settings.isCancel == true && data.length == 0){
+                if (settings.isCancel == true && data.length == 0) {
                     demo.showNotify(ALERT_WARNING, '请选择!');
                     return;
                 }
@@ -1119,6 +1119,55 @@ choiceBox = {
                     options.confirm($model, data);
                 }
             }
+        });
+    },
+    /**
+     * 初始化学生选择
+     * @param options
+     */
+    student: function (options) {
+        $('#' + options.name).selectInput(function () {
+            choiceBox.init({
+                modelSize: model.size.LG,
+                url: options.url,
+                title: '选择学生',
+                searchLabel: '学生姓名',
+                searchFields: [
+                    {
+                        label: '姓名',
+                        name: 'BS_NAME',
+                    },
+                    {
+                        label: '学号',
+                        name: 'BS_NUMBER',
+                    },
+                    {
+                        label: '身份证',
+                        name: 'BS_ID_CARD',
+                    },
+                ],
+                fields: [
+                    {
+                        min_width: 100,
+                        name: '学生',
+                        data: 'BS_NAME',
+                    },
+                    {
+                        min_width: 150,
+                        name: '学号',
+                        data: 'BS_NUMBER',
+                    },
+                    {
+                        min_width: 170,
+                        name: '班级名称',
+                        data: 'BC_NAME',
+                    },
+                ],
+                confirm: function ($model, data) {
+                    $('#' + options.id).val(data.ID);
+                    $('#' + options.name).val(data.BS_NAME);
+                }
+            })
         });
     }
 }

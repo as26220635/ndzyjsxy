@@ -68,4 +68,35 @@ public interface StudentService extends BaseService {
      */
     Map<String, Object> deleteStudentAttendance(Map<String, Object> mapParam);
 
+    /**
+     * 查询学生处分
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> selectStudentPunishment(Map<String, Object> mapParam);
+
+    /**
+     * 插入或更新学生处分
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> insertAndUpdateStudentPunishment(Map<String, Object> mapParam);
+
+    /**
+     * 作废学生处分
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> cancelStudentPunishment(Map<String, Object> mapParam);
+
+    /**
+     * 删除学生处分
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> deleteStudentPunishment(Map<String, Object> mapParam);
 }
