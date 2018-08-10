@@ -1299,6 +1299,12 @@ treeBox = {
                 if (options.onNodeUnselected != undefined) {
                     options.onNodeUnselected(event, node);
                 }
+            },
+            onSearchComplete:function (event,results) {
+                //搜索后获取焦点
+                if(!isEmpty(results[0])){
+                    $tree.find('li[data-nodeid="'+results[0].nodeId+'"]').prop('tabindex','0').focus();
+                }
             }
         });
         var checkeds = $tree.treeview('getChecked');
@@ -1315,8 +1321,8 @@ treeBox = {
     search: function (tree, text) {
         var $tree = $(tree);
         return $tree.treeview('search', [text, {
-            ignoreCase: false,
-            exactMatch: false
+            ignoreCase: true,
+            exactMatch: false,
         }]);
     },
     /**
