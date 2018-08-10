@@ -73,7 +73,7 @@ public class FileController extends BaseController {
             String SF_PATH = TextUtil.toString(file.get("SF_PATH"));
 
             //判断权限
-            if (SF_SEE_TYPE == STATUS_SUCCESS && (isEmpty(activeUser) ? true : !activeUser.getId().equals(SO_ID) && !containsRole(SDT_ROLE_DOWN))) {
+            if (SF_SEE_TYPE == STATUS_ERROR && (isEmpty(activeUser) ? true : !activeUser.getId().equals(SO_ID) && !containsRole(SDT_ROLE_DOWN))) {
                 throw new UnauthorizedException("你没有预览这个文件的权限!");
             }
 
