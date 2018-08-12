@@ -52,7 +52,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         String resultBtn = "";
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
         paramMap.put("BUS_PROCESS", process);
-        paramMap.put("BUS_PROCESS", process2);
+        paramMap.put("BUS_PROCESS2", process2);
         Map<String, Object> definition = this.selectProcessDefinition(paramMap);
         //流程停用就没有按钮
         if (isEmpty(definition) || isDiscontinuation(definition)) {
@@ -371,6 +371,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 schedule.put("SPD_ID", definitionId);
                 schedule.put("SPS_TABLE_ID", scheduleTableId);
                 schedule.put("SO_ID", activeUser.getId());
+                schedule.put("SHOW_SO_ID", mapParam.get("SHOW_SO_ID"));
                 schedule.put("SPS_PREV_AUDIT_STATUS", "0");
             } else {
                 //判断流程是否重复审核
@@ -394,6 +395,8 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             schedule.put("SPS_PREV_STEP_TRANSACTOR", activeUser.getId());
             schedule.put("SPS_PREV_STEP_ID", stepId);
             resultIUMap = this.insertAndUpdateProcessSchedule(schedule);
+
+
             validateResultMap(resultIUMap);
 
             //流程进度表ID
@@ -554,6 +557,8 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
     public Map<String, Object> selectProcessDefinition(Map<String, Object> mapParam) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
         paramMap.put("ID", mapParam.get("ID"));
+        paramMap.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
+        paramMap.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
         return baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinition", paramMap);
     }
 
@@ -701,6 +706,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             String id = toString(mapParam.get("ID"));
             //检测流程状态是否重复
             paramMap.put("NOT_ID", id);
+            paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
             paramMap.put("SPS_PROCESS_STATUS", mapParam.get("SPS_PROCESS_STATUS"));
             int count = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessStepCount", paramMap);
             if (count > 0) {
@@ -708,6 +714,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             }
             //检测流程排序是否重复
             paramMap.put("NOT_ID", id);
+            paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
             paramMap.put("SPS_ORDER", mapParam.get("SPS_ORDER"));
             count = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessStepCount", paramMap);
             if (count > 0) {
@@ -905,8 +912,6 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("SVR_TABLE_NAME", TableName.SYS_PROCESS_SCHEDULE);
 
             paramMap.put("ID", mapParam.get("ID"));
-            paramMap.put("SO_ID", mapParam.get("SO_ID"));
-            paramMap.put("SHOW_SO_ID", mapParam.get("SHOW_SO_ID"));
             paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
             paramMap.put("SPS_TABLE_ID", mapParam.get("SPS_TABLE_ID"));
             paramMap.put("SPS_AUDIT_STATUS", mapParam.get("SPS_AUDIT_STATUS"));
@@ -924,6 +929,10 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             if (isEmpty(id)) {
                 id = getId();
                 paramMap.put("ID", id);
+                paramMap.put("SO_ID", mapParam.get("SO_ID"));
+                if(!isEmpty(mapParam.get("SHOW_SO_ID"))){
+                    paramMap.put("SHOW_SO_ID", mapParam.get("SHOW_SO_ID"));
+                }
 
                 baseDao.insert(NameSpace.ProcessMapper, "insertProcessSchedule", paramMap);
                 resultMap.put(MagicValue.LOG, "添加流程进度:" + toString(paramMap));

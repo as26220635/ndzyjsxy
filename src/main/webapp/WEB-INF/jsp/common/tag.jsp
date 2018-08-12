@@ -49,6 +49,7 @@
 <c:set var="MENU_TREE_BUTTON_DATA_UPDATE_URL" value="${MENU_BASE_URL}updateMenuButton"/>
 <c:set var="MENU_ADD_URL" value="${MENU_BASE_URL}add"/>
 <c:set var="MENU_UPDATE_URL" value="${MENU_BASE_URL}update"/>
+<c:set var="MENU_COPY_URL" value="${MENU_BASE_URL}copy"/>
 <c:set var="MENU_SWITCH_STATUS_URL" value="${MENU_BASE_URL}switchStatus"/>
 <c:set var="MENU_DELETE_URL" value="${MENU_BASE_URL}delete"/>
 <%--配置列表--%>
@@ -56,6 +57,7 @@
 <c:set var="CONFIGURE_TREE_DATA_URL" value="${CONFIGURE_BASE_URL}getConfigureTreeData"/>
 <c:set var="CONFIGURE_ADD_URL" value="${CONFIGURE_BASE_URL}add"/>
 <c:set var="CONFIGURE_UPDATE_URL" value="${CONFIGURE_BASE_URL}update"/>
+<c:set var="CONFIGURE_COPY_URL" value="${CONFIGURE_BASE_URL}copy"/>
 <c:set var="CONFIGURE_DELETE_URL" value="${CONFIGURE_BASE_URL}delete"/>
 <%--配置列表列--%>
 <c:set var="CONFIGURE_COLUMN_BASE_URL" value="${CONFIGURE_BASE_URL}column/"/>
@@ -155,7 +157,7 @@
 <%--流程列表--%>
 <c:set var="PROCESS_BASE_URL" value="${MANAGER_URL}process/"/>
 <c:set var="PROCESS_DATAGRID_BTN" value="${PROCESS_BASE_URL}showDataGridBtn"/>
-<c:set var="PROCESS_SHOW_HOME" value="${PROCESS_BASE_URL}showDataGrid"/>
+<c:set var="PROCESS_SHOW_HOME" value="${PROCESS_BASE_URL}showDataGridProcess"/>
 <c:set var="PROCESS_SUBMIT" value="${PROCESS_BASE_URL}submit"/>
 <c:set var="PROCESS_WITHDRAW" value="${PROCESS_BASE_URL}withdraw"/>
 <c:set var="PROCESS_LOG" value="${PROCESS_BASE_URL}log"/>
@@ -241,3 +243,10 @@
 <c:set var="STUDENT_COMPREHENSIVE_BASE_URL" value="${STUDENT_BASE_URL}comprehensive/"/>
 <c:set var="STUDENT_COMPREHENSIVE_INSERT_AND_UPDATE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}insertAndUpdate"/>
 <c:set var="STUDENT_COMPREHENSIVE_DELETE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}delete"/>
+<%--资助管理--%>
+<c:set var="AID_BASE_URL" value="${MANAGER_URL}aidFinancially/"/>
+<%--学院奖学金--%>
+<c:set var="COLLEGE_SCHOLARSHIP_BASE_URL" value="${AID_BASE_URL}collegeScholarship/"/>
+<c:set var="COLLEGE_SCHOLARSHIP_ADD_URL" value="${COLLEGE_SCHOLARSHIP_BASE_URL}add"/>
+<c:set var="COLLEGE_SCHOLARSHIP_UPDATE_URL" value="${COLLEGE_SCHOLARSHIP_BASE_URL}update"/>
+<c:set var="COLLEGE_SCHOLARSHIP_DELETE_URL" value="${COLLEGE_SCHOLARSHIP_BASE_URL}delete"/>

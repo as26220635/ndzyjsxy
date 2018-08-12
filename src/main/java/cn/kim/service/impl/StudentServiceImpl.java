@@ -52,17 +52,14 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         int offset = toInt(mapParam.get("start"));
         int limit = toInt(mapParam.get("length"));
 
-        if (limit != -1) {
-            querySet.setOffset(offset);
-            querySet.setLimit(limit);
-        }
+        querySet.setOffset(offset);
+        querySet.setLimit(limit);
+
         querySet.setOrderByClause("CONVERT(ID,SIGNED) DESC");
 
         long count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCount", querySet.getWhereMap());
         dataTablesView.setRecordsTotal(count);
-        if (limit != -1) {
-            dataTablesView.setTotalPages(CommonUtil.getPage(count, limit));
-        }
+        dataTablesView.setTotalPages(CommonUtil.getPage(count, limit));
 
         List<Map<String, Object>> dataList = baseDao.selectList(NameSpace.StudentMapper, "selectStudent", querySet.getWhereMap());
         dataTablesView.setData(dataList);
@@ -187,6 +184,8 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_ATTENDANCE);
 
             paramMap.put("ID", id);
             paramMap.put("BS_ID", mapParam.get("BS_ID"));
@@ -241,6 +240,8 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.clear();
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectStudentAttendance(paramMap);
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_ATTENDANCE);
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentAttendance", paramMap);
 
@@ -274,6 +275,9 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             String insertId = toString(mapParam.get("insertId"));
+
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_PUNISHMENT);
 
             paramMap.put("ID", id);
             paramMap.put("BS_ID", mapParam.get("BS_ID"));
@@ -333,6 +337,8 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
             oldMap.put("ID", id);
             oldMap = selectStudentPunishment(oldMap);
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_PUNISHMENT);
 
             baseDao.update(NameSpace.StudentExtendMapper, "updateStudentPunishment", paramMap);
             resultMap.put(MagicValue.LOG, "作废学生处分,处分标题:" + oldMap.get("BSP_TITLE"));
@@ -366,6 +372,8 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.clear();
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectStudentPunishment(paramMap);
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_PUNISHMENT);
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentPunishment", paramMap);
 
@@ -425,6 +433,10 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             }
 
             paramMap.clear();
+
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_COMPREHENSIVE);
+
             paramMap.put("ID", id);
             paramMap.put("BS_ID", mapParam.get("BS_ID"));
             paramMap.put("BSC_EDUCATION_PROPORTION", mapParam.get("BSC_EDUCATION_PROPORTION"));
@@ -452,8 +464,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("BSC_VOLUNTEER_TOTAL", mapParam.get("BSC_VOLUNTEER_TOTAL"));
             paramMap.put("BSC_VOLUNTEER_SCORE", mapParam.get("BSC_VOLUNTEER_SCORE"));
             paramMap.put("BSC_REMARKS", mapParam.get("BSC_REMARKS"));
-//            paramMap.put("BSC_RANK", mapParam.get("BSC_RANK"));
-//            paramMap.put("BSC_INTELLECTUAL_RANK", mapParam.get("BSC_INTELLECTUAL_RANK"));
+
             if (isEmpty(id)) {
                 id = getId();
                 paramMap.put("ID", id);
@@ -539,6 +550,8 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.clear();
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectStudentComprehensive(paramMap);
+            //记录日志
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_COMPREHENSIVE);
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentComprehensive", paramMap);
 

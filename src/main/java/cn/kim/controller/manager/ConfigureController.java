@@ -86,6 +86,26 @@ public class ConfigureController extends BaseController {
         Map<String, Object> resultMap = configureService.insertAndUpdateConfigure(mapParam);
         return resultState(resultMap);
     }
+    
+    @GetMapping("/copy/{ID}")
+    @RequiresPermissions("SYSTEM:CONFIGURE_COPY")
+    public String copyHtml(@PathVariable("ID") String ID, Model model) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("CONFIGURE", configureService.selectConfigure(mapParam));
+        return "admin/system/configure/copy";
+    }
+
+    @PutMapping("/copy")
+    @RequiresPermissions("SYSTEM:CONFIGURE_COPY")
+    @SystemControllerLog(useType = UseType.USE, event = "拷贝配置列表")
+    @Validate("SYS_CONFIGURE")
+    @ResponseBody
+    public ResultState copy(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = configureService.copyConfigure(mapParam);
+        return resultState(resultMap);
+    }
+    
 
     @DeleteMapping("/delete/{ID}")
     @RequiresPermissions("SYSTEM:CONFIGURE_DELETE")

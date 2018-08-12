@@ -106,6 +106,39 @@
         });
     });
 
+    //拷贝
+    $treeGridTable.find('tbody').on('click', '#copy', function () {
+        var data = getRowData(this);
+        var id = data.ID;
+
+        ajax.getHtml('${MENU_COPY_URL}/' + id, {}, function (html) {
+                model.show({
+                    title: '拷贝菜单',
+                    content: html,
+                    footerModel: model.footerModel.ADMIN,
+                    isConfirm: true,
+                    confirm: function ($model) {
+                        var $form = $('#addAndEditForm');
+                        //验证
+                        if (!validator.formValidate($form)) {
+                            demo.showNotify(ALERT_WARNING, VALIDATE_FAIL);
+                            return;
+                        }
+                        var params = packFormParams($form);
+
+                        ajax.put('${MENU_COPY_URL}', params, function (data) {
+                            if (data.code == STATUS_SUCCESS) {
+                                model.hide($model);
+                                demo.showNotify(ALERT_SUCCESS, data.message);
+                            } else {
+                                demo.showNotify(ALERT_WARNING, data.message);
+                            }
+                        });
+                    }
+                });
+            }
+        );
+    });
 
     //删除按钮
     $treeGridTable.find('tbody').on('click', '#del', function () {

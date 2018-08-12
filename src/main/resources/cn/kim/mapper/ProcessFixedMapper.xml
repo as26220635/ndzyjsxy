@@ -5,7 +5,10 @@
 
     <!--查询流程下一步骤-->
     <select id="selectProcessNextStep" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM SYS_PROCESS_STEP WHERE SPS_ORDER > (SELECT SPS_ORDER FROM SYS_PROCESS_STEP WHERE SPD_ID = #{SPD_ID} AND SPS_PROCESS_STATUS = #{SPS_PROCESS_STATUS} ) ORDER BY SPS_ORDER ASC  LIMIT 0 ,1
+        SELECT * FROM SYS_PROCESS_STEP
+        WHERE SPS_ORDER > (SELECT SPS_ORDER FROM SYS_PROCESS_STEP WHERE SPD_ID = #{SPD_ID} AND SPS_PROCESS_STATUS = #{SPS_PROCESS_STATUS} )
+        AND SPD_ID = #{SPD_ID}
+        ORDER BY SPS_ORDER ASC  LIMIT 0 ,1
     </select>
 
     <!--查询流程上一步骤-->
@@ -21,6 +24,7 @@
                 AND SPS_PROCESS_STATUS = #{SPS_PROCESS_STATUS}
             </if>
         )
+        AND SPD_ID = #{SPD_ID}
         <if test="SR_ID != null and SR_ID != ''">
             AND SR_ID = #{SR_ID}
         </if>
@@ -197,6 +201,9 @@
         <where>
             <if test="NOT_ID != NULL and NOT_ID != ''">
                 AND ID != #{NOT_ID}
+            </if>
+            <if test="SPD_ID != NULL and SPD_ID != ''">
+                AND SPD_ID = #{SPD_ID}
             </if>
             <if test="SPS_PROCESS_STATUS != NULL and SPS_PROCESS_STATUS != ''">
                 AND SPS_PROCESS_STATUS = #{SPS_PROCESS_STATUS}

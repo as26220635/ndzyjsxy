@@ -51,6 +51,8 @@ public enum NameSpace {
     StudentMapper("cn.kim.mapper.StudentMapper"),
     //学生扩展
     StudentExtendMapper("cn.kim.mapper.StudentExtendMapper"),
+    //资助
+    AidFinanciallyMapper("cn.kim.mapper.AidFinanciallyMapper"),
     ;
 
     private final String value;

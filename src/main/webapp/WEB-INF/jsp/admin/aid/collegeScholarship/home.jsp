@@ -1,35 +1,28 @@
 <%@ include file="/WEB-INF/jsp/common/tag.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<script>
-    //查询额外参数
-    function searchParams(param) {
-        param.SPD_ID = '${EXTRA.SPD_ID}';
-    }
-</script>
 
 <%--通用列表--%>
 <%@ include file="/WEB-INF/jsp/admin/component/grid/dataGrid.jsp" %>
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${PROCESS_STEP_ADD_URL}', {SPD_ID: '${EXTRA.SPD_ID}'}, function (html) {
+        ajax.getHtml('${COLLEGE_SCHOLARSHIP_ADD_URL}', {}, function (html) {
                 model.show({
-                    title: '添加流程步骤',
+                    title: '添加学院奖学金',
                     content: html,
                     footerModel: model.footerModel.ADMIN,
                     isConfirm: true,
                     confirm: function ($model) {
                         var $form = $('#addAndEditForm');
-                        //流程步骤
+                        //验证
                         if (!validator.formValidate($form)) {
                             demo.showNotify(ALERT_WARNING, VALIDATE_FAIL);
                             return;
                         }
-
                         var params = packFormParams($form);
 
-                        ajax.post('${PROCESS_STEP_ADD_URL}', params, function (data) {
-                            ajaxReturn.data(data, $model, $dataGrid, false);
+                        ajax.post('${COLLEGE_SCHOLARSHIP_ADD_URL}', params, function (data) {
+                            ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
                 });
@@ -42,26 +35,27 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${PROCESS_STEP_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${COLLEGE_SCHOLARSHIP_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
-                    title: '修改流程步骤',
+                    title: '修改学院奖学金',
                     content: html,
                     footerModel: model.footerModel.ADMIN,
+                    <shiro:hasPermission name="STUDENT:ATTENDANCE_UPDATE_SAVE">
                     isConfirm: true,
                     confirm: function ($model) {
                         var $form = $('#addAndEditForm');
-                        //流程步骤
+                        //验证
                         if (!validator.formValidate($form)) {
                             demo.showNotify(ALERT_WARNING, VALIDATE_FAIL);
                             return;
                         }
-
                         var params = packFormParams($form);
 
-                        ajax.put('${PROCESS_STEP_UPDATE_URL}', params, function (data) {
+                        ajax.put('${COLLEGE_SCHOLARSHIP_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
+                    </shiro:hasPermission>
                 });
             }
         );
@@ -73,14 +67,14 @@
         var id = data.ID;
 
         model.show({
-            title: '删除流程步骤',
-            content: '是否删除流程步骤:' + data.SPS_NAME,
+            title: '删除学院奖学金',
+            content: '是否删除学院奖学金,学生' + data.BS_NAME,
             class: model.class.DANGER,
             okBtnName: model.btnName.DEL,
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${PROCESS_STEP_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${COLLEGE_SCHOLARSHIP_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }

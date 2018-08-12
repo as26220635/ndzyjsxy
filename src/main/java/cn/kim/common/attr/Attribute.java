@@ -33,6 +33,17 @@ public class Attribute {
     public static final int BACK_CODE = -1;
     public static final int COMPLETE_CODE = 999;
 
+    /*******************   流程定义 ******************/
+    public static final int PROCESS_AID = 100;
+    public static final int PROCESS_AID_COLLEGE_SCHOLARSHIP = 109;
+    public static final int PROCESS_AID_COMMEND = 110;
+
+    /*******************   资助类型 ******************/
+    /**
+     * 学院奖学金
+     */
+    public static final int AID_COLLEGE_SCHOLARSHIP = 9;
+
     /*******************    前台使用 ******************/
     public static final String LOADING_IMAGE = "resources/reception/assets/img/loading.gif";
     /**

@@ -82,10 +82,10 @@ public class ProcessController extends BaseController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/showDataGrid")
+    @GetMapping("/showDataGridProcess")
     @NotEmptyLogin
     @Token(save = true)
-    public String showDataGrid(String ID, String BUS_PROCESS, String BUS_PROCESS2, int PROCESS_TYPE, Model model) throws Exception {
+    public String showDataGridProcess(String ID, String SHOW_SO_ID, String BUS_PROCESS, String BUS_PROCESS2, int PROCESS_TYPE, Model model) throws Exception {
         try {
             String processBtnType = ProcessType.SUBMIT.toString();
             List<Map<String, Object>> transactorList = new ArrayList<>();
@@ -247,6 +247,10 @@ public class ProcessController extends BaseController {
             model.addAttribute("SPS_GROUP_NAME", TextUtil.interceptSymbol(stepGroupName.toString(), MagicValue.GREATER_THAN + MagicValue.GREATER_THAN + MagicValue.GREATER_THAN));
             //办理表ID
             model.addAttribute("SPS_TABLE_ID", ID);
+            //查看人SO_ID
+            if(!isEmpty(SHOW_SO_ID)){
+                model.addAttribute("SHOW_SO_ID", SHOW_SO_ID);
+            }
             //下一步办理人
             model.addAttribute("TRANSACTOR_LIST", transactorList);
             //流程定义
@@ -320,6 +324,7 @@ public class ProcessController extends BaseController {
 
     /**
      * 流程日志
+     *
      * @param ID
      * @param BUS_PROCESS
      * @param BUS_PROCESS2

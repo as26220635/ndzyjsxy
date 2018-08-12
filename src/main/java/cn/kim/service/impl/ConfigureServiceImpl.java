@@ -98,6 +98,57 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
 
     @Override
     @Transactional
+    public Map<String, Object> copyConfigure(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            String id = toString(mapParam.get("ID"));
+            String SC_NAME = toString(mapParam.get("SC_NAME"));
+            String SC_VIEW = toString(mapParam.get("SC_VIEW"));
+            String SC_JSP = toString(mapParam.get("SC_JSP"));
+
+            paramMap.put("ID", id);
+            Map<String, Object> configure = this.selectConfigure(paramMap);
+
+            String newConfigureId = getId();
+            configure.put("ID", newConfigureId);
+            configure.put("SC_NAME", SC_NAME);
+            configure.put("SC_VIEW", SC_VIEW);
+            configure.put("SC_JSP", SC_JSP);
+            baseDao.insert(NameSpace.ConfigureMapper, "insertConfigure", configure);
+
+            paramMap.clear();
+            paramMap.put("SC_ID",id);
+            List<Map<String, Object>> columnList = this.selectConfigureColumnList(paramMap);
+            for (Map<String, Object> column : columnList) {
+                column.put("ID",getId());
+                column.put("SC_ID",newConfigureId);
+                baseDao.insert(NameSpace.ConfigureMapper, "insertConfigureColumn", column);
+            }
+
+            paramMap.clear();
+            paramMap.put("SC_ID",id);
+            List<Map<String, Object>> searchList = this.selectConfigureSearchList(paramMap);
+            for (Map<String, Object> search : searchList) {
+                search.put("ID",getId());
+                search.put("SC_ID",newConfigureId);
+                baseDao.insert(NameSpace.ConfigureMapper, "insertConfigureSearch", search);
+            }
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
     public Map<String, Object> deleteConfigure(Map<String, Object> mapParam) {
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
         int status = STATUS_ERROR;

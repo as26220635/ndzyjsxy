@@ -16,6 +16,7 @@ import cn.kim.service.DictService;
 import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Maps;
 import com.sun.xml.internal.ws.wsdl.writer.document.ParamType;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -170,6 +171,25 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(16);
             String id = toString(mapParam.get("ID"));
+
+            //查询是否重复
+            paramMap.put("NOT_ID", id);
+            paramMap.put("SDT_ID", mapParam.get("SDT_ID"));
+            paramMap.put("SDI_CODE", mapParam.get("SDI_CODE"));
+            int count = baseDao.selectOne(NameSpace.DictMapper, "selectDictInfoCount", paramMap);
+            if (count > 0) {
+                throw new CustomException("信息编码重复!");
+            }
+            paramMap.clear();
+            paramMap.put("NOT_ID", id);
+            paramMap.put("SDT_ID", mapParam.get("SDT_ID"));
+            paramMap.put("SDI_INNERCODE", mapParam.get("SDI_INNERCODE"));
+            count = baseDao.selectOne(NameSpace.DictMapper, "selectDictInfoCount", paramMap);
+            if (count > 0) {
+                throw new CustomException("连接编码重复!");
+            }
+
+            paramMap.clear();
             //记录日志
             paramMap.put("SVR_TABLE_NAME", TableName.SYS_DICT_INFO);
 

@@ -157,4 +157,19 @@ public class TableName {
      * 学生处分
      */
     public static final String BUS_STUDENT_PUNISHMENT = "BUS_STUDENT_PUNISHMENT";
+
+    /**
+     * 学生综合素质测评
+     */
+    public static final String BUS_STUDENT_COMPREHENSIVE = "BUS_STUDENT_COMPREHENSIVE";
+
+    /**
+     * 学生考勤
+     */
+    public static final String BUS_STUDENT_ATTENDANCE = "BUS_STUDENT_ATTENDANCE";
+
+    /**
+     * 资助
+     */
+    public static final String BUS_AID_FINANCIALLY = "BUS_AID_FINANCIALLY";
 }

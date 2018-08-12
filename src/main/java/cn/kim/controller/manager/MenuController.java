@@ -159,6 +159,23 @@ public class MenuController extends BaseController {
         return resultState(resultMap);
     }
 
+    @GetMapping("/copy/{ID}")
+    @RequiresPermissions("SYSTEM:MENU_COPY")
+    public String copyHtml(Model model, @PathVariable("ID") String ID) throws Exception {
+        model.addAttribute("MENU", menuService.queryMenuById(ID));
+        return "admin/system/menu/copy";
+    }
+
+    @PutMapping("/copy")
+    @RequiresPermissions("SYSTEM:MENU_COPY")
+    @SystemControllerLog(useType = UseType.USE, event = "拷贝菜单")
+    @Validate("SYS_MENU")
+    @ResponseBody
+    public ResultState copy(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = menuService.copyMenu(mapParam);
+        return resultState(resultMap);
+    }
+
     @DeleteMapping("/delete/{ID}")
     @RequiresPermissions("SYSTEM:MENU_DELETE")
     @SystemControllerLog(useType = UseType.USE, event = "删除菜单")

@@ -90,6 +90,29 @@
         ORDER BY SDI.SDI_ORDER ASC
     </select>
 
+    <!--查询字典信息数量-->
+    <select id="selectDictInfoCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM SYS_DICT_INFO SDI
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND SDI.ID = #{ID}
+            </if>
+            <if test="NOT_ID != NULL and NOT_ID != ''">
+                AND SDI.ID != #{NOT_ID}
+            </if>
+            <if test="SDT_ID != NULL and SDT_ID != ''">
+                AND SDI.SDT_ID = #{SDT_ID}
+            </if>
+            <if test="SDI_CODE != NULL and SDI_CODE != ''">
+                AND SDI.SDI_CODE = #{SDI_CODE}
+            </if>
+            <if test="SDI_INNERCODE != NULL and SDI_INNERCODE != ''">
+                AND SDI.SDI_INNERCODE = #{SDI_INNERCODE}
+            </if>
+        </where>
+    </select>
+
     <!--插入字典信息-->
     <insert id="insertDictInfo" parameterType="java.util.Map">
         INSERT INTO SYS_DICT_INFO

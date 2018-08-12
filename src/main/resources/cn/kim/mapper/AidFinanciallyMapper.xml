@@ -4,12 +4,21 @@
 
     <!--查询资助-->
     <select id="selectAidFinancially" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM BUS_AID_FINANCIALLY
-        <where>
-            <if test ="ID != NULL and ID != ''">
-                AND ID = #{ID}
-            </if>
-        </where>
+        SELECT BAF.*,SPS.SPS_AUDIT_STATUS,
+        BS.BS_NAME,BS.BS_NUMBER,BC.BC_NAME,
+        BSC.BSC_TOTAL,BSC.BSC_RANK,BSC.BSC_ACADEMIC_RECORD,BSC.BSC_INTELLECTUAL_RANK
+        FROM(
+            SELECT * FROM BUS_AID_FINANCIALLY
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+            </where>
+        )BAF
+        INNER JOIN BUS_STUDENT BS ON BS.ID = BAF.BS_ID
+        INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
+        INNER JOIN BUS_STUDENT_COMPREHENSIVE BSC ON BSC.BS_ID = BAF.BS_ID AND BSC.BSC_YEAR = BAF.BAF_YEAR AND BSC.BSC_SEMESTER = BAF.BAF_SEMESTER
+        LEFT JOIN SYS_PROCESS_SCHEDULE SPS ON SPS.SPS_TABLE_ID = BAF.ID AND SPS.SPS_IS_CANCEL = 0
     </select>
 
     <!--插入资助-->
@@ -17,6 +26,7 @@
         INSERT INTO BUS_AID_FINANCIALLY
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
             <if test="BS_ID != null">BS_ID,</if>
             <if test="BAF_YEAR != null">BAF_YEAR,</if>
             <if test="BAF_SEMESTER != null">BAF_SEMESTER,</if>
@@ -32,6 +42,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
             <if test="BS_ID != null">#{BS_ID},</if>
             <if test="BAF_YEAR != null">#{BAF_YEAR},</if>
             <if test="BAF_SEMESTER != null">#{BAF_SEMESTER},</if>
@@ -52,6 +63,7 @@
         UPDATE BUS_AID_FINANCIALLY
         <set>
             <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
             <if test="BS_ID != null">BS_ID=#{BS_ID},</if>
             <if test="BAF_YEAR != null">BAF_YEAR=#{BAF_YEAR},</if>
             <if test="BAF_SEMESTER != null">BAF_SEMESTER=#{BAF_SEMESTER},</if>

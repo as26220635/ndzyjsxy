@@ -77,6 +77,35 @@
         loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_SEARCH")}&SC_ID=' + id + '&SC_NAME=' + encodeURIComponent(data.SC_NAME));
     });
 
+    //修改
+    $dataGridTable.find('tbody').on('click', '#copy', function () {
+        var data = getRowData(this);
+        var id = data.ID;
+
+        ajax.getHtml('${CONFIGURE_COPY_URL}/' + id, {}, function (html) {
+                model.show({
+                    title: '拷贝配置列表',
+                    content: html,
+                    footerModel: model.footerModel.ADMIN,
+                    isConfirm: true,
+                    confirm: function ($model) {
+                        var $form = $('#addAndEditForm');
+                        //验证
+                        if (!validator.formValidate($form)) {
+                            demo.showNotify(ALERT_WARNING, VALIDATE_FAIL);
+                            return;
+                        }
+                        var params = packFormParams($form);
+
+                        ajax.put('${CONFIGURE_COPY_URL}', params, function (data) {
+                            ajaxReturn.data(data, $model, $dataGrid, false);
+                        });
+                    }
+                });
+            }
+        );
+    });
+
     //删除
     $dataGridTable.find('tbody').on('click', '#del', function () {
         var data = getRowData(this);

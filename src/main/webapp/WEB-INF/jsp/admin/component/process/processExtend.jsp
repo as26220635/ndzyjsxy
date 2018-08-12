@@ -24,11 +24,13 @@
             } else if (option.PROCESS_TYPE == '${ProcessType.WITHDRAW.toString()}') {
                 okBtnName = model.btnName.WITHDRAW;
             }
+
             ajax.getHtml('${PROCESS_SHOW_HOME}', {
                 ID: option.ID,
                 BUS_PROCESS: option.BUS_PROCESS,
                 BUS_PROCESS2: option.BUS_PROCESS2,
-                PROCESS_TYPE: option.PROCESS_TYPE
+                PROCESS_TYPE: option.PROCESS_TYPE,
+                SHOW_SO_ID: option.SHOW_SO_ID,
             }, function (html) {
                 model.show({
                     title: '办理流程',

@@ -88,4 +88,11 @@ public interface MenuService extends BaseService {
      */
     List<Map<String, Object>> selectOperatorNowMenu(Map<String, Object> mapParam);
 
+    /**
+     * 拷贝菜单
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> copyMenu(Map<String, Object> mapParam);
 }

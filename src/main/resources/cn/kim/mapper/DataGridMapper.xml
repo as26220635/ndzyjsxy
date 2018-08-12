@@ -6,7 +6,8 @@
         SELECT DG.*
         ${processSelect}
         <if test="processDefinitionId != null and processDefinitionId != ''">
-            ,SPD.ID AS SPD_ID,SPS.SPS_AUDIT_STATUS,
+            ,SPD.ID AS SPD_ID
+            ,SPS.SPS_AUDIT_STATUS,
             (
             CASE
             WHEN SPS.SPS_AUDIT_STATUS = -1 AND SPS_BACK_STATUS = 1
@@ -39,8 +40,8 @@
             </if>
         )DG
         <if test="processDefinitionId != null and processDefinitionId != ''">
-        LEFT JOIN SYS_PROCESS_SCHEDULE SPS ON SPS.SPS_TABLE_ID = DG.ID AND SPS.SPS_IS_CANCEL = 0
         LEFT JOIN SYS_PROCESS_DEFINITION SPD ON SPD.BUS_PROCESS = DG.BUS_PROCESS AND SPD.BUS_PROCESS2 = DG.BUS_PROCESS2
+        LEFT JOIN SYS_PROCESS_SCHEDULE SPS ON SPS.SPS_TABLE_ID = DG.ID AND SPS.SPS_IS_CANCEL = 0
         LEFT JOIN SYS_DICT_INFO BPS ON BPS.SDT_CODE = 'SYS_PROCESS_STATUS' AND BPS.SDI_CODE = SPS.SPS_AUDIT_STATUS
         </if>
         ${processJoin}

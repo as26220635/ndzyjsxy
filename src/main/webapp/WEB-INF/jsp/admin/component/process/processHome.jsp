@@ -40,6 +40,9 @@
     <input type="hidden" name="SPD_ID" value="${SPD.ID}">
     <input type="hidden" name="SPS_ID" value="${STEP.ID}">
     <input type="hidden" name="NEXT_SPS_ID" value="${NEXT_STEP.ID}">
+    <c:if test="${not empty SHOW_SO_ID}">
+        <input type="hidden" name="SHOW_SO_ID" value="${SHOW_SO_ID}">
+    </c:if>
     <div class="form-group has-feedback">
         <label>流程名称:</label>
         <span>${SPD.SPD_NAME}</span>
@@ -50,11 +53,11 @@
         <span>${SPS_GROUP_NAME}</span>
     </div>
     <%--<div class="form-group has-feedback">--%>
-        <%--<label>当前执行步骤:</label>--%>
-        <%--<span>${STEP_NAME}</span>--%>
+    <%--<label>当前执行步骤:</label>--%>
+    <%--<span>${STEP_NAME}</span>--%>
     <%--</div>--%>
     <div class="form-group has-feedback">
-        <label>项目名称:</label>
+        <label>办理名称:</label>
         <span>${SPS_TABLE_NAME}</span>
     </div>
     <div class="form-group has-feedback">

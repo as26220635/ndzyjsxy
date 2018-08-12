@@ -302,6 +302,84 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
     }
 
     /**
+     * 拷贝菜单
+     *
+     * @param mapParam
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> copyMenu(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+
+            String ID = toString(mapParam.get("ID"));
+            String SM_PARENTID = isEmpty(mapParam.get("SM_PARENTID")) ? "0" : toString(mapParam.get("SM_PARENTID"));
+            String SM_NAME = toString(mapParam.get("SM_NAME"));
+            String SM_CODE = toString(mapParam.get("SM_CODE"));
+
+            Map<String, Object> menu = this.queryMenuById(ID);
+            Map<String, String> replaceMap = Maps.newHashMapWithExpectedSize(2);
+            replaceMap.put(toString(menu.get("SM_NAME")), SM_NAME);
+            replaceMap.put(toString(menu.get("SM_CODE")), SM_CODE);
+
+            copyMenuByParentId(baseDao, ID, SM_PARENTID, replaceMap);
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 递归复制菜单
+     *
+     * @param baseDao
+     * @param menuId
+     * @param copyMenuParentId
+     * @param replaceMap
+     */
+    public void copyMenuByParentId(BaseDao baseDao, String menuId, String copyMenuParentId, Map<String, String> replaceMap) throws Exception {
+        if (isEmpty(menuId)) {
+            return;
+        }
+        String newMenuId = getId();
+        Map<String, Object> menu = this.queryMenuById(menuId);
+        menu.put("ID", newMenuId);
+        menu.put("SM_NAME", replaceMap(toString(menu.get("SM_NAME")), replaceMap));
+        menu.put("SM_CODE", replaceMap(toString(menu.get("SM_CODE")), replaceMap));
+        menu.put("SM_PARENTID", copyMenuParentId);
+
+        baseDao.insert(NameSpace.MenuMapper, "insertMenu", menu);
+
+        //插入菜单按钮
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("SM_ID", menuId);
+        List<Map<String, Object>> menuButtonList = baseDao.selectList(NameSpace.MenuMapper, "selectMenuButton", paramMap);
+
+        for (Map<String, Object> button : menuButtonList) {
+            button.put("ID", getId());
+            button.put("SM_ID", newMenuId);
+            baseDao.insert(NameSpace.MenuMapper, "insertMenuButton", button);
+        }
+        //查询子类
+        paramMap.clear();
+        paramMap.put("SM_PARENTID", menuId);
+        List<Map<String, Object>> menuList = baseDao.selectList(NameSpace.MenuMapper, "selectMenu", paramMap);
+        if (!isEmpty(menuList)) {
+            for (Map<String, Object> childrenMenu : menuList) {
+                this.copyMenuByParentId(baseDao, toString(childrenMenu.get("ID")), newMenuId, replaceMap);
+            }
+        }
+    }
+
+    /**
      * 递归删除菜单
      *
      * @param baseDao

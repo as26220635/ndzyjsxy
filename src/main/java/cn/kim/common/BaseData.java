@@ -201,6 +201,9 @@ public abstract class BaseData {
                 }
             }
         }
+        if (isEmpty(existRoleList)) {
+            existRoleList.add("-1");
+        }
         return existRoleList;
     }
 
@@ -382,5 +385,18 @@ public abstract class BaseData {
         return "<b style='color:" + color + "'>" + toString(val) + "</b>";
     }
 
+    /**
+     * 替换参数
+     *
+     * @param str
+     * @param replaceMap
+     * @return
+     */
+    protected String replaceMap(String str, Map<String, String> replaceMap) {
+        for (String key : replaceMap.keySet()) {
+            str = str.replaceAll(key, replaceMap.get(key));
+        }
+        return str;
+    }
 
 }

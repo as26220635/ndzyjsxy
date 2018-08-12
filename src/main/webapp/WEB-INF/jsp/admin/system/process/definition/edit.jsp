@@ -7,7 +7,11 @@
 --%>
 <%@ include file="/WEB-INF/jsp/common/tag.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<style>
+    .form-group-md-6 {
+        z-index: 0 !important;
+    }
+</style>
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
