@@ -16,6 +16,7 @@ import cn.kim.util.*;
 import com.google.common.collect.Maps;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.security.InvalidKeyException;
 import java.util.*;
@@ -258,6 +259,10 @@ public abstract class BaseData {
 
     protected Integer toInt(Object str) {
         return TextUtil.toInt(str);
+    }
+
+    protected BigDecimal toBigDecimal(Object bigDecimal) {
+        return TextUtil.toBigDecimal(bigDecimal);
     }
 
     protected long toLong(Object str) {

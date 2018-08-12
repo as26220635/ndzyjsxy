@@ -59,7 +59,7 @@ public class AllocationController extends BaseController {
     @RequiresPermissions("SYSTEM:ALLOCATION_EMAIL_SAVE")
     @SystemControllerLog(useType = UseType.USE, event = "修改邮箱配置")
     @Token(remove = true)
-    @Validate("SYS_ALLOCATION_EMAIL")
+    @Validate("SYS_ALLOCATION")
     @ResponseBody
     public ResultState emailUpdate(@RequestParam Map<String, Object> mapParam) throws Exception {
         try {
@@ -92,6 +92,72 @@ public class AllocationController extends BaseController {
 
     @GetMapping("/fileInputTest")
     public String fileInputTest(Model model) throws Exception {
+        model.addAttribute("tableId","fileInputTest");
         return "admin/system/allocation/fileInputTest";
+    }
+
+    /****************************   综合素质测评比例管理    *****************************/
+
+    @GetMapping("/comprehensive")
+    @RequiresPermissions("SYSTEM:ALLOCATION_COMPREHENSIVE")
+    @SystemControllerLog(useType = UseType.USE, event = "查看综合素质测评比例")
+    @Token(save = true)
+    public String comprehensiveHome(Model model) throws Exception {
+        //德育
+        model.addAttribute("EDUCATION_PROPORTION", AllocationUtil.get("EDUCATION_PROPORTION", 30));
+        //智育
+        model.addAttribute("INTELLECTUAL_PROPORTION", AllocationUtil.get("INTELLECTUAL_PROPORTION", 60));
+        //志愿者
+        model.addAttribute("VOLUNTEER_PROPORTION", AllocationUtil.get("VOLUNTEER_PROPORTION", 10));
+
+        return "admin/system/allocation/comprehensive/home";
+    }
+
+    @PutMapping("/comprehensive")
+    @RequiresPermissions("SYSTEM:ALLOCATION_COMPREHENSIVE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改综合素质测评比例")
+    @Token(remove = true)
+    @Validate("SYS_ALLOCATION")
+    @ResponseBody
+    public ResultState comprehensiveUpdate(@RequestParam Map<String, Object> mapParam) throws Exception {
+        try {
+            AllocationUtil.put("EDUCATION_PROPORTION", mapParam.get("EDUCATION_PROPORTION"));
+            AllocationUtil.put("INTELLECTUAL_PROPORTION", mapParam.get("INTELLECTUAL_PROPORTION"));
+            AllocationUtil.put("VOLUNTEER_PROPORTION", mapParam.get("VOLUNTEER_PROPORTION"));
+        } catch (Exception e) {
+            return resultError(e);
+        }
+        return resultSuccess("综合素质测评比例修改成功!", "修改综合素质测评比例为:" + toString(mapParam));
+    }
+
+    /****************************   迟到旷课处分配置管理    *****************************/
+
+    @GetMapping("/punishment")
+    @RequiresPermissions("SYSTEM:ALLOCATION_PUNISHMENT")
+    @SystemControllerLog(useType = UseType.USE, event = "查看迟到旷课处分配置")
+    @Token(save = true)
+    public String punishmentHome(Model model) throws Exception {
+        //迟到几节课算旷课
+        model.addAttribute("LATE_PROPORTION", AllocationUtil.get("LATE_PROPORTION", 2));
+        //旷课几节课算处分
+        model.addAttribute("ABSENTEEISM_PROPORTION", AllocationUtil.get("ABSENTEEISM_PROPORTION", 40));
+
+        return "admin/system/allocation/punishment/home";
+    }
+
+    @PutMapping("/punishment")
+    @RequiresPermissions("SYSTEM:ALLOCATION_PUNISHMENT_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改迟到旷课处分配置")
+    @Token(remove = true)
+    @Validate("SYS_ALLOCATION")
+    @ResponseBody
+    public ResultState punishmentUpdate(@RequestParam Map<String, Object> mapParam) throws Exception {
+        try {
+            AllocationUtil.put("LATE_PROPORTION", mapParam.get("LATE_PROPORTION"));
+            AllocationUtil.put("ABSENTEEISM_PROPORTION", mapParam.get("ABSENTEEISM_PROPORTION"));
+        } catch (Exception e) {
+            return resultError(e);
+        }
+        return resultSuccess("迟到旷课处分配置修改成功!", "修改迟到旷课处分配置为:" + toString(mapParam));
     }
 }

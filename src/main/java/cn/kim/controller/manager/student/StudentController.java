@@ -8,8 +8,10 @@ import cn.kim.controller.manager.BaseController;
 import cn.kim.entity.DataTablesView;
 import cn.kim.entity.ResultState;
 import cn.kim.service.DepartmentService;
+import cn.kim.service.MenuService;
 import cn.kim.service.OperatorService;
 import cn.kim.service.StudentService;
+import cn.kim.util.AllocationUtil;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -35,6 +37,9 @@ public class StudentController extends BaseController {
     @Autowired
     private OperatorService operatorService;
 
+    @Autowired
+    private MenuService menuService;
+
     /**
      * 获取学生列表
      *
@@ -42,7 +47,7 @@ public class StudentController extends BaseController {
      * @return
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"STUDENT:ATTENDANCE", "STUDENT:PUNISHMENT"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"STUDENT:ATTENDANCE", "STUDENT:PUNISHMENT", "STUDENT:COMPREHENSIVE"}, logical = Logical.OR)
     @ResponseBody
     public DataTablesView<?> list(@RequestParam Map<String, Object> mapParam) {
         DataTablesView<?> view = studentService.selectStudentDataTablesView(mapParam);
@@ -252,6 +257,64 @@ public class StudentController extends BaseController {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         mapParam.put("ID", ID);
         Map<String, Object> resultMap = studentService.deleteStudentPunishment(mapParam);
+        return resultState(resultMap);
+    }
+
+    /**********     学生综合素质测评    ********/
+
+    @GetMapping("/comprehensive/insertAndUpdate")
+    @RequiresPermissions("STUDENT:COMPREHENSIVE_INSERT_AND_UPDATE")
+    public String insertAndUpdateHtmlComprehensive(Model model, String SM_ID, String ID, String BS_NAME) throws Exception {
+        String educationProportion;
+        String intellectualProportion;
+        String volunteerProportion;
+
+        if (!isEmpty(ID)) {
+            Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+            mapParam.put("ID", ID);
+            Map<String, Object> comprehensive = studentService.selectStudentComprehensive(mapParam);
+
+            model.addAttribute("BS_NAME", BS_NAME);
+            model.addAttribute("comprehensive", comprehensive);
+
+            educationProportion = toString(comprehensive.get("BSC_EDUCATION_PROPORTION"));
+            intellectualProportion = toString(comprehensive.get("BSC_INTELLECTUAL_PROPORTION"));
+            volunteerProportion = toString(comprehensive.get("BSC_VOLUNTEER_PROPORTION"));
+        } else {
+            educationProportion = AllocationUtil.get("EDUCATION_PROPORTION", 30);
+            intellectualProportion = AllocationUtil.get("INTELLECTUAL_PROPORTION", 60);
+            volunteerProportion = AllocationUtil.get("VOLUNTEER_PROPORTION", 10);
+        }
+
+        //德育
+        model.addAttribute("EDUCATION_PROPORTION", educationProportion);
+        //智育
+        model.addAttribute("INTELLECTUAL_PROPORTION", intellectualProportion);
+        //志愿者
+        model.addAttribute("VOLUNTEER_PROPORTION", volunteerProportion);
+
+        model.addAttribute("MENU", menuService.queryMenuById(SM_ID));
+        return "admin/student/comprehensive/addAndEdit";
+    }
+
+    @PutMapping("/comprehensive/insertAndUpdate")
+    @RequiresPermissions("STUDENT:COMPREHENSIVE_INSERT_AND_UPDATE")
+    @SystemControllerLog(useType = UseType.USE, event = "添加或编辑学生综合素质测评")
+    @Validate(value = "BUS_STUDENT_COMPREHENSIVE", required = true)
+    @ResponseBody
+    public ResultState insertAndUpdateComprehensive(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = studentService.insertAndUpdateStudentComprehensive(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/comprehensive/delete/{ID}")
+    @RequiresPermissions("STUDENT:COMPREHENSIVE_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除学生综合素质测评")
+    @ResponseBody
+    public ResultState deleteComprehensive(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = studentService.deleteStudentComprehensive(mapParam);
         return resultState(resultMap);
     }
 }

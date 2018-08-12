@@ -37,6 +37,10 @@
 <%--邮箱配置管理--%>
 <c:set var="EMAIL_BASE_URL" value="${ALLOCATION_BASE_URL}email"/>
 <c:set var="EMAIL_CACHE_URL" value="${EMAIL_BASE_URL}/cache"/>
+<%--综合素质测评比例配置管理--%>
+<c:set var="COMPREHENSIVE_BASE_URL" value="${ALLOCATION_BASE_URL}comprehensive"/>
+<%--迟到旷课处分配置管理--%>
+<c:set var="PUNISHMENT_BASE_URL" value="${ALLOCATION_BASE_URL}punishment"/>
 <%--菜单管理--%>
 <c:set var="MENU_BASE_URL" value="${MANAGER_URL}menu/"/>
 <c:set var="MENU_LIST_URL" value="${MENU_BASE_URL}list"/>
@@ -233,3 +237,7 @@
 <c:set var="STUDENT_PUNISHMENT_UPDATE_URL" value="${STUDENT_PUNISHMENT_BASE_URL}update"/>
 <c:set var="STUDENT_PUNISHMENT_REVOKE_URL" value="${STUDENT_PUNISHMENT_BASE_URL}revoke"/>
 <c:set var="STUDENT_PUNISHMENT_DELETE_URL" value="${STUDENT_PUNISHMENT_BASE_URL}delete"/>
+<%--学生综合素质评测--%>
+<c:set var="STUDENT_COMPREHENSIVE_BASE_URL" value="${STUDENT_BASE_URL}comprehensive/"/>
+<c:set var="STUDENT_COMPREHENSIVE_INSERT_AND_UPDATE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}insertAndUpdate"/>
+<c:set var="STUDENT_COMPREHENSIVE_DELETE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}delete"/>

@@ -34,6 +34,10 @@ public class Datebox extends BaseTagSupport {
      * 是否必填
      */
     private boolean required;
+    /**
+     * 是否显示学年
+     */
+    private boolean isStudentYear = true;
 
     @Override
     public int doStartTagInternal() throws Exception {
@@ -63,6 +67,7 @@ public class Datebox extends BaseTagSupport {
         type = 1;
         clear = false;
         required = false;
+        isStudentYear = true;
         return super.doEndTag();
     }
 
@@ -80,6 +85,10 @@ public class Datebox extends BaseTagSupport {
 
             builder.append("<script>datepick.init({obj: $('#" + id + "'),model:" + getFormat(type) + ",clear: " + TextUtil.toString(clear) + "});</script>");
             builder.append("<script>$('#"+id+"').on('hide', function (e) {validator.fieldValidate($('#"+id+"').parents('form:first'), '"+id+"');});</script>");
+            if(isStudentYear){
+                builder.append("<script>$('#"+id+"').on('hide', function (e) {if($(this).val() == '' || $(this).val().indexOf('~') != -1){return;}$(this).val($(this).val() + '~' + (Number($(this).val()) + 1))});</script>");
+            }
+
             out.print(builder.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,6 +180,14 @@ public class Datebox extends BaseTagSupport {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    public boolean isStudentYear() {
+        return isStudentYear;
+    }
+
+    public void setStudentYear(boolean studentYear) {
+        isStudentYear = studentYear;
     }
 }
 

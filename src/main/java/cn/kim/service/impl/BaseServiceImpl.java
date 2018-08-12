@@ -18,6 +18,7 @@ import com.sun.istack.internal.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.security.InvalidKeyException;
 import java.util.*;
 
@@ -221,5 +222,40 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         baseDao.insert(NameSpace.OperatorMapper, "insertAccountInfo", operatorMap);
 
         return operatorId;
+    }
+
+    /**
+     * 排名
+     *
+     * @param list
+     * @param score
+     * @return
+     */
+    protected int rank(List<Integer> list, int score) {
+        for (Integer i : list) {
+            if (i == score) {
+                return (int) (list.stream().filter(integer -> integer > i).count() + 1);
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 排名
+     * -1 小于
+     * 0 等于
+     * 1 大于
+     *
+     * @param list
+     * @param score
+     * @return
+     */
+    protected int rank(List<BigDecimal> list, BigDecimal score) {
+        for (BigDecimal i : list) {
+            if (i.compareTo(score) == 0) {
+                return (int) (list.stream().filter(integer -> integer.compareTo(i) == 1).count() + 1);
+            }
+        }
+        return 0;
     }
 }

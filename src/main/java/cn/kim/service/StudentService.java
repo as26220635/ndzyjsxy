@@ -101,7 +101,7 @@ public interface StudentService extends BaseService {
     Map<String, Object> deleteStudentPunishment(Map<String, Object> mapParam);
 
     /**
-     * 查询学生综合素质评测
+     * 查询学生综合素质测评
      *
      * @param mapParam
      * @return
@@ -109,7 +109,7 @@ public interface StudentService extends BaseService {
     Map<String, Object> selectStudentComprehensive(Map<String, Object> mapParam);
 
     /**
-     * 插入或更新学生综合素质评测
+     * 插入或更新学生综合素质测评
      *
      * @param mapParam
      * @return
@@ -117,7 +117,7 @@ public interface StudentService extends BaseService {
     Map<String, Object> insertAndUpdateStudentComprehensive(Map<String, Object> mapParam);
 
     /**
-     * 删除学生综合素质评测
+     * 删除学生综合素质测评
      *
      * @param mapParam
      * @return

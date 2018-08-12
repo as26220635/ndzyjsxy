@@ -144,7 +144,7 @@
 
     <!--查询综合素质测评-->
     <select id="selectStudentComprehensive" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT BSC.*,BS.BS_NAME
+        SELECT BSC.*,BS.BC_ID,BS.BS_NAME,BC.BC_NAME
         FROM(
             SELECT * FROM BUS_STUDENT_COMPREHENSIVE
             <where>
@@ -163,6 +163,12 @@
             </where>
         )BSC
         INNER JOIN BUS_STUDENT BS ON BS.ID = BSC.BS_ID
+        INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
+        <where>
+            <if test ="BC_ID != NULL and BC_ID != ''">
+                AND BC_ID = #{BC_ID}
+            </if>
+        </where>
     </select>
 
     <!--查询综合素质测评数量-->
@@ -171,6 +177,9 @@
         <where>
             <if test="ID != NULL and ID != ''">
                 AND ID = #{ID}
+            </if>
+            <if test="NOT_ID != NULL and NOT_ID != ''">
+                AND ID != #{NOT_ID}
             </if>
             <if test="BS_ID != NULL and BS_ID != ''">
                 AND BS_ID = #{BS_ID}
@@ -190,6 +199,9 @@
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="ID != null">ID,</if>
             <if test="BS_ID != null">BS_ID,</if>
+            <if test="BSC_EDUCATION_PROPORTION != null">BSC_EDUCATION_PROPORTION,</if>
+            <if test="BSC_INTELLECTUAL_PROPORTION != null">BSC_INTELLECTUAL_PROPORTION,</if>
+            <if test="BSC_VOLUNTEER_PROPORTION != null">BSC_VOLUNTEER_PROPORTION,</if>
             <if test="BSC_YEAR != null">BSC_YEAR,</if>
             <if test="BSC_SEMESTER != null">BSC_SEMESTER,</if>
             <if test="BSC_TOTAL != null">BSC_TOTAL,</if>
@@ -218,6 +230,9 @@
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="ID != null">#{ID},</if>
             <if test="BS_ID != null">#{BS_ID},</if>
+            <if test="BSC_EDUCATION_PROPORTION != null">#{BSC_EDUCATION_PROPORTION},</if>
+            <if test="BSC_INTELLECTUAL_PROPORTION != null">#{BSC_INTELLECTUAL_PROPORTION},</if>
+            <if test="BSC_VOLUNTEER_PROPORTION != null">#{BSC_VOLUNTEER_PROPORTION},</if>
             <if test="BSC_YEAR != null">#{BSC_YEAR},</if>
             <if test="BSC_SEMESTER != null">#{BSC_SEMESTER},</if>
             <if test="BSC_TOTAL != null">#{BSC_TOTAL},</if>
@@ -251,6 +266,9 @@
         <set>
             <if test="ID != null">ID=#{ID},</if>
             <if test="BS_ID != null">BS_ID=#{BS_ID},</if>
+            <if test="BSC_EDUCATION_PROPORTION != null">BSC_EDUCATION_PROPORTION=#{BSC_EDUCATION_PROPORTION},</if>
+            <if test="BSC_INTELLECTUAL_PROPORTION != null">BSC_INTELLECTUAL_PROPORTION=#{BSC_INTELLECTUAL_PROPORTION},</if>
+            <if test="BSC_VOLUNTEER_PROPORTION != null">BSC_VOLUNTEER_PROPORTION=#{BSC_VOLUNTEER_PROPORTION},</if>
             <if test="BSC_YEAR != null">BSC_YEAR=#{BSC_YEAR},</if>
             <if test="BSC_SEMESTER != null">BSC_SEMESTER=#{BSC_SEMESTER},</if>
             <if test="BSC_TOTAL != null">BSC_TOTAL=#{BSC_TOTAL},</if>

@@ -26,49 +26,49 @@
                                     <div class="form-group has-feedback">
                                         <label>用户名:</label>
                                         <input type="text"
-                                               class="form-control" ${fns:validField("SYS_ALLOCATION_EMAIL", "EMAIL_USER")}
+                                               class="form-control" ${fns:validField("SYS_ALLOCATION", "EMAIL_USER")}
                                                value="${EMAIL_USER}">
                                     </div>
                                     <div class="form-group has-feedback">
                                         <label>授权码:</label>
                                         <input type="password"
-                                               class="form-control" ${fns:validField("SYS_ALLOCATION_EMAIL", "EMAIL_PASSWORD")}
+                                               class="form-control" ${fns:validField("SYS_ALLOCATION", "EMAIL_PASSWORD")}
                                                value="${EMAIL_PASSWORD}">
                                     </div>
                                     <div class="form-group has-feedback">
                                         <label>邮件协议:</label>
                                         <s:combobox sdtCode="SYS_EMAIL_PROTOCOL"
-                                                    custom='${fns:validField("SYS_ALLOCATION_EMAIL","EMAIL_PROTOCOL")}'
+                                                    custom='${fns:validField("SYS_ALLOCATION","EMAIL_PROTOCOL")}'
                                                     value="${EMAIL_PROTOCOL}" defaultValue="smtp"></s:combobox>
                                     </div>
                                     <div class="form-group has-feedback">
                                         <label>是否开启SSL加密:</label>
                                         <s:combobox sdtCode="SYS_YES_NO"
-                                                    custom='${fns:validField("SYS_ALLOCATION_EMAIL","EMAIL_SSL_ENABLE")}'
+                                                    custom='${fns:validField("SYS_ALLOCATION","EMAIL_SSL_ENABLE")}'
                                                     value="${EMAIL_SSL_ENABLE}" defaultValue="1"></s:combobox>
                                     </div>
                                     <div class="form-group has-feedback">
                                         <label>服务器地址:</label>
                                         <input type="text"
-                                               class="form-control" ${fns:validField("SYS_ALLOCATION_EMAIL", "EMAIL_HOST")}
+                                               class="form-control" ${fns:validField("SYS_ALLOCATION", "EMAIL_HOST")}
                                                value="${EMAIL_HOST}">
                                     </div>
                                     <div class="form-group has-feedback">
                                         <label>端口:</label>
                                         <input type="text"
-                                               class="form-control" ${fns:validField("SYS_ALLOCATION_EMAIL", "EMAIL_PORT")}
+                                               class="form-control" ${fns:validField("SYS_ALLOCATION", "EMAIL_PORT")}
                                                value="${EMAIL_PORT}">
                                     </div>
                                     <div class="form-group has-feedback">
                                         <label>是否需要身份验证:</label>
                                         <s:combobox sdtCode="SYS_YES_NO"
-                                                    custom='${fns:validField("SYS_ALLOCATION_EMAIL","EMAIL_AUTH")}'
+                                                    custom='${fns:validField("SYS_ALLOCATION","EMAIL_AUTH")}'
                                                     value="${EMAIL_AUTH}" defaultValue="1"></s:combobox>
                                     </div>
                                     <div class="form-group has-feedback">
                                         <label>是否启用:</label>
                                         <s:combobox sdtCode="SYS_YES_NO"
-                                                    custom='${fns:validField("SYS_ALLOCATION_EMAIL","EMAIL_STATUS")}'
+                                                    custom='${fns:validField("SYS_ALLOCATION","EMAIL_STATUS")}'
                                                     value="${EMAIL_STATUS}" defaultValue="1"></s:combobox>
                                     </div>
                                 </form>

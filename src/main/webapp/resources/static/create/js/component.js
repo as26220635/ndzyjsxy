@@ -638,30 +638,30 @@ tableView = {
         var stay = $processStayBtn.attr('data-process-status');
         var already = $processAlreadyBtn.attr('data-process-status');
 
-        $processAllBtn.on('click', throttle(function () {
+        $processAllBtn.on('click', function () {
             $processAllBtn.addClass('active');
             $processStayBtn.removeClass('active');
             $processAlreadyBtn.removeClass('active');
             $('#processStatus').val(all);
             tableView.reload($dataGrid, false);
             tableView.saveCacheValue(options.url, options.queryForm);
-        }, 1));
-        $processStayBtn.on('click', throttle(function () {
+        });
+        $processStayBtn.on('click', function () {
             $processAllBtn.removeClass('active');
             $processStayBtn.addClass('active');
             $processAlreadyBtn.removeClass('active');
             $('#processStatus').val(stay);
             tableView.reload($dataGrid, false);
             tableView.saveCacheValue(options.url, options.queryForm);
-        }, 1));
-        $processAlreadyBtn.on('click', throttle(function () {
+        });
+        $processAlreadyBtn.on('click', function () {
             $processAllBtn.removeClass('active');
             $processStayBtn.removeClass('active');
             $processAlreadyBtn.addClass('active');
             $('#processStatus').val(already);
             tableView.reload($dataGrid, false);
             tableView.saveCacheValue(options.url, options.queryForm);
-        }, 1));
+        });
         //搜索事件
         if (options.searchBtn != undefined) {
             //1秒只能点击一次
@@ -761,9 +761,12 @@ validator = {
     },
     //验证字段
     fieldValidate: function (form, id) {
-        form.data('bootstrapValidator')
-            .updateStatus(id, 'NOT_VALIDATED', null)
-            .validateField(id);
+        try {
+            form.data('bootstrapValidator')
+                .updateStatus(id, 'NOT_VALIDATED', null)
+                .validateField(id);
+        } catch (e) {
+        }
     },
     init: function (options) {
         var $form = options.form.bootstrapValidator({
@@ -1300,10 +1303,10 @@ treeBox = {
                     options.onNodeUnselected(event, node);
                 }
             },
-            onSearchComplete:function (event,results) {
+            onSearchComplete: function (event, results) {
                 //搜索后获取焦点
-                if(!isEmpty(results[0])){
-                    $tree.find('li[data-nodeid="'+results[0].nodeId+'"]').prop('tabindex','0').focus();
+                if (!isEmpty(results[0])) {
+                    $tree.find('li[data-nodeid="' + results[0].nodeId + '"]').prop('tabindex', '0').focus();
                 }
             }
         });
@@ -1940,7 +1943,7 @@ file = {
 
         if (!settings.showUpload) {
             //隐藏自带的删除
-            $(settings.id).parents('.input-group.file-caption-main:first').css('pointer-events','none');
+            $(settings.id).parents('.input-group.file-caption-main:first').css('pointer-events', 'none');
         }
         if (!settings.showRemove) {
             //隐藏自带的删除

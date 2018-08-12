@@ -41,6 +41,18 @@ public class AllocationUtil {
     }
 
     /**
+     * 获取参数
+     *
+     * @param key
+     * @param defaultValue 没有拿到参数的情况下的默认参数
+     * @return
+     */
+    public static String get(String key, Object defaultValue) {
+        String val = allocationUtil.allocationService.selectAllocation(key);
+        return !ValidateUtil.isEmpty(val) ? val : TextUtil.toString(defaultValue);
+    }
+
+    /**
      * 设置参数
      *
      * @param key

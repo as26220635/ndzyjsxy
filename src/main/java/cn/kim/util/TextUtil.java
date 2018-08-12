@@ -14,6 +14,7 @@ import sun.misc.BASE64Encoder;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -157,6 +158,15 @@ public class TextUtil {
             return null;
         }
     }
+
+    public static BigDecimal toBigDecimal(Object bigDecimal) {
+        try {
+            return ValidateUtil.isEmpty(bigDecimal) ? null : new BigDecimal(toString(bigDecimal));
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
     public static Integer toInt(int integer) {
         try {

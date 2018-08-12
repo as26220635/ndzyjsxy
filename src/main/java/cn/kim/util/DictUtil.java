@@ -119,20 +119,22 @@ public class DictUtil {
      * @param dictInfoCode
      * @return
      */
-    public static String getDictName(String dictTypeCode, String dictInfoCode) {
+    public static String getDictName(String dictTypeCode, Object dictInfoCode) {
+        String result = TextUtil.toString(dictInfoCode);
+
         DictType dictType = getDictCache().get(dictTypeCode);
         if (ValidateUtil.isEmpty(dictType)) {
-            return dictInfoCode;
+            return result;
         }
         List<DictInfo> dictInfoList = dictType.getInfos();
         if (ValidateUtil.isEmpty(dictInfoList)) {
-            return dictInfoCode;
+            return result;
         }
         for (DictInfo dictInfo : dictInfoList) {
-            if (dictInfo.getSdiCode().equals(dictInfoCode)) {
+            if (dictInfo.getSdiCode().equals(result)) {
                 return dictInfo.getSdiName();
             }
         }
-        return dictInfoCode;
+        return result;
     }
 }

@@ -19,7 +19,7 @@
     </div>
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">
-            <label>年度:</label>
+            <label>学年:</label>
             <s:datebox custom='${fns:validField("BUS_STUDENT_ATTENDANCE", "BSA_YEAR")}'
                        value="${attendance.BSA_YEAR}"></s:datebox>
         </div>
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group has-feedback form-group-md-6">
+        <div class="form-group has-feedback form-group-md-6 col-md-4">
             <label>周:</label>
             <input type="text" class="form-control" ${fns:validField("BUS_STUDENT_ATTENDANCE", "BSA_WEEK")}
                    value="${attendance.BSA_WEEK}">
