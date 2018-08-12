@@ -363,8 +363,6 @@
             }
 
             //自动计算宽度是否超出表格宽度
-            var columnsWidth = 0;
-            //获取宽度
             if ($('#dataGrid${MENU.ID}_wrapper').width() < $dataGridTable.find('tbody tr:first').width()) {
                 $dataGridTable.css('display', 'inline-block');
             }
