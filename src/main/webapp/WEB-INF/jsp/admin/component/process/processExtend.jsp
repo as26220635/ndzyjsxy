@@ -58,7 +58,14 @@
                             callback: function (result) {
                                 if (result) {
                                     ajax.put('${PROCESS_SUBMIT}', params, function (data) {
-                                        ajaxReturn.data(data, $model, option.dataGrid, false);
+                                        ajaxReturn.data(data, $model, option.dataGrid, false, {
+                                            error: function () {
+                                                model.tips({
+                                                    title: '流程异常',
+                                                    message: data.message,
+                                                });
+                                            }
+                                        });
                                     });
                                 }
                             }

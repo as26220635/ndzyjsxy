@@ -784,9 +784,10 @@ validator = {
         return $form;
     }
 }
+
 /**
  * 模态框
- * @type {{size: {LG: string, SM: string, NONE: string}, class: {DEFAULT: string, PRIMARY: string, INFO: string, WARNING: string, SUCCESS: string, DANGER: string}, btnName: {DEL: string, SAVE: string, CLOSE: string, OK: string, RESET: string, SUBMIT: string, BACK: string, WITHDRAW: string}, footerModel: {ADMIN: string, MY_HOME: string}, show: Function, hide: model.hide, confirm: model.confirm}}
+ * @type {{size: {LG: string, SM: string, NONE: string}, class: {DEFAULT: string, PRIMARY: string, INFO: string, WARNING: string, SUCCESS: string, DANGER: string}, btnName: {DEL: string, SAVE: string, CLOSE: string, OK: string, RESET: string, SUBMIT: string, BACK: string, WITHDRAW: string}, footerModel: {ADMIN: string, MY_HOME: string}, show: Function, noDelay: model.noDelay, init: model.init, hide: model.hide, tips: model.tips, confirm: model.confirm}}
  */
 model = {
     //模态框大小
@@ -806,6 +807,13 @@ model = {
     footerModel: {ADMIN: 'admin', MY_HOME: 'my_home'},
     //显示,1秒内只能执行一次防止多次点击
     show: throttle(function (options) {
+        model.init(options);
+    }, 1),
+    //提示用
+    noDelay: function (options) {
+        model.init(options);
+    },
+    init: function (options) {
         var settings = $.extend({
             isConfirm: false,
             okBtnName: model.btnName.SAVE,
@@ -921,8 +929,7 @@ model = {
                 $(document.body).addClass("modal-open");
             }
         });
-
-    }, 1),
+    },
     //隐藏,1秒内只能执行一次防止多次点击
     hide: function (model) {
         if (typeof model == 'undefined') {
@@ -931,20 +938,27 @@ model = {
             $(model).modal('hide');
         }
     },
+    //提示框
+    tips: function (options) {
+        options.isConfirm = false;
+        model.confirm(options);
+    },
+    //确认框
     confirm: function (options) {
         var settings = $.extend({
             title: '操作提示',
             message: "是否确定?",
+            isConfirm: true,
         }, options);
         var isClick = false;
-        model.show({
+        model.noDelay({
             title: settings.title,
             content: settings.message,
             size: model.size.SM,
             //垂直居中
             vertical: true,
             okBtnName: model.btnName.OK,
-            isConfirm: true,
+            isConfirm: settings.isConfirm,
             footerModel: window.location.href.indexOf(MANAGER_URL) != -1 ? model.footerModel.ADMIN : model.footerModel.MY_HOME,
             confirm: function ($model) {
                 if (!isEmpty(options.callback)) {

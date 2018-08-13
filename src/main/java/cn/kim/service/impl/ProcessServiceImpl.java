@@ -4,6 +4,7 @@ import cn.kim.common.attr.*;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.ProcessType;
 import cn.kim.entity.ActiveUser;
+import cn.kim.entity.ProcessRunBean;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
@@ -269,15 +270,18 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 throw new CustomException("参数错误!");
             }
 
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(8);
+
+            paramMap.put("ID", definitionId);
+            Map<String, Object> definition = this.selectProcessDefinition(paramMap);
             //流程停用就没有按钮
-            if (isProcessDiscontinuation(definitionId)) {
+            if (isDiscontinuation(definition)) {
                 throw new CustomException("流程已经停用!");
             }
 
             //错误提示信息
             String error = "";
             Map<String, Object> resultIUMap = null;
-            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(8);
             Map<String, Object> executeMap = Maps.newHashMapWithExpectedSize(5);
             //流程当前办理状态
             String scheduleAuditStatus = "0";
@@ -288,6 +292,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             //退回到的审核状态
             String scheduleBackStatusTransactor = "-1";
             //查询当前步骤
+            paramMap.clear();
             paramMap.put("ID", stepId);
             Map<String, Object> step = this.selectProcessStep(paramMap);
             if (isEmpty(step)) {
@@ -307,12 +312,21 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                     throw new CustomException("超过办理时间,最后办理时间:" + DateUtil.getDate(DateUtil.FORMAT, lastDate) + "!");
                 }
             }
+
+            //流程运行传递参数
+            ProcessRunBean processRunBean = new ProcessRunBean();
+            processRunBean.setBaseDao(baseDao);
+            processRunBean.setTableId(scheduleTableId);
+            processRunBean.setBusProcess(toString(definition.get("BUS_PROCESS")));
+            processRunBean.setBusProcess2(toString(definition.get("BUS_PROCESS2")));
+            processRunBean.setExecuteMap(executeMap);
+
             //是否进行前进后退执行或验证
             if (processType.equals(ProcessType.SUBMIT.toString())) {
                 //是否前进校验
                 if (toInt(step.get("SPS_IS_ADVANCE_CHECK")) == STATUS_SUCCESS) {
                     ProcessCheck processCheck = new ProcessCheck();
-                    error = processCheck.advanceCheck(executeMap);
+                    error = processCheck.advanceCheck(processRunBean);
                 }
                 //如果有错误就抛出
                 if (!isEmpty(error)) {
@@ -331,7 +345,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 //是否退回校验
                 if (toInt(step.get("SPS_IS_RETREAT_CHECK")) == STATUS_SUCCESS) {
                     ProcessCheck processCheck = new ProcessCheck();
-                    error = processCheck.retreatCheck(executeMap);
+                    error = processCheck.retreatCheck(processRunBean);
                 }
                 //如果有错误就抛出
                 if (!isEmpty(error)) {
@@ -437,13 +451,13 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 //是否前进执行
                 if (toInt(step.get("SPS_IS_ADVANCE_EXECUTE")) == STATUS_SUCCESS) {
                     ProcessExecute processExecute = new ProcessExecute();
-                    error = processExecute.advanceExecute(executeMap);
+                    error = processExecute.advanceExecute(processRunBean);
                 }
             } else if (processType.equals(ProcessType.BACK.toString())) {
                 //是否退回执行
                 if (toInt(step.get("SPS_IS_RETREAT_EXECUTE")) == STATUS_SUCCESS) {
                     ProcessExecute processExecute = new ProcessExecute();
-                    error = processExecute.retreatExecute(executeMap);
+                    error = processExecute.retreatExecute(processRunBean);
                 }
             }
             //如果有错误就抛出
@@ -570,7 +584,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
 
         return getDefinitionTree(definitionList, toString(mapParam.get("ID")));
     }
-    
+
 
     @Override
     @Transactional
@@ -930,7 +944,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 id = getId();
                 paramMap.put("ID", id);
                 paramMap.put("SO_ID", mapParam.get("SO_ID"));
-                if(!isEmpty(mapParam.get("SHOW_SO_ID"))){
+                if (!isEmpty(mapParam.get("SHOW_SO_ID"))) {
                     paramMap.put("SHOW_SO_ID", mapParam.get("SHOW_SO_ID"));
                 }
 

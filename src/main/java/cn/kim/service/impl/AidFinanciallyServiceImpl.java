@@ -45,7 +45,19 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
 
+            //判断综合素质测评是否存在
+            paramMap.put("BS_ID", mapParam.get("BS_ID"));
+            paramMap.put("BSC_YEAR", mapParam.get("BSC_YEAR"));
+            paramMap.put("BSC_SEMESTER", mapParam.get("BSC_SEMESTER"));
+            int count = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensiveCount", paramMap);
+            if (count == 0 ) {
+                throw new CustomException("该学生" + mapParam.get("BS_NAME") + "学年" +
+                        DictUtil.getDictName("BUS_SEMESTER", mapParam.get("BAF_SEMESTER")) +
+                        "没有存在综合素质测评!");
+            }
+
             //记录日志
+            paramMap.clear();
             paramMap.put("SVR_TABLE_NAME", TableName.BUS_AID_FINANCIALLY);
 
             paramMap.put("ID", id);

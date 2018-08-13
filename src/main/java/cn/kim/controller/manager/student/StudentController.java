@@ -144,6 +144,8 @@ public class StudentController extends BaseController {
     @RequiresPermissions("STUDENT:ATTENDANCE_INSERT")
     @Token(save = true)
     public String addHtmlAttendance(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("attendance", setStudentYearSemester(aid, "BSA_YEAR", "BSA_SEMESTER"));
         return "admin/student/attendance/addAndEdit";
     }
 

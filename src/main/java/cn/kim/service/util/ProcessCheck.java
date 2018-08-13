@@ -1,6 +1,9 @@
 package cn.kim.service.util;
 
+import cn.kim.common.attr.Attribute;
+import cn.kim.entity.ProcessRunBean;
 import cn.kim.service.impl.BaseServiceImpl;
+import cn.kim.service.util.check.AidProcessCheck;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -17,8 +20,18 @@ public class ProcessCheck extends BaseServiceImpl {
      *
      * @return
      */
-    public String advanceCheck(Map<String, Object> mapParam) {
+    public String advanceCheck(ProcessRunBean run) {
         String error = "";
+        //大类
+        String busProcess = run.getBusProcess();
+        //小类
+        String busProcess2 = run.getBusProcess2();
+
+        //资助管理
+        if (Attribute.PROCESS_AID.equals(busProcess)) {
+            AidProcessCheck aidProcessCheck = new AidProcessCheck();
+            error += aidProcessCheck.checkStudentPunishment(run);
+        }
 
         return error;
     }
@@ -28,7 +41,7 @@ public class ProcessCheck extends BaseServiceImpl {
      *
      * @return
      */
-    public String retreatCheck(Map<String, Object> mapParam) {
+    public String retreatCheck(ProcessRunBean run) {
         String error = "";
 
         return error;

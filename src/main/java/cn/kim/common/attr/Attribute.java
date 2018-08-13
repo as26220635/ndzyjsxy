@@ -34,9 +34,9 @@ public class Attribute {
     public static final int COMPLETE_CODE = 999;
 
     /*******************   流程定义 ******************/
-    public static final int PROCESS_AID = 100;
-    public static final int PROCESS_AID_COLLEGE_SCHOLARSHIP = 109;
-    public static final int PROCESS_AID_COMMEND = 110;
+    public static final String PROCESS_AID = "100";
+    public static final String PROCESS_AID_COLLEGE_SCHOLARSHIP = "109";
+    public static final String PROCESS_AID_COMMEND = "110";
 
     /*******************   资助类型 ******************/
     /**

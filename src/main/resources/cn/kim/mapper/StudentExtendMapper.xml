@@ -16,6 +16,23 @@
         INNER JOIN BUS_STUDENT BS ON BS.ID = BSA.BS_ID
     </select>
 
+    <!--查询学生考勤数量-->
+    <select id="selectStudentAttendanceGroupByCount" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BS_ID,SUM(BSA_LATE) AS BSA_LATE,SUM(BSA_ABSENTEEISM) AS BSA_ABSENTEEISM FROM BUS_STUDENT_ATTENDANCE
+        <where>
+            <if test ="BS_ID != NULL and BS_ID != ''">
+                AND BS_ID = #{BS_ID}
+            </if>
+            <if test ="BSA_YEAR != NULL and BSA_YEAR != ''">
+                AND BSA_YEAR = #{BSA_YEAR}
+            </if>
+            <if test ="BSA_SEMESTER != NULL and BSA_SEMESTER != ''">
+                AND BSA_SEMESTER = #{BSA_SEMESTER}
+            </if>
+        </where>
+        GROUP BY BS_ID,BSA_YEAR,BSA_SEMESTER
+    </select>
+
     <!--插入学生考勤-->
     <insert id="insertStudentAttendance" parameterType="java.util.Map">
         INSERT INTO BUS_STUDENT_ATTENDANCE
@@ -64,7 +81,6 @@
 		DELETE FROM BUS_STUDENT_ATTENDANCE WHERE ID = #{ID}
 	</delete>
 
-
     <!--查询处分-->
     <select id="selectStudentPunishment" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT BSP.*,BS.BS_NAME
@@ -77,6 +93,19 @@
             </where>
         )BSP
         INNER JOIN BUS_STUDENT BS ON BS.ID = BSP.BS_ID
+    </select>
+
+    <!--查询处分数量-->
+    <select id="selectStudentPunishmentCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BUS_STUDENT_PUNISHMENT
+        <where>
+            <if test="BS_ID != NULL and BS_ID != ''">
+                AND BS_ID = #{BS_ID}
+            </if>
+            <if test="BSP_IS_CANCEL != NULL and BSP_IS_CANCEL != ''">
+                AND BSP_IS_CANCEL = #{BSP_IS_CANCEL}
+            </if>
+        </where>
     </select>
 
     <!--插入处分-->

@@ -1,7 +1,7 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : db
+ Source Server         : me
  Source Server Type    : MySQL
  Source Server Version : 80011
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 13/08/2018 00:33:29
+ Date: 13/08/2018 11:06:06
 */
 
 SET NAMES utf8mb4;
@@ -209,7 +209,9 @@ CREATE TABLE `bus_student_attendance`  (
 -- ----------------------------
 -- Records of bus_student_attendance
 -- ----------------------------
-INSERT INTO `bus_student_attendance` VALUES ('49398562747842560', '48944951878221824', '2018', 1, 1, 4, 4, '2018-08-08 23:46:04');
+INSERT INTO `bus_student_attendance` VALUES ('49398562747842560', '48944951878221824', '2017~2018', 2, 1, 4, 4, '2018-08-08 23:46:04');
+INSERT INTO `bus_student_attendance` VALUES ('51009695430737920', '48944951878221824', '2017~2018', 2, 2, 4, 12, '2018-08-13 10:28:08');
+INSERT INTO `bus_student_attendance` VALUES ('51014046706565120', '48944951878221824', '2017~2018', 2, 3, 1, 20, '2018-08-13 10:45:25');
 
 -- ----------------------------
 -- Table structure for bus_student_comprehensive
@@ -279,7 +281,7 @@ CREATE TABLE `bus_student_punishment`  (
 -- ----------------------------
 -- Records of bus_student_punishment
 -- ----------------------------
-INSERT INTO `bus_student_punishment` VALUES ('1', '48944951878221824', '测试处分', 'q1234222', '2018-08-09', '1', '2018-08-10', '测试用啊', '1', '2018-08-10 00:37:03', '2018-08-09 23:59:58');
+INSERT INTO `bus_student_punishment` VALUES ('1', '48944951878221824', '测试处分', 'q1234222', '2018-08-09', '1', '2018-08-10', '测试用啊', '0', '2018-08-10 00:37:03', '2018-08-09 23:59:58');
 INSERT INTO `bus_student_punishment` VALUES ('49746696170635264', '48944951878221824', 'test3', 'test3', '2018-09-05', '2', '2018-08-10', 'test', '1', '2018-08-09 23:14:29', '2018-08-09 22:49:53');
 
 -- ----------------------------
@@ -556,7 +558,7 @@ INSERT INTO `sys_configure_column` VALUES ('26725572235231232', '267218056705474
 INSERT INTO `sys_configure_column` VALUES ('26725657031475200', '26721805670547456', '更新表名称字段', 'SPD_UPDATE_NAME', 'center', '100px', '', '', '', '0', '', '1', '0', 40);
 INSERT INTO `sys_configure_column` VALUES ('26725837801783296', '26721805670547456', '录入时间', 'SDP_ENTRY_TIME', 'center', '150px', '', '', '', '0', NULL, '1', '0', 60);
 INSERT INTO `sys_configure_column` VALUES ('26725907158794240', '26721805670547456', '状态', 'IS_STATUS', 'center', '100px', '', '', '', '0', NULL, '1', '1', 70);
-INSERT INTO `sys_configure_column` VALUES ('26725940633534464', '26721805670547456', '操作', '', 'center', '150px', '', '', '', '1', '', '1', '0', 80);
+INSERT INTO `sys_configure_column` VALUES ('26725940633534464', '26721805670547456', '操作', '', 'center', '140px', '', '', '', '1', '', '1', '0', 80);
 INSERT INTO `sys_configure_column` VALUES ('27188897591066624', '27187947212111872', '步骤名称', 'SPS_NAME', 'center', '', '', '', '', '0', NULL, '1', '0', 10);
 INSERT INTO `sys_configure_column` VALUES ('27190954163175424', '27187947212111872', '办理角色', 'SR_NAME', 'center', '', '', '', '', '0', NULL, '1', '0', 20);
 INSERT INTO `sys_configure_column` VALUES ('27191092403240960', '27187947212111872', '流程状态', 'SPS_PROCESS_STATUS', 'center', '', '', '', 'SYS_PROCESS_STATUS', '0', NULL, '1', '0', 30);
@@ -681,8 +683,9 @@ INSERT INTO `sys_configure_column` VALUES ('50833638492733440', '508318802321080
 INSERT INTO `sys_configure_column` VALUES ('50833705790341120', '50831880232108032', '测评排名', 'BSC_RANK', 'center', '70px', '', '', '', '0', '', '1', '0', 50);
 INSERT INTO `sys_configure_column` VALUES ('50833777835900928', '50831880232108032', '学习成绩', 'BSC_ACADEMIC_RECORD', 'center', '70px', '', '', '', '0', '', '1', '0', 60);
 INSERT INTO `sys_configure_column` VALUES ('50833829203542016', '50831880232108032', '学习排名', 'BSC_INTELLECTUAL_RANK', 'center', '70px', '', '', '', '0', '', '1', '0', 70);
-INSERT INTO `sys_configure_column` VALUES ('50833943762567168', '50831880232108032', '操作', '', 'center', '250px', '', '', '', '1', '', '1', '0', 80);
+INSERT INTO `sys_configure_column` VALUES ('50833943762567168', '50831880232108032', '操作', '', 'center', '240px', '', '', '', '1', '', '1', '0', 80);
 INSERT INTO `sys_configure_column` VALUES ('50847196098068480', '50831880232108032', '审核状态', 'PROCESS_STATUS_NAME', 'center', '100px', '', 'processLogFunc(targets, field);', '', '0', '', '1', '0', 75);
+INSERT INTO `sys_configure_column` VALUES ('51009901505282048', '49382988399509504', '周', 'BSA_WEEK', 'center', '50px', '', '', '', '0', '', '1', '0', 35);
 INSERT INTO `sys_configure_column` VALUES ('6', '2', '操作ID', 'SB_BUTTONID', 'center', '100px', NULL, NULL, NULL, '0', NULL, '1', '0', 2);
 INSERT INTO `sys_configure_column` VALUES ('7', '2', '图标', 'SB_ICON', 'center', '20px', NULL, 'btnClassFunc(targets,field)', NULL, '0', NULL, '1', '0', 3);
 INSERT INTO `sys_configure_column` VALUES ('8', '2', '权限编码', 'SB_CODE', 'center', '100px', NULL, NULL, NULL, '0', NULL, '1', '0', 4);
@@ -4808,6 +4811,19 @@ INSERT INTO `sys_log` VALUES ('50858774134521856', '1', NULL, '修改流程定�
 INSERT INTO `sys_log` VALUES ('50858834687688704', '1', NULL, '设置操作员角色', '0:0:0:0:0:0:0:1', 1, '2018-08-13 00:28:40', '1', 2);
 INSERT INTO `sys_log` VALUES ('50858914278801408', '1', NULL, '设置操作员角色', '0:0:0:0:0:0:0:1', 1, '2018-08-13 00:28:59', '1', 2);
 INSERT INTO `sys_log` VALUES ('50858945035632640', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-13 00:29:06', '1', 9);
+INSERT INTO `sys_log` VALUES ('50999734415917056', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-13 09:48:33', '1', 9);
+INSERT INTO `sys_log` VALUES ('51000227045310464', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-13 09:50:31', '1', 2);
+INSERT INTO `sys_log` VALUES ('51000960750714880', '1', NULL, '修改学院奖学金', '0:0:0:0:0:0:0:1', 1, '2018-08-13 09:53:26', '1', 2);
+INSERT INTO `sys_log` VALUES ('51009610563190784', '1', NULL, '修改学生考勤', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:27:48', '1', 2);
+INSERT INTO `sys_log` VALUES ('51009695804030976', '1', NULL, '添加学生考勤', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:28:08', '1', 2);
+INSERT INTO `sys_log` VALUES ('51009751537942528', '1', NULL, '修改学生考勤', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:28:21', '1', 2);
+INSERT INTO `sys_log` VALUES ('51009901891158016', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:28:57', '1', 2);
+INSERT INTO `sys_log` VALUES ('51010069432631296', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:29:37', '1', 2);
+INSERT INTO `sys_log` VALUES ('51012703145164800', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:40:05', '1', 2);
+INSERT INTO `sys_log` VALUES ('51012987607056384', '48303136200196097', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:41:13', '2', 9);
+INSERT INTO `sys_log` VALUES ('51014046865948672', '1', NULL, '添加学生考勤', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:45:25', '1', 2);
+INSERT INTO `sys_log` VALUES ('51014626015444992', '1', NULL, '修改学生考勤', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:47:44', '1', 2);
+INSERT INTO `sys_log` VALUES ('51017525315502080', '48303136200196097', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-13 10:59:15', '2', 9);
 INSERT INTO `sys_log` VALUES ('5817833065807872', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-04-10 17:31:48', '1', 9);
 INSERT INTO `sys_log` VALUES ('5817879731634176', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-04-10 17:32:00', '0', 0);
 INSERT INTO `sys_log` VALUES ('5817885754654720', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-04-10 17:32:01', '0', 0);
@@ -8563,6 +8579,19 @@ INSERT INTO `sys_log_text` VALUES ('50858774168076288', '50858774134521856', '�
 INSERT INTO `sys_log_text` VALUES ('50858834717048832', '50858834687688704', '操作员:division_test,旧角色:[48307839919194112],新角色:[50858364522987520, 48307839919194112]');
 INSERT INTO `sys_log_text` VALUES ('50858914312355840', '50858914278801408', '操作员:admin,旧角色:[50836827770191872, 1],新角色:[1, 50858364522987520]');
 INSERT INTO `sys_log_text` VALUES ('50858945106935808', '50858945035632640', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('50999735229612032', '50999734415917056', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('51000227087253504', '51000227045310464', '更新配置列表字段,配置列表:资助管理-学院奖学金,更新前:,更新后:{SCC_NAME=操作, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_IS_MERGE=, SCC_ALIGN=center, SCC_IS_STATUS=0, SCC_WIDTH=240px, SCC_FIELD=, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=1, ID=50833943762567168, SC_ID=50831880232108032, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=80}');
+INSERT INTO `sys_log_text` VALUES ('51000960809435136', '51000960750714880', '更新资助,更新前:{BS_ID=48944951878221824, BUS_PROCESS=100, BSC_ACADEMIC_RECORD=83, BAF_AID_TYPE=FIRST-CLASS, BS_NAME=student_test, BC_NAME=18多媒体, SO_ID=48601651874889729, BAF_TYPE=9, BAF_REDUCTION_LEVEL=null, BAF_REDUCTION_QUOTA=null, BAF_DIFFICULTY_TYPE=null, BAF_YEAR=2017~2018, BUS_PROCESS2=109, BAF_SEMESTER=2, BSC_RANK=1, BS_NUMBER=2018053105, BSC_INTELLECTUAL_RANK=1, SPS_AUDIT_STATUS=99, BAF_DIFFICULTY_LEVEL=null, ID=50844794401849344, BAF_ENTRY_TIME=2018-08-12 23:32:53, BSC_TOTAL=77.59},更新后:{BS_ID=48944951878221824, BAF_SEMESTER=2, BAF_AID_TYPE=FIRST-CLASS, SVR_TABLE_NAME=BUS_AID_FINANCIALLY, BAF_DIFFICULTY_LEVEL=null, ID=50844794401849344, BAF_REDUCTION_LEVEL=null, BAF_REDUCTION_QUOTA=null, BAF_DIFFICULTY_TYPE=null, BAF_YEAR=2017~2018}');
+INSERT INTO `sys_log_text` VALUES ('51009610613522432', '51009610563190784', '更新学生考勤,更新前:{BS_ID=48944951878221824, BSA_SEMESTER=1, BSA_WEEK=1, BSA_ENTRY_TIME=2018-08-08 23:46:04, BS_NAME=student_test, BSA_LATE=4, ID=49398562747842560, BSA_ABSENTEEISM=4, BSA_YEAR=2018},更新后:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=1, SVR_TABLE_NAME=BUS_STUDENT_ATTENDANCE, BSA_ENTRY_TIME=null, BSA_LATE=4, ID=49398562747842560, BSA_ABSENTEEISM=4, BSA_YEAR=2017~2018}');
+INSERT INTO `sys_log_text` VALUES ('51009695845974016', '51009695804030976', '添加学生考勤:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=19, SVR_TABLE_NAME=BUS_STUDENT_ATTENDANCE, BSA_ENTRY_TIME=2018-08-13 10:28:08, BSA_LATE=4, ID=51009695430737920, BSA_ABSENTEEISM=12, BSA_YEAR=2017~2018}');
+INSERT INTO `sys_log_text` VALUES ('51009751588274176', '51009751537942528', '更新学生考勤,更新前:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=19, BSA_ENTRY_TIME=2018-08-13 10:28:08, BS_NAME=student_test, BSA_LATE=4, ID=51009695430737920, BSA_ABSENTEEISM=12, BSA_YEAR=2017~2018},更新后:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=2, SVR_TABLE_NAME=BUS_STUDENT_ATTENDANCE, BSA_ENTRY_TIME=null, BSA_LATE=4, ID=51009695430737920, BSA_ABSENTEEISM=12, BSA_YEAR=2017~2018}');
+INSERT INTO `sys_log_text` VALUES ('51009901933101056', '51009901891158016', '添加配置列表字段,配置列表:学生管理-考勤管理,字段参数{SCC_NAME=周, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_IS_MERGE=, SCC_ALIGN=center, SCC_IS_STATUS=0, SCC_WIDTH=50px, SCC_FIELD=BSA_WEEK, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=0, ID=51009901505282048, SC_ID=49382988399509504, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=55}');
+INSERT INTO `sys_log_text` VALUES ('51010069495545856', '51010069432631296', '更新配置列表字段,配置列表:学生管理-考勤管理,更新前:,更新后:{SCC_NAME=周, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_IS_MERGE=, SCC_ALIGN=center, SCC_IS_STATUS=0, SCC_WIDTH=50px, SCC_FIELD=BSA_WEEK, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=0, ID=51009901505282048, SC_ID=49382988399509504, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=35}');
+INSERT INTO `sys_log_text` VALUES ('51012703212273664', '51012703145164800', '更新配置列表字段,配置列表:流程管理-流程定义,更新前:,更新后:{SCC_NAME=操作, SVR_TABLE_NAME=SYS_CONFIGURE_COLUMN, SCC_FUNC=, SCC_IS_MERGE=, SCC_ALIGN=center, SCC_IS_STATUS=0, SCC_WIDTH=140px, SCC_FIELD=, SCC_IS_VISIBLE=1, SCC_IS_OPERATION=1, ID=26725940633534464, SC_ID=26721805670547456, SCC_CLASS=, SCC_SDT_CODE=, SCC_ORDER=80}');
+INSERT INTO `sys_log_text` VALUES ('51012988013903872', '51012987607056384', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('51014046912086016', '51014046865948672', '添加学生考勤:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=3, SVR_TABLE_NAME=BUS_STUDENT_ATTENDANCE, BSA_ENTRY_TIME=2018-08-13 10:45:25, BSA_LATE=1, ID=51014046706565120, BSA_ABSENTEEISM=30, BSA_YEAR=2017~2018}');
+INSERT INTO `sys_log_text` VALUES ('51014626061582336', '51014626015444992', '更新学生考勤,更新前:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=3, BSA_ENTRY_TIME=2018-08-13 10:45:25, BS_NAME=student_test, BSA_LATE=1, ID=51014046706565120, BSA_ABSENTEEISM=30, BSA_YEAR=2017~2018},更新后:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=3, SVR_TABLE_NAME=BUS_STUDENT_ATTENDANCE, BSA_ENTRY_TIME=null, BSA_LATE=1, ID=51014046706565120, BSA_ABSENTEEISM=20, BSA_YEAR=2017~2018}');
+INSERT INTO `sys_log_text` VALUES ('51017525437136896', '51017525315502080', '登录成功!登录地址:未知');
 INSERT INTO `sys_log_text` VALUES ('5817833200025600', '5817833065807872', '登录成功!登录地址:未知');
 INSERT INTO `sys_log_text` VALUES ('5817879781965824', '5817879731634176', '文件：JspServletWrapper.java，错误行数：588，方法：handleJspException，错误内容：An exception occurred processing JSP page [/WEB-INF/jsp/reception/common/main.jsp] at line [63]\r\n\r\n60:                     <div class=\"logo\">\r\n61:                         <img\r\n62:                                 data-sizes=\"auto\"\r\n63:                                 data-src=\"${activeUser.imgpath}\"\r\n64:                                 src=\"${baseurl}${Attribute.LOADING_IMAGE_100w}\"\r\n65:                                 class=\"lazyload\"\r\n66:                                 style=\"min-width: 48px;min-height: 48px;\"\r\n\r\n\r\nStacktrace:');
 INSERT INTO `sys_log_text` VALUES ('5817885784014848', '5817885754654720', '文件：JspServletWrapper.java，错误行数：588，方法：handleJspException，错误内容：An exception occurred processing JSP page [/WEB-INF/jsp/reception/common/main.jsp] at line [63]\r\n\r\n60:                     <div class=\"logo\">\r\n61:                         <img\r\n62:                                 data-sizes=\"auto\"\r\n63:                                 data-src=\"${activeUser.imgpath}\"\r\n64:                                 src=\"${baseurl}${Attribute.LOADING_IMAGE_100w}\"\r\n65:                                 class=\"lazyload\"\r\n66:                                 style=\"min-width: 48px;min-height: 48px;\"\r\n\r\n\r\nStacktrace:');
@@ -10674,6 +10703,16 @@ INSERT INTO `sys_value_record` VALUES ('50855922662113280', '48601651874889729',
 INSERT INTO `sys_value_record` VALUES ('50858364548153344', '1', 'SYS_ROLE', '50858364522987520', NULL, '{\"SR_CODE\":\"ALL\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_ROLE\",\"SR_EXPLAIN\":\"\",\"SR_NAME\":\"查看学校奖学金\",\"ID\":\"50858364522987520\",\"SR_REMARK\":\"\",\"SR_TYPE\":\"2\"}', '2018-08-13 00:26:48', 1);
 INSERT INTO `sys_value_record` VALUES ('50858397498605568', '1', 'SYS_ROLE', '50858364522987520', '{\"SR_CODE\":\"ALL\",\"IS_STATUS\":1,\"SR_EXPLAIN\":\"\",\"SR_NAME\":\"查看学校奖学金\",\"ID\":\"50858364522987520\",\"SR_REMARK\":\"\",\"SR_TYPE\":\"2\"}', '{\"SR_CODE\":\"ALL_COLLEGE_SCHOLARSHIP\",\"SR_TYPE\":\"2\",\"SR_EXPLAIN\":\"\",\"SR_NAME\":\"查看学校奖学金\",\"ID\":\"50858364522987520\",\"SR_REMARK\":\"\"}', '2018-08-13 00:26:56', 2);
 INSERT INTO `sys_value_record` VALUES ('50858773761228800', '1', 'SYS_PROCESS_DEFINITION', '50838310695731200', '{\"BUS_PROCESS\":\"100\",\"SR_ID\":\"48307839919194112\",\"SPD_DIVISION_FIELD\":\"\",\"SO_ID\":\"1\",\"SPD_DESCRIBE\":\"\",\"BUS_PROCESS2\":\"109\",\"IS_STATUS\":1,\"SPD_DEPARTMENT_FIELD\":\"BDM_ID\",\"SPD_UPDATE_TABLE\":\"V_COLLEGE_SCHOLARSHIP\",\"IS_MULTISTAGE_BACK\":1,\"SPD_VERSION\":\"1.0\",\"SDP_ENTRY_TIME\":\"2018-08-12 23:07:07\",\"ID\":\"50838310695731200\",\"SPD_UPDATE_NAME\":\"BS_NAME\",\"SPD_NAME\":\"学院奖学金\"}', '{\"BUS_PROCESS\":\"100\",\"SR_ID\":\"50858364522987520\",\"SPD_DIVISION_FIELD\":\"\",\"SPD_DESCRIBE\":\"\",\"BUS_PROCESS2\":\"109\",\"SPD_DEPARTMENT_FIELD\":\"BDM_ID\",\"SPD_UPDATE_TABLE\":\"V_COLLEGE_SCHOLARSHIP\",\"IS_MULTISTAGE_BACK\":\"1\",\"SPD_VERSION\":\"1.0\",\"ID\":\"50838310695731200\",\"SPD_UPDATE_NAME\":\"BS_NAME\",\"SPD_NAME\":\"学院奖学金\"}', '2018-08-13 00:28:25', 2);
+INSERT INTO `sys_value_record` VALUES ('51000226797846528', '1', 'SYS_CONFIGURE_COLUMN', '50833943762567168', '{\"SCC_NAME\":\"操作\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"250px\",\"SCC_FIELD\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"1\",\"ID\":\"50833943762567168\",\"SC_ID\":\"50831880232108032\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":80}', '{\"SCC_NAME\":\"操作\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"240px\",\"SCC_FIELD\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"1\",\"ID\":\"50833943762567168\",\"SC_ID\":\"50831880232108032\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"80\"}', '2018-08-13 09:50:31', 2);
+INSERT INTO `sys_value_record` VALUES ('51000960591331328', '1', 'BUS_AID_FINANCIALLY', '50844794401849344', '{\"BS_ID\":\"48944951878221824\",\"BAF_AID_TYPE\":\"FIRST-CLASS\",\"BAF_YEAR\":\"2017~2018\",\"BAF_SEMESTER\":2,\"ID\":\"50844794401849344\"}', '{\"BS_ID\":\"48944951878221824\",\"BAF_AID_TYPE\":\"FIRST-CLASS\",\"BAF_YEAR\":\"2017~2018\",\"BAF_SEMESTER\":\"2\",\"ID\":\"50844794401849344\"}', '2018-08-13 09:53:25', 2);
+INSERT INTO `sys_value_record` VALUES ('51009610198286336', '1', 'BUS_STUDENT_ATTENDANCE', '49398562747842560', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":1,\"BSA_WEEK\":1,\"BSA_ENTRY_TIME\":\"2018-08-08 23:46:04\",\"BSA_LATE\":4,\"ID\":\"49398562747842560\",\"BSA_ABSENTEEISM\":4,\"BSA_YEAR\":\"2018\"}', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":\"2\",\"BSA_WEEK\":\"1\",\"BSA_LATE\":\"4\",\"BSA_ABSENTEEISM\":\"4\",\"BSA_YEAR\":\"2017~2018\",\"ID\":\"49398562747842560\"}', '2018-08-13 10:27:48', 2);
+INSERT INTO `sys_value_record` VALUES ('51009695489458176', '1', 'BUS_STUDENT_ATTENDANCE', '51009695430737920', NULL, '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":\"2\",\"BSA_WEEK\":\"19\",\"SVR_TABLE_NAME\":\"BUS_STUDENT_ATTENDANCE\",\"BSA_ENTRY_TIME\":\"2018-08-13 10:28:08\",\"BSA_LATE\":\"4\",\"ID\":\"51009695430737920\",\"BSA_ABSENTEEISM\":\"12\",\"BSA_YEAR\":\"2017~2018\"}', '2018-08-13 10:28:08', 1);
+INSERT INTO `sys_value_record` VALUES ('51009751139483648', '1', 'BUS_STUDENT_ATTENDANCE', '51009695430737920', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":2,\"BSA_WEEK\":19,\"BSA_ENTRY_TIME\":\"2018-08-13 10:28:08\",\"BSA_LATE\":4,\"ID\":\"51009695430737920\",\"BSA_ABSENTEEISM\":12,\"BSA_YEAR\":\"2017~2018\"}', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":\"2\",\"BSA_WEEK\":\"2\",\"BSA_LATE\":\"4\",\"BSA_ABSENTEEISM\":\"12\",\"BSA_YEAR\":\"2017~2018\",\"ID\":\"51009695430737920\"}', '2018-08-13 10:28:21', 2);
+INSERT INTO `sys_value_record` VALUES ('51009901551419392', '1', 'SYS_CONFIGURE_COLUMN', '51009901505282048', NULL, '{\"SCC_NAME\":\"周\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"50px\",\"SCC_FIELD\":\"BSA_WEEK\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"51009901505282048\",\"SC_ID\":\"49382988399509504\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"55\"}', '2018-08-13 10:28:57', 1);
+INSERT INTO `sys_value_record` VALUES ('51010069050949632', '1', 'SYS_CONFIGURE_COLUMN', '51009901505282048', '{\"SCC_NAME\":\"周\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"50px\",\"SCC_FIELD\":\"BSA_WEEK\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"51009901505282048\",\"SC_ID\":\"49382988399509504\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":55}', '{\"SCC_NAME\":\"周\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"50px\",\"SCC_FIELD\":\"BSA_WEEK\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"51009901505282048\",\"SC_ID\":\"49382988399509504\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"35\"}', '2018-08-13 10:29:37', 2);
+INSERT INTO `sys_value_record` VALUES ('51012702880923648', '1', 'SYS_CONFIGURE_COLUMN', '26725940633534464', '{\"SCC_NAME\":\"操作\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"150px\",\"SCC_FIELD\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"1\",\"ID\":\"26725940633534464\",\"SC_ID\":\"26721805670547456\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":80}', '{\"SCC_NAME\":\"操作\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"140px\",\"SCC_FIELD\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"1\",\"ID\":\"26725940633534464\",\"SC_ID\":\"26721805670547456\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"80\"}', '2018-08-13 10:40:05', 2);
+INSERT INTO `sys_value_record` VALUES ('51014046756896768', '1', 'BUS_STUDENT_ATTENDANCE', '51014046706565120', NULL, '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":\"2\",\"BSA_WEEK\":\"3\",\"SVR_TABLE_NAME\":\"BUS_STUDENT_ATTENDANCE\",\"BSA_ENTRY_TIME\":\"2018-08-13 10:45:25\",\"BSA_LATE\":\"1\",\"ID\":\"51014046706565120\",\"BSA_ABSENTEEISM\":\"30\",\"BSA_YEAR\":\"2017~2018\"}', '2018-08-13 10:45:25', 1);
+INSERT INTO `sys_value_record` VALUES ('51014625755398144', '1', 'BUS_STUDENT_ATTENDANCE', '51014046706565120', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":2,\"BSA_WEEK\":3,\"BSA_ENTRY_TIME\":\"2018-08-13 10:45:25\",\"BSA_LATE\":1,\"ID\":\"51014046706565120\",\"BSA_ABSENTEEISM\":30,\"BSA_YEAR\":\"2017~2018\"}', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":\"2\",\"BSA_WEEK\":\"3\",\"BSA_LATE\":\"1\",\"BSA_ABSENTEEISM\":\"20\",\"BSA_YEAR\":\"2017~2018\",\"ID\":\"51014046706565120\"}', '2018-08-13 10:47:43', 2);
 
 -- ----------------------------
 -- Table structure for test_process
@@ -10845,7 +10884,7 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_student` AS select `bs
 -- View structure for v_student_attendance
 -- ----------------------------
 DROP VIEW IF EXISTS `v_student_attendance`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_student_attendance` AS select `bsa`.`ID` AS `ID`,`bsa`.`BS_ID` AS `BS_ID`,`bsa`.`BSA_YEAR` AS `BSA_YEAR`,`bsa`.`BSA_SEMESTER` AS `BSA_SEMESTER`,`bsa`.`BSA_LATE` AS `BSA_LATE`,`bsa`.`BSA_ABSENTEEISM` AS `BSA_ABSENTEEISM`,`bsa`.`BSA_ENTRY_TIME` AS `BSA_ENTRY_TIME`,`bs`.`BS_NAME` AS `BS_NAME`,`bc`.`BC_NAME` AS `BC_NAME` from ((`bus_student_attendance` `bsa` join `bus_student` `bs` on((`bs`.`ID` = `bsa`.`BS_ID`))) join `bus_class` `bc` on((`bc`.`ID` = `bs`.`BC_ID`)));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_student_attendance` AS select `bsa`.`ID` AS `ID`,`bsa`.`BS_ID` AS `BS_ID`,`bsa`.`BSA_YEAR` AS `BSA_YEAR`,`bsa`.`BSA_SEMESTER` AS `BSA_SEMESTER`,`bsa`.`BSA_WEEK` AS `BSA_WEEK`,`bsa`.`BSA_LATE` AS `BSA_LATE`,`bsa`.`BSA_ABSENTEEISM` AS `BSA_ABSENTEEISM`,`bsa`.`BSA_ENTRY_TIME` AS `BSA_ENTRY_TIME`,`bs`.`BS_NAME` AS `BS_NAME`,`bc`.`BC_NAME` AS `BC_NAME` from ((`bus_student_attendance` `bsa` join `bus_student` `bs` on((`bs`.`ID` = `bsa`.`BS_ID`))) join `bus_class` `bc` on((`bc`.`ID` = `bs`.`BC_ID`)));
 
 -- ----------------------------
 -- View structure for v_student_comprehensive

@@ -1,5 +1,6 @@
 package cn.kim.service.util;
 
+import cn.kim.entity.ProcessRunBean;
 import cn.kim.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class ProcessExecute extends BaseServiceImpl {
      *
      * @return
      */
-    public String advanceExecute(Map<String, Object> mapParam) {
+    public String advanceExecute(ProcessRunBean run) {
         String error = "";
 
         return error;
@@ -28,7 +29,7 @@ public class ProcessExecute extends BaseServiceImpl {
      *
      * @return
      */
-    public String retreatExecute(Map<String, Object> mapParam) {
+    public String retreatExecute(ProcessRunBean run) {
         String error = "";
 
         return error;
