@@ -23,12 +23,13 @@ public interface ProcessService extends BaseService {
 
     /**
      * -1 无 0 提交按钮 1 撤回按钮
+     *
      * @param id
      * @param process
      * @param process2
      * @return
      */
-    String showDataGridProcessBtn(String id, String process,String process2) throws Exception;
+    String showDataGridProcessBtn(String id, String process, String process2) throws Exception;
 
     /**
      * 获取当前项目的下一步步骤
@@ -90,6 +91,14 @@ public interface ProcessService extends BaseService {
     Map<String, Object> insertAndUpdateProcessDefinition(Map<String, Object> mapParam);
 
     Map<String, Object> changeProcessDefinitionStatus(Map<String, Object> mapParam);
+
+    /**
+     * 拷贝流程定义
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> copyProcessDefinition(Map<String, Object> mapParam);
 
     /****   流程步骤    ***/
     Map<String, Object> selectProcessStep(Map<String, Object> mapParam);

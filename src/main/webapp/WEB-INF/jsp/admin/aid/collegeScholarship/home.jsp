@@ -32,6 +32,7 @@
 
     //修改
     $dataGridTable.find('tbody').on('click', '#edit', function () {
+        var row = this;
         var data = getRowData(this);
         var id = data.ID;
 
@@ -40,8 +41,8 @@
                     title: '修改学院奖学金',
                     content: html,
                     footerModel: model.footerModel.ADMIN,
-                    <shiro:hasPermission name="STUDENT:ATTENDANCE_UPDATE_SAVE">
-                    isConfirm: true,
+                    <shiro:hasPermission name="AID:COLLEGE_SCHOLARSHIP_UPDATE_SAVE">
+                    isConfirm: isProcessSubmit(row),
                     confirm: function ($model) {
                         var $form = $('#addAndEditForm');
                         //验证

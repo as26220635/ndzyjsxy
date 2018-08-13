@@ -9,19 +9,31 @@
 
     <!--查询流程进度-->
     <select id="selectProcessSchedule" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM SYS_PROCESS_SCHEDULE
+        SELECT SPS.*
+        FROM(
+            SELECT * FROM SYS_PROCESS_SCHEDULE
+            <where>
+                <if test="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+                <if test="SPS_TABLE_ID != NULL and SPS_TABLE_ID != ''">
+                    AND SPS_TABLE_ID = #{SPS_TABLE_ID}
+                </if>
+                <if test="SPD_ID != NULL and SPD_ID != ''">
+                    AND SPD_ID = #{SPD_ID}
+                </if>
+                <if test="SPS_IS_CANCEL != NULL and SPS_IS_CANCEL != ''">
+                    AND SPS_IS_CANCEL = #{SPS_IS_CANCEL}
+                </if>
+            </where>
+        )SPS
+        INNER JOIN SYS_PROCESS_DEFINITION SPD ON SPD.ID = SPS.SPD_ID
         <where>
-            <if test="ID != NULL and ID != ''">
-                AND ID = #{ID}
+            <if test="BUS_PROCESS != NULL and BUS_PROCESS != ''">
+                AND BUS_PROCESS = #{BUS_PROCESS}
             </if>
-            <if test="SPS_TABLE_ID != NULL and SPS_TABLE_ID != ''">
-                AND SPS_TABLE_ID = #{SPS_TABLE_ID}
-            </if>
-            <if test="SPD_ID != NULL and SPD_ID != ''">
-                AND SPD_ID = #{SPD_ID}
-            </if>
-            <if test="SPS_IS_CANCEL != NULL and SPS_IS_CANCEL != ''">
-                AND SPS_IS_CANCEL = #{SPS_IS_CANCEL}
+            <if test="BUS_PROCESS2 != NULL and BUS_PROCESS2 != ''">
+                AND BUS_PROCESS2 = #{BUS_PROCESS2}
             </if>
         </where>
     </select>

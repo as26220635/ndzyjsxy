@@ -50,7 +50,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             paramMap.put("BSC_YEAR", mapParam.get("BSC_YEAR"));
             paramMap.put("BSC_SEMESTER", mapParam.get("BSC_SEMESTER"));
             int count = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensiveCount", paramMap);
-            if (count == 0 ) {
+            if (count == 0) {
                 throw new CustomException("该学生" + mapParam.get("BS_NAME") + "学年" +
                         DictUtil.getDictName("BUS_SEMESTER", mapParam.get("BAF_SEMESTER")) +
                         "没有存在综合素质测评!");
@@ -114,15 +114,16 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));
-
-            //删除资助表
             paramMap.clear();
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectAidFinancially(paramMap);
-            if (!isEmpty(oldMap.get("SPS_AUDIT_STATUS")) && !"0".equals(toString(oldMap.get("SPS_AUDIT_STATUS")))) {
+
+            //删除资助表
+            Map<String, Object> schedule = getProcessSchedule(id, toString(oldMap.get("BUS_PROCESS")), toString(oldMap.get("BUS_PROCESS2")));
+            if (!isEmpty(schedule) && !isEmpty(schedule.get("SPS_AUDIT_STATUS")) && !"0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
                 throw new CustomException("流程办理中不能删除!");
             }
-            //记录日志
+
             paramMap.put("SVR_TABLE_NAME", TableName.BUS_AID_FINANCIALLY);
 
             baseDao.delete(NameSpace.AidFinanciallyMapper, "deleteAidFinancially", paramMap);

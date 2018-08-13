@@ -406,30 +406,16 @@ tableView = {
         //设置待审已审
         var processStatus = cache['processStatus'];
         if (!isEmpty(processStatus)) {
-            var $processAllBtn = $('#processAllBtn');
-            var $processStayBtn = $('#processStayBtn');
-            var $processAlreadyBtn = $('#processAlreadyBtn');
+            $('#processAllBtn,#processStayBtn,#processAlreadyBtn').each(function () {
+                var $this = $(this);
+                var val = $this.attr('data-process-status');
+                $this.removeClass('active');
 
-            var all = $processAllBtn.attr('data-process-status');
-            var stay = $processStayBtn.attr('data-process-status');
-            var already = $processAlreadyBtn.attr('data-process-status');
-
-            if (processStatus == all) {
-                $processStayBtn.removeClass('active');
-                $processAlreadyBtn.removeClass('active');
-                $processAllBtn.addClass('active');
-                $('#processStatus').val(all);
-            } else if (processStatus == stay) {
-                $processStayBtn.addClass('active');
-                $processAlreadyBtn.removeClass('active');
-                $processAllBtn.removeClass('active');
-                $('#processStatus').val(stay);
-            } else if (processStatus == already) {
-                $processStayBtn.removeClass('active');
-                $processAlreadyBtn.addClass('active');
-                $processAllBtn.removeClass('active');
-                $('#processStatus').val(already);
-            }
+                if (processStatus == val) {
+                    $this.addClass('active');
+                    $('#processStatus').val(val);
+                }
+            });
         }
 
         return true;
@@ -630,38 +616,16 @@ tableView = {
         });
 
         //切换待审已审
-        var $processAllBtn = $('#processAllBtn');
-        var $processStayBtn = $('#processStayBtn');
-        var $processAlreadyBtn = $('#processAlreadyBtn');
+        $('#processAllBtn,#processStayBtn,#processAlreadyBtn').on('click', function () {
+            var $this = $(this);
+            var val = $this.attr('data-process-status');
+            $('#processAllBtn,#processStayBtn,#processAlreadyBtn').removeClass('active');
+            $this.addClass('active');
+            $('#processStatus').val(val);
+            tableView.reload($dataGrid, false);
+            tableView.saveCacheValue(options.url, options.queryForm);
+        });
 
-        var all = $processAllBtn.attr('data-process-status');
-        var stay = $processStayBtn.attr('data-process-status');
-        var already = $processAlreadyBtn.attr('data-process-status');
-
-        $processAllBtn.on('click', function () {
-            $processAllBtn.addClass('active');
-            $processStayBtn.removeClass('active');
-            $processAlreadyBtn.removeClass('active');
-            $('#processStatus').val(all);
-            tableView.reload($dataGrid, false);
-            tableView.saveCacheValue(options.url, options.queryForm);
-        });
-        $processStayBtn.on('click', function () {
-            $processAllBtn.removeClass('active');
-            $processStayBtn.addClass('active');
-            $processAlreadyBtn.removeClass('active');
-            $('#processStatus').val(stay);
-            tableView.reload($dataGrid, false);
-            tableView.saveCacheValue(options.url, options.queryForm);
-        });
-        $processAlreadyBtn.on('click', function () {
-            $processAllBtn.removeClass('active');
-            $processStayBtn.removeClass('active');
-            $processAlreadyBtn.addClass('active');
-            $('#processStatus').val(already);
-            tableView.reload($dataGrid, false);
-            tableView.saveCacheValue(options.url, options.queryForm);
-        });
         //搜索事件
         if (options.searchBtn != undefined) {
             //1秒只能点击一次
@@ -712,7 +676,7 @@ tableView = {
             options.refreshBtn.addClass('disabled-1s');
 
             options.refreshBtn.on('click', function () {
-                $table.ajax.reload(null, false);
+                tableView.reload($table, false);
                 //刷新回调
                 if (options.refreshCallback != undefined) {
                     options.refreshCallback();

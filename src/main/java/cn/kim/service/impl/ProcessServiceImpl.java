@@ -689,6 +689,71 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         return resultMap;
     }
 
+    @Override
+    @Transactional
+    public Map<String, Object> copyProcessDefinition(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+            String id = toString(mapParam.get("ID"));
+            //查询大小类是否重复
+            paramMap.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
+            paramMap.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
+            int count = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinitionCount", paramMap);
+            if (count > 0) {
+                throw new CustomException("流程大小类重复!");
+            }
+
+            paramMap.clear();
+            paramMap.put("ID", id);
+            Map<String, Object> definition = this.selectProcessDefinition(paramMap);
+            String newDefinitionId = getId();
+            //拷贝流程定义
+            definition.put("ID", newDefinitionId);
+            definition.put("SPD_NAME", mapParam.get("SPD_NAME"));
+            definition.put("SPD_VERSION", mapParam.get("SPD_VERSION"));
+            definition.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
+            definition.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
+            definition.put("SPD_UPDATE_TABLE", mapParam.get("SPD_UPDATE_TABLE"));
+            definition.put("SPD_UPDATE_NAME", mapParam.get("SPD_UPDATE_NAME"));
+            baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessDefinition", definition);
+
+            //拷贝流程步骤
+            paramMap.clear();
+            paramMap.put("SPD_ID", id);
+            List<Map<String, Object>> stepList = this.selectProcessStepList(paramMap);
+
+            for (Map<String, Object> step : stepList) {
+                step.put("ID", getId());
+                step.put("SPD_ID", newDefinitionId);
+                baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessStep", step);
+            }
+
+            //拷贝流程启动角色
+            paramMap.clear();
+            paramMap.put("SPD_ID", id);
+            List<Map<String, Object>> startList = this.selectProcessStartList(paramMap);
+
+            for (Map<String, Object> start : startList) {
+                start.put("ID", getId());
+                start.put("SPD_ID", newDefinitionId);
+                baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessStart", start);
+            }
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
     /****   流程步骤    ***/
 
     @Override

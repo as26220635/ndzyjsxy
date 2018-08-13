@@ -50,4 +50,33 @@
             removeLoadingDiv();
         });
     }
+
+    //拷贝
+    $dataGridTable.find('tbody').on('click', '#copy', function () {
+        var data = getRowData(this);
+        var id = data.ID;
+
+        ajax.getHtml('${PROCESS_DEFINITION_COPY_URL}/' + id, {}, function (html) {
+                model.show({
+                    title: '拷贝流程定义',
+                    content: html,
+                    footerModel: model.footerModel.ADMIN,
+                    isConfirm: true,
+                    confirm: function ($model) {
+                        var $form = $('#addAndEditForm');
+                        //验证
+                        if (!validator.formValidate($form)) {
+                            demo.showNotify(ALERT_WARNING, VALIDATE_FAIL);
+                            return;
+                        }
+                        var params = packFormParams($form);
+
+                        ajax.put('${PROCESS_DEFINITION_COPY_URL}', params, function (data) {
+                            ajaxReturn.data(data, $model, $dataGrid, false);
+                        });
+                    }
+                });
+            }
+        );
+    });
 </script>

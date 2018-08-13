@@ -8,6 +8,7 @@ import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.RoleService;
+import cn.kim.util.CacheUtil;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -265,6 +266,8 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
             }
             //清除缓存
             customRealm.clearCached();
+            //刷新菜单缓存
+            CacheUtil.clear(NameSpace.MenuMapper.getValue());
 
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -351,6 +354,8 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 
             //清除缓存
             customRealm.clearCached();
+            //刷新菜单缓存
+            CacheUtil.clear(NameSpace.MenuMapper.getValue());
 
             status = STATUS_SUCCESS;
             desc = UPDATE_SUCCESS;

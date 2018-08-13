@@ -168,7 +168,7 @@ public class ProcessController extends BaseController {
                     transactorList.add(transactor);
                 }
 
-                DEFAULT_OPINION = "通过";
+//                DEFAULT_OPINION = "通过";
                 processBtnType = ProcessType.SUBMIT.toString();
             } else if (PROCESS_TYPE == ProcessType.BACK.getType()) {
                 //查询上一步骤办理人
@@ -216,7 +216,7 @@ public class ProcessController extends BaseController {
                         transactorList.add(transactor);
                     });
                 }
-                DEFAULT_OPINION = "退回";
+//                DEFAULT_OPINION = "退回";
                 processBtnType = ProcessType.BACK.toString();
             }
             //查询流程步骤
@@ -248,7 +248,7 @@ public class ProcessController extends BaseController {
             //办理表ID
             model.addAttribute("SPS_TABLE_ID", ID);
             //查看人SO_ID
-            if(!isEmpty(SHOW_SO_ID)){
+            if (!isEmpty(SHOW_SO_ID)) {
                 model.addAttribute("SHOW_SO_ID", SHOW_SO_ID);
             }
             //下一步办理人
@@ -446,6 +446,25 @@ public class ProcessController extends BaseController {
     public ResultState switchStatusDefinition(@RequestParam Map<String, Object> mapParam) throws Exception {
         Map<String, Object> resultMap = processService.changeProcessDefinitionStatus(mapParam);
 
+        return resultState(resultMap);
+    }
+
+    @GetMapping("/definition/copy/{ID}")
+    @RequiresPermissions("SYSTEM:PROCESS_DEFINITION_COPY")
+    public String copyHtmlDefinition(@PathVariable("ID") String ID, Model model) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("SPD", processService.selectProcessDefinition(mapParam));
+        return "admin/system/process/definition/copy";
+    }
+
+    @PutMapping("/definition/copy")
+    @RequiresPermissions("SYSTEM:PROCESS_DEFINITION_COPY")
+    @SystemControllerLog(useType = UseType.USE, event = "拷贝流程定义")
+    @Validate("SYS_PROCESS_DEFINITION")
+    @ResponseBody
+    public ResultState copyDefinition(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = processService.copyProcessDefinition(mapParam);
         return resultState(resultMap);
     }
 

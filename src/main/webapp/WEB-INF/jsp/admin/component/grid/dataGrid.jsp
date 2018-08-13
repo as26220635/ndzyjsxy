@@ -74,7 +74,8 @@
                                                    class="col-sm-4 control-label">${SEARCH.SCS_NAME}</label>
                                             <div class="col-sm-8">
                                                 <s:datebox id="SEARCH_${SEARCH.SCS_FIELD}" name="${SEARCH.SCS_FIELD}"
-                                                           type="${SEARCH.SCS_TYPE - 3}" placeholder="${SEARCH.SCS_REMARK}"
+                                                           type="${SEARCH.SCS_TYPE - 3}"
+                                                           placeholder="${SEARCH.SCS_REMARK}"
                                                            clear="true"></s:datebox>
                                             </div>
                                         </div>
@@ -237,7 +238,11 @@
                     <c:if test="${!fns:isEmpty(MENU.BUS_PROCESS)}">
                     <%--查询权限菜单--%>
                     if (rowData.SPS_AUDIT_STATUS != 999) {
-                        ajax.get('${PROCESS_DATAGRID_BTN}', {ID: cellData, BUS_PROCESS: rowData.BUS_PROCESS, BUS_PROCESS2: rowData.BUS_PROCESS2}, function (data) {
+                        ajax.get('${PROCESS_DATAGRID_BTN}', {
+                            ID: cellData,
+                            BUS_PROCESS: rowData.BUS_PROCESS,
+                            BUS_PROCESS2: rowData.BUS_PROCESS2
+                        }, function (data) {
                             $(td).append(data.html);
                         });
                     }
@@ -477,6 +482,13 @@
      * */
     function getRowData(row) {
         return tableView.rowData($dataGrid, row);
+    }
+
+    /**
+     * 是否到自己审核了
+     * */
+    function isProcessSubmit(row) {
+        return $(row).siblings('#PROCESS_SUBMIT').length > 0;
     }
 
     /**

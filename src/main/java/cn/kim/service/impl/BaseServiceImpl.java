@@ -258,4 +258,24 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         }
         return 0;
     }
+
+    /**
+     * 根据tableId获取流程进度
+     *
+     * @param tableId
+     * @param process
+     * @param process2
+     * @return
+     */
+    protected Map<String, Object> getProcessSchedule(String tableId, String process, String process2) {
+        if (isEmpty(tableId) || isEmpty(process) || isEmpty(process2)) {
+            return null;
+        }
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(4);
+        paramMap.put("SPS_TABLE_ID", tableId);
+        paramMap.put("SPS_IS_CANCEL", STATUS_ERROR);
+        paramMap.put("BUS_PROCESS", process);
+        paramMap.put("BUS_PROCESS2", process2);
+        return baseDao.selectOne(NameSpace.ProcessMapper, "selectProcessSchedule", paramMap);
+    }
 }
