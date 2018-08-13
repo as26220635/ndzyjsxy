@@ -155,6 +155,7 @@
     <c:set scope="request" var="MENU_TITLE" value="${EXTRA.TITLE}-"></c:set>
 </c:if>
 <%@ include file="/WEB-INF/jsp/admin/component/setTitleParams.jsp" %>
+<%@ include file="/WEB-INF/jsp/admin/component/execlImport.jsp" %>
 <script>
     $(".select2").select2({language: "zh-CN"});
 

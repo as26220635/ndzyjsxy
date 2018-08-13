@@ -23,7 +23,7 @@ public class AidProcessCheck extends BaseData {
      */
     public String checkStudentPunishment(ProcessRunBean run) {
         String error = "";
-        String id = run.getTableId();
+        String id = run.getBusTableId();
         BaseDao baseDao = run.getBaseDao();
 
         try {

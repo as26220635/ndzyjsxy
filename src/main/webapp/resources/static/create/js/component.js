@@ -1348,8 +1348,8 @@ ajax = {
         $.ajaxSetup({
             //禁止缓存
             cache: false,
-            //60秒超时
-            timeout: 60000,
+            //120秒超时
+            timeout: 120000,
             complete: function (XMLHttpRequest, textStatus) {
                 // 通过XMLHttpRequest取得响应头，sessionstatus，
                 var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus");
@@ -1853,6 +1853,7 @@ file = {
             //异步上传
             showUpload: true,
             showRemove: true,
+            showPreview: true,
             //允许上传的文件
             allowedFileExtensions: ['jpg', 'png', 'jpeg'],
             //最大允许上传文件大小
@@ -1876,6 +1877,7 @@ file = {
             showRemove: settings.showRemove,
             showUploadedThumbs: true,
             showDownload: true,
+            showPreview: settings.showPreview,
             allowedFileExtensions: settings.allowedFileExtensions,
             overwriteInitial: false,
             removeFromPreviewOnError: false,
@@ -1919,15 +1921,18 @@ file = {
             demo.showNotify(ALERT_SUCCESS, '删除文件' + data.caption + '成功!');
         });
 
-        if (!settings.showUpload) {
-            //隐藏自带的删除
-            $(settings.id).parents('.input-group.file-caption-main:first').css('pointer-events', 'none');
-        }
-        if (!settings.showRemove) {
-            //隐藏自带的删除
-            $(settings.id).parents('.input-group.file-caption-main:first').siblings(".file-preview").find('.kv-file-remove.btn').each(function () {
-                $(this).remove();
-            });
+        try {
+            if (!settings.showUpload && isEmpty(options.excelModel)) {
+                //隐藏自带的删除
+                $(settings.id).parents('.input-group.file-caption-main:first').css('pointer-events', 'none');
+            }
+            if (!settings.showRemove) {
+                //隐藏自带的删除
+                $(settings.id).parents('.input-group.file-caption-main:first').siblings(".file-preview").find('.kv-file-remove.btn').each(function () {
+                    $(this).remove();
+                });
+            }
+        } catch (e) {
         }
 
         return fileInput;

@@ -316,7 +316,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             //流程运行传递参数
             ProcessRunBean processRunBean = new ProcessRunBean();
             processRunBean.setBaseDao(baseDao);
-            processRunBean.setTableId(scheduleTableId);
+            processRunBean.setBusTableId(scheduleTableId);
             processRunBean.setBusProcess(toString(definition.get("BUS_PROCESS")));
             processRunBean.setBusProcess2(toString(definition.get("BUS_PROCESS2")));
             processRunBean.setExecuteMap(executeMap);

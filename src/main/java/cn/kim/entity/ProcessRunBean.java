@@ -24,7 +24,7 @@ public class ProcessRunBean {
     /**
      * 流程ID
      */
-    private String tableId;
+    private String busTableId;
     /**
      * 额外参数
      */
@@ -55,12 +55,12 @@ public class ProcessRunBean {
         this.busProcess2 = busProcess2;
     }
 
-    public String getTableId() {
-        return tableId;
+    public String getBusTableId() {
+        return busTableId;
     }
 
-    public void setTableId(String tableId) {
-        this.tableId = tableId;
+    public void setBusTableId(String busTableId) {
+        this.busTableId = busTableId;
     }
 
     public Map<String, Object> getExecuteMap() {
