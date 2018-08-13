@@ -399,4 +399,53 @@ public abstract class BaseData {
         return str;
     }
 
+    /**
+     * 获得当前学年
+     *
+     * @return
+     */
+    protected String getStudentYear() {
+        //拿到当前年份
+        int nowYear = DateUtil.getYear();
+        //拿到当前月份
+        int nowMonth = DateUtil.getMonth();
+
+        if (nowMonth >= 9) {
+            return nowYear + "~" + (nowYear + 1);
+        } else {
+            return (nowYear - 1) + "~" + nowYear;
+        }
+    }
+
+    /**
+     * 获得学期
+     *
+     * @return
+     */
+    protected String getStudentSemester() {
+        //拿到当前月份
+        int nowMonth = DateUtil.getMonth();
+
+        if (nowMonth >= 9) {
+            return "1";
+        } else {
+            return "2";
+        }
+    }
+
+
+    /**
+     * 根据时间设置学年和学期
+     *
+     * @param map
+     * @param yearField
+     * @param semesterField
+     */
+    protected Map<String, Object> setStudentYearSemester(Map<String, Object> map, String yearField, String semesterField) {
+        map.put(yearField, getStudentYear());
+        map.put(semesterField, getStudentSemester());
+
+        return map;
+    }
+
 }

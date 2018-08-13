@@ -14,6 +14,7 @@ public class MagicValue {
     public static final String DESC = "desc";
     public static final String STATUS = "status";
     public static final String LOG = "log";
+    public static final String DATA = "data";
 
     public static final String CUSTOM = "custom";
 

@@ -18,7 +18,7 @@
                 <h4 class="modal-title">导入excel</h4>
             </div>
             <div class="modal-body">
-                <form id="addAndEditForm" class="form-horizontal" enctype="multipart/form-data">
+                <form id="importForm" class="form-horizontal" enctype="multipart/form-data">
                     <input id="excelFile" name="excelFile" type="file" class="file">
                 </form>
             </div>
@@ -40,7 +40,7 @@
             allowedFileExtensions: ['xls', 'xlsx'],
             maxFilesNum: 1,
             showPreview: false,
-            excelModel: true,
+            nonModel: true,
         });
         //打开模态框
         $('#import').on('click', function () {
@@ -55,10 +55,8 @@
             }
             //导入excel
             if (typeof excelImport == 'function') {
-                excelImport();
+                excelImport($('#importForm'),$('#excelImportModal'));
             }
         });
-
     }
-
 </script>

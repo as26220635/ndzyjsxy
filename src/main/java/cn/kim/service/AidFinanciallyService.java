@@ -1,6 +1,7 @@
 package cn.kim.service;
 
 import cn.kim.entity.DataTablesView;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -33,4 +34,12 @@ public interface AidFinanciallyService extends BaseService {
      * @return
      */
     Map<String, Object> deleteAidFinancially(Map<String, Object> mapParam);
+
+    /**
+     * 导入学院奖学金
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importCollegeScholarship(MultipartFile excelFile);
 }

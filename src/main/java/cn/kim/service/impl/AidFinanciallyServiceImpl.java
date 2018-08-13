@@ -5,15 +5,19 @@ import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.SystemEnum;
+import cn.kim.entity.ActiveUser;
 import cn.kim.entity.DataTablesView;
 import cn.kim.entity.QuerySet;
 import cn.kim.exception.CustomException;
 import cn.kim.service.AidFinanciallyService;
 import cn.kim.util.CommonUtil;
 import cn.kim.util.DictUtil;
+import cn.kim.util.PoiUtil;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Attr;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -74,9 +78,9 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 id = getId();
                 paramMap.put("ID", id);
                 paramMap.put("BAF_TYPE", mapParam.get("BAF_TYPE"));
-                paramMap.put("SO_ID", getActiveUser().getId());
                 paramMap.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
                 paramMap.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
+                paramMap.put("SO_ID", getActiveUser().getId());
                 paramMap.put("BAF_ENTRY_TIME", getDate());
 
                 baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidFinancially", paramMap);
@@ -138,4 +142,145 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         resultMap.put(MagicValue.DESC, desc);
         return resultMap;
     }
+
+    @Override
+    @Transactional
+    public Map<String, Object> importCollegeScholarship(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = DELETE_ERROR;
+        ActiveUser activeUser = getActiveUser();
+        try {
+            List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 1);
+            //校验数据
+            List<Map<String, String>> errorList = checkExcelData(dataList, "BUS_COLLEGE_SCHOLARSHIP_TYPE");
+            if (!isEmpty(errorList)) {
+                resultMap.put(MagicValue.DATA, errorList);
+                throw new CustomException("检测数据异常!");
+            }
+
+            String year = getStudentYear();
+            String semester = getStudentSemester();
+
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
+
+            //导入数据
+            for (String[] data : dataList) {
+                //学号
+                String BS_NUMBER = data[1];
+                //奖项
+                String BAF_AID_TYPE = data[7];
+
+                paramMap.clear();
+                paramMap.put("BS_NUMBER", BS_NUMBER);
+                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+
+                String BAF_ID = getId();
+                paramMap.clear();
+                paramMap.put("ID", BAF_ID);
+                paramMap.put("BS_ID", student.get("ID"));
+                paramMap.put("BAF_YEAR", year);
+                paramMap.put("BAF_SEMESTER", semester);
+                paramMap.put("BAF_AID_TYPE", DictUtil.getDictCode("BUS_COLLEGE_SCHOLARSHIP_TYPE", BAF_AID_TYPE));
+                paramMap.put("BAF_TYPE", Attribute.AID_COLLEGE_SCHOLARSHIP);
+                paramMap.put("SO_ID", activeUser.getId());
+                paramMap.put("BUS_PROCESS", Attribute.PROCESS_AID);
+                paramMap.put("BUS_PROCESS2", Attribute.PROCESS_AID_COLLEGE_SCHOLARSHIP);
+                paramMap.put("SO_ID", activeUser.getId());
+                paramMap.put("BAF_ENTRY_TIME", getDate());
+                baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidFinancially", paramMap);
+
+//                paramMap.clear();
+//                paramMap.put("BS_ID", student.get("ID"));
+//                paramMap.put("BAF_YEAR", year);
+//                paramMap.put("BAF_SEMESTER", semester);
+//                paramMap.put("BAF_AID_TYPE", DictUtil.getDictCode("BUS_COLLEGE_SCHOLARSHIP_TYPE", BAF_AID_TYPE));
+//                paramMap.put("BAF_TYPE", Attribute.AID_COLLEGE_SCHOLARSHIP);
+//                paramMap.put("SO_ID", activeUser.getId());
+//                paramMap.put("BUS_PROCESS", Attribute.PROCESS_AID);
+//                paramMap.put("BUS_PROCESS2", Attribute.PROCESS_AID_COLLEGE_SCHOLARSHIP);
+//                Map<String, Object> insertMap = this.insertAndUpdateAidFinancially(paramMap);
+//                validateResultMap(insertMap);
+
+                //插入流程
+                createProcessSchedule(baseDao, BAF_ID, toString(student.get("BS_NAME")),
+                        activeUser.getId(), toString(student.get("SO_ID")), Attribute.PROCESS_AID, Attribute.PROCESS_AID_COLLEGE_SCHOLARSHIP);
+            }
+
+            resultMap.put(MagicValue.LOG, "导入学院奖学金,数据:" + toString(dataList));
+            status = STATUS_SUCCESS;
+            desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            baseDao.rollback();
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 检测excel数据是否有问题
+     *
+     * @return
+     */
+    public List<Map<String, String>> checkExcelData(List<String[]> dataList, String sdtCode) {
+        List<Map<String, String>> resultList = new ArrayList<>();
+        if (isEmpty(dataList)) {
+            resultList.add(packErrorMap("文件数据错误", "没有找到可以导入数据"));
+            return resultList;
+        }
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+
+        String year = getStudentYear();
+        String semester = getStudentSemester();
+
+        for (int i = 0; i < dataList.size(); i++) {
+            //行
+            String row = joinRowStr(i + 2);
+
+            String[] data = dataList.get(i);
+            if (data.length <= 7) {
+                resultList.add(packErrorMap(row, "数据错误!"));
+                continue;
+            }
+            //学号
+            String BS_NUMBER = data[1];
+            //奖项
+            String BAF_AID_TYPE = data[7];
+            if (isEmpty(BS_NUMBER)) {
+                resultList.add(packErrorMap(row, "学号为空"));
+            } else {
+                //查询数据库检查学号是否为空
+                paramMap.clear();
+                paramMap.put("BS_NUMBER", BS_NUMBER);
+                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                if (isEmpty(student)) {
+                    resultList.add(packErrorMap(row, "学号错误,没有找到对应的学生!"));
+                } else {
+                    //查询综合素质评测
+                    paramMap.clear();
+                    paramMap.put("BS_ID", student.get("ID"));
+                    paramMap.put("BSC_YEAR", year);
+                    paramMap.put("BSC_SEMESTER", semester);
+                    Map<String, Object> comprehensive = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensive", paramMap);
+                    if (isEmpty(comprehensive)) {
+                        resultList.add(packErrorMap(row, "学生综合素质测评没有导入!"));
+                    }
+                }
+            }
+
+            if (isEmpty(BAF_AID_TYPE)) {
+                resultList.add(packErrorMap(row, "奖项为空"));
+            } else {
+                String sdiCode = DictUtil.getDictCode(sdtCode, BAF_AID_TYPE);
+                if (isEmpty(sdiCode)) {
+                    resultList.add(packErrorMap(row, "奖项数据错误,请检查!"));
+                }
+            }
+        }
+
+        return resultList;
+    }
+
 }

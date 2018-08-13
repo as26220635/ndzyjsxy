@@ -137,4 +137,30 @@ public class DictUtil {
         }
         return result;
     }
+
+    /**
+     * 根据字典类型和字典名称获取字典编码
+     *
+     * @param dictTypeCode
+     * @param dictInfoName
+     * @return
+     */
+    public static String getDictCode(String dictTypeCode, Object dictInfoName) {
+        String result = TextUtil.toString(dictInfoName);
+
+        DictType dictType = getDictCache().get(dictTypeCode);
+        if (ValidateUtil.isEmpty(dictType)) {
+            return result;
+        }
+        List<DictInfo> dictInfoList = dictType.getInfos();
+        if (ValidateUtil.isEmpty(dictInfoList)) {
+            return result;
+        }
+        for (DictInfo dictInfo : dictInfoList) {
+            if (dictInfo.getSdiName().equals(result)) {
+                return dictInfo.getSdiCode();
+            }
+        }
+        return result;
+    }
 }

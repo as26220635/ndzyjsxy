@@ -1,17 +1,20 @@
 package cn.kim.service.impl;
 
 import cn.kim.common.BaseData;
-import cn.kim.common.attr.*;
+import cn.kim.common.attr.Constants;
+import cn.kim.common.attr.MagicValue;
+import cn.kim.common.attr.TableName;
 import cn.kim.common.eu.NameSpace;
-import cn.kim.common.eu.SystemEnum;
-import cn.kim.common.sequence.Sequence;
 import cn.kim.common.shiro.CustomRealm;
 import cn.kim.dao.BaseDao;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.BaseService;
-import cn.kim.util.*;
+import cn.kim.util.CommonUtil;
+import cn.kim.util.PasswordMd5;
+import cn.kim.util.RandomSalt;
+import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Maps;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
@@ -19,8 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.security.InvalidKeyException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 余庚鑫 on 2017/11/1.
@@ -277,5 +281,64 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         paramMap.put("BUS_PROCESS", process);
         paramMap.put("BUS_PROCESS2", process2);
         return baseDao.selectOne(NameSpace.ProcessMapper, "selectProcessSchedule", paramMap);
+    }
+
+    /**
+     * 连接行
+     *
+     * @param index
+     * @return
+     */
+    protected String joinRowStr(int index) {
+        return "第" + index + "行";
+    }
+
+    /**
+     * 打包错误
+     *
+     * @param key
+     * @param val
+     * @return
+     */
+    protected Map<String, String> packErrorMap(String key, String val) {
+        Map<String, String> map = Maps.newHashMapWithExpectedSize(2);
+        map.put("KEY", key);
+        map.put("VALUE", val);
+        return map;
+    }
+
+    /*****************  流程使用    *******************/
+
+    /**
+     * 插入流程
+     *
+     * @param baseDao
+     * @param tableId
+     * @param tableName
+     * @param soId
+     * @param showSoId
+     * @param busProcess
+     * @param busProcess2
+     * @throws Exception
+     */
+    protected void createProcessSchedule(BaseDao baseDao, String tableId, String tableName, String soId, String showSoId, String busProcess, String busProcess2) throws Exception {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
+        paramMap.put("BUS_PROCESS", busProcess);
+        paramMap.put("BUS_PROCESS2", busProcess2);
+        Map<String, Object> definition = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinition", paramMap);
+        if (isEmpty(definition)) {
+            throw new CustomException("没有找到流程实例!");
+        }
+        paramMap.clear();
+        paramMap.put("SPD_ID", definition.get("ID"));
+        paramMap.put("SO_ID", soId);
+        paramMap.put("SHOW_SO_ID", showSoId);
+        paramMap.put("SPS_TABLE_ID", tableId);
+        paramMap.put("SPS_TABLE_NAME", tableName);
+        paramMap.put("SPS_AUDIT_STATUS", "0");
+        paramMap.put("SPS_BACK_STATUS", "0");
+        paramMap.put("SPS_IS_CANCEL", "0");
+
+        baseDao.insert(NameSpace.ProcessMapper, "insertProcessSchedule", paramMap);
     }
 }

@@ -8,6 +8,7 @@ import cn.kim.util.HttpUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
 import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.w3c.dom.Attr;
 
 import javax.xml.soap.Text;
@@ -34,6 +35,7 @@ public class ResultState {
 
     public static ResultState to(Map<String, Object> resultMap) {
         ResultState r = new ResultState();
+        r.setData(resultMap.get(MagicValue.DATA));
         r.setCode(TextUtil.toInt(resultMap.get(MagicValue.STATUS)));
         r.setMessage(TextUtil.toString(resultMap.get(MagicValue.DESC)));
         r.setLogMessage(TextUtil.toString(resultMap.get(MagicValue.LOG)));
@@ -114,6 +116,10 @@ public class ResultState {
      * token
      */
     private String token;
+    /**
+     * 输出到页面上的返回参数
+     */
+    private Object data;
 
     /**
      * 日志消息，该字段不输出到页面上
@@ -167,5 +173,13 @@ public class ResultState {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

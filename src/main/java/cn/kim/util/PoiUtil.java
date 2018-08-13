@@ -876,7 +876,7 @@ public class PoiUtil {
                 // 循环当前行
                 for (int cellNum = firstCellNum; cellNum < lastCellNum; cellNum++) {
                     Cell cell = row.getCell(cellNum);
-                    cells[cellNum] = getCellValue(cell).trim();
+                    cells[cellNum] = ValidateUtil.isEmpty(cell) ? "" : getCellValue(cell).trim();
                 }
                 list.add(cells);
             }

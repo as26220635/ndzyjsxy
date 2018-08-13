@@ -1922,7 +1922,7 @@ file = {
         });
 
         try {
-            if (!settings.showUpload && isEmpty(options.excelModel)) {
+            if (!settings.showUpload && isEmpty(options.nonModel)) {
                 //隐藏自带的删除
                 $(settings.id).parents('.input-group.file-caption-main:first').css('pointer-events', 'none');
             }

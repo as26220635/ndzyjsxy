@@ -27,7 +27,8 @@
     </bean>
 
     <!-- 使用spring组件扫描 -->
-    <context:component-scan base-package="cn.kim"/>
+    <context:component-scan base-package="cn.kim">
+    </context:component-scan>
     <!-- 静态资源解析
 	包括 ：js、css、img、.. restful
 	 -->

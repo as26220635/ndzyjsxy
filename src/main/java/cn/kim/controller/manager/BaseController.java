@@ -230,27 +230,4 @@ public abstract class BaseController extends BaseData {
         }
     }
 
-    /**
-     * 根据时间设置学年和学期
-     *
-     * @param map
-     * @param yearField
-     * @param semesterField
-     */
-    protected Map<String, Object> setStudentYearSemester(Map<String, Object> map, String yearField, String semesterField) {
-        //拿到当前年份
-        int nowYear = DateUtil.getYear();
-        //拿到当前月份
-        int nowMonth = DateUtil.getMonth();
-
-        if (nowMonth >= 9) {
-            map.put(yearField, nowYear + "~" + (nowYear + 1));
-            map.put(semesterField, 1);
-        } else {
-            map.put(yearField, (nowYear - 1) + "~" + nowYear);
-            map.put(semesterField, 2);
-        }
-
-        return map;
-    }
 }

@@ -380,7 +380,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("SPS_IS_CANCEL", toString(STATUS_ERROR));
             Map<String, Object> schedule = this.selectProcessSchedule(paramMap);
             //如果为空就插入
-            if (isEmpty(schedule)) {
+            if (isEmpty(schedule) || "0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
                 schedule = Maps.newHashMapWithExpectedSize(16);
                 schedule.put("SPD_ID", definitionId);
                 schedule.put("SPS_TABLE_ID", scheduleTableId);

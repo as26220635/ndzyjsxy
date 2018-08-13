@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -90,6 +91,15 @@ public class AidFinanciallyController extends BaseController {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         mapParam.put("ID", ID);
         Map<String, Object> resultMap = aidFinanciallyService.deleteAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/collegeScholarship/import")
+    @RequiresPermissions("AID:COLLEGE_SCHOLARSHIP_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入学院奖学金")
+    @ResponseBody
+    public ResultState importCollegeScholarship(MultipartFile excelFile) throws Exception {
+        Map<String, Object> resultMap = aidFinanciallyService.importCollegeScholarship(excelFile);
         return resultState(resultMap);
     }
 
