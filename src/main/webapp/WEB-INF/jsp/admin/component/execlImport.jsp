@@ -9,6 +9,7 @@
 <%@ include file="/WEB-INF/jsp/common/tag.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%--上传file--%>
 <div class="modal fade" id="excelImportModal" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -25,6 +26,32 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" id="excelImportBtn">上传</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--错误table--%>
+<div class="modal fade" id="errorImportModal" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title text-red">导入excel错误消息,请处理后在次导入!</h4>
+            </div>
+            <div class="modal-body">
+                <table id="errorImportTable" class="table table-bordered table-striped table-overflow-x">
+                    <thead>
+                    <tr>
+                        <th style="min-width: 60px;">行号</th>
+                        <th style="min-width: 380px;">错误消息</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
     </div>
@@ -55,8 +82,35 @@
             }
             //导入excel
             if (typeof excelImport == 'function') {
-                excelImport($('#importForm'),$('#excelImportModal'));
+                excelImport($('#importForm'), $('#excelImportModal'));
             }
         });
+    }
+
+    /**
+     * 清空
+     */
+    function importFileClear() {
+        $("#excelFile").fileinput('clear');
+    }
+
+    /**
+     * 显示错误
+     * @param data
+     */
+    function showImportError(data) {
+        if (isEmpty(data)) {
+            return;
+        }
+        //情况文件上传框
+        tableView.init({
+            object: $('#errorImportTable'),
+            data: data,
+            columns: [
+                {class: 'text-center'},
+                {},
+            ],
+        });
+        $('#errorImportModal').modal('show');
     }
 </script>

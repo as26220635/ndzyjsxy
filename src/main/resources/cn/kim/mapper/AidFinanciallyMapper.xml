@@ -13,6 +13,18 @@
                 <if test ="ID != NULL and ID != ''">
                     AND ID = #{ID}
                 </if>
+                <if test ="BS_ID != NULL and BS_ID != ''">
+                    AND BS_ID = #{BS_ID}
+                </if>
+                <if test ="BAF_TYPE != NULL and BAF_TYPE != ''">
+                    AND BAF_TYPE = #{BAF_TYPE}
+                </if>
+                <if test ="BAF_YEAR != NULL and BAF_YEAR != ''">
+                    AND BAF_YEAR = #{BAF_YEAR}
+                </if>
+                <if test ="BAF_SEMESTER != NULL and BAF_SEMESTER != ''">
+                    AND BAF_SEMESTER = #{BAF_SEMESTER}
+                </if>
             </where>
         )BAF
         INNER JOIN BUS_STUDENT BS ON BS.ID = BAF.BS_ID

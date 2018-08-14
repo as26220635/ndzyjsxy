@@ -68,9 +68,9 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         paramMap.put("SPS_IS_CANCEL", toString(STATUS_ERROR));
         Map<String, Object> schedule = this.selectProcessSchedule(paramMap);
         //2:判断是否进度为空或者状态为0，说明没有启动
-        if (!isEmpty(schedule) && !MagicValue.ZERO.equals(schedule.get("SPS_AUDIT_STATUS"))) {
+        if (!isEmpty(schedule) && !"0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
             //3:判断是否已完成
-            if ("999".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
+            if (Attribute.COMPLETE_CODE == toInt(schedule.get("SPS_AUDIT_STATUS"))) {
                 return ProcessType.NONE.toString();
             }
             //4:判断进度是不是退回状态
@@ -381,11 +381,13 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             Map<String, Object> schedule = this.selectProcessSchedule(paramMap);
             //如果为空就插入
             if (isEmpty(schedule) || "0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
-                schedule = Maps.newHashMapWithExpectedSize(16);
-                schedule.put("SPD_ID", definitionId);
-                schedule.put("SPS_TABLE_ID", scheduleTableId);
-                schedule.put("SO_ID", activeUser.getId());
-                schedule.put("SHOW_SO_ID", mapParam.get("SHOW_SO_ID"));
+                if(isEmpty(schedule)){
+                    schedule = Maps.newHashMapWithExpectedSize(16);
+                    schedule.put("SPD_ID", definitionId);
+                    schedule.put("SPS_TABLE_ID", scheduleTableId);
+                    schedule.put("SO_ID", activeUser.getId());
+                    schedule.put("SHOW_SO_ID", mapParam.get("SHOW_SO_ID"));
+                }
                 schedule.put("SPS_PREV_AUDIT_STATUS", "0");
             } else {
                 //判断流程是否重复审核

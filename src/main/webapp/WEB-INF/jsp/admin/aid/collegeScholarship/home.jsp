@@ -87,10 +87,12 @@
      */
     function excelImport($form, $model) {
         ajax.file('${COLLEGE_SCHOLARSHIP_IMPORT_URL}', $form, function (data) {
-            ajaxReturn.data(data, $model, $dataGrid, true,{
-                error:function () {
+            //重置上传框
+            importFileClear();
+            ajaxReturn.data(data, $model, $dataGrid, true, {
+                error: function () {
                     //显示错误列表
-                    console.log(data)
+                    showImportError(data.data)
                 }
             });
         });

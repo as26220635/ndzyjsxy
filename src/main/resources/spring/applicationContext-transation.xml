@@ -22,6 +22,7 @@
     </bean>
 
     <!-- 通知 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="save*" propagation="REQUIRED"/>

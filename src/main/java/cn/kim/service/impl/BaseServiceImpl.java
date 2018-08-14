@@ -277,7 +277,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         }
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(4);
         paramMap.put("SPS_TABLE_ID", tableId);
-        paramMap.put("SPS_IS_CANCEL", STATUS_ERROR);
+        paramMap.put("SPS_IS_CANCEL", "0");
         paramMap.put("BUS_PROCESS", process);
         paramMap.put("BUS_PROCESS2", process2);
         return baseDao.selectOne(NameSpace.ProcessMapper, "selectProcessSchedule", paramMap);
@@ -300,11 +300,9 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @param val
      * @return
      */
-    protected Map<String, String> packErrorMap(String key, String val) {
-        Map<String, String> map = Maps.newHashMapWithExpectedSize(2);
-        map.put("KEY", key);
-        map.put("VALUE", val);
-        return map;
+    protected String[] packErrorMap(String key, String val) {
+        String[] errors = {key, val};
+        return errors;
     }
 
     /*****************  流程使用    *******************/
@@ -312,7 +310,6 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
     /**
      * 插入流程
      *
-     * @param baseDao
      * @param tableId
      * @param tableName
      * @param soId
@@ -321,7 +318,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @param busProcess2
      * @throws Exception
      */
-    protected void createProcessSchedule(BaseDao baseDao, String tableId, String tableName, String soId, String showSoId, String busProcess, String busProcess2) throws Exception {
+    protected void createProcessSchedule(String tableId, String tableName, String soId, String showSoId, String busProcess, String busProcess2) throws Exception {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
         paramMap.put("BUS_PROCESS", busProcess);
         paramMap.put("BUS_PROCESS2", busProcess2);
@@ -330,6 +327,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
             throw new CustomException("没有找到流程实例!");
         }
         paramMap.clear();
+        paramMap.put("ID", getId());
         paramMap.put("SPD_ID", definition.get("ID"));
         paramMap.put("SO_ID", soId);
         paramMap.put("SHOW_SO_ID", showSoId);

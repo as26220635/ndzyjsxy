@@ -517,8 +517,8 @@ tableView = {
                 tableView.isSerach = true;
             }
         }
-        //绘制表格
-        var $table = options.object.DataTable({
+        //配置数据
+        var optionData = {
             //lengthMenu: [5, 10, 20, 30],//这里也可以设置分页，但是不能设置具体内容，只能是一维或二维数组的方式，所以推荐下面language里面的写法。
             serverSide: true,//分页，取数据等等的都放到服务端去
             processing: true,//载入数据的时候是否显示“载入中”
@@ -533,43 +533,6 @@ tableView = {
             info: settings.info,
             // rowId: settings.rowId,
             createdRow: settings.createdRow,
-            ajax: {
-                type: "GET",
-                url: options.url,
-                dataSrc: "data",
-                dataType: "json",
-                data: function (d) {
-                    //前台进度条
-                    if (typeof NProgress != 'undefined') {
-                        NProgress.start();
-                    }
-                    //后台刷新
-                    if (options.adminLoadingDiv != undefined) {
-                        options.adminLoadingDiv.append(addLoadingDiv());
-                    }
-                    //搜索开始的方法
-                    if (options.startSearchCallback != undefined) {
-                        options.startSearchCallback();
-                    }
-
-                    var param = {};
-                    param.draw = d.draw;
-                    param.start = d.start;
-                    param.length = d.length;
-                    //添加自定义参数
-                    if (options.searchParams != undefined) {
-                        options.searchParams(param);
-                    }
-                    //需要定义tableView.isSerach是否搜索
-                    if (tableView.isSerach) {
-                        var formData = options.queryForm.serializeArray();//把form里面的数据序列化成数组
-                        formData.forEach(function (e) {
-                            param[e.name] = e.value;
-                        });
-                    }
-                    return param;//自定义需要传递的参数。
-                },
-            },
             //对应上面thead里面的序列
             columns: options.columns,
             //操作按钮
@@ -613,7 +576,60 @@ tableView = {
                     options.fnRowCallback(nRow, aData, iDisplayIndex);
                 }
             },
-        });
+        };
+        //启用ajax模式
+        if (!isEmpty(options.url)) {
+            optionData.ajax = {
+                type: "GET",
+                url: options.url,
+                dataSrc: "data",
+                dataType: "json",
+                data: function (d) {
+                    //前台进度条
+                    if (typeof NProgress != 'undefined') {
+                        NProgress.start();
+                    }
+                    //后台刷新
+                    if (options.adminLoadingDiv != undefined) {
+                        options.adminLoadingDiv.append(addLoadingDiv());
+                    }
+                    //搜索开始的方法
+                    if (options.startSearchCallback != undefined) {
+                        options.startSearchCallback();
+                    }
+
+                    var param = {};
+                    param.draw = d.draw;
+                    param.start = d.start;
+                    param.length = d.length;
+                    //添加自定义参数
+                    if (options.searchParams != undefined) {
+                        options.searchParams(param);
+                    }
+                    //需要定义tableView.isSerach是否搜索
+                    if (tableView.isSerach) {
+                        var formData = options.queryForm.serializeArray();//把form里面的数据序列化成数组
+                        formData.forEach(function (e) {
+                            param[e.name] = e.value;
+                        });
+                    }
+                    return param;//自定义需要传递的参数。
+                },
+            };
+        }
+        //数据源模式
+        if (!isEmpty(options.data)) {
+            //设置数据源
+            optionData.data = options.data;
+            //关闭服务器模式
+            optionData.serverSide = false;
+            //开启本地搜索
+            optionData.searching = true;
+            //不保存状态
+            optionData.stateSave = false;
+        }
+        //绘制表格
+        var $table = options.object.DataTable(optionData);
 
         //切换待审已审
         $('#processAllBtn,#processStayBtn,#processAlreadyBtn').on('click', function () {

@@ -114,11 +114,25 @@ public abstract class BaseController extends BaseData {
      * @throws InvalidKeyException
      */
     public ResultState fairLock(String name, LockListener lockListener) throws InvalidKeyException {
+        return fairLock(name, 20, 10, lockListener);
+    }
+
+    /**
+     * redission 公平锁
+     *
+     * @param name
+     * @param waitTime
+     * @param leaseTime
+     * @param lockListener
+     * @return
+     * @throws InvalidKeyException
+     */
+    public ResultState fairLock(String name, long waitTime, long leaseTime, LockListener lockListener) throws InvalidKeyException {
         //采用公平锁
         RLock lock = redissonClient.getFairLock(name);
         try {
             //尝试加锁，最多等待20秒，上锁以后10秒自动解锁
-            boolean res = lock.tryLock(20, 10, TimeUnit.SECONDS);
+            boolean res = lock.tryLock(waitTime, leaseTime, TimeUnit.SECONDS);
 
             if (res) {
                 return lockListener.lock();

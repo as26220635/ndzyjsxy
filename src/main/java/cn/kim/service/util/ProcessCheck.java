@@ -1,12 +1,10 @@
 package cn.kim.service.util;
 
-import cn.kim.common.attr.Attribute;
+import cn.kim.common.eu.Process;
 import cn.kim.entity.ProcessRunBean;
 import cn.kim.service.impl.BaseServiceImpl;
 import cn.kim.service.util.check.AidProcessCheck;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /**
  * Created by 余庚鑫 on 2018/6/14
@@ -28,7 +26,7 @@ public class ProcessCheck extends BaseServiceImpl {
         String busProcess2 = run.getBusProcess2();
 
         //资助管理
-        if (Attribute.PROCESS_AID.equals(busProcess)) {
+        if (Process.AID.toString().equals(busProcess)) {
             AidProcessCheck aidProcessCheck = new AidProcessCheck();
             error += aidProcessCheck.checkStudentPunishment(run);
         }

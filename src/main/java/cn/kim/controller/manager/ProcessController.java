@@ -103,7 +103,7 @@ public class ProcessController extends BaseController {
             Map<String, Object> schedule = processService.selectProcessSchedule(paramMap);
             //审核状态
             String SPS_AUDIT_STATUS;
-            if (!isEmpty(schedule)) {
+            if (!isEmpty(schedule) && !"0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
                 SPS_AUDIT_STATUS = toString(schedule.get("SPS_AUDIT_STATUS"));
                 if (toInt(SPS_AUDIT_STATUS) == BACK_CODE) {
                     SPS_AUDIT_STATUS = toString(schedule.get("SPS_BACK_STATUS_TRANSACTOR"));

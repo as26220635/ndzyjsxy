@@ -4,16 +4,13 @@ import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.annotation.Token;
 import cn.kim.common.annotation.Validate;
 import cn.kim.common.attr.Attribute;
+import cn.kim.common.eu.AidType;
+import cn.kim.common.eu.Process;
 import cn.kim.common.eu.UseType;
 import cn.kim.controller.manager.BaseController;
-import cn.kim.entity.DataTablesView;
 import cn.kim.entity.ResultState;
-import cn.kim.service.MenuService;
-import cn.kim.service.OperatorService;
 import cn.kim.service.AidFinanciallyService;
-import cn.kim.util.AllocationUtil;
 import com.google.common.collect.Maps;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,10 +51,10 @@ public class AidFinanciallyController extends BaseController {
     @ResponseBody
     public ResultState addCollegeScholarship(@RequestParam Map<String, Object> mapParam) throws Exception {
         //流程
-        mapParam.put("BUS_PROCESS", Attribute.PROCESS_AID);
-        mapParam.put("BUS_PROCESS2", Attribute.PROCESS_AID_COLLEGE_SCHOLARSHIP);
+        mapParam.put("BUS_PROCESS", Process.AID.toString());
+        mapParam.put("BUS_PROCESS2", Process.AID_COLLEGE_SCHOLARSHIP.toString());
         //类型
-        mapParam.put("BAF_TYPE", Attribute.AID_COLLEGE_SCHOLARSHIP);
+        mapParam.put("BAF_TYPE", AidType.COLLEGE_SCHOLARSHIP.toString());
         Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
 
         return resultState(resultMap);
@@ -99,8 +96,11 @@ public class AidFinanciallyController extends BaseController {
     @SystemControllerLog(useType = UseType.USE, event = "导入学院奖学金")
     @ResponseBody
     public ResultState importCollegeScholarship(MultipartFile excelFile) throws Exception {
-        Map<String, Object> resultMap = aidFinanciallyService.importCollegeScholarship(excelFile);
-        return resultState(resultMap);
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importCollegeScholarship", 600, 600, () -> {
+            Map<String, Object> resultMap = aidFinanciallyService.importCollegeScholarship(excelFile);
+            return resultState(resultMap);
+        });
     }
 
 }
