@@ -47,14 +47,21 @@
     </div>
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">
-            <label>部门字段(BD_ID):</label>
-            <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_DIVISION_FIELD")}
-                   value="${SPD.SPD_DIVISION_FIELD}">
+            <label>院系字段(BDM_COLLEGE):</label>
+            <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_COLLEGE_FIELD")}
+                   value="${SPD.SPD_COLLEGE_FIELD}">
         </div>
         <div class="form-group has-feedback form-group-md-6">
             <label>系部字段(BDM_ID):</label>
             <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_DEPARTMENT_FIELD")}
                    value="${SPD.SPD_DEPARTMENT_FIELD}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>班级字段(BC_ID):</label>
+            <input type="text" class="form-control" ${fns:validField("SYS_PROCESS_DEFINITION", "SPD_CLASS_FIELD")}
+                   value="${SPD.SPD_CLASS_FIELD}">
         </div>
     </div>
     <div class="form-group has-feedback">

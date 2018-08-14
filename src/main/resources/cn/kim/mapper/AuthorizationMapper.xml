@@ -7,28 +7,40 @@
     <select id="selectAuthorization" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT * FROM BUS_AUTHORIZATION
         <where>
-            <if test ="ID != NULL and ID != ''">
+            <if test="ID != NULL and ID != ''">
                 AND ID = #{ID}
             </if>
-            <if test ="SO_ID != NULL and SO_ID != ''">
+            <if test="SO_ID != NULL and SO_ID != ''">
                 AND SO_ID = #{SO_ID}
             </if>
-            <if test ="BA_TABLE_TYPE != NULL and BA_TABLE_TYPE != ''">
+            <if test="BA_TABLE_TYPE != NULL and BA_TABLE_TYPE != ''">
                 AND BA_TABLE_TYPE #{BA_TABLE_TYPE}
             </if>
         </where>
     </select>
 
+    <!--查询授权集合-->
+    <select id="selectAuthorizationGroupBy" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BA_TABLE_TYPE,GROUP_CONCAT(BA_TABLE_ID) AS BA_TABLE_ID
+        FROM BUS_AUTHORIZATION
+        <where>
+            <if test="SO_ID != NULL and SO_ID != ''">
+                AND SO_ID = #{SO_ID}
+            </if>
+        </where>
+        GROUP BY BA_TABLE_TYPE
+    </select>
+
     <!--插入授权-->
     <insert id="insertAuthorization" parameterType="java.util.Map">
         INSERT INTO BUS_AUTHORIZATION
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="SO_ID != null">SO_ID,</if>
             <if test="BA_TABLE_TYPE != null">BA_TABLE_TYPE,</if>
             <if test="BA_TABLE_ID != null">BA_TABLE_ID,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="SO_ID != null">#{SO_ID},</if>
             <if test="BA_TABLE_TYPE != null">#{BA_TABLE_TYPE},</if>
@@ -52,7 +64,7 @@
 
     <!--删除授权-->
     <delete id="deleteAuthorization" parameterType="java.util.Map">
-		DELETE FROM BUS_AUTHORIZATION WHERE ID = #{ID}
+		DELETE FROM BUS_AUTHORIZATION WHERE BA_TABLE_TYPE = #{BA_TABLE_TYPE} AND BA_TABLE_ID = #{BA_TABLE_ID}
 	</delete>
 
 </mapper>

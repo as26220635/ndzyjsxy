@@ -618,8 +618,9 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("SPD_VERSION", mapParam.get("SPD_VERSION"));
             paramMap.put("SPD_UPDATE_TABLE", mapParam.get("SPD_UPDATE_TABLE"));
             paramMap.put("SPD_UPDATE_NAME", mapParam.get("SPD_UPDATE_NAME"));
-            paramMap.put("SPD_DIVISION_FIELD", mapParam.get("SPD_DIVISION_FIELD"));
+            paramMap.put("SPD_COLLEGE_FIELD", mapParam.get("SPD_COLLEGE_FIELD"));
             paramMap.put("SPD_DEPARTMENT_FIELD", mapParam.get("SPD_DEPARTMENT_FIELD"));
+            paramMap.put("SPD_CLASS_FIELD", mapParam.get("SPD_CLASS_FIELD"));
             paramMap.put("SPD_DESCRIBE", mapParam.get("SPD_DESCRIBE"));
             paramMap.put("SDP_ENTRY_TIME", mapParam.get("SDP_ENTRY_TIME"));
             paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));

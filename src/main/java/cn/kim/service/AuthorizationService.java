@@ -1,5 +1,8 @@
 package cn.kim.service;
 
+import cn.kim.entity.Tree;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -7,25 +10,21 @@ import java.util.Map;
  * 授权
  */
 public interface AuthorizationService extends BaseService {
+
     /**
-     * 查询配置
+     * 授权数据树列表
+     *
      * @param mapParam
      * @return
      */
-    Map<String, Object> selectAuthorization(Map<String, Object> mapParam);
+    List<Tree> selectAuthorizationTreeList(Map<String, Object> mapParam);
+
 
     /**
-     * 插入或更新系统配置
+     * 保存授权信息
+     *
      * @param mapParam
      * @return
      */
-    Map<String, Object> insertAndUpdateAuthorization(Map<String, Object> mapParam);
-
-    /**
-     * 删除系统配置
-     * @param mapParam
-     * @return
-     */
-    Map<String, Object> deleteAuthorization(Map<String, Object> mapParam);
-
+    Map<String, Object> updateAuthorization(Map<String, Object> mapParam);
 }

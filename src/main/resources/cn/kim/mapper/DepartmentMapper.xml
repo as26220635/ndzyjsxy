@@ -15,6 +15,12 @@
                 <if test="NOT_ID != NULL and NOT_ID != ''">
                     AND ID != #{NOT_ID}
                 </if>
+                <if test="BDM_COLLEGE != NULL and BDM_COLLEGE != ''">
+                    AND BDM_COLLEGE = #{BDM_COLLEGE}
+                </if>
+                <if test="AUTHORIZATION != NULL and AUTHORIZATION != ''">
+                    AND (BDM_COLLEGE = #{AUTHORIZATION} OR ID = #{AUTHORIZATION})
+                </if>
             </where>
         )BDM
         LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE ='BUS_COLLEGE' AND SDI.SDI_CODE = BDM.BDM_COLLEGE

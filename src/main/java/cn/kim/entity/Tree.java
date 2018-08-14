@@ -18,6 +18,10 @@ public class Tree {
      */
     private String sdiCode;
     /**
+     * 级别
+     */
+    private int level;
+    /**
      * String(必选项)	列表树节点上的文本，通常是节点右边的小图标。
      */
     private String text;
@@ -166,5 +170,13 @@ public class Tree {
 
     public void setNodes(List<Tree> nodes) {
         this.nodes = nodes;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

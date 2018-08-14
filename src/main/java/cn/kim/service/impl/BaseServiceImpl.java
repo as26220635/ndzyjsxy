@@ -1,12 +1,16 @@
 package cn.kim.service.impl;
 
 import cn.kim.common.BaseData;
+import cn.kim.common.DaoSession;
 import cn.kim.common.attr.Constants;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
+import cn.kim.common.eu.AuthorizationType;
 import cn.kim.common.eu.NameSpace;
+import cn.kim.common.eu.SystemEnum;
 import cn.kim.common.shiro.CustomRealm;
 import cn.kim.dao.BaseDao;
+import cn.kim.entity.ActiveUser;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
@@ -18,6 +22,7 @@ import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Maps;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -306,6 +311,80 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
     }
 
     /*****************  流程使用    *******************/
+
+    /**
+     * 获取当前用户授权过滤
+     * 需要字段 院系BDM_COLLEGE 系部BDM_ID 班级BC_ID
+     *
+     * @return
+     */
+    protected String getAuthorizationWhere() {
+        Map<String, Object> fieldMap = Maps.newHashMapWithExpectedSize(3);
+        fieldMap.put(AuthorizationType.COLLEGE.toString(), "BDM_COLLEGE");
+        fieldMap.put(AuthorizationType.DEPARTMENT.toString(), "BDM_ID");
+        fieldMap.put(AuthorizationType.CLS.toString(), "BC_ID");
+        return getAuthorizationWhere(fieldMap);
+    }
+
+    /**
+     * 获取当前用户授权过滤
+     *
+     * @param fieldMap 字段map
+     * @return
+     */
+    protected String getAuthorizationWhere(Map<String, Object> fieldMap) {
+        StringBuilder builder = new StringBuilder();
+
+        //拿到当前用户的角色
+        ActiveUser activeUser = getActiveUser();
+        String operatorId = activeUser.getId();
+        int type = toInt(activeUser.getType());
+
+        if (type == SystemEnum.MANAGER.getType()) {
+            //管理员不过滤
+            return "";
+        } else if (type == SystemEnum.DIVISION.getType() || type == SystemEnum.DEPARTMENT.getType()) {
+            //系部和部门根据授权过滤
+            //查询授权
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            paramMap.put("SO_ID", operatorId);
+            List<Map<String, Object>> authorizationList = DaoSession.daoSession.baseDao.selectList(NameSpace.AuthorizationMapper, "selectAuthorizationGroupBy", paramMap);
+            if (!isEmpty(fieldMap) && !isEmpty(authorizationList)) {
+                authorizationList.forEach(authorization -> {
+                    int BA_TABLE_TYPE = toInt(authorization.get("BA_TABLE_TYPE"));
+                    String BA_TABLE_ID = toString(authorization.get("BA_TABLE_ID"));
+                    //查询字段
+                    String field = toString(fieldMap.get(toString(BA_TABLE_TYPE)));
+                    //字段没有传来就不查询
+                    if (!isEmpty(field)) {
+                        if (BA_TABLE_TYPE == AuthorizationType.COLLEGE.getType()) {
+                            //院系
+                            builder.append(" AND " + field + " IN(" + BA_TABLE_ID + ") ");
+                        } else if (BA_TABLE_TYPE == AuthorizationType.DEPARTMENT.getType()) {
+                            //系部
+                            builder.append(" AND " + field + " IN(" + BA_TABLE_ID + ") ");
+                        } else if (BA_TABLE_TYPE == AuthorizationType.CLS.getType()) {
+                            //班级
+                            builder.append(" AND " + field + " IN(" + BA_TABLE_ID + ") ");
+                        }
+                    }
+                });
+            } else {
+                //不查询出数据
+                builder.append(" AND SO_ID = -1 ");
+            }
+        } else if (type == SystemEnum.STUDENT.getType()) {
+            //学生
+            builder.append(" AND SO_ID = " + operatorId);
+        } else if (type == SystemEnum.TEACHER.getType()) {
+            //教师
+            builder.append(" AND SO_ID = " + operatorId);
+        } else {
+            throw new UnauthorizedException("当前用户类型错误!");
+        }
+
+        return builder.toString();
+    }
 
     /**
      * 插入流程

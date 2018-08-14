@@ -356,11 +356,23 @@ public abstract class BaseData {
      * 吧MAP中的一个参数作为KEY
      *
      * @param list
-     * @param key
+     * @param keys
      * @return
      */
-    protected Map<String, String> toMapKey(List<Map<String, Object>> list, String key) {
-        return CommonUtil.toMapKey(list, key);
+    protected Map<String, String> toMapKey(List<Map<String, Object>> list, String... keys) {
+        return CommonUtil.toMapKey(list, keys);
+    }
+
+    /**
+     * 吧MAP中的一个参数作为KEY
+     *
+     * @param list
+     * @param join
+     * @param keys
+     * @return
+     */
+    protected Map<String, String> toMapJoinKey(List<Map<String, Object>> list, String join, String... keys) {
+        return CommonUtil.toMapJoinKey(list, join, keys);
     }
 
     /**

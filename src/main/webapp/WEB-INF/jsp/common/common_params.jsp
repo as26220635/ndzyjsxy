@@ -31,6 +31,7 @@
     var STATUS_ERROR = '${Attribute.STATUS_ERROR}';
     <%--分割符号--%>
     var SERVICE_SPLIT = '${Attribute.SERVICE_SPLIT}';
+    var COMPLEX_SPLIT = '${Attribute.COMPLEX_SPLIT}';
     <%--验证失败提示--%>
     var VALIDATE_FAIL = '${Tips.VALIDATE_FAIL_TEXT}';
     <%--pjax主内容DIVid--%>

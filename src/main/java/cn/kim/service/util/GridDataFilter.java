@@ -4,6 +4,7 @@ import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableViewName;
 import cn.kim.entity.ActiveUser;
 import cn.kim.service.impl.BaseServiceImpl;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,7 @@ public class GridDataFilter extends BaseServiceImpl {
      * @param requestMap
      * @return
      */
+    @Contract("_, _ -> new")
     @NotNull
     public static GridDataFilter getInstance(Map<String, Object> configure, Map<String, Object> requestMap) {
         return new GridDataFilter(configure, requestMap);
@@ -58,6 +60,9 @@ public class GridDataFilter extends BaseServiceImpl {
         if (TableViewName.V_TEST_PROCESS.equals(configureView)) {
             //测试流程
             resultBuilder.append(" AND SO_ID = " + activeUser.getId());
+        } else if (TableViewName.V_STUDENT.equals(configureView) || TableViewName.V_STUDENT_ATTENDANCE.equals(configureView) || TableViewName.V_STUDENT_PUNISHMENT.equals(configureView) || TableViewName.V_STUDENT_COMPREHENSIVE.equals(configureView)) {
+            //学生管理
+            resultBuilder.append(getAuthorizationWhere());
         }
 
 

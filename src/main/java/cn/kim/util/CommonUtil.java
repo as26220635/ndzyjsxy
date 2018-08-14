@@ -793,16 +793,35 @@ public class CommonUtil {
      * 吧MAP中的一个参数作为KEY
      *
      * @param list
-     * @param key
+     * @param keys
      * @return
      */
-    public static Map<String, String> toMapKey(List<Map<String, Object>> list, String key) {
+    public static Map<String, String> toMapKey(List<Map<String, Object>> list, String... keys) {
+        return toMapJoinKey(list, null, keys);
+    }
+
+    /**
+     * 吧MAP中的一个参数作为KEY
+     *
+     * @param list
+     * @param join
+     * @param keys
+     * @return
+     */
+    public static Map<String, String> toMapJoinKey(List<Map<String, Object>> list, String join, String... keys) {
         if (ValidateUtil.isEmpty(list)) {
             return null;
         }
         Map<String, String> maps = Maps.newHashMapWithExpectedSize(16);
         list.forEach(map -> {
-            String nKey = TextUtil.toString(map.get(key));
+            String nKey = "";
+            for (String key : keys) {
+                nKey += TextUtil.toString(map.get(key)) + (ValidateUtil.isEmpty(join) ? "" : join);
+            }
+            //清除最后一位
+            if (!ValidateUtil.isEmpty(join)) {
+                nKey = TextUtil.interceptSymbol(nKey, join);
+            }
             if (!ValidateUtil.isEmpty(nKey)) {
                 maps.put(nKey, nKey);
             }

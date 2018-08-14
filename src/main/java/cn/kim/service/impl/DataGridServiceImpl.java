@@ -1,6 +1,8 @@
 package cn.kim.service.impl;
 
+import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
+import cn.kim.common.eu.AuthorizationType;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.ProcessShowStatus;
 import cn.kim.entity.*;
@@ -83,28 +85,28 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
         //是否拥有流程
         boolean isProcess = false;
         //查询是否拥有流程
-        String process = toString(menu.get("BUS_PROCESS"));
-        String process2 = toString(menu.get("BUS_PROCESS2"));
-        if (!isEmpty(process)) {
+        String busProcess = toString(menu.get("BUS_PROCESS"));
+        String busProcess2 = toString(menu.get("BUS_PROCESS2"));
+        if (!isEmpty(busProcess)) {
             paramMap.clear();
-            paramMap.put("BUS_PROCESS", process);
-            paramMap.put("process2", process2);
-            Map<String, Object> definition = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinitionJoin", paramMap);
+            paramMap.put("BUS_PROCESS", busProcess);
+            paramMap.put("BUS_PROCESS2", busProcess2);
+            Map<String, Object> definitions = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinitionJoin", paramMap);
 
-            if (!isEmpty(definition)) {
-                String processDefinitionId = toString(definition.get("ID"));
-                String roleId = toString(definition.get("SR_ID"));
+            if (!isEmpty(definitions)) {
+                String processDefinitionIds = toString(definitions.get("ID"));
+                String roleIds = toString(definitions.get("SR_ID"));
                 //是否有查看全部的权限
-                boolean isProcessAll = containsRole(roleId);
+                boolean isProcessAll = containsRole(roleIds);
                 //0 全部 1 待审 2 已审
                 String processStatus = toString(mapParam.get("processStatus"));
                 //设置流程查询ID
-                querySet.setProcessDefinitionId(processDefinitionId);
+                querySet.setProcessDefinitionId(processDefinitionIds);
 
                 //流程过滤
                 ActiveUser activeUser = getActiveUser();
 
-                String baseWhere = "SELECT SPS_TABLE_ID FROM SYS_PROCESS_SCHEDULE WHERE SPD_ID IN(" + processDefinitionId + ") AND SPS_IS_CANCEL = 0 ";
+                String baseWhere = "SELECT SPS_TABLE_ID FROM SYS_PROCESS_SCHEDULE WHERE SPD_ID IN(" + processDefinitionIds + ") AND SPS_IS_CANCEL = 0 ";
                 //WHERE过滤语句
                 StringBuilder processWhereBuilder = new StringBuilder();
                 //待审SQL语句
@@ -113,10 +115,10 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                 stayBuilder.append("SELECT SV.ID AS SPS_TABLE_ID FROM " + toString(configure.get("SC_VIEW")) + " SV " +
                         "   LEFT JOIN SYS_PROCESS_SCHEDULE SPS ON SPS.SPS_TABLE_ID = SV.ID AND SPS.SPS_IS_CANCEL = 0" +
                         "   WHERE SV.SO_ID = '" + activeUser.getId() + "' AND (SPS.ID IS NULL OR SPS.SPS_AUDIT_STATUS = 0 OR (SPS.SPS_AUDIT_STATUS = -1 AND SPS.SPS_BACK_STATUS = 2))");
-                if (!containsRole(roleId)) {
+                if (!containsRole(roleIds)) {
                     //查询自身角色是否在流程中
                     paramMap.clear();
-                    paramMap.put("SPD_ID_IN", processDefinitionId);
+                    paramMap.put("SPD_ID_IN", processDefinitionIds);
                     List<Map<String, Object>> stepList = baseDao.selectList(NameSpace.ProcessFixedMapper, "selectProcessStep", paramMap);
                     //获取需要查询的角色
                     stayBuilder.append(" UNION ALL " + baseWhere + " AND SPS_STEP_TYPE = 1 AND SPS_STEP_TRANSACTOR IN (" + TextUtil.toString(getExistRoleList(TextUtil.joinValue(stepList, "SR_ID", SERVICE_SPLIT))) + ") ");
@@ -155,6 +157,42 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
 
                 querySet.setWhere(processWhereBuilder.toString());
 
+                //判断流程定义是否过滤授权
+                StringBuilder authorizationBuilder = new StringBuilder();
+
+                for (String definitionId : processDefinitionIds.split(Attribute.SERVICE_SPLIT)) {
+                    paramMap.clear();
+                    paramMap.put("ID", definitionId);
+                    Map<String, Object> definition = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinition", paramMap);
+                    paramMap.clear();
+                    //院系
+                    if (!isEmpty(definition.get("SPD_COLLEGE_FIELD"))) {
+                        paramMap.put(AuthorizationType.COLLEGE.toString(), definition.get("SPD_COLLEGE_FIELD"));
+                    }
+                    //系部
+                    if (!isEmpty(definition.get("SPD_DEPARTMENT_FIELD"))) {
+                        paramMap.put(AuthorizationType.DEPARTMENT.toString(), definition.get("SPD_DEPARTMENT_FIELD"));
+                    }
+                    //班级
+                    if (!isEmpty(definition.get("SPD_CLASS_FIELD"))) {
+                        paramMap.put(AuthorizationType.CLS.toString(), definition.get("SPD_CLASS_FIELD"));
+                    }
+
+                    String authorizationWhere = getAuthorizationWhere(paramMap);
+                    authorizationBuilder.append(isEmpty(authorizationWhere) ? "" : "(" + TextUtil.interceptSymbol(authorizationWhere, " AND ") + ") OR ");
+                }
+                //添加or条件
+//                (BDM_ID IN(48601265252335616)  AND BC_ID IN(48656602449838080) ) OR
+                String authorizationWhere = authorizationBuilder.toString();
+                if (!isEmpty(authorizationWhere)) {
+                    //清空
+                    authorizationBuilder.delete(0, authorizationBuilder.length());
+                    authorizationBuilder.append("AND (");
+                    authorizationBuilder.append(TextUtil.interceptSymbol(authorizationWhere, " OR "));
+                    authorizationBuilder.append(")");
+                }
+                //过滤授权
+                querySet.setWhere(authorizationBuilder.toString());
                 isProcess = true;
             }
         }

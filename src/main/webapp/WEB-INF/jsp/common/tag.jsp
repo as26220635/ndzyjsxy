@@ -5,6 +5,7 @@
 <%@ page import="cn.kim.common.attr.Tips" %>
 <%@ page import="cn.kim.common.eu.SystemEnum" %>
 <%@ page import="cn.kim.common.eu.ProcessType" %>
+<%@ page import="cn.kim.common.eu.AuthorizationType" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -41,6 +42,10 @@
 <c:set var="COMPREHENSIVE_BASE_URL" value="${ALLOCATION_BASE_URL}comprehensive"/>
 <%--迟到旷课处分配置管理--%>
 <c:set var="PUNISHMENT_BASE_URL" value="${ALLOCATION_BASE_URL}punishment"/>
+<%--授权--%>
+<c:set var="AUTHORIZATION_BASE_URL" value="${MANAGER_URL}authorization/"/>
+<c:set var="AUTHORIZATION_TREE_URL" value="${AUTHORIZATION_BASE_URL}tree"/>
+<c:set var="AUTHORIZATION_UPDATE_URL" value="${AUTHORIZATION_BASE_URL}update"/>
 <%--菜单管理--%>
 <c:set var="MENU_BASE_URL" value="${MANAGER_URL}menu/"/>
 <c:set var="MENU_LIST_URL" value="${MENU_BASE_URL}list"/>

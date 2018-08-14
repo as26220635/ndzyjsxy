@@ -100,6 +100,7 @@
             </if>
         </where>
     </select>
+
     <!--插入流程定义-->
     <insert id="insertProcessDefinition" parameterType="java.util.Map">
         INSERT INTO SYS_PROCESS_DEFINITION
@@ -113,8 +114,9 @@
             <if test="SPD_VERSION != null">SPD_VERSION,</if>
             <if test="SPD_UPDATE_TABLE != null">SPD_UPDATE_TABLE,</if>
             <if test="SPD_UPDATE_NAME != null">SPD_UPDATE_NAME,</if>
-            <if test="SPD_DIVISION_FIELD != null">SPD_DIVISION_FIELD,</if>
+            <if test="SPD_COLLEGE_FIELD != null">SPD_COLLEGE_FIELD,</if>
             <if test="SPD_DEPARTMENT_FIELD != null">SPD_DEPARTMENT_FIELD,</if>
+            <if test="SPD_CLASS_FIELD != null">SPD_CLASS_FIELD,</if>
             <if test="SPD_DESCRIBE != null">SPD_DESCRIBE,</if>
             <if test="SDP_ENTRY_TIME != null">SDP_ENTRY_TIME,</if>
             <if test="IS_STATUS != null">IS_STATUS,</if>
@@ -130,8 +132,9 @@
             <if test="SPD_VERSION != null">#{SPD_VERSION},</if>
             <if test="SPD_UPDATE_TABLE != null">#{SPD_UPDATE_TABLE},</if>
             <if test="SPD_UPDATE_NAME != null">#{SPD_UPDATE_NAME},</if>
-            <if test="SPD_DIVISION_FIELD != null">#{SPD_DIVISION_FIELD},</if>
+            <if test="SPD_COLLEGE_FIELD != null">#{SPD_COLLEGE_FIELD},</if>
             <if test="SPD_DEPARTMENT_FIELD != null">#{SPD_DEPARTMENT_FIELD},</if>
+            <if test="SPD_CLASS_FIELD != null">#{SPD_CLASS_FIELD},</if>
             <if test="SPD_DESCRIBE != null">#{SPD_DESCRIBE},</if>
             <if test="SDP_ENTRY_TIME != null">#{SDP_ENTRY_TIME},</if>
             <if test="IS_STATUS != null">#{IS_STATUS},</if>
@@ -152,8 +155,9 @@
             <if test="SPD_VERSION != null">SPD_VERSION=#{SPD_VERSION},</if>
             <if test="SPD_UPDATE_TABLE != null">SPD_UPDATE_TABLE=#{SPD_UPDATE_TABLE},</if>
             <if test="SPD_UPDATE_NAME != null">SPD_UPDATE_NAME=#{SPD_UPDATE_NAME},</if>
-            <if test="SPD_DIVISION_FIELD != null">SPD_DIVISION_FIELD=#{SPD_DIVISION_FIELD},</if>
+            <if test="SPD_COLLEGE_FIELD != null">SPD_COLLEGE_FIELD=#{SPD_COLLEGE_FIELD},</if>
             <if test="SPD_DEPARTMENT_FIELD != null">SPD_DEPARTMENT_FIELD=#{SPD_DEPARTMENT_FIELD},</if>
+            <if test="SPD_CLASS_FIELD != null">SPD_CLASS_FIELD=#{SPD_CLASS_FIELD},</if>
             <if test="SPD_DESCRIBE != null">SPD_DESCRIBE=#{SPD_DESCRIBE},</if>
             <if test="SDP_ENTRY_TIME != null">SDP_ENTRY_TIME=#{SDP_ENTRY_TIME},</if>
             <if test="IS_STATUS != null">IS_STATUS=#{IS_STATUS},</if>

@@ -41,7 +41,7 @@
         )DG
         <if test="processDefinitionId != null and processDefinitionId != ''">
         LEFT JOIN SYS_PROCESS_DEFINITION SPD ON SPD.BUS_PROCESS = DG.BUS_PROCESS AND SPD.BUS_PROCESS2 = DG.BUS_PROCESS2
-        LEFT JOIN SYS_PROCESS_SCHEDULE SPS ON SPS.SPS_TABLE_ID = DG.ID AND SPS.SPS_IS_CANCEL = 0
+        LEFT JOIN SYS_PROCESS_SCHEDULE SPS ON SPS.SPS_TABLE_ID = DG.ID AND SPS.SPS_IS_CANCEL = 0 AND SPS.SPD_ID = SPD.ID
         LEFT JOIN SYS_DICT_INFO BPS ON BPS.SDT_CODE = 'SYS_PROCESS_STATUS' AND BPS.SDI_CODE = SPS.SPS_AUDIT_STATUS
         </if>
         ${processJoin}
@@ -52,11 +52,23 @@
     <!--查询列表数量-->
     <select id="countByMap" parameterType="java.util.Map" resultType="java.lang.Long">
         SELECT COUNT(*)
-        FROM ${view}
+        FROM (
+            SELECT * FROM
+            ${view}
+            <where>
+                <if test="whereClause != null and whereClause != ''">
+                    ${whereClause}
+                </if>
+            </where>
+        )DG
+        <if test="processDefinitionId != null and processDefinitionId != ''">
+            LEFT JOIN SYS_PROCESS_DEFINITION SPD ON SPD.BUS_PROCESS = DG.BUS_PROCESS AND SPD.BUS_PROCESS2 = DG.BUS_PROCESS2
+            LEFT JOIN SYS_PROCESS_SCHEDULE SPS ON SPS.SPS_TABLE_ID = DG.ID AND SPS.SPS_IS_CANCEL = 0 AND SPS.SPD_ID = SPD.ID
+            LEFT JOIN SYS_DICT_INFO BPS ON BPS.SDT_CODE = 'SYS_PROCESS_STATUS' AND BPS.SDI_CODE = SPS.SPS_AUDIT_STATUS
+        </if>
+        ${processJoin}
         <where>
-            <if test="whereClause != null and whereClause != ''">
-                ${whereClause}
-            </if>
+            ${processWhere}
         </where>
     </select>
 </mapper>
