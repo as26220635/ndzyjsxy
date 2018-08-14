@@ -1,7 +1,7 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : me
+ Source Server         : db
  Source Server Type    : MySQL
  Source Server Version : 80011
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 14/08/2018 11:28:20
+ Date: 14/08/2018 14:44:21
 */
 
 SET NAMES utf8mb4;
@@ -46,6 +46,20 @@ CREATE TABLE `bus_aid_financially`  (
 -- Records of bus_aid_financially
 -- ----------------------------
 INSERT INTO `bus_aid_financially` VALUES ('50844794401849344', '48601651874889729', '48944951878221824', '2017~2018', 2, 9, 'FIRST-CLASS', NULL, NULL, NULL, NULL, '2018-08-12 23:32:53', '100', '109');
+
+-- ----------------------------
+-- Table structure for bus_authorization
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_authorization`;
+CREATE TABLE `bus_authorization`  (
+  `ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `SO_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '操作员',
+  `BA_TABLE_TYPE` int(1) NOT NULL COMMENT '授权类型 1 院系 2 系部 3班级',
+  `BA_TABLE_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '授权ID',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `SO_ID`(`SO_ID`) USING BTREE,
+  INDEX `BA_TABLE_TYPE`(`BA_TABLE_TYPE`, `BA_TABLE_ID`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for bus_class
@@ -8783,7 +8797,8 @@ CREATE TABLE `sys_menu`  (
   `SM_ORDER` int(5) NULL DEFAULT NULL COMMENT '排序号',
   `IS_STATUS` int(5) NULL DEFAULT NULL COMMENT '状态:0停用1启用',
   PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `SM_PARENTID`(`SM_PARENTID`) USING BTREE
+  INDEX `SM_PARENTID`(`SM_PARENTID`) USING BTREE,
+  INDEX `SM_CODE`(`SM_CODE`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -9406,7 +9421,8 @@ CREATE TABLE `sys_role`  (
   `SR_REMARK` varchar(400) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色备注',
   `SR_TYPE` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户类型:1管理员 2部门3系部4学生',
   `IS_STATUS` int(1) NULL DEFAULT NULL COMMENT '状态:0停用1启用',
-  PRIMARY KEY (`ID`) USING BTREE
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `SR_CODE`(`SR_CODE`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------

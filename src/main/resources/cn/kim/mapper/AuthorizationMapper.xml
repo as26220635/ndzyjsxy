@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kim.mapper.AuthorizationMapper">
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+
+    <!--查询授权-->
+    <select id="selectAuthorization" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_AUTHORIZATION
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test ="SO_ID != NULL and SO_ID != ''">
+                AND SO_ID = #{SO_ID}
+            </if>
+            <if test ="BA_TABLE_TYPE != NULL and BA_TABLE_TYPE != ''">
+                AND BA_TABLE_TYPE #{BA_TABLE_TYPE}
+            </if>
+        </where>
+    </select>
+
+    <!--插入授权-->
+    <insert id="insertAuthorization" parameterType="java.util.Map">
+        INSERT INTO BUS_AUTHORIZATION
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BA_TABLE_TYPE != null">BA_TABLE_TYPE,</if>
+            <if test="BA_TABLE_ID != null">BA_TABLE_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BA_TABLE_TYPE != null">#{BA_TABLE_TYPE},</if>
+            <if test="BA_TABLE_ID != null">#{BA_TABLE_ID},</if>
+        </trim>
+    </insert>
+
+    <!--编辑授权-->
+    <update id="updateAuthorization" parameterType="java.util.Map">
+        UPDATE BUS_AUTHORIZATION
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BA_TABLE_TYPE != null">BA_TABLE_TYPE=#{BA_TABLE_TYPE},</if>
+            <if test="BA_TABLE_ID != null">BA_TABLE_ID=#{BA_TABLE_ID},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除授权-->
+    <delete id="deleteAuthorization" parameterType="java.util.Map">
+		DELETE FROM BUS_AUTHORIZATION WHERE ID = #{ID}
+	</delete>
+
+</mapper>
