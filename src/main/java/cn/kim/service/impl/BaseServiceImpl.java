@@ -15,10 +15,7 @@ import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.BaseService;
-import cn.kim.util.CommonUtil;
-import cn.kim.util.PasswordMd5;
-import cn.kim.util.RandomSalt;
-import cn.kim.util.ValidateUtil;
+import cn.kim.util.*;
 import com.google.common.collect.Maps;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
@@ -350,6 +347,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
             paramMap.put("SO_ID", operatorId);
             List<Map<String, Object>> authorizationList = DaoSession.daoSession.baseDao.selectList(NameSpace.AuthorizationMapper, "selectAuthorizationGroupBy", paramMap);
             if (!isEmpty(fieldMap) && !isEmpty(authorizationList)) {
+                StringBuilder filterWhere = new StringBuilder();
                 authorizationList.forEach(authorization -> {
                     int BA_TABLE_TYPE = toInt(authorization.get("BA_TABLE_TYPE"));
                     String BA_TABLE_ID = toString(authorization.get("BA_TABLE_ID"));
@@ -359,16 +357,21 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
                     if (!isEmpty(field)) {
                         if (BA_TABLE_TYPE == AuthorizationType.COLLEGE.getType()) {
                             //院系
-                            builder.append(" AND " + field + " IN(" + BA_TABLE_ID + ") ");
+                            filterWhere.append(" OR " + field + " IN(" + BA_TABLE_ID + ") ");
                         } else if (BA_TABLE_TYPE == AuthorizationType.DEPARTMENT.getType()) {
                             //系部
-                            builder.append(" AND " + field + " IN(" + BA_TABLE_ID + ") ");
+                            filterWhere.append(" OR " + field + " IN(" + BA_TABLE_ID + ") ");
                         } else if (BA_TABLE_TYPE == AuthorizationType.CLS.getType()) {
                             //班级
-                            builder.append(" AND " + field + " IN(" + BA_TABLE_ID + ") ");
+                            filterWhere.append(" OR " + field + " IN(" + BA_TABLE_ID + ") ");
                         }
                     }
                 });
+                //过滤语句
+                String filterString = filterWhere.toString();
+                if (!isEmpty(filterString)) {
+                    builder.append(" AND (" + TextUtil.interceptSymbol(filterString, " OR ") + ") ");
+                }
             } else {
                 //不查询出数据
                 builder.append(" AND SO_ID = -1 ");
