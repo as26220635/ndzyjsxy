@@ -3,21 +3,19 @@ package cn.kim.service.impl;
 import cn.kim.common.attr.Constants;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
+import cn.kim.common.eu.AidType;
 import cn.kim.common.eu.NameSpace;
+import cn.kim.common.eu.Process;
 import cn.kim.common.eu.SystemEnum;
-import cn.kim.entity.DataTablesView;
-import cn.kim.entity.QuerySet;
-import cn.kim.entity.Tree;
-import cn.kim.entity.TreeState;
+import cn.kim.dao.BaseDao;
+import cn.kim.entity.*;
 import cn.kim.exception.CustomException;
 import cn.kim.service.StudentService;
-import cn.kim.util.CommonUtil;
-import cn.kim.util.DictUtil;
-import cn.kim.util.PasswordMd5;
-import cn.kim.util.RandomSalt;
+import cn.kim.util.*;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -61,7 +59,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         dataTablesView.setRecordsTotal(count);
         dataTablesView.setTotalPages(CommonUtil.getPage(count, limit));
 
-        List<Map<String, Object>> dataList = baseDao.selectList(NameSpace.StudentMapper, "selectStudent", querySet.getWhereMap());
+        List<Map<String, Object>> dataList = baseDao.selectList(NameSpace.StudentMapper, "selectStudentList", querySet.getWhereMap());
         dataTablesView.setData(dataList);
 
         return dataTablesView;
@@ -83,7 +81,31 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
+            //验证学号 身份证 手机号是否重复
+            paramMap.clear();
+            paramMap.put("BS_NUMBER", mapParam.get("BS_NUMBER"));
+            int count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCount", paramMap);
+            if (count > 0) {
+                throw new CustomException("学号重复!");
+            }
+            if (!isEmpty(mapParam.get("BS_ID_CARD"))) {
+                paramMap.clear();
+                paramMap.put("BS_ID_CARD", mapParam.get("BS_ID_CARD"));
+                count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCount", paramMap);
+                if (count > 0) {
+                    throw new CustomException("身份证重复!");
+                }
+            }
+            if (!isEmpty(mapParam.get("BS_PHONE"))) {
+                paramMap.clear();
+                paramMap.put("BS_PHONE", mapParam.get("BS_PHONE"));
+                count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCount", paramMap);
+                if (count > 0) {
+                    throw new CustomException("电话号码重复!");
+                }
+            }
             //记录日志
+            paramMap.clear();
             paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT);
 
             paramMap.put("ID", id);
@@ -485,41 +507,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("ID", mapParam.get("ID"));
             Map<String, Object> comprehensive = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensive", paramMap);
 
-            paramMap.clear();
-            paramMap.put("BC_ID", comprehensive.get("BC_ID"));
-            paramMap.put("BSC_YEAR", mapParam.get("BSC_YEAR"));
-            paramMap.put("BSC_SEMESTER", mapParam.get("BSC_SEMESTER"));
-            List<Map<String, Object>> comprehensiveList = baseDao.selectList(NameSpace.StudentExtendMapper, "selectStudentComprehensive", paramMap);
-            //总排名
-            List<BigDecimal> totalList = new ArrayList<>();
-            Map<String, BigDecimal> totalRankMap = Maps.newHashMapWithExpectedSize(16);
-            //智育排名
-            List<BigDecimal> intellectualList = new ArrayList<>();
-            Map<String, BigDecimal> intellectualRankMap = Maps.newHashMapWithExpectedSize(16);
-
-            comprehensiveList.forEach(map -> {
-                BigDecimal total = toBigDecimal(map.get("BSC_TOTAL"));
-                BigDecimal intellectualScore = toBigDecimal(map.get("BSC_INTELLECTUAL_SCORE"));
-                totalList.add(total);
-                intellectualList.add(intellectualScore);
-                totalRankMap.put(toString(map.get("ID")), total);
-                intellectualRankMap.put(toString(map.get("ID")), intellectualScore);
-            });
-            //计算排名
-            for (String key : totalRankMap.keySet()) {
-                int rank = rank(totalList, totalRankMap.get(key));
-                paramMap.clear();
-                paramMap.put("ID", key);
-                paramMap.put("BSC_RANK", rank);
-                baseDao.update(NameSpace.StudentExtendMapper, "updateStudentComprehensive", paramMap);
-            }
-            for (String key : intellectualRankMap.keySet()) {
-                int rank = rank(intellectualList, intellectualRankMap.get(key));
-                paramMap.clear();
-                paramMap.put("ID", key);
-                paramMap.put("BSC_INTELLECTUAL_RANK", rank);
-                baseDao.update(NameSpace.StudentExtendMapper, "updateStudentComprehensive", paramMap);
-            }
+            calculationRank(baseDao, toString(comprehensive.get("BC_ID")), toString(mapParam.get("BSC_YEAR")), toInt(mapParam.get("BSC_SEMESTER")));
 
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -564,5 +552,275 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         resultMap.put(MagicValue.STATUS, status);
         resultMap.put(MagicValue.DESC, desc);
         return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> importStudentComprehensive(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = IMPORT_ERROR;
+        try {
+            List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 0);
+            //校验数据
+            List<String[]> errorList = checkExcelData(dataList);
+            if (!isEmpty(errorList)) {
+                resultMap.put(MagicValue.DATA, errorList);
+                throw new CustomException("检测数据异常!");
+            }
+
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(16);
+
+            //拿到学年
+            String title = dataList.get(0)[0];
+            StudentYearSemester studentYearSemester = parseStudentYearSemester(title);
+            //拿到班级
+            String className = TextUtil.replaceBlank(TextUtil.getSubBetween(title, "学期", "班"));
+            paramMap.clear();
+            paramMap.put("BC_NAME", className);
+            Map<String, Object> cls = baseDao.selectOne(NameSpace.ClsMapper, "selectClass", paramMap);
+            //拿到评分比例
+            String[] proportion = dataList.get(2);
+            //德育比例
+            float BSC_EDUCATION_PROPORTION = toInt(getNumbers(proportion[4]));
+            //智育比例
+            float BSC_INTELLECTUAL_PROPORTION = toInt(getNumbers(proportion[17]));
+            //志愿者比例
+            float BSC_VOLUNTEER_PROPORTION = toInt(getNumbers(proportion[21]));
+            //学年
+            String year = studentYearSemester.getYear();
+            //学期
+            int semester = studentYearSemester.getSemester();
+
+            //导入数据
+            for (int i = 4; i < dataList.size(); i++) {
+                String[] data = dataList.get(i);
+                //学号
+                String BS_NUMBER = data[0];
+                //数据
+                //德育
+                int BSC_POLITICAL_ATTITUDE = toInt(data[4]);
+                int BSC_LABOR_ATTITUDE = toInt(data[5]);
+                int BSC_COMPLIANCE = toInt(data[6]);
+                int BSC_COLLECTIVE = toInt(data[7]);
+                int BSC_DECORUM = toInt(data[8]);
+                int BSC_CARE = toInt(data[9]);
+                int BSC_PERSONAL_QUALITY = toInt(data[10]);
+                int BSC_SERVICE_SPIRIT = toInt(data[11]);
+                int BSC_FULL_WORK = toInt(data[12]);
+                int BSC_BONUS_POINTS = toInt(data[13]);
+                int BSC_EDUCATION_DEDUCTION = toInt(data[14]);
+                //智育
+                int BSC_ACADEMIC_RECORD = toInt(data[17]);
+                int BSC_INTELLECTUAL_POINTS = toInt(data[18]);
+                //志愿者
+                int BSC_VOLUNTEER_TOTAL = toInt(data[21]);
+                //备注
+                String BSC_REMARKS = data[25];
+                //德育总分
+                int BSC_EDUCATION_TOTAL = BSC_POLITICAL_ATTITUDE + BSC_LABOR_ATTITUDE + BSC_COMPLIANCE + BSC_COLLECTIVE + BSC_DECORUM + BSC_CARE + BSC_PERSONAL_QUALITY
+                        + BSC_SERVICE_SPIRIT + BSC_FULL_WORK + BSC_BONUS_POINTS - BSC_EDUCATION_DEDUCTION;
+                //德育得分
+                BigDecimal BSC_EDUCATION_SCORE = new BigDecimal((BSC_EDUCATION_TOTAL * (BSC_EDUCATION_PROPORTION / 100) * 10) / 10);
+                //智育得分
+                BigDecimal BSC_INTELLECTUAL_SCORE = new BigDecimal(((BSC_ACADEMIC_RECORD + BSC_INTELLECTUAL_POINTS) * (BSC_INTELLECTUAL_PROPORTION / 100) * 10) / 10);
+                //志愿者得分
+                BigDecimal BSC_VOLUNTEER_SCORE = new BigDecimal((BSC_VOLUNTEER_TOTAL * (BSC_VOLUNTEER_PROPORTION / 100) * 10) / 10);
+                //总分
+                BigDecimal BSC_TOTAL = BSC_EDUCATION_SCORE.add(BSC_INTELLECTUAL_SCORE.add(BSC_VOLUNTEER_SCORE));
+
+                //查询学生
+                paramMap.clear();
+                paramMap.put("BS_NUMBER", BS_NUMBER);
+                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+
+                //记录日志
+                paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_COMPREHENSIVE);
+
+                paramMap.put("ID", getId());
+                paramMap.put("BS_ID", student.get("ID"));
+                paramMap.put("BSC_EDUCATION_PROPORTION", BSC_EDUCATION_PROPORTION);
+                paramMap.put("BSC_INTELLECTUAL_PROPORTION", BSC_INTELLECTUAL_PROPORTION);
+                paramMap.put("BSC_VOLUNTEER_PROPORTION", BSC_VOLUNTEER_PROPORTION);
+                paramMap.put("BSC_YEAR", year);
+                paramMap.put("BSC_SEMESTER", semester);
+                paramMap.put("BSC_TOTAL", BSC_TOTAL);
+                paramMap.put("BSC_POLITICAL_ATTITUDE", BSC_POLITICAL_ATTITUDE);
+                paramMap.put("BSC_LABOR_ATTITUDE", BSC_LABOR_ATTITUDE);
+                paramMap.put("BSC_COMPLIANCE", BSC_COMPLIANCE);
+                paramMap.put("BSC_COLLECTIVE", BSC_COLLECTIVE);
+                paramMap.put("BSC_DECORUM", BSC_DECORUM);
+                paramMap.put("BSC_CARE", BSC_CARE);
+                paramMap.put("BSC_PERSONAL_QUALITY", BSC_PERSONAL_QUALITY);
+                paramMap.put("BSC_SERVICE_SPIRIT", BSC_SERVICE_SPIRIT);
+                paramMap.put("BSC_FULL_WORK", BSC_FULL_WORK);
+                paramMap.put("BSC_BONUS_POINTS", BSC_BONUS_POINTS);
+                paramMap.put("BSC_EDUCATION_DEDUCTION", BSC_EDUCATION_DEDUCTION);
+                paramMap.put("BSC_EDUCATION_TOTAL", BSC_EDUCATION_TOTAL);
+                paramMap.put("BSC_EDUCATION_SCORE", BSC_EDUCATION_SCORE);
+                paramMap.put("BSC_ACADEMIC_RECORD", BSC_ACADEMIC_RECORD);
+                paramMap.put("BSC_INTELLECTUAL_POINTS", BSC_INTELLECTUAL_POINTS);
+                paramMap.put("BSC_INTELLECTUAL_SCORE", BSC_INTELLECTUAL_SCORE);
+                paramMap.put("BSC_VOLUNTEER_TOTAL", BSC_VOLUNTEER_TOTAL);
+                paramMap.put("BSC_VOLUNTEER_SCORE", BSC_VOLUNTEER_SCORE);
+                paramMap.put("BSC_REMARKS", BSC_REMARKS);
+
+                baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentComprehensive", paramMap);
+            }
+
+            //计算排名
+            calculationRank(baseDao, toString(cls.get("ID")), year, semester);
+
+            resultMap.put(MagicValue.LOG, "导入学生综合素质测评,数据:" + toString(dataList));
+            status = STATUS_SUCCESS;
+            desc = IMPORT_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 检测导入数据
+     *
+     * @param dataList
+     * @return
+     */
+    public List<String[]> checkExcelData(List<String[]> dataList) {
+        List<String[]> resultList = new ArrayList<>();
+
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+
+        if (isEmpty(dataList) || dataList.size() < 5) {
+            resultList.add(packErrorData("文件数据错误", "没有找到可以导入数据"));
+            return resultList;
+        }
+        //拿到学年
+        String title = dataList.get(0)[0];
+        if (!checkStudentYearSemester(title)) {
+            resultList.add(packErrorData("学期学年填写错误", "标题学年学期填写错误"));
+            return resultList;
+        }
+        //拿到班级
+        String className = TextUtil.replaceBlank(TextUtil.getSubBetween(title, "学期", "班"));
+        if (isEmpty(className)) {
+            resultList.add(packErrorData("班级填写错误", "标题班级填写错误"));
+            return resultList;
+        }
+
+        //查询班级是否存在
+        paramMap.clear();
+        paramMap.put("BC_NAME", className);
+        Map<String, Object> cls = baseDao.selectOne(NameSpace.ClsMapper, "selectClass", paramMap);
+        if (isEmpty(cls)) {
+            resultList.add(packErrorData("班级填写错误", "没有找到班级:" + className));
+            return resultList;
+        }
+
+        StudentYearSemester studentYearSemester = parseStudentYearSemester(title);
+        //拿到评分比例
+        String[] proportion = dataList.get(2);
+        //德育比例
+        int BSC_EDUCATION_PROPORTION = toInt(getNumbers(proportion[4]));
+        //智育比例
+        int BSC_INTELLECTUAL_PROPORTION = toInt(getNumbers(proportion[17]));
+        //志愿者比例
+        int BSC_VOLUNTEER_PROPORTION = toInt(getNumbers(proportion[21]));
+        if (BSC_EDUCATION_PROPORTION + BSC_INTELLECTUAL_PROPORTION + BSC_VOLUNTEER_PROPORTION != 100) {
+            resultList.add(packErrorData("比例错误", "德育、智育、志愿者总和必须等于100"));
+            return resultList;
+        }
+        //学年
+        String year = studentYearSemester.getYear();
+        //学期
+        int semester = studentYearSemester.getSemester();
+
+        for (int i = 4; i < dataList.size(); i++) {
+            //行
+            String row = joinRowStr(i + 1);
+
+            String[] data = dataList.get(i);
+            if (data.length < 25) {
+                resultList.add(packErrorData(row, "数据错误"));
+            }
+
+            //学号
+            String BS_NUMBER = data[0];
+            if (isEmpty(BS_NUMBER)) {
+                resultList.add(packErrorData(row, "学号错误"));
+                continue;
+            }
+            //判断是否找到对应学生
+            paramMap.clear();
+            paramMap.put("BS_NUMBER", BS_NUMBER);
+            Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+            if (isEmpty(student)) {
+                resultList.add(packErrorData(row, "学号错误,没有找到对应的学生"));
+            } else {
+                if (!toString(student.get("BC_ID")).equals(toString(cls.get("ID")))) {
+                    resultList.add(packErrorData(row, "学生班级与导入的班级不对应,请检查"));
+                } else {
+                    paramMap.clear();
+                    paramMap.put("BS_ID", student.get("ID"));
+                    paramMap.put("BSC_YEAR", year);
+                    paramMap.put("BSC_SEMESTER", semester);
+                    int count = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensiveCount", paramMap);
+
+                    if (count > 0) {
+                        resultList.add(packErrorData(row, "数据重复导入"));
+                    }
+                }
+            }
+        }
+
+        return resultList;
+    }
+
+    /**
+     * 计算排名
+     *
+     * @param baseDao
+     * @param classId
+     * @param year
+     * @param semester
+     */
+    private void calculationRank(BaseDao baseDao, String classId, String year, int semester) throws Exception {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+        paramMap.put("BC_ID", classId);
+        paramMap.put("BSC_YEAR", year);
+        paramMap.put("BSC_SEMESTER", semester);
+        List<Map<String, Object>> comprehensiveList = baseDao.selectList(NameSpace.StudentExtendMapper, "selectStudentComprehensive", paramMap);
+        //总排名
+        List<BigDecimal> totalList = new ArrayList<>();
+        Map<String, BigDecimal> totalRankMap = Maps.newHashMapWithExpectedSize(16);
+        //智育排名
+        List<BigDecimal> intellectualList = new ArrayList<>();
+        Map<String, BigDecimal> intellectualRankMap = Maps.newHashMapWithExpectedSize(16);
+
+        comprehensiveList.forEach(map -> {
+            BigDecimal total = toBigDecimal(map.get("BSC_TOTAL"));
+            BigDecimal intellectualScore = toBigDecimal(map.get("BSC_INTELLECTUAL_SCORE"));
+            totalList.add(total);
+            intellectualList.add(intellectualScore);
+            totalRankMap.put(toString(map.get("ID")), total);
+            intellectualRankMap.put(toString(map.get("ID")), intellectualScore);
+        });
+        //计算排名
+        for (String key : totalRankMap.keySet()) {
+            int rank = rank(totalList, totalRankMap.get(key));
+            paramMap.clear();
+            paramMap.put("ID", key);
+            paramMap.put("BSC_RANK", rank);
+            baseDao.update(NameSpace.StudentExtendMapper, "updateStudentComprehensive", paramMap);
+        }
+        for (String key : intellectualRankMap.keySet()) {
+            int rank = rank(intellectualList, intellectualRankMap.get(key));
+            paramMap.clear();
+            paramMap.put("ID", key);
+            paramMap.put("BSC_INTELLECTUAL_RANK", rank);
+            baseDao.update(NameSpace.StudentExtendMapper, "updateStudentComprehensive", paramMap);
+        }
     }
 }

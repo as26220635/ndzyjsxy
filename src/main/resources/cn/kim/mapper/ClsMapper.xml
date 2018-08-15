@@ -12,6 +12,9 @@
                 <if test ="ID != NULL and ID != ''">
                     AND ID = #{ID}
                 </if>
+                <if test ="BC_NAME != NULL and BC_NAME != ''">
+                    AND BC_NAME = #{BC_NAME}
+                </if>
                 <if test ="BDM_ID != NULL and BDM_ID != ''">
                     AND BDM_ID = #{BDM_ID}
                 </if>

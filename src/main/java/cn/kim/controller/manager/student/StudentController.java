@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -318,5 +319,17 @@ public class StudentController extends BaseController {
         mapParam.put("ID", ID);
         Map<String, Object> resultMap = studentService.deleteStudentComprehensive(mapParam);
         return resultState(resultMap);
+    }
+
+    @PostMapping("/comprehensive/import")
+    @RequiresPermissions("STUDENT:COMPREHENSIVE_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入学生综合素质测评")
+    @ResponseBody
+    public ResultState importComprehensive(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importComprehensive", 600, 600, () -> {
+            Map<String, Object> resultMap = studentService.importStudentComprehensive(excelFile);
+            return resultState(resultMap);
+        });
     }
 }

@@ -37,4 +37,20 @@
             }
         });
     });
+
+    /**
+     * 导入excel
+     */
+    function excelImport($form, $model) {
+        ajax.file('${STUDENT_COMPREHENSIVE_IMPORT_URL}', $form, function (data) {
+            //重置上传框
+            importFileClear();
+            ajaxReturn.data(data, $model, $dataGrid, true, {
+                error: function () {
+                    //显示错误列表
+                    showImportError(data.data)
+                }
+            });
+        });
+    }
 </script>

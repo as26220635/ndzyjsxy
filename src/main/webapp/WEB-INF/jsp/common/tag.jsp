@@ -249,6 +249,7 @@
 <c:set var="STUDENT_COMPREHENSIVE_BASE_URL" value="${STUDENT_BASE_URL}comprehensive/"/>
 <c:set var="STUDENT_COMPREHENSIVE_INSERT_AND_UPDATE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}insertAndUpdate"/>
 <c:set var="STUDENT_COMPREHENSIVE_DELETE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}delete"/>
+<c:set var="STUDENT_COMPREHENSIVE_IMPORT_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}import"/>
 <%--资助管理--%>
 <c:set var="AID_BASE_URL" value="${MANAGER_URL}aidFinancially/"/>
 <%--学院奖学金--%>

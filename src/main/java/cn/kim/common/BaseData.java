@@ -41,7 +41,9 @@ public abstract class BaseData {
     protected static final String UPDATE_ERROR = Tips.UPDATE_ERROR;
     protected static final String DELETE_SUCCESS = Tips.DELETE_SUCCESS;
     protected static final String DELETE_ERROR = Tips.DELETE_ERROR;
-
+    protected static final String IMPORT_SUCCESS = Tips.IMPORT_SUCCESS;
+    protected static final String IMPORT_ERROR = Tips.IMPORT_ERROR;
+    
     protected static final String STATUS_SUCCESS_MESSAGE = "成功!";
     protected static final String STATUS_ERROR_MESSAGE = "失败!";
 
@@ -265,6 +267,10 @@ public abstract class BaseData {
         return TextUtil.toInt(str);
     }
 
+    protected String getNumbers(String str) {
+        return TextUtil.getNumbers(str);
+    }
+
     protected BigDecimal toBigDecimal(Object bigDecimal) {
         return TextUtil.toBigDecimal(bigDecimal);
     }
@@ -462,6 +468,38 @@ public abstract class BaseData {
     }
 
     /**
+     * 检测文本中学年和学期是否正确
+     *
+     * @param title
+     * @return
+     */
+    protected boolean checkStudentYearSemester(String title) {
+        try {
+            if (isEmpty(title)) {
+                return false;
+            }
+            //去除空格
+            title = TextUtil.replaceBlank(title);
+            //2017-2018 中间符号的位置
+            int startYearindex = title.indexOf("-");
+            if (startYearindex == -1) {
+                return false;
+            }
+            String year = title.substring(startYearindex - 4, startYearindex) + "-" + title.substring(startYearindex + 1, startYearindex + 5);
+            if (!TextUtil.isStudentYear(year)) {
+                return false;
+            }
+            if (!title.contains("第一学期") && !title.contains("第1学期") && !title.contains("第二学期") && !title.contains("第2学期")) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * 根据标题解析出学年和学期
      * 空就返回当前的学年和学期
      *
@@ -470,27 +508,39 @@ public abstract class BaseData {
      */
     protected StudentYearSemester parseStudentYearSemester(String title) {
         StudentYearSemester studentYearSemester = new StudentYearSemester();
-        studentYearSemester.setYear(getStudentYear());
-        studentYearSemester.setSemester(getStudentSemester());
-        if (isEmpty(title)) {
-            return studentYearSemester;
-        }
-        title = TextUtil.replaceBlank(title);
-        //2017-2018 中间符号的位置
-        int startYearindex = title.indexOf("-");
-        if (startYearindex == -1) {
-            return studentYearSemester;
-        }
-        //2017-2018学年第一学期
-        studentYearSemester.setYear(title.substring(startYearindex - 4, startYearindex) + "-" + title.substring(startYearindex + 1, startYearindex + 5));
-        if (title.contains("第一学期") || title.contains("第1学期")) {
-            studentYearSemester.setSemester(1);
-            studentYearSemester.setSemesterStr("第一学期");
-        } else if (title.contains("第二学期") || title.contains("第2学期")) {
-            studentYearSemester.setSemester(2);
-            studentYearSemester.setSemesterStr("第二学期");
+        if (checkStudentYearSemester(title)) {
+            //去除空格
+            title = TextUtil.replaceBlank(title);
+            //2017-2018 中间符号的位置
+            int startYearindex = title.indexOf("-");
+            //2017-2018学年第一学期
+            studentYearSemester.setYear(title.substring(startYearindex - 4, startYearindex) + "-" + title.substring(startYearindex + 1, startYearindex + 5));
+            if (title.contains("第一学期") || title.contains("第1学期")) {
+                studentYearSemester.setSemester(1);
+                studentYearSemester.setSemesterStr("第一学期");
+            } else if (title.contains("第二学期") || title.contains("第2学期")) {
+                studentYearSemester.setSemester(2);
+                studentYearSemester.setSemesterStr("第二学期");
+            }
+        } else {
+            studentYearSemester.setYear(getStudentYear());
+            studentYearSemester.setSemester(getStudentSemester());
         }
 
         return studentYearSemester;
+    }
+
+    /**
+     * 检测标题中是否有班级字段
+     * @param title
+     * @return
+     */
+    protected boolean checkStudentClass(String title) {
+        try {
+
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

@@ -26,8 +26,18 @@ import java.util.regex.Pattern;
  * Created by 余庚鑫 on 2017/5/28.
  */
 public class TextUtil {
-
+    /**
+     * 空格
+     */
     private static final Pattern BLANK_PATTERN = Pattern.compile("\\s*|\t|\r|\n");
+    /**
+     * 数字
+     */
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("\\d+");
+    /**
+     * 学年正则
+     */
+    private static final Pattern STUDENT_YEAR_PATTERN = Pattern.compile("20\\d\\d-20\\d\\d");
 
     // 将汉字转换为全拼
     public static String getPingYin(String src) {
@@ -469,6 +479,16 @@ public class TextUtil {
     }
 
     /**
+     * 是否是学年
+     * @param year
+     * @return
+     */
+    public static boolean isStudentYear(String year) {
+        Matcher m = STUDENT_YEAR_PATTERN.matcher(year);
+        return m.matches();
+    }
+
+    /**
      * 清空所有空格
      *
      * @param str
@@ -483,5 +503,37 @@ public class TextUtil {
             dest = m.replaceAll("");
             return dest;
         }
+    }
+
+    /**
+     * 截取数字
+     *
+     * @param content
+     * @return
+     */
+    public static String getNumbers(String content) {
+        Matcher matcher = NUMBER_PATTERN.matcher(content);
+        while (matcher.find()) {
+            return matcher.group(0);
+        }
+        return "";
+    }
+
+    /**
+     * 返回单个字符串，若匹配到多个的话就返回第一个
+     *
+     * @param soap
+     * @param startStr
+     * @param endStr
+     * @return
+     */
+    public static String getSubBetween(String soap, String startStr, String endStr) {
+        // 匹配的模式
+        Pattern pattern = Pattern.compile(startStr + "(.*?)" + endStr);
+        Matcher m = pattern.matcher(soap);
+        while (m.find()) {
+            return m.group(1);
+        }
+        return "";
     }
 }

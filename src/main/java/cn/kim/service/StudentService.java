@@ -2,6 +2,7 @@ package cn.kim.service;
 
 import cn.kim.entity.DataTablesView;
 import cn.kim.entity.Tree;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -123,4 +124,12 @@ public interface StudentService extends BaseService {
      * @return
      */
     Map<String, Object> deleteStudentComprehensive(Map<String, Object> mapParam);
+
+    /**
+     * 导入学生综合素质测评
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importStudentComprehensive(MultipartFile excelFile);
 }

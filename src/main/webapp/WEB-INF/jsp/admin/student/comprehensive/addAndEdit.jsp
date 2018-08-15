@@ -259,7 +259,7 @@
         //扣分
         val -= Number($('#BSC_EDUCATION_DEDUCTION').val());
         $('#BSC_EDUCATION_TOTAL').val(val);
-        $('#BSC_EDUCATION_SCORE').val(toFixed(val * ${EDUCATION_PROPORTION/ 100})).change();
+        $('#BSC_EDUCATION_SCORE').val(toFixed(floatObj.multiply(val, ${EDUCATION_PROPORTION/ 100}), 2)).change();
     });
     //智育
     $('#intellectualDiv input').bind("input propertychange", function (event) {
@@ -267,7 +267,7 @@
         $('#intellectualDiv input[id!="BSC_INTELLECTUAL_SCORE"][id!="BSC_INTELLECTUAL_RANK"]').each(function () {
             val += Number($(this).val());
         });
-        $('#BSC_INTELLECTUAL_SCORE').val(toFixed(val * ${INTELLECTUAL_PROPORTION/ 100})).change();
+        $('#BSC_INTELLECTUAL_SCORE').val(toFixed(floatObj.multiply(val, ${INTELLECTUAL_PROPORTION/ 100}), 2)).change();
     });
     //自愿者
     $('#volunteerDiv input').bind("input propertychange", function (event) {
@@ -275,7 +275,7 @@
         $('#volunteerDiv input[id!="BSC_VOLUNTEER_SCORE"]').each(function () {
             val += Number($(this).val());
         });
-        $('#BSC_VOLUNTEER_SCORE').val(toFixed(val * ${VOLUNTEER_PROPORTION/ 100})).change();
+        $('#BSC_VOLUNTEER_SCORE').val(toFixed(floatObj.multiply(val, ${VOLUNTEER_PROPORTION/ 100}), 2)).change();
     });
     //总分
     $('#BSC_EDUCATION_SCORE,#BSC_INTELLECTUAL_SCORE,#BSC_VOLUNTEER_SCORE').on('change', function () {
@@ -283,7 +283,7 @@
         $('#BSC_EDUCATION_SCORE,#BSC_INTELLECTUAL_SCORE,#BSC_VOLUNTEER_SCORE').each(function () {
             val += Number($(this).val());
         });
-        $('#BSC_TOTAL').val(toFixed(val));
+        $('#BSC_TOTAL').val(toFixed(val, 2));
     });
 
     validator.init({
@@ -298,9 +298,4 @@
         url: '${STUDENT_LIST_URL}'
     });
 
-    function toFixed(val) {
-        return parseInt(val * 100) / 100;
-        //四舍五入
-        // return val.toFixed(2);
-    }
 </script>

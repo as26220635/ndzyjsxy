@@ -14,6 +14,8 @@ public class Tips {
     public static final String RESET_ERROR = "重置失败!";
     public static final String PROCESS_SUCCESS = "办理成功!";
     public static final String PROCESS_ERROR = "办理失败!";
+    public static final String IMPORT_SUCCESS = "导入成功!";
+    public static final String IMPORT_ERROR = "导入失败!";
 
     public static final String VALIDATE_FAIL_TEXT = "输入信息不完整，请检查输入!";
     public static final String NO_DEPARTMENT_PERMISSION = "你没有这个系部的权限!";

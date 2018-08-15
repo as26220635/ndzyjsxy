@@ -55,7 +55,7 @@
         <div class="form-group has-feedback form-group-md-6">
             <label>入学年度:</label>
             <s:datebox custom='${fns:validField("BUS_STUDENT", "BS_ENROLMENT_YEAR")}'
-                       value="${student.BS_ENROLMENT_YEAR}"></s:datebox>
+                       value="${student.BS_ENROLMENT_YEAR}" studentYear="false"></s:datebox>
         </div>
         <div class="form-group has-feedback form-group-md-6">
             <label>考生号:</label>

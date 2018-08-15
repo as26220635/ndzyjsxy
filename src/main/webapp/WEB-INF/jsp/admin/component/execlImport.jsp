@@ -71,6 +71,7 @@
         });
         //打开模态框
         $('#import').on('click', function () {
+            importFileClear();
             $('#excelImportModal').modal('show');
         });
 
