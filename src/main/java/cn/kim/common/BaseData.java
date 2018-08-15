@@ -12,6 +12,7 @@ import cn.kim.common.attr.ParamTypeResolve;
 import cn.kim.common.attr.Tips;
 import cn.kim.common.sequence.Sequence;
 import cn.kim.entity.ResultState;
+import cn.kim.entity.StudentYearSemester;
 import cn.kim.util.*;
 import com.google.common.collect.Maps;
 
@@ -434,14 +435,14 @@ public abstract class BaseData {
      *
      * @return
      */
-    protected String getStudentSemester() {
+    protected int getStudentSemester() {
         //拿到当前月份
         int nowMonth = DateUtil.getMonth();
 
         if (nowMonth >= 9) {
-            return "1";
+            return 1;
         } else {
-            return "2";
+            return 2;
         }
     }
 
@@ -460,4 +461,36 @@ public abstract class BaseData {
         return map;
     }
 
+    /**
+     * 根据标题解析出学年和学期
+     * 空就返回当前的学年和学期
+     *
+     * @param title
+     * @return
+     */
+    protected StudentYearSemester parseStudentYearSemester(String title) {
+        StudentYearSemester studentYearSemester = new StudentYearSemester();
+        studentYearSemester.setYear(getStudentYear());
+        studentYearSemester.setSemester(getStudentSemester());
+        if (isEmpty(title)) {
+            return studentYearSemester;
+        }
+        title = TextUtil.replaceBlank(title);
+        //2017-2018 中间符号的位置
+        int startYearindex = title.indexOf("-");
+        if (startYearindex == -1) {
+            return studentYearSemester;
+        }
+        //2017-2018学年第一学期
+        studentYearSemester.setYear(title.substring(startYearindex - 4, startYearindex) + "-" + title.substring(startYearindex + 1, startYearindex + 5));
+        if (title.contains("第一学期") || title.contains("第1学期")) {
+            studentYearSemester.setSemester(1);
+            studentYearSemester.setSemesterStr("第一学期");
+        } else if (title.contains("第二学期") || title.contains("第2学期")) {
+            studentYearSemester.setSemester(2);
+            studentYearSemester.setSemesterStr("第二学期");
+        }
+
+        return studentYearSemester;
+    }
 }

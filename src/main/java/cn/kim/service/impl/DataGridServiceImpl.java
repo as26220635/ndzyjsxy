@@ -178,7 +178,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                         paramMap.put(AuthorizationType.CLS.toString(), definition.get("SPD_CLASS_FIELD"));
                     }
 
-                    String authorizationWhere = getAuthorizationWhere(paramMap);
+                    String authorizationWhere = getAuthorizationWhere(true, paramMap);
                     authorizationBuilder.append(isEmpty(authorizationWhere) ? "" : "(" + TextUtil.interceptSymbol(authorizationWhere, " AND ") + ") OR ");
                 }
                 //添加or条件

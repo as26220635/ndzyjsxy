@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 15/08/2018 00:47:29
+ Date: 15/08/2018 14:44:47
 */
 
 SET NAMES utf8mb4;
@@ -45,7 +45,7 @@ CREATE TABLE `bus_aid_financially`  (
 -- ----------------------------
 -- Records of bus_aid_financially
 -- ----------------------------
-INSERT INTO `bus_aid_financially` VALUES ('50844794401849344', '48601651874889729', '48944951878221824', '2017~2018', 2, 9, 'FIRST-CLASS', NULL, NULL, NULL, NULL, '2018-08-12 23:32:53', '100', '109');
+INSERT INTO `bus_aid_financially` VALUES ('50844794401849344', '48601651874889729', '48944951878221824', '2017-2018', 2, 9, 'FIRST-CLASS', NULL, NULL, NULL, NULL, '2018-08-12 23:32:53', '100', '109');
 
 -- ----------------------------
 -- Table structure for bus_authorization
@@ -229,9 +229,9 @@ CREATE TABLE `bus_student_attendance`  (
 -- ----------------------------
 -- Records of bus_student_attendance
 -- ----------------------------
-INSERT INTO `bus_student_attendance` VALUES ('49398562747842560', '48944951878221824', '2017~2018', 2, 1, 4, 4, '2018-08-08 23:46:04');
-INSERT INTO `bus_student_attendance` VALUES ('51009695430737920', '48944951878221824', '2017~2018', 2, 2, 4, 12, '2018-08-13 10:28:08');
-INSERT INTO `bus_student_attendance` VALUES ('51014046706565120', '48944951878221824', '2017~2018', 2, 3, 1, 5, '2018-08-13 10:45:25');
+INSERT INTO `bus_student_attendance` VALUES ('49398562747842560', '48944951878221824', '2017-2018', 2, 1, 4, 4, '2018-08-08 23:46:04');
+INSERT INTO `bus_student_attendance` VALUES ('51009695430737920', '48944951878221824', '2017-2018', 2, 2, 4, 12, '2018-08-13 10:28:08');
+INSERT INTO `bus_student_attendance` VALUES ('51014046706565120', '48944951878221824', '2017-2018', 2, 3, 1, 5, '2018-08-13 10:45:25');
 
 -- ----------------------------
 -- Table structure for bus_student_comprehensive
@@ -275,7 +275,7 @@ CREATE TABLE `bus_student_comprehensive`  (
 -- ----------------------------
 -- Records of bus_student_comprehensive
 -- ----------------------------
-INSERT INTO `bus_student_comprehensive` VALUES ('50372217258639360', '48944951878221824', 30, 60, 10, '2017~2018', 2, 77.59, 1, 3, 14, 1, 10, 12, 10, 4, 10, 0, 0, 0, 64, 19.20, 83, 0, 49.80, 1, 86, 8.60, NULL);
+INSERT INTO `bus_student_comprehensive` VALUES ('50372217258639360', '48944951878221824', 30, 60, 10, '2017-2018', 2, 77.59, 1, 3, 14, 1, 10, 12, 10, 4, 10, 0, 0, 0, 64, 19.20, 83, 0, 49.80, 1, 86, 8.60, NULL);
 
 -- ----------------------------
 -- Table structure for bus_student_punishment
@@ -4942,6 +4942,16 @@ INSERT INTO `sys_log` VALUES ('51587930589757440', '48601651874889729', NULL, '�
 INSERT INTO `sys_log` VALUES ('51587939972415488', '48601651874889729', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-08-15 00:45:52', '0', 1);
 INSERT INTO `sys_log` VALUES ('51587962445496320', '48601651874889729', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-08-15 00:45:58', '0', 1);
 INSERT INTO `sys_log` VALUES ('51587985803575296', '48601651874889729', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-08-15 00:46:03', '0', 1);
+INSERT INTO `sys_log` VALUES ('51783623589756928', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-15 13:43:27', '1', 9);
+INSERT INTO `sys_log` VALUES ('51785232206004224', '1', NULL, '导入学院奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-15 13:49:50', '1', 2);
+INSERT INTO `sys_log` VALUES ('51785582942093312', '1', NULL, '导入学院奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-15 13:51:14', '1', 2);
+INSERT INTO `sys_log` VALUES ('51785726462787584', '1', NULL, '导入学院奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-15 13:51:48', '1', 2);
+INSERT INTO `sys_log` VALUES ('51787636976648192', '1', NULL, '修改验证正则', '0:0:0:0:0:0:0:1', 1, '2018-08-15 13:59:24', '1', 2);
+INSERT INTO `sys_log` VALUES ('51788304881811456', '1', NULL, '修改学生考勤', '0:0:0:0:0:0:0:1', 1, '2018-08-15 14:02:03', '1', 2);
+INSERT INTO `sys_log` VALUES ('51788319473795072', '1', NULL, '修改学生考勤', '0:0:0:0:0:0:0:1', 1, '2018-08-15 14:02:06', '1', 2);
+INSERT INTO `sys_log` VALUES ('51788332111233024', '1', NULL, '修改学生考勤', '0:0:0:0:0:0:0:1', 1, '2018-08-15 14:02:09', '1', 2);
+INSERT INTO `sys_log` VALUES ('51794478763081728', '1', NULL, '导入学院奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-15 14:26:35', '1', 2);
+INSERT INTO `sys_log` VALUES ('51794635533582336', '1', NULL, '导入学院奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-15 14:27:12', '1', 2);
 INSERT INTO `sys_log` VALUES ('5817833065807872', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-04-10 17:31:48', '1', 9);
 INSERT INTO `sys_log` VALUES ('5817879731634176', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-04-10 17:32:00', '0', 0);
 INSERT INTO `sys_log` VALUES ('5817885754654720', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-04-10 17:32:01', '0', 0);
@@ -8807,6 +8817,16 @@ INSERT INTO `sys_log_text` VALUES ('51587931130822656', '51587930589757440', '�
 INSERT INTO `sys_log_text` VALUES ('51587940135993344', '51587939972415488', '文件：BaseServiceImpl.java，错误行数：350，方法：getAuthorizationWhere，错误内容：java.lang.NullPointerException');
 INSERT INTO `sys_log_text` VALUES ('51587962567131136', '51587962445496320', '文件：BaseServiceImpl.java，错误行数：350，方法：getAuthorizationWhere，错误内容：java.lang.NullPointerException');
 INSERT INTO `sys_log_text` VALUES ('51587985946181632', '51587985803575296', '文件：BaseServiceImpl.java，错误行数：350，方法：getAuthorizationWhere，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('51783623870775296', '51783623589756928', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('51785232617046016', '51785232206004224', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('51785583407661056', '51785582942093312', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('51785726626365440', '51785726462787584', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('51787637047951360', '51787636976648192', '更新验证正则,更新前:{IS_STATUS=1, SVR_REGEX=^(19\\d\\d|20\\d\\d|2100|20\\d\\d~20\\d\\d)$, SVR_REGEX_MESSAGE=请输入正确的年份!, ID=26504926733533184, SVR_NAME=年份},更新后:{IS_STATUS=null, SVR_TABLE_NAME=SYS_VALIDATE_REGEX, ID=26504926733533184, SVR_REGEX=^(19\\d\\d|20\\d\\d|2100|20\\d\\d-20\\d\\d)$, SVR_NAME=年份, SVR_REGEX_MESSAGE=请输入正确的年份!}');
+INSERT INTO `sys_log_text` VALUES ('51788304944726016', '51788304881811456', '更新学生考勤,更新前:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=3, BSA_ENTRY_TIME=2018-08-13 10:45:25, BS_NAME=student_test, BSA_LATE=1, ID=51014046706565120, BSA_ABSENTEEISM=5, BSA_YEAR=2017~2018},更新后:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=3, SVR_TABLE_NAME=BUS_STUDENT_ATTENDANCE, BSA_ENTRY_TIME=null, BSA_LATE=1, ID=51014046706565120, BSA_ABSENTEEISM=5, BSA_YEAR=2017-2018}');
+INSERT INTO `sys_log_text` VALUES ('51788319524126720', '51788319473795072', '更新学生考勤,更新前:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=2, BSA_ENTRY_TIME=2018-08-13 10:28:08, BS_NAME=student_test, BSA_LATE=4, ID=51009695430737920, BSA_ABSENTEEISM=12, BSA_YEAR=2017~2018},更新后:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=2, SVR_TABLE_NAME=BUS_STUDENT_ATTENDANCE, BSA_ENTRY_TIME=null, BSA_LATE=4, ID=51009695430737920, BSA_ABSENTEEISM=12, BSA_YEAR=2017-2018}');
+INSERT INTO `sys_log_text` VALUES ('51788332153176064', '51788332111233024', '更新学生考勤,更新前:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=1, BSA_ENTRY_TIME=2018-08-08 23:46:04, BS_NAME=student_test, BSA_LATE=4, ID=49398562747842560, BSA_ABSENTEEISM=4, BSA_YEAR=2017~2018},更新后:{BS_ID=48944951878221824, BSA_SEMESTER=2, BSA_WEEK=1, SVR_TABLE_NAME=BUS_STUDENT_ATTENDANCE, BSA_ENTRY_TIME=null, BSA_LATE=4, ID=49398562747842560, BSA_ABSENTEEISM=4, BSA_YEAR=2017-2018}');
+INSERT INTO `sys_log_text` VALUES ('51794479119597568', '51794478763081728', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('51794636062064640', '51794635533582336', '检测数据异常!');
 INSERT INTO `sys_log_text` VALUES ('5817833200025600', '5817833065807872', '登录成功!登录地址:未知');
 INSERT INTO `sys_log_text` VALUES ('5817879781965824', '5817879731634176', '文件：JspServletWrapper.java，错误行数：588，方法：handleJspException，错误内容：An exception occurred processing JSP page [/WEB-INF/jsp/reception/common/main.jsp] at line [63]\r\n\r\n60:                     <div class=\"logo\">\r\n61:                         <img\r\n62:                                 data-sizes=\"auto\"\r\n63:                                 data-src=\"${activeUser.imgpath}\"\r\n64:                                 src=\"${baseurl}${Attribute.LOADING_IMAGE_100w}\"\r\n65:                                 class=\"lazyload\"\r\n66:                                 style=\"min-width: 48px;min-height: 48px;\"\r\n\r\n\r\nStacktrace:');
 INSERT INTO `sys_log_text` VALUES ('5817885784014848', '5817885754654720', '文件：JspServletWrapper.java，错误行数：588，方法：handleJspException，错误内容：An exception occurred processing JSP page [/WEB-INF/jsp/reception/common/main.jsp] at line [63]\r\n\r\n60:                     <div class=\"logo\">\r\n61:                         <img\r\n62:                                 data-sizes=\"auto\"\r\n63:                                 data-src=\"${activeUser.imgpath}\"\r\n64:                                 src=\"${baseurl}${Attribute.LOADING_IMAGE_100w}\"\r\n65:                                 class=\"lazyload\"\r\n66:                                 style=\"min-width: 48px;min-height: 48px;\"\r\n\r\n\r\nStacktrace:');
@@ -9389,10 +9409,10 @@ CREATE TABLE `sys_process_schedule`  (
   `SPS_PREV_STEP_ID` char(59) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '上一次办理步骤ID',
   `SPS_IS_CANCEL` int(5) NULL DEFAULT 0 COMMENT '是否作废',
   PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `SPS_TABLE_ID`(`SPS_TABLE_ID`) USING BTREE,
   INDEX `SP_SCHEDULE_SPD_ID`(`SPD_ID`) USING BTREE,
   INDEX `SPS_STEP_TYPE_TRANSACTOR`(`SPS_STEP_TYPE`, `SPS_STEP_TRANSACTOR`) USING BTREE,
   INDEX `SHOW_SO_ID`(`SHOW_SO_ID`) USING BTREE,
+  INDEX `SPS_TABLE_ID`(`SPS_TABLE_ID`) USING BTREE,
   INDEX `SPS_IS_CANCEL`(`SPS_IS_CANCEL`) USING BTREE,
   CONSTRAINT `SP_SCHEDULE_SPD_ID` FOREIGN KEY (`SPD_ID`) REFERENCES `sys_process_definition` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -10171,7 +10191,7 @@ INSERT INTO `sys_validate_regex` VALUES ('2512815759818752', '用户名', '[A-Za
 INSERT INTO `sys_validate_regex` VALUES ('2521757806231552', '正浮点数', '^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$', '请输入正确的带小数点的正数!', '1');
 INSERT INTO `sys_validate_regex` VALUES ('2522924040847360', '英文字母', '^[a-zA-Z]+$', '只能输入a-z的英文字母!', '1');
 INSERT INTO `sys_validate_regex` VALUES ('2523171857104896', '匹配中文，英文字母和数字及_', '^[\\u4e00-\\u9fa5_a-zA-Z0-9]+$', '只能输入中文、英文字母、数字、_', '1');
-INSERT INTO `sys_validate_regex` VALUES ('26504926733533184', '年份', '^(19\\d\\d|20\\d\\d|2100|20\\d\\d~20\\d\\d)$', '请输入正确的年份!', '1');
+INSERT INTO `sys_validate_regex` VALUES ('26504926733533184', '年份', '^(19\\d\\d|20\\d\\d|2100|20\\d\\d-20\\d\\d)$', '请输入正确的年份!', '1');
 
 -- ----------------------------
 -- Table structure for sys_value_record
@@ -10960,6 +10980,10 @@ INSERT INTO `sys_value_record` VALUES ('51586781539205120', '1', 'SYS_CONFIGURE'
 INSERT INTO `sys_value_record` VALUES ('51586797527891968', '1', 'SYS_CONFIGURE', '49382988399509504', '{\"SC_IS_PAGING\":\"1\",\"SC_NAME\":\"学生管理-考勤管理\",\"SC_JSP\":\"admin/student/attendance/home\",\"SC_VIEW\":\"v_student_attendance\",\"SC_IS_SEARCH\":\"1\",\"SC_IS_SELECT\":\"\",\"ID\":\"49382988399509504\",\"SC_ORDER_BY\":\"CONVERT(ID,SIGNED) DESC\",\"SC_IS_SINGLE\":\"\",\"SC_IS_FILTER\":\"\"}', '{\"SC_NAME\":\"学生管理-考勤管理\",\"SC_JSP\":\"admin/student/attendance/home\",\"SC_VIEW\":\"v_student_attendance\",\"SC_ORDER_BY\":\"CONVERT(ID,SIGNED) DESC\",\"SC_IS_PAGING\":\"1\",\"SC_IS_SEARCH\":\"1\",\"SC_IS_SELECT\":\"\",\"ID\":\"49382988399509504\",\"SC_IS_SINGLE\":\"\",\"SC_IS_FILTER\":\"1\"}', '2018-08-15 00:41:20', 2);
 INSERT INTO `sys_value_record` VALUES ('51586817857683456', '1', 'SYS_CONFIGURE', '49623725020020736', '{\"SC_IS_PAGING\":\"1\",\"SC_NAME\":\"学生管理-处分管理\",\"SC_JSP\":\"admin/student/punishment/home\",\"SC_VIEW\":\"v_student_punishment\",\"SC_IS_SEARCH\":\"1\",\"SC_IS_SELECT\":\"\",\"ID\":\"49623725020020736\",\"SC_ORDER_BY\":\"CONVERT(ID,SIGNED) DESC\",\"SC_IS_SINGLE\":\"\",\"SC_IS_FILTER\":\"\"}', '{\"SC_NAME\":\"学生管理-处分管理\",\"SC_JSP\":\"admin/student/punishment/home\",\"SC_VIEW\":\"v_student_punishment\",\"SC_ORDER_BY\":\"CONVERT(ID,SIGNED) DESC\",\"SC_IS_PAGING\":\"1\",\"SC_IS_SEARCH\":\"1\",\"SC_IS_SELECT\":\"\",\"ID\":\"49623725020020736\",\"SC_IS_SINGLE\":\"\",\"SC_IS_FILTER\":\"1\"}', '2018-08-15 00:41:25', 2);
 INSERT INTO `sys_value_record` VALUES ('51586830373486592', '1', 'SYS_CONFIGURE', '50338719827230720', '{\"SC_IS_PAGING\":\"1\",\"SC_NAME\":\"学生管理-综合素质测评\",\"SC_JSP\":\"admin/student/comprehensive/home\",\"SC_VIEW\":\"v_student_comprehensive\",\"SC_IS_SEARCH\":\"1\",\"SC_IS_SELECT\":\"\",\"ID\":\"50338719827230720\",\"SC_ORDER_BY\":\"BSC_YEAR DESC,BSC_SEMESTER DESC,BSC_RANK ASC\",\"SC_IS_SINGLE\":\"\",\"SC_IS_FILTER\":\"\"}', '{\"SC_NAME\":\"学生管理-综合素质测评\",\"SC_JSP\":\"admin/student/comprehensive/home\",\"SC_VIEW\":\"v_student_comprehensive\",\"SC_ORDER_BY\":\"BSC_YEAR DESC,BSC_SEMESTER DESC,BSC_RANK ASC\",\"SC_IS_PAGING\":\"1\",\"SC_IS_SEARCH\":\"1\",\"SC_IS_SELECT\":\"\",\"ID\":\"50338719827230720\",\"SC_IS_SINGLE\":\"\",\"SC_IS_FILTER\":\"1\"}', '2018-08-15 00:41:28', 2);
+INSERT INTO `sys_value_record` VALUES ('51787636724989952', '1', 'SYS_VALIDATE_REGEX', '26504926733533184', '{\"IS_STATUS\":\"1\",\"SVR_REGEX\":\"^(19\\\\d\\\\d|20\\\\d\\\\d|2100|20\\\\d\\\\d~20\\\\d\\\\d)$\",\"SVR_REGEX_MESSAGE\":\"请输入正确的年份!\",\"ID\":\"26504926733533184\",\"SVR_NAME\":\"年份\"}', '{\"SVR_REGEX\":\"^(19\\\\d\\\\d|20\\\\d\\\\d|2100|20\\\\d\\\\d-20\\\\d\\\\d)$\",\"SVR_REGEX_MESSAGE\":\"请输入正确的年份!\",\"ID\":\"26504926733533184\",\"SVR_NAME\":\"年份\"}', '2018-08-15 13:59:24', 2);
+INSERT INTO `sys_value_record` VALUES ('51788304550461440', '1', 'BUS_STUDENT_ATTENDANCE', '51014046706565120', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":2,\"BSA_WEEK\":3,\"BSA_ENTRY_TIME\":\"2018-08-13 10:45:25\",\"BSA_LATE\":1,\"ID\":\"51014046706565120\",\"BSA_ABSENTEEISM\":5,\"BSA_YEAR\":\"2017~2018\"}', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":\"2\",\"BSA_WEEK\":\"3\",\"BSA_LATE\":\"1\",\"BSA_ABSENTEEISM\":\"5\",\"BSA_YEAR\":\"2017-2018\",\"ID\":\"51014046706565120\"}', '2018-08-15 14:02:03', 2);
+INSERT INTO `sys_value_record` VALUES ('51788319331188736', '1', 'BUS_STUDENT_ATTENDANCE', '51009695430737920', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":2,\"BSA_WEEK\":2,\"BSA_ENTRY_TIME\":\"2018-08-13 10:28:08\",\"BSA_LATE\":4,\"ID\":\"51009695430737920\",\"BSA_ABSENTEEISM\":12,\"BSA_YEAR\":\"2017~2018\"}', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":\"2\",\"BSA_WEEK\":\"2\",\"BSA_LATE\":\"4\",\"BSA_ABSENTEEISM\":\"12\",\"BSA_YEAR\":\"2017-2018\",\"ID\":\"51009695430737920\"}', '2018-08-15 14:02:06', 2);
+INSERT INTO `sys_value_record` VALUES ('51788331977015296', '1', 'BUS_STUDENT_ATTENDANCE', '49398562747842560', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":2,\"BSA_WEEK\":1,\"BSA_ENTRY_TIME\":\"2018-08-08 23:46:04\",\"BSA_LATE\":4,\"ID\":\"49398562747842560\",\"BSA_ABSENTEEISM\":4,\"BSA_YEAR\":\"2017~2018\"}', '{\"BS_ID\":\"48944951878221824\",\"BSA_SEMESTER\":\"2\",\"BSA_WEEK\":\"1\",\"BSA_LATE\":\"4\",\"BSA_ABSENTEEISM\":\"4\",\"BSA_YEAR\":\"2017-2018\",\"ID\":\"49398562747842560\"}', '2018-08-15 14:02:09', 2);
 
 -- ----------------------------
 -- Table structure for test_process

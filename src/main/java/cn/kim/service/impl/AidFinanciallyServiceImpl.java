@@ -10,6 +10,7 @@ import cn.kim.common.eu.SystemEnum;
 import cn.kim.entity.ActiveUser;
 import cn.kim.entity.DataTablesView;
 import cn.kim.entity.QuerySet;
+import cn.kim.entity.StudentYearSemester;
 import cn.kim.exception.CustomException;
 import cn.kim.service.AidFinanciallyService;
 import cn.kim.util.CommonUtil;
@@ -161,8 +162,8 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 throw new CustomException("检测数据异常!");
             }
 
-            String year = getStudentYear();
-            String semester = getStudentSemester();
+            String year;
+            int semester;
 
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
 
@@ -172,6 +173,10 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 String BS_NUMBER = data[1];
                 //奖项
                 String BAF_AID_TYPE = data[7];
+                //解析学年和学期
+                StudentYearSemester studentYearSemester = parseStudentYearSemester(data.length >= 9 ? data[8] : null);
+                year = studentYearSemester.getYear();
+                semester = studentYearSemester.getSemester();
 
                 paramMap.clear();
                 paramMap.put("BS_NUMBER", BS_NUMBER);
@@ -216,13 +221,13 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
     public List<String[]> checkExcelData(int type, List<String[]> dataList, String sdtCode) {
         List<String[]> resultList = new ArrayList<>();
         if (isEmpty(dataList)) {
-            resultList.add(packErrorMap("文件数据错误", "没有找到可以导入数据"));
+            resultList.add(packErrorData("文件数据错误", "没有找到可以导入数据"));
             return resultList;
         }
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
 
-        String year = getStudentYear();
-        String semester = getStudentSemester();
+        String year;
+        int semester;
 
         for (int i = 0; i < dataList.size(); i++) {
             //行
@@ -230,32 +235,36 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
             String[] data = dataList.get(i);
             if (data.length <= 7) {
-                resultList.add(packErrorMap(row, "数据错误!"));
+                resultList.add(packErrorData(row, "数据错误!"));
                 continue;
             }
             //学号
             String BS_NUMBER = data[1];
             //奖项
             String BAF_AID_TYPE = data[7];
+            //解析学年和学期
+            StudentYearSemester studentYearSemester = parseStudentYearSemester(data.length >= 9 ? data[8] : null);
+            year = studentYearSemester.getYear();
+            semester = studentYearSemester.getSemester();
 
             if (isEmpty(BAF_AID_TYPE)) {
-                resultList.add(packErrorMap(row, "奖项为空"));
+                resultList.add(packErrorData(row, "奖项为空"));
             } else {
                 String sdiCode = DictUtil.getDictCode(sdtCode, BAF_AID_TYPE);
                 if (isEmpty(sdiCode)) {
-                    resultList.add(packErrorMap(row, "奖项数据错误,请检查!"));
+                    resultList.add(packErrorData(row, "奖项数据错误,请检查!"));
                 }
             }
 
             if (isEmpty(BS_NUMBER)) {
-                resultList.add(packErrorMap(row, "学号为空"));
+                resultList.add(packErrorData(row, "学号为空"));
             } else {
                 //查询数据库检查学号是否为空
                 paramMap.clear();
                 paramMap.put("BS_NUMBER", BS_NUMBER);
                 Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
                 if (isEmpty(student)) {
-                    resultList.add(packErrorMap(row, "学号错误,没有找到对应的学生!"));
+                    resultList.add(packErrorData(row, "学号错误,没有找到对应的学生!"));
                 } else {
                     //查询综合素质评测
                     paramMap.clear();
@@ -264,7 +273,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.put("BSC_SEMESTER", semester);
                     Map<String, Object> comprehensive = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensive", paramMap);
                     if (isEmpty(comprehensive)) {
-                        resultList.add(packErrorMap(row, "学生综合素质测评没有导入!"));
+                        resultList.add(packErrorData(row, "学生综合素质测评没有导入!"));
                     }
 
                     //检测是否重复导入
@@ -275,7 +284,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.put("BAF_SEMESTER", semester);
                     Map<String, Object> aid = baseDao.selectOne(NameSpace.AidFinanciallyMapper, "selectAidFinancially", paramMap);
                     if (!isEmpty(aid)) {
-                        resultList.add(packErrorMap(row, "数据重复导入!"));
+                        resultList.add(packErrorData(row, "数据重复导入!"));
                     }
                 }
             }

@@ -19,11 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by 余庚鑫 on 2017/5/28.
  */
 public class TextUtil {
+
+    private static final Pattern BLANK_PATTERN = Pattern.compile("\\s*|\t|\r|\n");
 
     // 将汉字转换为全拼
     public static String getPingYin(String src) {
@@ -394,7 +398,7 @@ public class TextUtil {
         //词语
         String[] sqlStr1 = {"and", "exec", "execute", "insert", "select", "delete", "update", "count", "drop", "chr", "mid", "master", "truncate", "char", "declare", "sitename", "net user", "xp_cmdshell", "like", "and", "exec", "execute", "insert", "create", "drop", "table", "from", "grant", "use", "group_concat", "column_name", "information_schema.columns", "table_schema", "union", "where", "select", "delete", "update", "order", "by", "count", "chr", "mid", "master", "truncate", "char", "declare", "or"};
         //特殊字符
-        String[] sqlStr2 = {"\\*", "'", ";", "or", "-", "--", "\\+", "//", "/", "%", "#"};
+        String[] sqlStr2 = {"\\*", "'", ";", "or", "--", "\\+", "//", "/", "%", "#"};
 
         for (int i = 0; i < sqlStr1.length; i++) {
             if (str2.indexOf(sqlStr1[i]) >= 0) {
@@ -461,6 +465,23 @@ public class TextUtil {
             return new String((new BASE64Decoder()).decodeBuffer(src), "UTF-8");
         } catch (IOException e) {
             return "";
+        }
+    }
+
+    /**
+     * 清空所有空格
+     *
+     * @param str
+     * @return
+     */
+    public static String replaceBlank(String str) {
+        String dest = null;
+        if (str == null) {
+            return dest;
+        } else {
+            Matcher m = BLANK_PATTERN.matcher(str);
+            dest = m.replaceAll("");
+            return dest;
         }
     }
 }

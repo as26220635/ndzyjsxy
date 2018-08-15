@@ -7,6 +7,7 @@
         ${processSelect}
         <if test="processDefinitionId != null and processDefinitionId != ''">
             ,SPD.ID AS SPD_ID
+            ,SPS.SHOW_SO_ID
             ,SPS.SPS_AUDIT_STATUS,
             (
             CASE

@@ -84,9 +84,9 @@ public class Datebox extends BaseTagSupport {
             builder.append("<input " + toTagId(custom, id, name) + " type='text' class='form-control form-control-input-search' placeholder='" + placeholder + "' value='" + value + "'>");
 
             builder.append("<script>datepick.init({obj: $('#" + id + "'),model:" + getFormat(type) + ",clear: " + TextUtil.toString(clear) + "});</script>");
-            builder.append("<script>$('#"+id+"').on('hide', function (e) {validator.fieldValidate($('#"+id+"').parents('form:first'), '"+id+"');});</script>");
-            if(isStudentYear){
-                builder.append("<script>$('#"+id+"').on('hide', function (e) {if($(this).val() == '' || $(this).val().indexOf('~') != -1){return;}$(this).val($(this).val() + '~' + (Number($(this).val()) + 1))});</script>");
+            builder.append("<script>$('#" + id + "').on('hide', function (e) {validator.fieldValidate($('#" + id + "').parents('form:first'), '" + id + "');});</script>");
+            if (isStudentYear) {
+                builder.append("<script>$('#" + id + "').on('hide', function (e) {if( " + type + "!= 1||$(this).val() == '' || $(this).val().indexOf('-') != -1){return;}$(this).val($(this).val() + '-' + (Number($(this).val()) + 1))});</script>");
             }
 
             out.print(builder.toString());

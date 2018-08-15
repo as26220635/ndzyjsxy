@@ -302,7 +302,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @param val
      * @return
      */
-    protected String[] packErrorMap(String key, String val) {
+    protected String[] packErrorData(String key, String val) {
         String[] errors = {key, val};
         return errors;
     }
@@ -320,16 +320,17 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         fieldMap.put(AuthorizationType.COLLEGE.toString(), "BDM_COLLEGE");
         fieldMap.put(AuthorizationType.DEPARTMENT.toString(), "BDM_ID");
         fieldMap.put(AuthorizationType.CLS.toString(), "BC_ID");
-        return getAuthorizationWhere(fieldMap);
+        return getAuthorizationWhere(false, fieldMap);
     }
 
     /**
-     * 获取当前用户授权过滤
+     * 获取当前用户授权过滤 是否流程过滤
      *
-     * @param fieldMap 字段map
+     * @param isProcess
+     * @param fieldMap
      * @return
      */
-    protected String getAuthorizationWhere(Map<String, Object> fieldMap) {
+    protected String getAuthorizationWhere(boolean isProcess, Map<String, Object> fieldMap) {
         StringBuilder builder = new StringBuilder();
 
         //拿到当前用户的角色
@@ -378,10 +379,18 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
             }
         } else if (type == SystemEnum.STUDENT.getType()) {
             //学生
-            builder.append(" AND SO_ID = " + operatorId);
+            if (isProcess) {
+                builder.append(" AND (SO_ID = " + operatorId + " OR SHOW_SO_ID = " + operatorId + ")");
+            } else {
+                builder.append(" AND SO_ID = " + operatorId);
+            }
         } else if (type == SystemEnum.TEACHER.getType()) {
             //教师
-            builder.append(" AND SO_ID = " + operatorId);
+            if (isProcess) {
+                builder.append(" AND (SO_ID = " + operatorId + " OR SHOW_SO_ID = " + operatorId + ")");
+            } else {
+                builder.append(" AND SO_ID = " + operatorId);
+            }
         } else {
             throw new UnauthorizedException("当前用户类型错误!");
         }
