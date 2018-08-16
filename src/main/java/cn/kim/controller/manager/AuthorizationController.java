@@ -38,7 +38,7 @@ public class AuthorizationController extends BaseController {
      * @throws Exception
      */
     @GetMapping("/tree")
-    @RequiresPermissions(value = {"INFO:DEPARTMENT_PERSONNEL_AUTHORIZATION"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"INFO:DEPARTMENT_PERSONNEL_AUTHORIZATION","INFO:DIVISION_PERSONNEL_AUTHORIZATION"}, logical = Logical.OR)
     @ResponseBody
     public List<Tree> treeList(@RequestParam Map<String, Object> mapParam) throws Exception {
         List<Tree> treeList = authorizationService.selectAuthorizationTreeList(mapParam);
@@ -53,7 +53,7 @@ public class AuthorizationController extends BaseController {
      * @throws Exception
      */
     @PutMapping("/update")
-    @RequiresPermissions(value = {"INFO:DEPARTMENT_PERSONNEL_AUTHORIZATION"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"INFO:DEPARTMENT_PERSONNEL_AUTHORIZATION","INFO:DIVISION_PERSONNEL_AUTHORIZATION"}, logical = Logical.OR)
     @SystemControllerLog(useType = UseType.USE, event = "授权用户查看权限")
     @ResponseBody
     public ResultState update(@RequestParam Map<String, Object> mapParam) throws Exception {

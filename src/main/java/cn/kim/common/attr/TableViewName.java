@@ -38,4 +38,8 @@ public class TableViewName {
      * 登录日志
      */
     public static final String V_LOG_PERSONAL = "v_log_personal";
+    /**
+     * 查看日志
+     */
+    public static final String V_LOG_SEE = "v_log_see";
 }

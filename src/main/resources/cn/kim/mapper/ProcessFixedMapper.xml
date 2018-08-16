@@ -293,6 +293,9 @@
                 <if test ="ID != NULL and ID != ''">
                     AND ID = #{ID}
                 </if>
+                <if test ="SPD_ID != NULL and SPD_ID != ''">
+                    AND SPD_ID = #{SPD_ID}
+                </if>
             </where>
         )SPS
         LEFT JOIN SYS_ROLE SR ON SR.ID = SPS.SR_ID

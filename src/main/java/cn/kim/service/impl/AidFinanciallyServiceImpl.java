@@ -7,6 +7,7 @@ import cn.kim.common.eu.AidType;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.Process;
 import cn.kim.common.eu.SystemEnum;
+import cn.kim.dao.BaseDao;
 import cn.kim.entity.ActiveUser;
 import cn.kim.entity.DataTablesView;
 import cn.kim.entity.QuerySet;
@@ -146,60 +147,21 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         return resultMap;
     }
 
+    /**
+     * 导入学院奖学金
+     *
+     * @param excelFile
+     * @return
+     */
     @Override
     @Transactional
     public Map<String, Object> importCollegeScholarship(MultipartFile excelFile) {
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
         int status = STATUS_ERROR;
         String desc = IMPORT_ERROR;
-        ActiveUser activeUser = getActiveUser();
         try {
-            List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 1);
-            //校验数据
-            List<String[]> errorList = checkExcelData(AidType.COLLEGE_SCHOLARSHIP.getType(), dataList, "BUS_COLLEGE_SCHOLARSHIP_TYPE");
-            if (!isEmpty(errorList)) {
-                resultMap.put(MagicValue.DATA, errorList);
-                throw new CustomException("检测数据异常!");
-            }
 
-            String year;
-            int semester;
-
-            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
-
-            //导入数据
-            for (String[] data : dataList) {
-                //学号
-                String BS_NUMBER = data[1];
-                //奖项
-                String BAF_AID_TYPE = data[7];
-                //解析学年和学期
-                StudentYearSemester studentYearSemester = parseStudentYearSemester(data.length >= 9 ? data[8] : null);
-                year = studentYearSemester.getYear();
-                semester = studentYearSemester.getSemester();
-
-                paramMap.clear();
-                paramMap.put("BS_NUMBER", BS_NUMBER);
-                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
-
-                paramMap.clear();
-                paramMap.put("SVR_TABLE_NAME", TableName.BUS_AID_FINANCIALLY);
-
-                paramMap.put("BS_ID", student.get("ID"));
-                paramMap.put("BAF_YEAR", year);
-                paramMap.put("BAF_SEMESTER", semester);
-                paramMap.put("BAF_AID_TYPE", DictUtil.getDictCode("BUS_COLLEGE_SCHOLARSHIP_TYPE", BAF_AID_TYPE));
-                paramMap.put("BAF_TYPE", AidType.COLLEGE_SCHOLARSHIP.toString());
-                paramMap.put("SO_ID", activeUser.getId());
-                paramMap.put("BUS_PROCESS", Process.AID.toString());
-                paramMap.put("BUS_PROCESS2", Process.AID_COLLEGE_SCHOLARSHIP.toString());
-                Map<String, Object> insertMap = this.insertAndUpdateAidFinancially(paramMap);
-                validateResultMap(insertMap);
-
-                //插入流程
-                createProcessSchedule(toString(insertMap.get("ID")), toString(student.get("BS_NAME")),
-                        activeUser.getId(), toString(student.get("SO_ID")), Process.AID.toString(), Process.AID_COLLEGE_SCHOLARSHIP.toString());
-            }
+            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.COLLEGE_SCHOLARSHIP, Process.AID, Process.AID_COLLEGE_SCHOLARSHIP, "BUS_COLLEGE_SCHOLARSHIP_TYPE");
 
             resultMap.put(MagicValue.LOG, "导入学院奖学金,数据:" + toString(dataList));
             status = STATUS_SUCCESS;
@@ -213,14 +175,108 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
     }
 
     /**
+     * 导入年度表彰
+     *
+     * @param excelFile
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> importCommend(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = IMPORT_ERROR;
+        try {
+            //导入
+            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.COMMEND, Process.AID, Process.AID_COMMEND, "BUS_COMMEND_TYPE");
+
+            resultMap.put(MagicValue.LOG, "导入学院奖学金,数据:" + toString(dataList));
+            status = STATUS_SUCCESS;
+            desc = IMPORT_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 资助通用导入
+     *
+     * @param resultMap   返回map
+     * @param baseDao
+     * @param excelFile   导入的文件
+     * @param aidType     资助类型
+     * @param busProcess  流程小类
+     * @param busProcess2 流程大类
+     * @param sdtCode     字典code
+     * @return
+     * @throws Exception
+     */
+    private List<String[]> importAid(Map<String, Object> resultMap, BaseDao baseDao, MultipartFile excelFile, AidType aidType, Process busProcess, Process busProcess2, String sdtCode) throws Exception {
+        ActiveUser activeUser = getActiveUser();
+
+        List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 1);
+        //校验数据
+        List<String[]> errorList = checkExcelData(dataList, aidType, sdtCode);
+        if (!isEmpty(errorList)) {
+            resultMap.put(MagicValue.DATA, errorList);
+            throw new CustomException("检测数据异常!");
+        }
+
+        String year;
+        int semester;
+
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
+
+        //导入数据
+        for (String[] data : dataList) {
+            //学号
+            String BS_NUMBER = data[1];
+            //奖项
+            String BAF_AID_TYPE = data[7];
+            //解析学年和学期
+            StudentYearSemester studentYearSemester = parseStudentYearSemester(data.length >= 9 ? data[8] : null);
+            year = studentYearSemester.getYear();
+            semester = studentYearSemester.getSemester();
+
+            paramMap.clear();
+            paramMap.put("BS_NUMBER", BS_NUMBER);
+            Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+
+            paramMap.clear();
+            paramMap.put("SVR_TABLE_NAME", TableName.BUS_AID_FINANCIALLY);
+
+            paramMap.put("BS_ID", student.get("ID"));
+            paramMap.put("BAF_YEAR", year);
+            paramMap.put("BAF_SEMESTER", semester);
+
+            paramMap.put("BAF_AID_TYPE", DictUtil.getDictCode(sdtCode, BAF_AID_TYPE));
+            paramMap.put("BAF_TYPE", aidType.toString());
+            paramMap.put("SO_ID", activeUser.getId());
+            paramMap.put("BUS_PROCESS", busProcess.toString());
+            paramMap.put("BUS_PROCESS2", busProcess2.toString());
+            Map<String, Object> insertMap = this.insertAndUpdateAidFinancially(paramMap);
+            validateResultMap(insertMap);
+
+            //插入流程
+            createProcessSchedule(toString(insertMap.get("ID")), toString(student.get("BS_NAME")),
+                    activeUser.getId(), toString(student.get("SO_ID")), busProcess.toString(), busProcess2.toString());
+        }
+
+        return dataList;
+    }
+
+    /**
      * 检测excel数据是否有问题
      *
-     * @param type     检测导入类型是否重复
      * @param dataList
+     * @param aidType
      * @param sdtCode
      * @return
      */
-    public List<String[]> checkExcelData(int type, List<String[]> dataList, String sdtCode) {
+    public List<String[]> checkExcelData(List<String[]> dataList, AidType aidType, String sdtCode) {
         List<String[]> resultList = new ArrayList<>();
         if (isEmpty(dataList)) {
             resultList.add(packErrorData("文件数据错误", "没有找到可以导入数据"));
@@ -273,6 +329,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.put("BS_ID", student.get("ID"));
                     paramMap.put("BSC_YEAR", year);
                     paramMap.put("BSC_SEMESTER", semester);
+
                     Map<String, Object> comprehensive = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensive", paramMap);
                     if (isEmpty(comprehensive)) {
                         resultList.add(packErrorData(row, "学生综合素质测评没有导入"));
@@ -281,9 +338,10 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     //检测是否重复导入
                     paramMap.clear();
                     paramMap.put("BS_ID", student.get("ID"));
-                    paramMap.put("BAF_TYPE", type);
+                    paramMap.put("BAF_TYPE", aidType.getType());
                     paramMap.put("BAF_YEAR", year);
                     paramMap.put("BAF_SEMESTER", semester);
+
                     Map<String, Object> aid = baseDao.selectOne(NameSpace.AidFinanciallyMapper, "selectAidFinancially", paramMap);
                     if (!isEmpty(aid)) {
                         resultList.add(packErrorData(row, "数据重复导入"));

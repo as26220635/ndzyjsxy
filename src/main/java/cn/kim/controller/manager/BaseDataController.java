@@ -66,7 +66,7 @@ public class BaseDataController extends BaseController {
      * @throws Exception
      */
     @GetMapping("/admin/dataGrid/{ID}")
-    @SystemControllerLog(useType = UseType.USE, isDataGrid = true, event = "查看列表")
+    @SystemControllerLog(useType = UseType.SEE, isDataGrid = true, event = "查看列表")
     public String dataGrid(@PathVariable("ID") String ID, @RequestParam Map<String, Object> extra, Model model) throws Exception {
         isInvalidKey(extra);
         try {

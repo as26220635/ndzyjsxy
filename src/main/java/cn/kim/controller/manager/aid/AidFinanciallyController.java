@@ -103,4 +103,76 @@ public class AidFinanciallyController extends BaseController {
         });
     }
 
+    /******************     年度表彰   *****************/
+
+    @GetMapping("/commend/add")
+    @RequiresPermissions("AID:COMMEND_INSERT")
+    @Token(save = true)
+    public String addHtmlCommend(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("aid", setStudentYearSemester(aid, "BAF_YEAR", "BAF_SEMESTER"));
+        return "admin/aid/commend/addAndEdit";
+    }
+
+
+    @PostMapping("/commend/add")
+    @RequiresPermissions("AID:COMMEND_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加年度表彰")
+    @Token(remove = true)
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState addCommend(@RequestParam Map<String, Object> mapParam) throws Exception {
+        //流程
+        mapParam.put("BUS_PROCESS", Process.AID.toString());
+        mapParam.put("BUS_PROCESS2", Process.AID_COLLEGE_SCHOLARSHIP.toString());
+        //类型
+        mapParam.put("BAF_TYPE", AidType.COMMEND.toString());
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/commend/update/{ID}")
+    @RequiresPermissions("AID:COMMEND_UPDATE")
+    public String updateHtmlCommend(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("aid", aidFinanciallyService.selectAidFinancially(mapParam));
+        return "admin/aid/commend/addAndEdit";
+    }
+
+    @PutMapping("/commend/update")
+    @RequiresPermissions("AID:COMMEND_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改年度表彰")
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState updateCommend(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/commend/delete/{ID}")
+    @RequiresPermissions("AID:COMMEND_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除年度表彰")
+    @ResponseBody
+    public ResultState deleteCommend(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = aidFinanciallyService.deleteAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/commend/import")
+    @RequiresPermissions("AID:COMMEND_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入年度表彰")
+    @ResponseBody
+    public ResultState importCommend(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importCommend", 600, 600, () -> {
+            Map<String, Object> resultMap = aidFinanciallyService.importCommend(excelFile);
+            return resultState(resultMap);
+        });
+    }
+
 }

@@ -120,22 +120,24 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
             baseDao.insert(NameSpace.ConfigureMapper, "insertConfigure", configure);
 
             paramMap.clear();
-            paramMap.put("SC_ID",id);
+            paramMap.put("SC_ID", id);
             List<Map<String, Object>> columnList = this.selectConfigureColumnList(paramMap);
             for (Map<String, Object> column : columnList) {
-                column.put("ID",getId());
-                column.put("SC_ID",newConfigureId);
+                column.put("ID", getId());
+                column.put("SC_ID", newConfigureId);
                 baseDao.insert(NameSpace.ConfigureMapper, "insertConfigureColumn", column);
             }
 
             paramMap.clear();
-            paramMap.put("SC_ID",id);
+            paramMap.put("SC_ID", id);
             List<Map<String, Object>> searchList = this.selectConfigureSearchList(paramMap);
             for (Map<String, Object> search : searchList) {
-                search.put("ID",getId());
-                search.put("SC_ID",newConfigureId);
+                search.put("ID", getId());
+                search.put("SC_ID", newConfigureId);
                 baseDao.insert(NameSpace.ConfigureMapper, "insertConfigureSearch", search);
             }
+
+            resultMap.put(MagicValue.LOG, "拷贝配置列表:" + toString(configure));
 
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;

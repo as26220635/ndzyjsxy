@@ -327,6 +327,8 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
 
             copyMenuByParentId(baseDao, ID, SM_PARENTID, replaceMap);
 
+            resultMap.put(MagicValue.LOG, "拷贝菜单:" + toString(menu));
+
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
         } catch (Exception e) {

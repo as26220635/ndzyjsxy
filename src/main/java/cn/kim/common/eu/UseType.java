@@ -5,8 +5,8 @@ package cn.kim.common.eu;
  * 日志类型
  */
 public enum UseType {
-    //不可见
-    SEE(-1),
+    //查看
+    SEE(0),
     //系统
     SYSTEM(1),
     //使用

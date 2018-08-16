@@ -258,3 +258,9 @@
 <c:set var="COLLEGE_SCHOLARSHIP_UPDATE_URL" value="${COLLEGE_SCHOLARSHIP_BASE_URL}update"/>
 <c:set var="COLLEGE_SCHOLARSHIP_DELETE_URL" value="${COLLEGE_SCHOLARSHIP_BASE_URL}delete"/>
 <c:set var="COLLEGE_SCHOLARSHIP_IMPORT_URL" value="${COLLEGE_SCHOLARSHIP_BASE_URL}import"/>
+<%--年度表彰--%>
+<c:set var="COMMEND_BASE_URL" value="${AID_BASE_URL}commend/"/>
+<c:set var="COMMEND_ADD_URL" value="${COMMEND_BASE_URL}add"/>
+<c:set var="COMMEND_UPDATE_URL" value="${COMMEND_BASE_URL}update"/>
+<c:set var="COMMEND_DELETE_URL" value="${COMMEND_BASE_URL}delete"/>
+<c:set var="COMMEND_IMPORT_URL" value="${COMMEND_BASE_URL}import"/>

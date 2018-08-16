@@ -66,10 +66,16 @@ public class GridDataFilter extends BaseServiceImpl {
         if (TableViewName.V_TEST_PROCESS.equals(configureView)) {
             //测试流程
             resultBuilder.append(" AND SO_ID = " + operatorId);
-        } else if (TableViewName.V_STUDENT.equals(configureView) || TableViewName.V_STUDENT_ATTENDANCE.equals(configureView) || TableViewName.V_STUDENT_PUNISHMENT.equals(configureView) || TableViewName.V_STUDENT_COMPREHENSIVE.equals(configureView)) {
+        } else if (TableViewName.V_STUDENT.equals(configureView) ||
+                TableViewName.V_STUDENT_ATTENDANCE.equals(configureView) ||
+                TableViewName.V_STUDENT_PUNISHMENT.equals(configureView) ||
+                TableViewName.V_STUDENT_COMPREHENSIVE.equals(configureView)) {
             //学生管理
             resultBuilder.append(getAuthorizationWhere());
-        } else if (TableViewName.V_LOG_SYSTEM.equals(configureView) || TableViewName.V_LOG_USE.equals(configureView) || TableViewName.V_LOG_PERSONAL.equals(configureView)) {
+        } else if (TableViewName.V_LOG_SYSTEM.equals(configureView) ||
+                TableViewName.V_LOG_USE.equals(configureView) ||
+                TableViewName.V_LOG_PERSONAL.equals(configureView) ||
+                TableViewName.V_LOG_SEE.equals(configureView)) {
             //日志 管理员可以看到全部
             if (!SystemEnum.MANAGER.toString().equals(operatorType)) {
                 resultBuilder.append(" AND SO_ID =" + operatorId);

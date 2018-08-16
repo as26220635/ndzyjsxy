@@ -147,7 +147,7 @@ public class LogAspect extends BaseData {
                     //查询菜单
                     Map<String, Object> menu = menuService.queryMenuById(menuId);
                     event = "查看数据列表";
-                    message = "查看" + menu.get("SM_NAME");
+                    message = "查看" + toString(menu.get("SM_NAME"));
 
                     //判断是否2分钟内重复记录日志,重复的话直接返回
                     if (isRepeatVisit(activeUser.getId(), message)) {

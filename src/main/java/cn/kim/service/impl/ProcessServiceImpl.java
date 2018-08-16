@@ -745,6 +745,8 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessStart", start);
             }
 
+            resultMap.put(MagicValue.LOG, "拷贝流程定义:" + toString(definition));
+
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
 

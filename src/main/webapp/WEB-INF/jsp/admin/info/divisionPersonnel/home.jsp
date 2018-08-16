@@ -148,6 +148,37 @@
         });
     });
 
+    //授权
+    $dataGridTable.find('tbody').on('click', '#authorization', function () {
+        var data = getRowData(this);
+        var id = data.ID;
+
+        treeBox.init({
+            title: '授权',
+            url: '${AUTHORIZATION_TREE_URL}',
+            modelSize: model.size.LG,
+            searchParams: {
+                level: ${AuthorizationType.COLLEGE.type},
+                operatorId: data.SO_ID,
+                isChildren: STATUS_ERROR,
+            },
+            isConfirm: true,
+            confirm: function ($model, nodes) {
+                var authorizations = "";
+                for (var i = 0; i < nodes.length; i++) {
+                    authorizations += (nodes[i].level + COMPLEX_SPLIT + nodes[i].id + SERVICE_SPLIT);
+                }
+                var params = {};
+                params.operatorId = data.SO_ID;
+                params.authorizations = authorizations;
+
+                ajax.put('${AUTHORIZATION_UPDATE_URL}', params, function (data) {
+                    ajaxReturn.data(data, $model, null, null);
+                })
+            }
+        });
+    });
+
     //删除
     $dataGridTable.find('tbody').on('click', '#del', function () {
         var data = getRowData(this);

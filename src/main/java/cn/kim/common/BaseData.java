@@ -43,7 +43,7 @@ public abstract class BaseData {
     protected static final String DELETE_ERROR = Tips.DELETE_ERROR;
     protected static final String IMPORT_SUCCESS = Tips.IMPORT_SUCCESS;
     protected static final String IMPORT_ERROR = Tips.IMPORT_ERROR;
-    
+
     protected static final String STATUS_SUCCESS_MESSAGE = "成功!";
     protected static final String STATUS_ERROR_MESSAGE = "失败!";
 
@@ -486,12 +486,12 @@ public abstract class BaseData {
                 return false;
             }
             String year = title.substring(startYearindex - 4, startYearindex) + "-" + title.substring(startYearindex + 1, startYearindex + 5);
-            if (!TextUtil.isStudentYear(year)) {
-                return false;
-            }
-            if (!title.contains("第一学期") && !title.contains("第1学期") && !title.contains("第二学期") && !title.contains("第2学期")) {
-                return false;
-            }
+//            if (!TextUtil.isStudentYear(year)) {
+//                return false;
+//            }
+//            if (!title.contains("第一学期") && !title.contains("第1学期") && !title.contains("第二学期") && !title.contains("第2学期")) {
+//                return false;
+//            }
 
             return true;
         } catch (Exception e) {
@@ -521,6 +521,8 @@ public abstract class BaseData {
             } else if (title.contains("第二学期") || title.contains("第2学期")) {
                 studentYearSemester.setSemester(2);
                 studentYearSemester.setSemesterStr("第二学期");
+            } else {
+                studentYearSemester.setSemester(getStudentSemester());
             }
         } else {
             studentYearSemester.setYear(getStudentYear());
@@ -532,6 +534,7 @@ public abstract class BaseData {
 
     /**
      * 检测标题中是否有班级字段
+     *
      * @param title
      * @return
      */

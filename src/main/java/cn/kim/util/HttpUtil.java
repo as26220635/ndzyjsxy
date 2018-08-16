@@ -105,10 +105,11 @@ public class HttpUtil {
         String result = "未知";
 
         Map<String, String> params = Maps.newHashMapWithExpectedSize(1);
-        params.put("query", "59.56.176.120");
+        params.put("query", ip);
         HttpClient httpClient = new HttpClient();
         Map<String, Object> getMap = httpClient.get(ConfigProperties.IP_SEARCH_URL, params);
-        JSONObject jsonObject = JSONObject.parseObject(TextUtil.getSubBetween(TextUtil.toString(getMap.get(MagicValue.DESC)),"/\\*\\*/ip(",");"));
+        System.out.println(TextUtil.getSubBetween(TextUtil.toString(getMap.get(MagicValue.DESC)), "/\\*\\*/ip\\(", "\\);"));
+        JSONObject jsonObject = JSONObject.parseObject(TextUtil.getSubBetween(TextUtil.toString(getMap.get(MagicValue.DESC)), "/\\*\\*/ip\\(", "\\);"));
         JSONArray dataArray = JSONArray.parseArray(jsonObject.getString("data"));
 
         if (ValidateUtil.isEmpty(dataArray) || ValidateUtil.isEmpty(dataArray) || dataArray.size() == 0) {
