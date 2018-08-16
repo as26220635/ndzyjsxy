@@ -76,7 +76,7 @@
                                                 <s:datebox id="SEARCH_${SEARCH.SCS_FIELD}" name="${SEARCH.SCS_FIELD}"
                                                            type="${SEARCH.SCS_TYPE - 3}"
                                                            placeholder="${SEARCH.SCS_REMARK}"
-                                                           clear="true"></s:datebox>
+                                                           clear="true" studentYear="${fns:trueOrFalse(SEARCH.SCS_IS_STUDENT_YEAR, 'true' , 'false')}"></s:datebox>
                                             </div>
                                         </div>
                                     </c:when>

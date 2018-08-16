@@ -47,17 +47,16 @@ public class LogUtil {
     /**
      * 记录日志
      *
-     * @param request
      * @param logEvent
-     * @param logUseType
-     * @param logType
      * @param logTextContent
+     * @param logType
      * @param logResult      操作结果
      */
-    public static void recordLog(HttpServletRequest request, String logEvent, Integer logUseType, String logType, String logTextContent, int logResult) {
+    public static void recordLog(String logEvent, String logTextContent, int logType, int logResult) {
         if (ValidateUtil.isEmpty(logTextContent)) {
             return;
         }
+        HttpServletRequest request = HttpUtil.getRequest();
 
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(7);
 
@@ -72,7 +71,6 @@ public class LogUtil {
 
             paramMap.put("SL_EVENT", logEvent);
             paramMap.put("SL_ENTERTIME", DateUtil.getDate());
-            paramMap.put("SL_USETYPE", logUseType);
             paramMap.put("SL_TYPE", logType);
 
             paramMap.put("SL_RESULT", logResult);

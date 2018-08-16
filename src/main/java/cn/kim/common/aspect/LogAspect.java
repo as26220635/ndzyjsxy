@@ -74,20 +74,19 @@ public class LogAspect extends BaseData {
 
             //获取注解
             SystemControllerLog systemControllerLog = AnnotationUtil.getAnnotation(pjp, SystemControllerLog.class);
+            //事件
             String event = systemControllerLog.event();
-            int useType = systemControllerLog.useType().getType();
+            //日志类型
+            int logType = systemControllerLog.useType().getType();
+            //是否是配置列表
+            boolean isDataGrid = systemControllerLog.isDataGrid();
 
             String message = "";
-            int result = 0;
-            String logType = null;
-            if (activeUser != null) {
-                logType = activeUser.getType();
-            }
 
             //是否成功
             int code = 0;
 
-            if (useType != UseType.SEE.getType()) {
+            if (!isDataGrid) {
                 //判断返回类型
                 if (object instanceof ResultState) {
                     ResultState resultState = (ResultState) object;
@@ -101,7 +100,7 @@ public class LogAspect extends BaseData {
                     }
                 } else if (object instanceof String || object instanceof JSONObject) {
                     //不是个人日志与返回的是String JSON
-                    if (useType != UseType.PERSONAL.getType() && isJson(object.toString())) {
+                    if (logType != UseType.PERSONAL.getType() && isJson(object.toString())) {
                         JSONObject jsonObject = JSONObject.parseObject(object.toString());
                         code = toInt(jsonObject.get("code"));
 
@@ -134,6 +133,8 @@ public class LogAspect extends BaseData {
                     }
                 }
             } else {
+                code = Attribute.STATUS_SUCCESS;
+                //记录查看的列表
                 Object[] objs = pjp.getArgs();
                 MethodSignature signature = (MethodSignature) pjp.getSignature();
                 Method method = signature.getMethod();
@@ -141,28 +142,22 @@ public class LogAspect extends BaseData {
                 //得到标注@PathVariable注解的参数
                 List<AnnotationParam> params = AnnotationUtil.getAnnotationParams(PathVariable.class, method, objs);
                 if (!isEmpty(params)) {
-                    useType = UseType.PERSONAL.getType();
 
                     String menuId = toString(idDecrypt(params.get(0).getValue()));
                     //查询菜单
                     Map<String, Object> menu = menuService.queryMenuById(menuId);
-                    event = "查看" + menu.get("SM_NAME");
+                    event = "查看数据列表";
+                    message = "查看" + menu.get("SM_NAME");
 
                     //判断是否2分钟内重复记录日志,重复的话直接返回
-                    if (isRepeatVisit(activeUser.getId(), event)) {
+                    if (isRepeatVisit(activeUser.getId(), message)) {
                         return object;
                     }
                 }
             }
 
-            if (code == Attribute.STATUS_SUCCESS) {
-                result = Attribute.STATUS_SUCCESS;
-            } else {
-                result = Attribute.STATUS_ERROR;
-            }
-
             //记录日志
-            LogUtil.recordLog(request, event, useType, logType, message, result);
+            LogUtil.recordLog(event, message, logType, code);
         }
 
         return object;

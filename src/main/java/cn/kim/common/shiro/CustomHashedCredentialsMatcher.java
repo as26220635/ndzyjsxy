@@ -66,10 +66,8 @@ public class CustomHashedCredentialsMatcher extends HashedCredentialsMatcher {
             activeUser.setRoleIds(TextUtil.toString(user.get("SR_ID")));
             activeUser.setIsDefaultPwd(TextUtil.toInt(user.get("IS_DEFAULT_PWD")));
 
-//            Map<String, String> ipMap = HttpUtil.getIpAddressName(HttpUtil.getIpAddr(HttpUtil.getRequest()));
             //获得登录地址
-//            String loginAddress = ipMap.get("code").equals("0") ? ipMap.get("country") + ipMap.get("region") + ipMap.get("city") + ":" + ipMap.get("isp") : "未知";
-            String loginAddress = "未知";
+            String loginAddress = HttpUtil.getIpAddressName(HttpUtil.getIpAddr(HttpUtil.getRequest()));
             //清除验证码SESSION
             SessionUtil.remove("validateCode");
             //密码是否输入正确
@@ -90,13 +88,13 @@ public class CustomHashedCredentialsMatcher extends HashedCredentialsMatcher {
                 SessionUtil.set(Constants.SESSION_USERNAME, activeUser);
 
                 //记录日志
-                LogUtil.recordLog(HttpUtil.getRequest(), "登录", UseType.PERSONAL.getType(), activeUser.getType(), "登录成功!登录地址:" + loginAddress, Attribute.STATUS_SUCCESS);
+                LogUtil.recordLog("登录", "登录成功!登录地址:" + loginAddress, UseType.PERSONAL.getType(), Attribute.STATUS_SUCCESS);
             } else {
                 retryCount.getAndIncrement();
                 cache.put(username, retryCount);
                 //记录日志
                 SessionUtil.set(Constants.SESSION_USERNAME, activeUser);
-                LogUtil.recordLog(HttpUtil.getRequest(), "登录", UseType.PERSONAL.getType(), activeUser.getType(), "登录失败!第" + retryCount.get() + "次!登录地址:" + loginAddress, Attribute.STATUS_ERROR);
+                LogUtil.recordLog("登录", "登录失败!第" + retryCount.get() + "次!登录地址:" + loginAddress, UseType.PERSONAL.getType(), Attribute.STATUS_ERROR);
                 SessionUtil.remove(Constants.SESSION_USERNAME);
             }
             return matchs;

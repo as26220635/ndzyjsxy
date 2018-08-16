@@ -183,6 +183,7 @@
             <if test="SCS_SDT_CODE != null">SCS_SDT_CODE,</if>
             <if test="SCS_METHOD_TYPE != null">SCS_METHOD_TYPE,</if>
             <if test="SCS_TYPE != null">SCS_TYPE,</if>
+            <if test="SCS_IS_STUDENT_YEAR != null">SCS_IS_STUDENT_YEAR,</if>
             <if test="SCC_IS_VISIBLE != null">SCC_IS_VISIBLE,</if>
             <if test="SCS_ORDER != null">SCS_ORDER,</if>
             <if test="SCS_REMARK != null">SCS_REMARK,</if>
@@ -195,6 +196,7 @@
             <if test="SCS_SDT_CODE != null">#{SCS_SDT_CODE},</if>
             <if test="SCS_METHOD_TYPE != null">#{SCS_METHOD_TYPE},</if>
             <if test="SCS_TYPE != null">#{SCS_TYPE},</if>
+            <if test="SCS_IS_STUDENT_YEAR != null">#{SCS_IS_STUDENT_YEAR},</if>
             <if test="SCC_IS_VISIBLE != null">#{SCC_IS_VISIBLE},</if>
             <if test="SCS_ORDER != null">#{SCS_ORDER},</if>
             <if test="SCS_REMARK != null">#{SCS_REMARK},</if>
@@ -212,6 +214,7 @@
             <if test="SCS_SDT_CODE != null">SCS_SDT_CODE=#{SCS_SDT_CODE},</if>
             <if test="SCS_METHOD_TYPE != null">SCS_METHOD_TYPE=#{SCS_METHOD_TYPE},</if>
             <if test="SCS_TYPE != null">SCS_TYPE=#{SCS_TYPE},</if>
+            <if test="SCS_IS_STUDENT_YEAR != null">SCS_IS_STUDENT_YEAR=#{SCS_IS_STUDENT_YEAR},</if>
             <if test="SCC_IS_VISIBLE != null">SCC_IS_VISIBLE=#{SCC_IS_VISIBLE},</if>
             <if test="SCS_ORDER != null">SCS_ORDER=#{SCS_ORDER},</if>
             <if test="SCS_REMARK != null">SCS_REMARK=#{SCS_REMARK},</if>

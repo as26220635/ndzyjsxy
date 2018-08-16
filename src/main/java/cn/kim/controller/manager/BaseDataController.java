@@ -1,9 +1,11 @@
 package cn.kim.controller.manager;
 
+import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.eu.ButtonType;
 import cn.kim.common.eu.ProcessShowStatus;
+import cn.kim.common.eu.UseType;
 import cn.kim.entity.DataTablesView;
 import cn.kim.exception.CustomException;
 import cn.kim.service.*;
@@ -64,6 +66,7 @@ public class BaseDataController extends BaseController {
      * @throws Exception
      */
     @GetMapping("/admin/dataGrid/{ID}")
+    @SystemControllerLog(useType = UseType.USE, isDataGrid = true, event = "查看列表")
     public String dataGrid(@PathVariable("ID") String ID, @RequestParam Map<String, Object> extra, Model model) throws Exception {
         isInvalidKey(extra);
         try {
@@ -242,7 +245,7 @@ public class BaseDataController extends BaseController {
                 //连接自带额外参数
                 menuUrl = CommonUtil.getUrlParamsJoin(menuUrl, extraParams);
 
-                detail.put("SM_URL", menuUrl.startsWith("/") ? menuUrl.substring(1,menuUrl.length()) : menuUrl);
+                detail.put("SM_URL", menuUrl.startsWith("/") ? menuUrl.substring(1, menuUrl.length()) : menuUrl);
             });
             //查询菜单
             model.addAttribute("MENU", menu);

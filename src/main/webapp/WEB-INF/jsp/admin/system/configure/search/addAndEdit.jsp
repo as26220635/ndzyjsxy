@@ -32,6 +32,11 @@
         <s:combobox sdtCode="SYS_SEARCH_TYPE" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCS_TYPE")}'
                     value="${SEARCH.SCS_TYPE}" defaultValue="1"></s:combobox>
     </div>
+    <div class="form-group has-feedback" id="SCS_IS_STUDENT_YEAR_DIV">
+        <label>是否学年:</label>
+        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCS_IS_STUDENT_YEAR")}'
+                    value="${SEARCH.SCS_IS_STUDENT_YEAR}" defaultValue="1"></s:combobox>
+    </div>
     <div class="form-group has-feedback">
         <label>查询条件:</label>
         <s:combobox sdtCode="SYS_SEARCH_METHOD" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCS_METHOD_TYPE")}'
@@ -55,8 +60,21 @@
 </form>
 
 <script>
+    switchIsStudentYear('${SEARCH.SCS_TYPE}');
+    $('#SCS_TYPE').on('change', function () {
+        switchIsStudentYear($(this).val());
+    });
+
     validator.init({
         //验证表单
         form: $('#addAndEditForm'),
     });
+
+    function switchIsStudentYear(val) {
+        if (val == 4) {
+            $('#SCS_IS_STUDENT_YEAR_DIV').show();
+        } else {
+            $('#SCS_IS_STUDENT_YEAR_DIV').hide();
+        }
+    }
 </script>

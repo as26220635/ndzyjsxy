@@ -98,7 +98,7 @@ public class ExceptionController extends BaseController {
 
         if (!ValidateUtil.isEmpty(AuthcUtil.getCurrent()) && SessionUtil.sqlException()) {
             //记录SQL错误日志
-            LogUtil.recordLog(request, "SQL运行错误", UseType.SYSTEM.getType(), SystemEnum.SYSTEM.toString(), "SQL运行错误超过上限错误,已被退出系统!", Attribute.STATUS_ERROR);
+            LogUtil.recordLog("SQL运行错误", "SQL运行错误超过上限错误,已被退出系统!", UseType.SYSTEM.getType(), Attribute.STATUS_ERROR);
 
             logger.error("SQL运行错误:" + ex.getMessage(), Tips.LOG_ERROR);
             //SQL错误超出次数
@@ -112,7 +112,7 @@ public class ExceptionController extends BaseController {
                 request.getRequestDispatcher(Attribute.RECEPTION_ERROR).forward(request, response);
             }
             //记录SQL错误日志
-            LogUtil.recordLog(request, "SQL运行错误", UseType.SYSTEM.getType(), SystemEnum.SYSTEM.toString(), "SQL运行错误:" + ex.getMessage(), Attribute.STATUS_ERROR);
+            LogUtil.recordLog("SQL运行错误", "SQL运行错误:" + ex.getMessage(), UseType.SYSTEM.getType(), Attribute.STATUS_ERROR);
 
             logger.error("SQL运行错误:" + ex.getMessage(), Tips.LOG_ERROR);
         }

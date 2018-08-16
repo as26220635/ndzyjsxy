@@ -5,6 +5,7 @@ import cn.kim.common.attr.MagicValue;
 import cn.kim.controller.ManagerController;
 import cn.kim.controller.reception.home.MyHomeController;
 import cn.kim.tools.HttpClient;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import org.apache.shiro.cache.Cache;
@@ -100,38 +101,22 @@ public class HttpUtil {
      * @param ip
      * @return
      */
-    public static Map<String, String> getIpAddressName(String ip) {
-        Map<String, String> result = Maps.newHashMapWithExpectedSize(12);
+    public static String getIpAddressName(String ip) {
+        String result = "未知";
 
         Map<String, String> params = Maps.newHashMapWithExpectedSize(1);
-        params.put("ip", ip);
+        params.put("query", "59.56.176.120");
         HttpClient httpClient = new HttpClient();
-        Map<String, Object> getMap = httpClient.get(ConfigProperties.TAOBAO_IP, params);
-        JSONObject jsonObject = JSONObject.parseObject(TextUtil.toString(getMap.get(MagicValue.DESC)));
+        Map<String, Object> getMap = httpClient.get(ConfigProperties.IP_SEARCH_URL, params);
+        JSONObject jsonObject = JSONObject.parseObject(TextUtil.getSubBetween(TextUtil.toString(getMap.get(MagicValue.DESC)),"/\\*\\*/ip(",");"));
+        JSONArray dataArray = JSONArray.parseArray(jsonObject.getString("data"));
 
-        if (ValidateUtil.isEmpty(jsonObject) || ValidateUtil.isEmpty(jsonObject.get("data"))) {
-            result.put("code", "1");
+        if (ValidateUtil.isEmpty(dataArray) || ValidateUtil.isEmpty(dataArray) || dataArray.size() == 0) {
             return result;
         }
 
-        JSONObject data = jsonObject.getJSONObject("data");
-
-        result.put("code", jsonObject.getString("code"));
-        //0成功1失败
-        if (MagicValue.ZERO.equals(jsonObject.getString("code"))) {
-            result.put("country", TextUtil.toString(data.get("country")));
-            result.put("area", TextUtil.toString(data.get("area")));
-            result.put("region", TextUtil.toString(data.get("region")));
-            result.put("city", TextUtil.toString(data.get("city")));
-            result.put("isp", TextUtil.toString(data.get("isp")));
-            result.put("county", TextUtil.toString(data.get("county")));
-            result.put("region_id", TextUtil.toString(data.get("region_id")));
-            result.put("country_id", TextUtil.toString(data.get("country_id")));
-            result.put("area_id", TextUtil.toString(data.get("area_id")));
-            result.put("county_id", TextUtil.toString(data.get("county_id")));
-            result.put("isp_id", TextUtil.toString(data.get("isp_id")));
-        }
-
+        JSONObject data = dataArray.getJSONObject(0);
+        result = data.getString("location");
         return result;
     }
 

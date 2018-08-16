@@ -60,10 +60,11 @@ public class HttpClient {
                     nvps.add(new BasicNameValuePair(key, params.get(key)));
                 }
                 str = EntityUtils.toString(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
-                str = "?" + str;
+                str = url.contains("?") ? "&" + str : "?" + str;
             } catch (IOException e) {
             }
         }
+
         //实例化get方法
         HttpGet httpGet = new HttpGet(url + str);
         RequestConfig requestConfig = RequestConfig.custom()

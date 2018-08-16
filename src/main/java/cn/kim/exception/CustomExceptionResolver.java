@@ -69,7 +69,7 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
                 String error = "文件：" + stackTraceElement.getFileName() + "，错误行数：" + stackTraceElement.getLineNumber() +
                         "，方法：" + stackTraceElement.getMethodName() + "，错误内容：" + message;
 
-                LogUtil.recordLog(request, "系统发现异常", UseType.SYSTEM.getType(), SystemEnum.SYSTEM.toString(), error, Attribute.STATUS_ERROR);
+                LogUtil.recordLog("系统发现异常", error, UseType.SYSTEM.getType(), Attribute.STATUS_ERROR);
                 logger.error(error);
             } catch (Exception e) {
             }

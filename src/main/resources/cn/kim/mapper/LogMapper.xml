@@ -50,7 +50,6 @@
             <if test="SL_RESULT != null">SL_RESULT,</if>
             <if test="SL_ENTERTIME != null">SL_ENTERTIME,</if>
             <if test="SL_TYPE != null">SL_TYPE,</if>
-            <if test="SL_USETYPE != null">SL_USETYPE,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="ID != null">#{ID},</if>
@@ -61,7 +60,6 @@
             <if test="SL_RESULT != null">#{SL_RESULT},</if>
             <if test="SL_ENTERTIME != null">#{SL_ENTERTIME},</if>
             <if test="SL_TYPE != null">#{SL_TYPE},</if>
-            <if test="SL_USETYPE != null">#{SL_USETYPE},</if>
         </trim>
     </insert>
 

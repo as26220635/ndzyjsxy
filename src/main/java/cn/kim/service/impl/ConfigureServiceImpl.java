@@ -318,6 +318,7 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
             paramMap.put("SCS_SDT_CODE", mapParam.get("SCS_SDT_CODE"));
             paramMap.put("SCS_METHOD_TYPE", mapParam.get("SCS_METHOD_TYPE"));
             paramMap.put("SCS_TYPE", mapParam.get("SCS_TYPE"));
+            paramMap.put("SCS_IS_STUDENT_YEAR", mapParam.get("SCS_IS_STUDENT_YEAR"));
             paramMap.put("SCS_REMARK", mapParam.get("SCS_REMARK"));
             paramMap.put("SCC_IS_VISIBLE", mapParam.get("SCC_IS_VISIBLE"));
             paramMap.put("SCS_ORDER", mapParam.get("SCS_ORDER"));

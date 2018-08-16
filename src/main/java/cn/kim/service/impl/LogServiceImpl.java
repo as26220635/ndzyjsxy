@@ -70,7 +70,6 @@ public class LogServiceImpl extends BaseServiceImpl implements LogService {
         paramMap.put("SL_RESULT", mapParam.get("SL_RESULT"));
         paramMap.put("SL_ENTERTIME", mapParam.get("SL_ENTERTIME"));
         paramMap.put("SL_TYPE", mapParam.get("SL_TYPE"));
-        paramMap.put("SL_USETYPE", mapParam.get("SL_USETYPE"));
         //插入日志
         baseDao.insert(NameSpace.LogMapper, "insertLog", paramMap);
 

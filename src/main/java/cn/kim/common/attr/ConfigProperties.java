@@ -21,7 +21,7 @@ public class ConfigProperties {
     //数据库ip
     public static String DB_HOSTIP;
     //淘宝查询IP地址的方法
-    public static String TAOBAO_IP;
+    public static String IP_SEARCH_URL;
     /**
      * 上传可以支持类型
      */
@@ -67,9 +67,9 @@ public class ConfigProperties {
         DB_HOSTIP = dbHostip;
     }
 
-    @Value("#{config['taobao.ip.url']}")
-    public void setTaobaoIp(String taobaoIp) {
-        TAOBAO_IP = taobaoIp;
+    @Value("#{config['ip.search.url']}")
+    public void setIpSearchUrl(String ipSearchUrl) {
+        IP_SEARCH_URL = ipSearchUrl;
     }
 
     @Value("#{config['allow.suffix.img']}")

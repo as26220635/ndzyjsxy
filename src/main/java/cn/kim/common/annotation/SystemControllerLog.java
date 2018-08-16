@@ -19,4 +19,11 @@ public @interface SystemControllerLog {
     //日志的操作
     String event() default "";
 
+    /**
+     * 是否是查看操作列表
+     *
+     * @return
+     */
+    boolean isDataGrid() default false;
+
 }
