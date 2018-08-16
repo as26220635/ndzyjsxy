@@ -45,21 +45,21 @@ public class AidProcessCheck extends BaseData {
             paramMap.put("BSA_YEAR",aid.get("BAF_YEAR"));
             paramMap.put("BSA_SEMESTER",aid.get("BAF_SEMESTER"));
             Map<String,Object> attendance = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentAttendanceGroupByCount", paramMap);
-//            if(isEmpty(attendance)){
-//                throw new CustomException("学生没有考勤数据,请检查!");
-//            }
-//            //多少节迟到算旷课默认2节
-//            int lateProportion = toInt(AllocationUtil.get("LATE_PROPORTION",2));
-//            //多少节旷课算处分默认40节
-//            int absenteeismProportion = toInt(AllocationUtil.get("ABSENTEEISM_PROPORTION",40));
-//            //迟到节数
-//            int late = toInt(attendance.get("BSA_LATE"));
-//            //旷课节数
-//            int absenteeism = toInt(attendance.get("BSA_ABSENTEEISM"));
-//            //是否算处分
-//            if ((late / lateProportion) + absenteeism >= absenteeismProportion) {
-//                throw new CustomException("学生迟到旷课节数达到处分不能提交流程!");
-//            }
+            if(isEmpty(attendance)){
+                throw new CustomException("学生没有考勤数据,请检查!");
+            }
+            //多少节迟到算旷课默认2节
+            int lateProportion = toInt(AllocationUtil.get("LATE_PROPORTION",2));
+            //多少节旷课算处分默认40节
+            int absenteeismProportion = toInt(AllocationUtil.get("ABSENTEEISM_PROPORTION",40));
+            //迟到节数
+            int late = toInt(attendance.get("BSA_LATE"));
+            //旷课节数
+            int absenteeism = toInt(attendance.get("BSA_ABSENTEEISM"));
+            //是否算处分
+            if ((late / lateProportion) + absenteeism >= absenteeismProportion) {
+                throw new CustomException("学生迟到旷课节数达到处分不能提交流程!");
+            }
 
         } catch (Exception e) {
             error = e.getMessage();
