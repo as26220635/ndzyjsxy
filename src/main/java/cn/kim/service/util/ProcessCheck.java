@@ -30,6 +30,12 @@ public class ProcessCheck extends BaseServiceImpl {
             AidProcessCheck aidProcessCheck = new AidProcessCheck();
             error += aidProcessCheck.checkStudentPunishment(run);
         }
+        //资助管理-年度表彰
+        if (Process.AID.toString().equals(busProcess) && Process.AID_COMMEND.toString().equals(busProcess2)) {
+            AidProcessCheck aidProcessCheck = new AidProcessCheck();
+            error += aidProcessCheck.checkStudentPunishment(run);
+        }
+
 
         return error;
     }

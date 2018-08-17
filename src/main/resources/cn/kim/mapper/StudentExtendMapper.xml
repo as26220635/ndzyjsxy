@@ -17,19 +17,24 @@
     </select>
 
     <!--查询学生考勤数量-->
-    <select id="selectStudentAttendanceGroupByCount" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT BS_ID,SUM(BSA_LATE) AS BSA_LATE,SUM(BSA_ABSENTEEISM) AS BSA_ABSENTEEISM FROM BUS_STUDENT_ATTENDANCE
-        <where>
-            <if test="BS_ID != NULL and BS_ID != ''">
-                AND BS_ID = #{BS_ID}
-            </if>
-            <if test="BSA_YEAR != NULL and BSA_YEAR != ''">
-                AND BSA_YEAR = #{BSA_YEAR}
-            </if>
-            <if test="BSA_SEMESTER != NULL and BSA_SEMESTER != ''">
-                AND BSA_SEMESTER = #{BSA_SEMESTER}
-            </if>
-        </where>
+    <select id="selectStudentAttendanceGroupBySum" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT MAX(BSA_ABSENTEEISM)
+        FROM(
+            SELECT BS_ID,BSA_YEAR,BSA_SEMESTER,(SUM(BSA_LATE) / ${LATE_PROPORTION}) + SUM(BSA_ABSENTEEISM) AS BSA_ABSENTEEISM
+            FROM BUS_STUDENT_ATTENDANCE
+            <where>
+                <if test="BS_ID != NULL and BS_ID != ''">
+                    AND BS_ID = #{BS_ID}
+                </if>
+                <if test="BSA_YEAR != NULL and BSA_YEAR != ''">
+                    AND BSA_YEAR = #{BSA_YEAR}
+                </if>
+                <if test="BSA_SEMESTER != NULL and BSA_SEMESTER != ''">
+                    AND BSA_SEMESTER = #{BSA_SEMESTER}
+                </if>
+            </where>
+            GROUP BY BS_ID,BSA_YEAR,BSA_SEMESTER
+        )BSA
         GROUP BY BS_ID,BSA_YEAR,BSA_SEMESTER
     </select>
 

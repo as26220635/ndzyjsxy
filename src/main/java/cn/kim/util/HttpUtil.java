@@ -108,7 +108,7 @@ public class HttpUtil {
         params.put("query", ip);
         HttpClient httpClient = new HttpClient();
         Map<String, Object> getMap = httpClient.get(ConfigProperties.IP_SEARCH_URL, params);
-        System.out.println(TextUtil.getSubBetween(TextUtil.toString(getMap.get(MagicValue.DESC)), "/\\*\\*/ip\\(", "\\);"));
+
         JSONObject jsonObject = JSONObject.parseObject(TextUtil.getSubBetween(TextUtil.toString(getMap.get(MagicValue.DESC)), "/\\*\\*/ip\\(", "\\);"));
         JSONArray dataArray = JSONArray.parseArray(jsonObject.getString("data"));
 
