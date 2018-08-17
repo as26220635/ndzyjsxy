@@ -6,12 +6,12 @@
     <select id="selectStudentAttendance" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT BSA.*,BS.BS_NAME
         FROM(
-            SELECT * FROM BUS_STUDENT_ATTENDANCE
-            <where>
-                <if test ="ID != NULL and ID != ''">
-                    AND ID = #{ID}
-                </if>
-            </where>
+        SELECT * FROM BUS_STUDENT_ATTENDANCE
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
         )BSA
         INNER JOIN BUS_STUDENT BS ON BS.ID = BSA.BS_ID
     </select>
@@ -20,13 +20,13 @@
     <select id="selectStudentAttendanceGroupByCount" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT BS_ID,SUM(BSA_LATE) AS BSA_LATE,SUM(BSA_ABSENTEEISM) AS BSA_ABSENTEEISM FROM BUS_STUDENT_ATTENDANCE
         <where>
-            <if test ="BS_ID != NULL and BS_ID != ''">
+            <if test="BS_ID != NULL and BS_ID != ''">
                 AND BS_ID = #{BS_ID}
             </if>
-            <if test ="BSA_YEAR != NULL and BSA_YEAR != ''">
+            <if test="BSA_YEAR != NULL and BSA_YEAR != ''">
                 AND BSA_YEAR = #{BSA_YEAR}
             </if>
-            <if test ="BSA_SEMESTER != NULL and BSA_SEMESTER != ''">
+            <if test="BSA_SEMESTER != NULL and BSA_SEMESTER != ''">
                 AND BSA_SEMESTER = #{BSA_SEMESTER}
             </if>
         </where>
@@ -86,11 +86,11 @@
         SELECT BSP.*,BS.BS_NAME
         FROM(
         SELECT * FROM BUS_STUDENT_PUNISHMENT
-            <where>
-                <if test="ID != NULL and ID != ''">
-                    AND ID = #{ID}
-                </if>
-            </where>
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
         )BSP
         INNER JOIN BUS_STUDENT BS ON BS.ID = BSP.BS_ID
     </select>
@@ -111,7 +111,7 @@
     <!--插入处分-->
     <insert id="insertStudentPunishment" parameterType="java.util.Map">
         INSERT INTO BUS_STUDENT_PUNISHMENT
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="BS_ID != null">BS_ID,</if>
             <if test="BSP_TITLE != null">BSP_TITLE,</if>
@@ -124,7 +124,7 @@
             <if test="BSP_CANCEL_TIME != null">BSP_CANCEL_TIME,</if>
             <if test="BSP_ENTRY_TIME != null">BSP_ENTRY_TIME,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="BS_ID != null">#{BS_ID},</if>
             <if test="BSP_TITLE != null">#{BSP_TITLE},</if>
@@ -175,27 +175,46 @@
     <select id="selectStudentComprehensive" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT BSC.*,BS.BC_ID,BS.BS_NAME,BC.BC_NAME
         FROM(
-            SELECT * FROM BUS_STUDENT_COMPREHENSIVE
-            <where>
-                <if test ="ID != NULL and ID != ''">
-                    AND ID = #{ID}
-                </if>
-                <if test ="BS_ID != NULL and BS_ID != ''">
-                    AND BS_ID = #{BS_ID}
-                </if>
-                <if test ="BSC_YEAR != NULL and BSC_YEAR != ''">
-                    AND BSC_YEAR = #{BSC_YEAR}
-                </if>
-                <if test ="BSC_SEMESTER != NULL and BSC_SEMESTER != ''">
-                    AND BSC_SEMESTER = #{BSC_SEMESTER}
-                </if>
-            </where>
+        SELECT * FROM BUS_STUDENT_COMPREHENSIVE
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="BS_ID != NULL and BS_ID != ''">
+                AND BS_ID = #{BS_ID}
+            </if>
+            <if test="BSC_YEAR != NULL and BSC_YEAR != ''">
+                AND BSC_YEAR = #{BSC_YEAR}
+            </if>
+            <if test="BSC_SEMESTER != NULL and BSC_SEMESTER != ''">
+                AND BSC_SEMESTER = #{BSC_SEMESTER}
+            </if>
+        </where>
         )BSC
         INNER JOIN BUS_STUDENT BS ON BS.ID = BSC.BS_ID
         INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
         <where>
-            <if test ="BC_ID != NULL and BC_ID != ''">
+            <if test="BC_ID != NULL and BC_ID != ''">
                 AND BC_ID = #{BC_ID}
+            </if>
+        </where>
+    </select>
+
+    <!--查询综合素质测评数量-->
+    <select id="selectStudentComprehensiveCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BUS_STUDENT_COMPREHENSIVE
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="BS_ID != NULL and BS_ID != ''">
+                AND BS_ID = #{BS_ID}
+            </if>
+            <if test="BSC_YEAR != NULL and BSC_YEAR != ''">
+                AND BSC_YEAR = #{BSC_YEAR}
+            </if>
+            <if test="BSC_SEMESTER != NULL and BSC_SEMESTER != ''">
+                AND BSC_SEMESTER = #{BSC_SEMESTER}
             </if>
         </where>
     </select>
@@ -225,7 +244,7 @@
     <!--插入综合素质测评-->
     <insert id="insertStudentComprehensive" parameterType="java.util.Map">
         INSERT INTO BUS_STUDENT_COMPREHENSIVE
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="BS_ID != null">BS_ID,</if>
             <if test="BSC_EDUCATION_PROPORTION != null">BSC_EDUCATION_PROPORTION,</if>
@@ -256,7 +275,7 @@
             <if test="BSC_VOLUNTEER_SCORE != null">BSC_VOLUNTEER_SCORE,</if>
             <if test="BSC_REMARKS != null">BSC_REMARKS,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="BS_ID != null">#{BS_ID},</if>
             <if test="BSC_EDUCATION_PROPORTION != null">#{BSC_EDUCATION_PROPORTION},</if>
@@ -296,7 +315,8 @@
             <if test="ID != null">ID=#{ID},</if>
             <if test="BS_ID != null">BS_ID=#{BS_ID},</if>
             <if test="BSC_EDUCATION_PROPORTION != null">BSC_EDUCATION_PROPORTION=#{BSC_EDUCATION_PROPORTION},</if>
-            <if test="BSC_INTELLECTUAL_PROPORTION != null">BSC_INTELLECTUAL_PROPORTION=#{BSC_INTELLECTUAL_PROPORTION},</if>
+            <if test="BSC_INTELLECTUAL_PROPORTION != null">BSC_INTELLECTUAL_PROPORTION=#{BSC_INTELLECTUAL_PROPORTION},
+            </if>
             <if test="BSC_VOLUNTEER_PROPORTION != null">BSC_VOLUNTEER_PROPORTION=#{BSC_VOLUNTEER_PROPORTION},</if>
             <if test="BSC_YEAR != null">BSC_YEAR=#{BSC_YEAR},</if>
             <if test="BSC_SEMESTER != null">BSC_SEMESTER=#{BSC_SEMESTER},</if>

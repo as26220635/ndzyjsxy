@@ -52,7 +52,7 @@
 										</span>
                                         <input type="text" class="form-control" placeholder="账号..." id="username"
                                                name="username" value="<c:out value="${username}" escapeXml="true" />"
-                                               minlength="2" maxlength="16" required>
+                                               minlength="2" maxlength="30" required>
                                     </div>
 
                                     <div class="form-group input-group">
@@ -61,7 +61,7 @@
 											<i class="mdi mdi-lock-outline"></i>
 										</span>
                                         <input type="password" class="form-control" placeholder="密码..." id="password"
-                                               name="password" minlength="6" maxlength="16" required/>
+                                               name="password" minlength="6" maxlength="30" required/>
                                     </div>
                                     <div class="form-group input-group captcha-input-group">
                                         <span class="input-group-addon" data-toggle="tooltip" data-placement="left"

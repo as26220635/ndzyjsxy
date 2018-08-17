@@ -384,10 +384,10 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
             String id = toString(mapParam.get("ID"));
 
             paramMap.put("SR_ID", id);
-            //删除角色关联菜单
-            baseDao.delete(NameSpace.RoleMapper, "deleteRoleMenu", paramMap);
             //删除角色关联按钮
             baseDao.delete(NameSpace.RoleMapper, "deleteRoleButton", paramMap);
+            //删除角色关联菜单
+            baseDao.delete(NameSpace.RoleMapper, "deleteRoleMenu", paramMap);
             //删除角色关联用户表
             baseDao.delete(NameSpace.OperatorMapper, "deleteOperatorRole", paramMap);
             //删除角色表

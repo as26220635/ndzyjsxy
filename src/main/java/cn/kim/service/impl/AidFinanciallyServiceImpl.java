@@ -250,7 +250,10 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
             paramMap.put("BS_ID", student.get("ID"));
             paramMap.put("BAF_YEAR", year);
-            paramMap.put("BAF_SEMESTER", semester);
+            //年度表彰没有学期
+            if (aidType == AidType.COMMEND) {
+                paramMap.put("BAF_SEMESTER", semester);
+            }
 
             paramMap.put("BAF_AID_TYPE", DictUtil.getDictCode(sdtCode, BAF_AID_TYPE));
             paramMap.put("BAF_TYPE", aidType.toString());
@@ -328,11 +331,21 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.clear();
                     paramMap.put("BS_ID", student.get("ID"));
                     paramMap.put("BSC_YEAR", year);
-                    paramMap.put("BSC_SEMESTER", semester);
 
-                    Map<String, Object> comprehensive = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensive", paramMap);
-                    if (isEmpty(comprehensive)) {
-                        resultList.add(packErrorData(row, "学生综合素质测评没有导入"));
+                    //年度表彰计算一年的数据
+                    if (aidType == AidType.COMMEND) {
+                        paramMap.put("BSC_SEMESTER", semester);
+                    }
+
+                    int count = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensiveCount", paramMap);
+                    if (aidType == AidType.COMMEND) {
+                        if (count < 2) {
+                            resultList.add(packErrorData(row, "学生综合素质测评没有导入,请检查是否上下学期都导入"));
+                        }
+                    } else {
+                        if (count == 0) {
+                            resultList.add(packErrorData(row, "学生综合素质测评没有导入"));
+                        }
                     }
 
                     //检测是否重复导入
@@ -340,7 +353,9 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.put("BS_ID", student.get("ID"));
                     paramMap.put("BAF_TYPE", aidType.getType());
                     paramMap.put("BAF_YEAR", year);
-                    paramMap.put("BAF_SEMESTER", semester);
+                    if (aidType == AidType.COMMEND) {
+                        paramMap.put("BAF_SEMESTER", semester);
+                    }
 
                     Map<String, Object> aid = baseDao.selectOne(NameSpace.AidFinanciallyMapper, "selectAidFinancially", paramMap);
                     if (!isEmpty(aid)) {

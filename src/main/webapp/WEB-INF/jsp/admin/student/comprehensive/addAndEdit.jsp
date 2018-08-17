@@ -14,7 +14,7 @@
             <div class="box" id="boxContentDiv">
                 <div class="box-header">
                     <div class="col-md-12 btn-group-header">
-                        <s:button back="false"></s:button>
+                        <s:button></s:button>
                     </div>
                 </div>
                 <div class="box-body">

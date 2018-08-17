@@ -124,18 +124,16 @@
 
     <!--删除角色关联菜单-->
     <delete id="deleteRoleMenu" parameterType="java.util.Map">
-        DELETE FROM SYS_ROLE_MENU
-        <where>
-            <if test="ID != NULL and ID != ''">
-                AND ID = #{ID}
-            </if>
-            <if test="SR_ID != NULL and SR_ID != ''">
-                AND SR_ID = #{SR_ID}
-            </if>
-            <if test="SM_ID != NULL and SM_ID != ''">
-                AND SM_ID = #{SM_ID}
-            </if>
-        </where>
+        DELETE FROM SYS_ROLE_MENU WHERE
+        <if test="ID != NULL and ID != ''">
+            ID = #{ID}
+        </if>
+        <if test="SR_ID != NULL and SR_ID != ''">
+            SR_ID = #{SR_ID}
+        </if>
+        <if test="SM_ID != NULL and SM_ID != ''">
+            SM_ID = #{SM_ID}
+        </if>
     </delete>
 
     <!--查询角色关联按钮-->
@@ -184,17 +182,18 @@
 
     <!--删除角色关联按钮-->
     <delete id="deleteRoleButton" parameterType="java.util.Map">
-        DELETE FROM SYS_ROLE_BUTTON
-        <where>
-            <if test="ID != NULL and ID != ''">
-                AND ID = #{ID}
-            </if>
-            <if test="SRM_ID != NULL and SRM_ID != ''">
-                AND SRM_ID = #{SRM_ID}
-            </if>
-            <if test="SB_ID != NULL and SB_ID != ''">
-                AND SB_ID = #{SB_ID}
-            </if>
-        </where>
+        DELETE FROM SYS_ROLE_BUTTON WHERE
+        <if test="ID != NULL and ID != ''">
+            ID = #{ID}
+        </if>
+        <if test="SRM_ID != NULL and SRM_ID != ''">
+            SRM_ID = #{SRM_ID}
+        </if>
+        <if test="SB_ID != NULL and SB_ID != ''">
+            SB_ID = #{SB_ID}
+        </if>
+        <if test="SR_ID != NULL and SR_ID != ''">
+            SRM_ID IN (SELECT ID FROM SYS_ROLE_MENU WHERE SR_ID = #{SR_ID})
+        </if>
     </delete>
 </mapper>

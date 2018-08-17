@@ -157,42 +157,45 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
 
                 querySet.setWhere(processWhereBuilder.toString());
 
-                //判断流程定义是否过滤授权
-                StringBuilder authorizationBuilder = new StringBuilder();
+                //拥有查看权限不用过滤
+                if (!isProcessAll) {
+                    //判断流程定义是否过滤授权
+                    StringBuilder authorizationBuilder = new StringBuilder();
 
-                for (String definitionId : processDefinitionIds.split(Attribute.SERVICE_SPLIT)) {
-                    paramMap.clear();
-                    paramMap.put("ID", definitionId);
-                    Map<String, Object> definition = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinition", paramMap);
-                    paramMap.clear();
-                    //院系
-                    if (!isEmpty(definition.get("SPD_COLLEGE_FIELD"))) {
-                        paramMap.put(AuthorizationType.COLLEGE.toString(), definition.get("SPD_COLLEGE_FIELD"));
-                    }
-                    //系部
-                    if (!isEmpty(definition.get("SPD_DEPARTMENT_FIELD"))) {
-                        paramMap.put(AuthorizationType.DEPARTMENT.toString(), definition.get("SPD_DEPARTMENT_FIELD"));
-                    }
-                    //班级
-                    if (!isEmpty(definition.get("SPD_CLASS_FIELD"))) {
-                        paramMap.put(AuthorizationType.CLS.toString(), definition.get("SPD_CLASS_FIELD"));
-                    }
+                    for (String definitionId : processDefinitionIds.split(Attribute.SERVICE_SPLIT)) {
+                        paramMap.clear();
+                        paramMap.put("ID", definitionId);
+                        Map<String, Object> definition = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessDefinition", paramMap);
+                        paramMap.clear();
+                        //院系
+                        if (!isEmpty(definition.get("SPD_COLLEGE_FIELD"))) {
+                            paramMap.put(AuthorizationType.COLLEGE.toString(), definition.get("SPD_COLLEGE_FIELD"));
+                        }
+                        //系部
+                        if (!isEmpty(definition.get("SPD_DEPARTMENT_FIELD"))) {
+                            paramMap.put(AuthorizationType.DEPARTMENT.toString(), definition.get("SPD_DEPARTMENT_FIELD"));
+                        }
+                        //班级
+                        if (!isEmpty(definition.get("SPD_CLASS_FIELD"))) {
+                            paramMap.put(AuthorizationType.CLS.toString(), definition.get("SPD_CLASS_FIELD"));
+                        }
 
-                    String authorizationWhere = getAuthorizationWhere(true, paramMap);
-                    authorizationBuilder.append(isEmpty(authorizationWhere) ? "" : "(" + TextUtil.interceptSymbol(authorizationWhere, " AND ") + ") OR ");
-                }
-                //添加or条件
+                        String authorizationWhere = getAuthorizationWhere(true, paramMap);
+                        authorizationBuilder.append(isEmpty(authorizationWhere) ? "" : "(" + TextUtil.interceptSymbol(authorizationWhere, " AND ") + ") OR ");
+                    }
+                    //添加or条件
 //                (BDM_ID IN(48601265252335616)  AND BC_ID IN(48656602449838080) ) OR
-                String authorizationWhere = authorizationBuilder.toString();
-                if (!isEmpty(authorizationWhere)) {
-                    //清空
-                    authorizationBuilder.delete(0, authorizationBuilder.length());
-                    authorizationBuilder.append("AND (");
-                    authorizationBuilder.append(TextUtil.interceptSymbol(authorizationWhere, " OR "));
-                    authorizationBuilder.append(")");
+                    String authorizationWhere = authorizationBuilder.toString();
+                    if (!isEmpty(authorizationWhere)) {
+                        //清空
+                        authorizationBuilder.delete(0, authorizationBuilder.length());
+                        authorizationBuilder.append("AND (");
+                        authorizationBuilder.append(TextUtil.interceptSymbol(authorizationWhere, " OR "));
+                        authorizationBuilder.append(")");
+                    }
+                    //过滤授权
+                    querySet.setWhere(authorizationBuilder.toString());
                 }
-                //过滤授权
-                querySet.setWhere(authorizationBuilder.toString());
                 isProcess = true;
             }
         }

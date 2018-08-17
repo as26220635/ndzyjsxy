@@ -1,7 +1,9 @@
 package cn.kim.service.util.check;
 
 import cn.kim.common.BaseData;
+import cn.kim.common.eu.AidType;
 import cn.kim.common.eu.NameSpace;
+import cn.kim.common.eu.Process;
 import cn.kim.dao.BaseDao;
 import cn.kim.entity.ProcessRunBean;
 import cn.kim.exception.CustomException;
@@ -25,7 +27,8 @@ public class AidProcessCheck extends BaseData {
         String error = "";
         String id = run.getBusTableId();
         BaseDao baseDao = run.getBaseDao();
-
+        //流程小类
+        String busProcess2 = run.getBusProcess2();
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             paramMap.put("ID", id);
@@ -43,7 +46,10 @@ public class AidProcessCheck extends BaseData {
             paramMap.clear();
             paramMap.put("BS_ID",aid.get("BS_ID"));
             paramMap.put("BSA_YEAR",aid.get("BAF_YEAR"));
-            paramMap.put("BSA_SEMESTER",aid.get("BAF_SEMESTER"));
+            //学院年度表彰 查询一年数据
+            if(Process.AID_COMMEND.toString().equals(busProcess2)){
+                paramMap.put("BSA_SEMESTER",aid.get("BAF_SEMESTER"));
+            }
             Map<String,Object> attendance = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentAttendanceGroupByCount", paramMap);
             if(isEmpty(attendance)){
                 throw new CustomException("学生没有考勤数据,请检查!");
