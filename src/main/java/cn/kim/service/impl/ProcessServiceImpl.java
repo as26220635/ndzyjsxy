@@ -381,7 +381,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             Map<String, Object> schedule = this.selectProcessSchedule(paramMap);
             //如果为空就插入
             if (isEmpty(schedule) || "0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
-                if(isEmpty(schedule)){
+                if (isEmpty(schedule)) {
                     schedule = Maps.newHashMapWithExpectedSize(16);
                     schedule.put("SPD_ID", definitionId);
                     schedule.put("SPS_TABLE_ID", scheduleTableId);
@@ -607,7 +607,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             }
             //记录日志
             paramMap.clear();
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_PROCESS_DEFINITION);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_PROCESS_DEFINITION);
 
             paramMap.put("ID", id);
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
@@ -634,14 +634,14 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 paramMap.put("SDP_ENTRY_TIME", getSqlDate());
 
                 baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessDefinition", paramMap);
-                resultMap.put(MagicValue.LOG, "添加流程定义:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加流程定义:" + formatColumnName(TableName.SYS_PROCESS_DEFINITION, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectProcessDefinition(oldMap);
 
                 baseDao.update(NameSpace.ProcessFixedMapper, "updateProcessDefinition", paramMap);
-                resultMap.put(MagicValue.LOG, "更新流程定义,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新流程定义,更新前:" + formatColumnName(TableName.SYS_PROCESS_DEFINITION, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_PROCESS_DEFINITION, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -665,7 +665,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_PROCESS_DEFINITION);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_PROCESS_DEFINITION);
 
             paramMap.put("ID", id);
             paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));
@@ -745,7 +745,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessStart", start);
             }
 
-            resultMap.put(MagicValue.LOG, "拷贝流程定义:" + toString(definition));
+            resultMap.put(MagicValue.LOG, "拷贝流程定义:" + formatColumnName(TableName.SYS_PROCESS_DEFINITION, definition));
 
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -805,7 +805,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 throw new CustomException("步骤流程状态重复,请检查!");
             }
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_PROCESS_STEP);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_PROCESS_STEP);
 
             paramMap.put("ID", mapParam.get("ID"));
             paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
@@ -827,14 +827,14 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessStep", paramMap);
-                resultMap.put(MagicValue.LOG, "添加流程步骤:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加流程步骤:" + formatColumnName(TableName.SYS_PROCESS_STEP, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectProcessStep(oldMap);
 
                 baseDao.update(NameSpace.ProcessFixedMapper, "updateProcessStep", paramMap);
-                resultMap.put(MagicValue.LOG, "更新流程步骤,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新流程步骤,更新前:" + formatColumnName(TableName.SYS_PROCESS_STEP, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_PROCESS_STEP, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -866,11 +866,11 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectProcessStep(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_PROCESS_STEP);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_PROCESS_STEP);
 
             baseDao.delete(NameSpace.ProcessFixedMapper, "deleteProcessStep", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除流程步骤,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除流程步骤,信息:" + formatColumnName(TableName.SYS_PROCESS_STEP, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -917,14 +917,14 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessStart", paramMap);
-                resultMap.put(MagicValue.LOG, "添加流程开始角色:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加流程开始角色:" + formatColumnName(TableName.SYS_PROCESS_START, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectProcessStart(oldMap);
 
                 baseDao.update(NameSpace.ProcessFixedMapper, "updateProcessStart", paramMap);
-                resultMap.put(MagicValue.LOG, "更新流程开始角色,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新流程开始角色,更新前:" + formatColumnName(TableName.SYS_PROCESS_START, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_PROCESS_START, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -956,10 +956,10 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectProcessStart(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_PROCESS_START);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_PROCESS_START);
             baseDao.delete(NameSpace.ProcessFixedMapper, "deleteProcessStart", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除流程开始角色,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除流程开始角色,信息:" + formatColumnName(TableName.SYS_PROCESS_START, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -993,7 +993,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(17);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_PROCESS_SCHEDULE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_PROCESS_SCHEDULE);
 
             paramMap.put("ID", mapParam.get("ID"));
             paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
@@ -1019,14 +1019,14 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 }
 
                 baseDao.insert(NameSpace.ProcessMapper, "insertProcessSchedule", paramMap);
-                resultMap.put(MagicValue.LOG, "添加流程进度:" + toString(paramMap));
+//                resultMap.put(MagicValue.LOG, "添加流程进度:" + toString(paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectProcessSchedule(oldMap);
 
                 baseDao.update(NameSpace.ProcessMapper, "updateProcessSchedule", paramMap);
-                resultMap.put(MagicValue.LOG, "更新流程进度,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+//                resultMap.put(MagicValue.LOG, "更新流程进度,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -1098,7 +1098,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
 
             baseDao.delete(NameSpace.ProcessMapper, "deleteProcessSchedule", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除流程进度,信息:" + toString(oldMap));
+//            resultMap.put(MagicValue.LOG, "删除流程进度,信息:" + toString(oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -1156,14 +1156,14 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.ProcessMapper, "insertProcessLog", paramMap);
-                resultMap.put(MagicValue.LOG, "添加流程日志:" + toString(paramMap));
+//                resultMap.put(MagicValue.LOG, "添加流程日志:" + toString(paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectProcessLog(oldMap);
 
                 baseDao.update(NameSpace.ProcessMapper, "updateProcessLog", paramMap);
-                resultMap.put(MagicValue.LOG, "更新流程日志,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+//                resultMap.put(MagicValue.LOG, "更新流程日志,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -1197,7 +1197,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
 
             baseDao.delete(NameSpace.ProcessMapper, "deleteProcessLog", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除流程日志,信息:" + toString(oldMap));
+//            resultMap.put(MagicValue.LOG, "删除流程日志,信息:" + toString(oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

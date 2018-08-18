@@ -184,7 +184,7 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
-    <!--按钮-->
+    <!--时间-->
     <tag>
         <name>datebox</name>
         <tag-class>cn.kim.common.tag.Datebox</tag-class>

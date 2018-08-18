@@ -124,7 +124,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 
             paramMap.clear();
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_ROLE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_ROLE);
             paramMap.put("ID", mapParam.get("ID"));
             paramMap.put("SR_NAME", mapParam.get("SR_NAME"));
             paramMap.put("SR_CODE", mapParam.get("SR_CODE"));
@@ -182,7 +182,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
             oldMap.put("ID", id);
             oldMap = selectRole(oldMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_ROLE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_ROLE);
             baseDao.update(NameSpace.RoleMapper, "updateRole", paramMap);
             resultMap.put(MagicValue.LOG, "更新角色状态,角色:" + toString(oldMap.get("SR_NAME")) + ",状态更新为:" + ParamTypeResolve.statusExplain(mapParam.get("IS_STATUS")));
 
@@ -395,7 +395,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectRole(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_ROLE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_ROLE);
             baseDao.delete(NameSpace.RoleMapper, "deleteRole", paramMap);
 
             resultMap.put(MagicValue.LOG, "删除角色,信息:" + toString(oldMap));

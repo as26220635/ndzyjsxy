@@ -7,6 +7,8 @@ import org.springframework.core.annotation.AliasFor;
  * mapper 命名空间
  */
 public enum NameSpace {
+    //数据库查询
+    DbMapper("cn.kim.mapper.DbMapper"),
     //配置
     AllocationMapper("cn.kim.mapper.AllocationMapper"),
     //管理

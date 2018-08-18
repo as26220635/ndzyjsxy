@@ -50,7 +50,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DIVISION);
 
             paramMap.put("ID", id);
             //父类id默认为0
@@ -70,14 +70,14 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
                 paramMap.put("BD_ENTER_TIME", getDate());
 
                 baseDao.insert(NameSpace.DivisionMapper, "insertDivision", paramMap);
-                resultMap.put(MagicValue.LOG, "添加部门:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加部门:" + formatColumnName(TableName.BUS_DIVISION, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectDivision(oldMap);
 
                 baseDao.update(NameSpace.DivisionMapper, "updateDivision", paramMap);
-                resultMap.put(MagicValue.LOG, "更新部门,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新部门,更新前:" + formatColumnName(TableName.BUS_DIVISION, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_DIVISION, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -109,10 +109,10 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectDivision(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DIVISION);
             baseDao.delete(NameSpace.DivisionMapper, "deleteDivision", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除部门,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除部门,信息:" + formatColumnName(TableName.BUS_DIVISION, paramMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -141,7 +141,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION_PERSONNEL);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DIVISION_PERSONNEL);
 
             paramMap.put("ID", id);
             //父类id默认为0
@@ -158,14 +158,14 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
 
                 //插入部门人员
                 baseDao.insert(NameSpace.DivisionMapper, "insertDivisionPersonnel", paramMap);
-                resultMap.put(MagicValue.LOG, "添加部门人员:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加部门人员:" + formatColumnName(TableName.BUS_DIVISION_PERSONNEL, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectDivisionPersonnel(oldMap);
 
                 baseDao.update(NameSpace.DivisionMapper, "updateDivisionPersonnel", paramMap);
-                resultMap.put(MagicValue.LOG, "更新部门人员,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新部门人员,更新前:" + formatColumnName(TableName.BUS_DIVISION_PERSONNEL, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_DIVISION_PERSONNEL, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -197,10 +197,10 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectDivisionPersonnel(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DIVISION_PERSONNEL);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DIVISION_PERSONNEL);
             baseDao.delete(NameSpace.DivisionMapper, "deleteDivisionPersonnel", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除部门人员,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除部门人员,信息:" + formatColumnName(TableName.BUS_DIVISION_PERSONNEL, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

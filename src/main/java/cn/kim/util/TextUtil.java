@@ -38,6 +38,14 @@ public class TextUtil {
      * 学年正则
      */
     private static final Pattern STUDENT_YEAR_PATTERN = Pattern.compile("20\\d\\d-20\\d\\d");
+    /**
+     * 替换数据库备注字典使用
+     */
+    private static final Pattern DICT_TYPE_PATTERN = Pattern.compile("\\$(.*?)\\$");
+    /**
+     * 替换数据库备注关联表使用
+     */
+    private static final Pattern TABLE_NAME_PATTERN = Pattern.compile("@(.*?)@");
 
     // 将汉字转换为全拼
     public static String getPingYin(String src) {
@@ -480,6 +488,7 @@ public class TextUtil {
 
     /**
      * 是否是学年
+     *
      * @param year
      * @return
      */
@@ -535,5 +544,25 @@ public class TextUtil {
             return m.group(1);
         }
         return "";
+    }
+
+    /**
+     * 移除数据库字典替换格式
+     *
+     * @param soap
+     * @return
+     */
+    public static String removeDictType(String soap) {
+        return soap.replaceAll(DICT_TYPE_PATTERN.pattern(), "").trim();
+    }
+
+    /**
+     * 移除数据库关联表替换格式
+     *
+     * @param soap
+     * @return
+     */
+    public static String removeTableName(String soap) {
+        return soap.replaceAll(TABLE_NAME_PATTERN.pattern(), "").trim();
     }
 }

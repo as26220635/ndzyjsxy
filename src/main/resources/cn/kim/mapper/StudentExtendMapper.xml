@@ -212,25 +212,6 @@
             <if test="ID != NULL and ID != ''">
                 AND ID = #{ID}
             </if>
-            <if test="BS_ID != NULL and BS_ID != ''">
-                AND BS_ID = #{BS_ID}
-            </if>
-            <if test="BSC_YEAR != NULL and BSC_YEAR != ''">
-                AND BSC_YEAR = #{BSC_YEAR}
-            </if>
-            <if test="BSC_SEMESTER != NULL and BSC_SEMESTER != ''">
-                AND BSC_SEMESTER = #{BSC_SEMESTER}
-            </if>
-        </where>
-    </select>
-
-    <!--查询综合素质测评数量-->
-    <select id="selectStudentComprehensiveCount" parameterType="java.util.Map" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM BUS_STUDENT_COMPREHENSIVE
-        <where>
-            <if test="ID != NULL and ID != ''">
-                AND ID = #{ID}
-            </if>
             <if test="NOT_ID != NULL and NOT_ID != ''">
                 AND ID != #{NOT_ID}
             </if>
@@ -357,4 +338,9 @@
     <delete id="deleteStudentComprehensive" parameterType="java.util.Map">
 		DELETE FROM BUS_STUDENT_COMPREHENSIVE WHERE ID = #{ID}
 	</delete>
+
+    <!--查询学习和综合素质测评一年平均成绩-->
+    <select id="selectStudentAvgYearScore" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM V_STUDENT_AVG_YEAR WHERE BS_ID = #{BS_ID} AND BSC_YEAR = #{BSC_YEAR}
+    </select>
 </mapper>

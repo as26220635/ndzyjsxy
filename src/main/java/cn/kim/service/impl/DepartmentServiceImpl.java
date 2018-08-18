@@ -56,7 +56,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DEPARTMENT);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DEPARTMENT);
 
             paramMap.put("ID", id);
             paramMap.put("BDM_COLLEGE", mapParam.get("BDM_COLLEGE"));
@@ -72,14 +72,14 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
                 paramMap.put("BD_ENTER_TIME", getDate());
 
                 baseDao.insert(NameSpace.DepartmentMapper, "insertDepartment", paramMap);
-                resultMap.put(MagicValue.LOG, "添加系部:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加系部:" + formatColumnName(TableName.BUS_DEPARTMENT, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectDepartment(oldMap);
 
                 baseDao.update(NameSpace.DepartmentMapper, "updateDepartment", paramMap);
-                resultMap.put(MagicValue.LOG, "更新系部,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新系部,更新前:" + formatColumnName(TableName.BUS_DEPARTMENT, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_DEPARTMENT, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -111,10 +111,10 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectDepartment(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DEPARTMENT);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DEPARTMENT);
             baseDao.delete(NameSpace.DepartmentMapper, "deleteDepartment", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除系部,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除系部,信息:" + formatColumnName(TableName.BUS_DEPARTMENT, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -143,7 +143,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DEPARTMENT_PERSONNEL);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DEPARTMENT_PERSONNEL);
 
             paramMap.put("ID", id);
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
@@ -159,14 +159,14 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
 
                 //插入系部人员
                 baseDao.insert(NameSpace.DepartmentMapper, "insertDepartmentPersonnel", paramMap);
-                resultMap.put(MagicValue.LOG, "添加系部人员:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加系部人员:" + formatColumnName(TableName.BUS_DEPARTMENT_PERSONNEL, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectDepartmentPersonnel(oldMap);
 
                 baseDao.update(NameSpace.DepartmentMapper, "updateDepartmentPersonnel", paramMap);
-                resultMap.put(MagicValue.LOG, "更新系部人员,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新系部人员,更新前:" + formatColumnName(TableName.BUS_DEPARTMENT_PERSONNEL, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_DEPARTMENT_PERSONNEL, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -198,10 +198,10 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectDepartmentPersonnel(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_DEPARTMENT_PERSONNEL);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DEPARTMENT_PERSONNEL);
             baseDao.delete(NameSpace.DepartmentMapper, "deleteDepartmentPersonnel", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除系部人员,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除系部人员,信息:" + formatColumnName(TableName.BUS_DEPARTMENT_PERSONNEL, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

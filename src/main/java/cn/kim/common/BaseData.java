@@ -383,6 +383,17 @@ public abstract class BaseData {
     }
 
     /**
+     * 吧map中的一个参数作为KEY 一个参数作为VALUE
+     *
+     * @param list
+     * @param key
+     * @return
+     */
+    protected Map<String, Object> toMapKeyValue(List<Map<String, Object>> list, String key, String value) {
+        return CommonUtil.toMapKeyValue(list, key, value);
+    }
+
+    /**
      * 吧map中的一个参数作为KEY 自身作为VALUE
      *
      * @param list

@@ -7,15 +7,15 @@
     <select id="selectStudent" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME
         FROM(
-            SELECT * FROM BUS_STUDENT
-            <where>
-                <if test="ID != NULL and ID != ''">
-                    AND ID = #{ID}
-                </if>
-                <if test="BS_NUMBER != NULL and BS_NUMBER != ''">
-                    AND BS_NUMBER = #{BS_NUMBER}
-                </if>
-            </where>
+        SELECT * FROM BUS_STUDENT
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="BS_NUMBER != NULL and BS_NUMBER != ''">
+                AND BS_NUMBER = #{BS_NUMBER}
+            </if>
+        </where>
         )BS
         INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
         INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
@@ -27,22 +27,22 @@
     <select id="selectStudentList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT BS.*
         FROM(
-            SELECT BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME
-            FROM(
-                SELECT * FROM BUS_STUDENT
-                <where>
-                    <if test="ID != NULL and ID != ''">
-                        AND ID = #{ID}
-                    </if>
-                    <if test="BS_NUMBER != NULL and BS_NUMBER != ''">
-                        AND BS_NUMBER = #{BS_NUMBER}
-                    </if>
-                </where>
-            )BS
-            INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
-            INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
-            LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'BUS_SEX' AND SDI.SDI_CODE = BS.BS_SEX
-            LEFT JOIN SYS_DICT_INFO NDI ON NDI.SDT_CODE = 'BUS_NATION' AND NDI.SDI_CODE = BS.BS_NATION
+        SELECT BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME
+        FROM(
+        SELECT * FROM BUS_STUDENT
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="BS_NUMBER != NULL and BS_NUMBER != ''">
+                AND BS_NUMBER = #{BS_NUMBER}
+            </if>
+        </where>
+        )BS
+        INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
+        INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
+        LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'BUS_SEX' AND SDI.SDI_CODE = BS.BS_SEX
+        LEFT JOIN SYS_DICT_INFO NDI ON NDI.SDT_CODE = 'BUS_NATION' AND NDI.SDI_CODE = BS.BS_NATION
         )BS
         <where>
             <if test="whereClause != null and whereClause != ''">
@@ -66,32 +66,54 @@
     <select id="selectStudentCount" parameterType="java.util.Map" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM(
-            SELECT BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME
-            FROM(
-                SELECT * FROM BUS_STUDENT
-                <where>
-                    <if test="ID != NULL and ID != ''">
-                        AND ID = #{ID}
-                    </if>
-                    <if test="BS_NUMBER != NULL and BS_NUMBER != ''">
-                        AND BS_NUMBER = #{BS_NUMBER}
-                    </if>
-                    <if test="BS_ID_CARD != NULL and BS_ID_CARD != ''">
-                        AND BS_ID_CARD = #{BS_ID_CARD}
-                    </if>
-                    <if test="BS_PHONE != NULL and BS_PHONE != ''">
-                        AND BS_PHONE = #{BS_PHONE}
-                    </if>
-                </where>
-            )BS
-            INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
-            INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
-            LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'BUS_SEX' AND SDI.SDI_CODE = BS.BS_SEX
-            LEFT JOIN SYS_DICT_INFO NDI ON NDI.SDT_CODE = 'BUS_NATION' AND NDI.SDI_CODE = BS.BS_NATION
+        SELECT BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME
+        FROM(
+        SELECT * FROM BUS_STUDENT
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="BS_NUMBER != NULL and BS_NUMBER != ''">
+                AND BS_NUMBER = #{BS_NUMBER}
+            </if>
+            <if test="BS_ID_CARD != NULL and BS_ID_CARD != ''">
+                AND BS_ID_CARD = #{BS_ID_CARD}
+            </if>
+            <if test="BS_PHONE != NULL and BS_PHONE != ''">
+                AND BS_PHONE = #{BS_PHONE}
+            </if>
+        </where>
+        )BS
+        INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
+        INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
+        LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'BUS_SEX' AND SDI.SDI_CODE = BS.BS_SEX
+        LEFT JOIN SYS_DICT_INFO NDI ON NDI.SDT_CODE = 'BUS_NATION' AND NDI.SDI_CODE = BS.BS_NATION
         )BS
         <where>
             <if test="whereClause != null and whereClause != ''">
                 ${whereClause}
+            </if>
+        </where>
+    </select>
+
+    <!--查询学生数量-->
+    <select id="selectStudentCheckCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BUS_STUDENT
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="NOT_ID != NULL and NOT_ID != ''">
+                AND ID != #{NOT_ID}
+            </if>
+            <if test="BS_NUMBER != NULL and BS_NUMBER != ''">
+                AND BS_NUMBER = #{BS_NUMBER}
+            </if>
+            <if test="BS_ID_CARD != NULL and BS_ID_CARD != ''">
+                AND BS_ID_CARD = #{BS_ID_CARD}
+            </if>
+            <if test="BS_PHONE != NULL and BS_PHONE != ''">
+                AND BS_PHONE = #{BS_PHONE}
             </if>
         </where>
     </select>

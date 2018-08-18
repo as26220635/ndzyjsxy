@@ -65,7 +65,7 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
 
             paramMap.clear();
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_FORMAT);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_FORMAT);
 
             paramMap.put("ID", mapParam.get("ID"));
             paramMap.put("SF_NAME", mapParam.get("SF_NAME"));
@@ -78,14 +78,14 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
                 paramMap.put("SF_ENTRY_TIME", getDate());
 
                 baseDao.insert(NameSpace.FormatMapper, "insertFormat", paramMap);
-                resultMap.put(MagicValue.LOG, "添加格式:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加格式:" + formatColumnName(TableName.SYS_FORMAT, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectFormat(oldMap);
 
                 baseDao.update(NameSpace.FormatMapper, "updateFormat", paramMap);
-                resultMap.put(MagicValue.LOG, "更新格式,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新格式,更新前:" + formatColumnName(TableName.SYS_FORMAT, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_FORMAT, paramMap));
             }
 
             status = STATUS_SUCCESS;
@@ -121,10 +121,10 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectFormat(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_FORMAT);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_FORMAT);
             baseDao.delete(NameSpace.FormatMapper, "deleteFormat", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除格式,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除格式,信息:" + formatColumnName(TableName.SYS_FORMAT, oldMap));
 
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
@@ -168,7 +168,7 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(7);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_FORMAT_DETAIL);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_FORMAT_DETAIL);
 
             paramMap.put("ID", mapParam.get("ID"));
             paramMap.put("SF_ID", mapParam.get("SF_ID"));
@@ -183,14 +183,14 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
                 paramMap.put("IS_STATUS", STATUS_SUCCESS);
 
                 baseDao.insert(NameSpace.FormatMapper, "insertFormatDetail", paramMap);
-                resultMap.put(MagicValue.LOG, "添加格式详细:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加格式详细:" + formatColumnName(TableName.SYS_FORMAT_DETAIL, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectFormatDetail(oldMap);
 
                 baseDao.update(NameSpace.FormatMapper, "updateFormatDetail", paramMap);
-                resultMap.put(MagicValue.LOG, "更新格式详细,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新格式详细,更新前:" + formatColumnName(TableName.SYS_FORMAT_DETAIL, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_FORMAT_DETAIL, paramMap));
             }
 
             status = STATUS_SUCCESS;
@@ -222,9 +222,9 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
             oldMap.put("ID", id);
             oldMap = selectFormatDetail(oldMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_FORMAT_DETAIL);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_FORMAT_DETAIL);
             baseDao.update(NameSpace.FormatMapper, "updateFormatDetail", paramMap);
-            resultMap.put(MagicValue.LOG, "更新格式详细状态,格式详细名称:" + toString(oldMap.get("SFD_NAME")) + ",状态更新为:" + ParamTypeResolve.statusExplain(mapParam.get("IS_STATUS")));
+            resultMap.put(MagicValue.LOG, "更新格式详细状态,更新前:" + formatColumnName(TableName.SYS_FORMAT_DETAIL, oldMap, paramMap) + ",更新后:" + formatColumnName(TableName.SYS_FORMAT_DETAIL, paramMap));
 
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -256,10 +256,10 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectFormatDetail(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_FORMAT_DETAIL);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_FORMAT_DETAIL);
             baseDao.delete(NameSpace.FormatMapper, "deleteFormatDetail", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除格式详细,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除格式详细,信息:" + formatColumnName(TableName.SYS_FORMAT_DETAIL, oldMap));
 
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;

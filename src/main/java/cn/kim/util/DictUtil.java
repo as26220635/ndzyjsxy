@@ -130,11 +130,35 @@ public class DictUtil {
         if (ValidateUtil.isEmpty(dictInfoList)) {
             return result;
         }
+        String dictName = getDictName(dictInfoList, dictInfoCode);
+        if (ValidateUtil.isEmpty(dictName)) {
+            return result;
+        }
+
+        return dictName;
+    }
+
+    /**
+     * 递归查询字典名称
+     *
+     * @param dictInfoList
+     * @param dictInfoCode
+     * @return
+     */
+    public static String getDictName(List<DictInfo> dictInfoList, Object dictInfoCode) {
+        String result = "";
         for (DictInfo dictInfo : dictInfoList) {
-            if (dictInfo.getSdiCode().equals(result)) {
+            if (dictInfo.getSdiCode().equals(dictInfoCode)) {
                 return dictInfo.getSdiName();
             }
+            if (!ValidateUtil.isEmpty(dictInfo.getChildren())) {
+                result = getDictName(dictInfo.getChildren(), dictInfoCode);
+                if (!ValidateUtil.isEmpty(result)) {
+                    return result;
+                }
+            }
         }
+
         return result;
     }
 
@@ -156,11 +180,35 @@ public class DictUtil {
         if (ValidateUtil.isEmpty(dictInfoList)) {
             return result;
         }
+        String dictCode = getDictCode(dictInfoList, dictInfoName);
+        if (ValidateUtil.isEmpty(dictCode)) {
+            return result;
+        }
+
+        return dictCode;
+    }
+
+    /**
+     * 递归 根据字典类型和字典名称获取字典编码
+     *
+     * @param dictInfoList
+     * @param dictInfoName
+     * @return
+     */
+    public static String getDictCode(List<DictInfo> dictInfoList, Object dictInfoName) {
+        String result = "";
         for (DictInfo dictInfo : dictInfoList) {
-            if (dictInfo.getSdiName().equals(result)) {
+            if (dictInfo.getSdiName().equals(dictInfoName)) {
                 return dictInfo.getSdiCode();
             }
+            if (!ValidateUtil.isEmpty(dictInfo.getChildren())) {
+                result = getDictCode(dictInfo.getChildren(), dictInfoName);
+                if (!ValidateUtil.isEmpty(result)) {
+                    return result;
+                }
+            }
         }
+
         return result;
     }
 }

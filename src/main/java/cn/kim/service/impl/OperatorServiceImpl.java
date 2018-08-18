@@ -47,7 +47,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             String operatorId = toString(mapParam.get("ID"));
 
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_OPERATOR);
 
             paramMap.put("ID", operatorId);
             paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));
@@ -66,7 +66,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
                 //添加accountinfo表
                 paramMap.clear();
                 //记录日志
-                paramMap.put("SVR_TABLE_NAME", TableName.SYS_ACCOUNT_INFO);
+                paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_ACCOUNT_INFO);
 
                 paramMap.put("ID", getId());
                 paramMap.put("SO_ID", operatorId);
@@ -132,7 +132,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             oldMap = selectOperator(oldMap);
 
             baseDao.update(NameSpace.OperatorMapper, "updateOperator", paramMap);
-            resultMap.put(MagicValue.LOG, "更新操作员状态,操作员:" + toString(oldMap.get("SAI_NAME")) + ",状态更新为:" + ParamTypeResolve.statusExplain(mapParam.get("IS_STATUS")));
+            resultMap.put(MagicValue.LOG, "更新操作员状态,更新前:" + formatColumnName(TableName.SYS_OPERATOR, oldMap, paramMap) + ",更新后:" + formatColumnName(TableName.SYS_OPERATOR, paramMap));
 
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -174,7 +174,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             oldMap.put("ID", id);
             oldMap = selectOperator(oldMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_OPERATOR);
 
             baseDao.update(NameSpace.OperatorMapper, "updateOperator", paramMap);
             resultMap.put(MagicValue.LOG, "重置操作员密码,操作员:" + toString(oldMap.get("SAI_NAME")));
@@ -232,12 +232,12 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             paramMap.put("IS_DEFAULT_PWD", STATUS_ERROR);
 
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_OPERATOR);
 
             baseDao.update(NameSpace.OperatorMapper, "updateOperator", paramMap);
             resultMap.put(MagicValue.LOG, "修改密码");
 
-            ActiveUser activeUser =getActiveUser();
+            ActiveUser activeUser = getActiveUser();
             activeUser.setIsDefaultPwd(STATUS_ERROR);
             AuthcUtil.setCurrentUser(activeUser);
 
@@ -280,10 +280,10 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectOperator(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_OPERATOR);
             baseDao.delete(NameSpace.OperatorMapper, "deleteOperator", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除操作员,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除操作员,信息:" + formatColumnName(TableName.SYS_OPERATOR, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -323,7 +323,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
 
             paramMap.clear();
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR_SUB);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_OPERATOR_SUB);
             paramMap.put("ID", id);
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
             paramMap.put("SOS_USERNAME", operatorUserName);
@@ -348,7 +348,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
 
                 baseDao.insert(NameSpace.OperatorMapper, "insertOperatorSub", paramMap);
 
-                resultMap.put(MagicValue.LOG, "添加账号信息:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加账号信息:" + formatColumnName(TableName.SYS_OPERATOR_SUB, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
@@ -356,7 +356,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
 
                 baseDao.update(NameSpace.OperatorMapper, "updateOperatorSub", paramMap);
 
-                resultMap.put(MagicValue.LOG, "更新账号信息,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新账号信息,更新前:" + formatColumnName(TableName.SYS_OPERATOR_SUB, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_OPERATOR_SUB, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -393,7 +393,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             oldMap.put("ID", id);
             oldMap = selectOperatorSub(oldMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR_SUB);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_OPERATOR_SUB);
             baseDao.update(NameSpace.OperatorMapper, "updateOperatorSub", paramMap);
             resultMap.put(MagicValue.LOG, "更新操作员账号状态,操作员:" + toString(oldMap.get("SAI_NAME")) + "账号:" + toString(oldMap.get("SOS_USERNAME")) + ",状态更新为:" + ParamTypeResolve.statusExplain(mapParam.get("IS_STATUS")));
 
@@ -431,10 +431,10 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
                 throw new CustomException("默认账号不能删除!");
             }
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_OPERATOR_SUB);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_OPERATOR_SUB);
             baseDao.delete(NameSpace.OperatorMapper, "deleteOperatorSub", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除账号信息,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除账号信息,信息:" + formatColumnName(TableName.SYS_OPERATOR_SUB, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

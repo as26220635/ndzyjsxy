@@ -812,7 +812,7 @@ public class CommonUtil {
         if (ValidateUtil.isEmpty(list)) {
             return null;
         }
-        Map<String, String> maps = Maps.newHashMapWithExpectedSize(16);
+        Map<String, String> maps = Maps.newHashMapWithExpectedSize(list.size());
         list.forEach(map -> {
             String nKey = "";
             for (String key : keys) {
@@ -830,6 +830,24 @@ public class CommonUtil {
     }
 
     /**
+     * 吧map中的一个参数作为KEY 一个参数作为VALUE
+     *
+     * @param list
+     * @param key
+     * @return
+     */
+    public static Map<String, Object> toMapKeyValue(List<Map<String, Object>> list, String key, String value) {
+        if (ValidateUtil.isEmpty(list)) {
+            return null;
+        }
+        Map<String, Object> maps = Maps.newHashMapWithExpectedSize(list.size());
+        list.forEach(map -> {
+            maps.put(TextUtil.toString(map.get(key)), map.get(value));
+        });
+        return maps;
+    }
+
+    /**
      * 吧map中的一个参数作为KEY 自身作为VALUE
      *
      * @param list
@@ -840,7 +858,7 @@ public class CommonUtil {
         if (ValidateUtil.isEmpty(list)) {
             return null;
         }
-        Map<String, Map<String, Object>> maps = Maps.newHashMapWithExpectedSize(16);
+        Map<String, Map<String, Object>> maps = Maps.newHashMapWithExpectedSize(list.size());
         list.forEach(map -> {
             String nKey = TextUtil.toString(map.get(key));
             maps.put(nKey, map);

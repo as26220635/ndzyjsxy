@@ -62,7 +62,7 @@ public class ButtonServiceImpl extends BaseServiceImpl implements ButtonService 
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_BUTTON);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_BUTTON);
 
             paramMap.put("ID", id);
             paramMap.put("SB_NAME", mapParam.get("SB_NAME"));
@@ -78,14 +78,14 @@ public class ButtonServiceImpl extends BaseServiceImpl implements ButtonService 
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.ButtonMapper, "insertButton", paramMap);
-                resultMap.put(MagicValue.LOG, "添加按钮:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加按钮:" + formatColumnName(TableName.SYS_BUTTON, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectButton(oldMap);
 
                 baseDao.update(NameSpace.ButtonMapper, "updateButton", paramMap);
-                resultMap.put(MagicValue.LOG, "更新按钮,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新按钮,更新前:" + formatColumnName(TableName.SYS_BUTTON, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_BUTTON, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -122,10 +122,10 @@ public class ButtonServiceImpl extends BaseServiceImpl implements ButtonService 
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectButton(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_BUTTON);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_BUTTON);
             baseDao.delete(NameSpace.ButtonMapper, "deleteButton", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除按钮,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除按钮,信息:" + formatColumnName(TableName.SYS_BUTTON, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

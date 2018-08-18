@@ -83,30 +83,33 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             String id = toString(mapParam.get("ID"));
             //验证学号 身份证 手机号是否重复
             paramMap.clear();
+            paramMap.put("NOT_ID", id);
             paramMap.put("BS_NUMBER", mapParam.get("BS_NUMBER"));
-            int count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCount", paramMap);
+            int count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
             if (count > 0) {
                 throw new CustomException("学号重复!");
             }
             if (!isEmpty(mapParam.get("BS_ID_CARD"))) {
                 paramMap.clear();
+                paramMap.put("NOT_ID", id);
                 paramMap.put("BS_ID_CARD", mapParam.get("BS_ID_CARD"));
-                count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCount", paramMap);
+                count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
                 if (count > 0) {
                     throw new CustomException("身份证重复!");
                 }
             }
             if (!isEmpty(mapParam.get("BS_PHONE"))) {
                 paramMap.clear();
+                paramMap.put("NOT_ID", id);
                 paramMap.put("BS_PHONE", mapParam.get("BS_PHONE"));
-                count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCount", paramMap);
+                count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
                 if (count > 0) {
                     throw new CustomException("电话号码重复!");
                 }
             }
             //记录日志
             paramMap.clear();
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT);
 
             paramMap.put("ID", id);
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
@@ -142,7 +145,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 oldMap = selectStudent(oldMap);
 
                 baseDao.update(NameSpace.StudentMapper, "updateStudent", paramMap);
-                resultMap.put(MagicValue.LOG, "更新学生,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新学生,更新前:" + formatColumnName(TableName.BUS_STUDENT, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_STUDENT, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -174,7 +177,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectStudent(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT);
             baseDao.delete(NameSpace.StudentMapper, "deleteStudent", paramMap);
 
             resultMap.put(MagicValue.LOG, "删除学生,信息:" + toString(oldMap));
@@ -207,7 +210,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_ATTENDANCE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_ATTENDANCE);
 
             paramMap.put("ID", id);
             paramMap.put("BS_ID", mapParam.get("BS_ID"));
@@ -263,7 +266,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectStudentAttendance(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_ATTENDANCE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_ATTENDANCE);
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentAttendance", paramMap);
 
@@ -299,7 +302,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             String insertId = toString(mapParam.get("insertId"));
 
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_PUNISHMENT);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_PUNISHMENT);
 
             paramMap.put("ID", id);
             paramMap.put("BS_ID", mapParam.get("BS_ID"));
@@ -360,7 +363,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             oldMap.put("ID", id);
             oldMap = selectStudentPunishment(oldMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_PUNISHMENT);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_PUNISHMENT);
 
             baseDao.update(NameSpace.StudentExtendMapper, "updateStudentPunishment", paramMap);
             resultMap.put(MagicValue.LOG, "作废学生处分,处分标题:" + oldMap.get("BSP_TITLE"));
@@ -395,7 +398,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectStudentPunishment(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_PUNISHMENT);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_PUNISHMENT);
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentPunishment", paramMap);
 
@@ -457,7 +460,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.clear();
 
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_COMPREHENSIVE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_COMPREHENSIVE);
 
             paramMap.put("ID", id);
             paramMap.put("BS_ID", mapParam.get("BS_ID"));
@@ -539,7 +542,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectStudentComprehensive(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_COMPREHENSIVE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_COMPREHENSIVE);
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentComprehensive", paramMap);
 
@@ -635,7 +638,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
 
                 //记录日志
-                paramMap.put("SVR_TABLE_NAME", TableName.BUS_STUDENT_COMPREHENSIVE);
+                paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_COMPREHENSIVE);
 
                 paramMap.put("ID", getId());
                 paramMap.put("BS_ID", student.get("ID"));

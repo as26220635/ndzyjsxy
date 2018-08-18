@@ -58,7 +58,7 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_CONFIGURE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_CONFIGURE);
 
             paramMap.put("ID", id);
             paramMap.put("SC_NAME", mapParam.get("SC_NAME"));
@@ -75,14 +75,14 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.ConfigureMapper, "insertConfigure", paramMap);
-                resultMap.put(MagicValue.LOG, "添加配置列表:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加配置列表:" + formatColumnName(TableName.SYS_CONFIGURE, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectConfigure(oldMap);
 
                 baseDao.update(NameSpace.ConfigureMapper, "updateConfigure", paramMap);
-                resultMap.put(MagicValue.LOG, "更新配置列表,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新配置列表,更新前:" + formatColumnName(TableName.SYS_CONFIGURE, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_CONFIGURE, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -137,7 +137,7 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
                 baseDao.insert(NameSpace.ConfigureMapper, "insertConfigureSearch", search);
             }
 
-            resultMap.put(MagicValue.LOG, "拷贝配置列表:" + toString(configure));
+            resultMap.put(MagicValue.LOG, "拷贝配置列表:" + formatColumnName(TableName.SYS_CONFIGURE, configure));
 
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -172,10 +172,10 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectConfigure(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_CONFIGURE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_CONFIGURE);
             baseDao.delete(NameSpace.ConfigureMapper, "deleteConfigure", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除配置列表,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除配置列表,信息:" + formatColumnName(TableName.SYS_CONFIGURE, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -209,7 +209,7 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
 
             paramMap.clear();
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_CONFIGURE_COLUMN);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_CONFIGURE_COLUMN);
 
             paramMap.put("ID", id);
             paramMap.put("SC_ID", configureId);
@@ -231,14 +231,14 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.ConfigureMapper, "insertConfigureColumn", paramMap);
-                resultMap.put(MagicValue.LOG, "添加配置列表字段,配置列表:" + toString(configure.get("SC_NAME")) + ",字段参数" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加配置列表字段:" + formatColumnName(TableName.SYS_CONFIGURE_COLUMN, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
-                oldMap = selectConfigure(oldMap);
+                oldMap = selectConfigureColumn(oldMap);
 
                 baseDao.update(NameSpace.ConfigureMapper, "updateConfigureColumn", paramMap);
-                resultMap.put(MagicValue.LOG, "更新配置列表字段,配置列表:" + toString(configure.get("SC_NAME")) + ",更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新配置列表字段,更新前:" + formatColumnName(TableName.SYS_CONFIGURE_COLUMN, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_CONFIGURE_COLUMN, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -275,10 +275,10 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
             paramMap.clear();
             paramMap.put("ID", id);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_CONFIGURE_COLUMN);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_CONFIGURE_COLUMN);
             baseDao.delete(NameSpace.ConfigureMapper, "deleteConfigureColumn", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除配置列表字段,配置列表:" + toString(configure.get("SC_NAME")) + "字段:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除配置列表字段:" + formatColumnName(TableName.SYS_CONFIGURE_COLUMN, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -312,7 +312,7 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
 
             paramMap.clear();
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_CONFIGURE_SEARCH);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_CONFIGURE_SEARCH);
             paramMap.put("ID", id);
             paramMap.put("SC_ID", configureId);
             paramMap.put("SCS_NAME", mapParam.get("SCS_NAME"));
@@ -330,14 +330,14 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.ConfigureMapper, "insertConfigureSearch", paramMap);
-                resultMap.put(MagicValue.LOG, "添加配置列表搜索,配置列表:" + toString(configure.get("SC_NAME")) + ",搜索参数" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加配置列表搜索:" + formatColumnName(TableName.SYS_CONFIGURE_SEARCH, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
-                oldMap = selectConfigure(oldMap);
+                oldMap = selectConfigureSearch(oldMap);
 
                 baseDao.update(NameSpace.ConfigureMapper, "updateConfigureSearch", paramMap);
-                resultMap.put(MagicValue.LOG, "更新配置列表搜索,配置列表:" + toString(configure.get("SC_NAME")) + ",更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新配置列表搜索,更新前:" + formatColumnName(TableName.SYS_CONFIGURE_SEARCH, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_CONFIGURE_SEARCH, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -372,11 +372,11 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
             Map<String, Object> configure = selectConfigure(paramMap);
             //记录日志
             paramMap.clear();
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_CONFIGURE_SEARCH);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_CONFIGURE_SEARCH);
             paramMap.put("ID", id);
             baseDao.delete(NameSpace.ConfigureMapper, "deleteConfigureSearch", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除配置列表搜索,配置列表:" + toString(configure.get("SC_NAME")) + "搜索:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除配置列表搜索:" + formatColumnName(TableName.SYS_CONFIGURE_SEARCH, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

@@ -58,7 +58,7 @@ public class FileServiceImpl extends BaseServiceImpl implements FileService {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(13);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_FILE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_FILE);
 
             paramMap.put("ID", id);
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
@@ -112,7 +112,7 @@ public class FileServiceImpl extends BaseServiceImpl implements FileService {
             Map<String, Object> old = this.selectFile(paramMap);
             //删除文件
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_FILE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_FILE);
             baseDao.delete(NameSpace.FileMapper, "deleteFile", paramMap);
 
             String tableName = TextUtil.toString(old.get("SF_TABLE_NAME"));

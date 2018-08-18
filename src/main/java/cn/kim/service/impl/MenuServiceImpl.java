@@ -111,7 +111,7 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
 
             paramMap.clear();
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_MENU);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_MENU);
 
             paramMap.put("ID", id);
             paramMap.put("SC_ID", mapParam.get("SC_ID"));
@@ -137,12 +137,12 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
                 paramMap.put("IS_STATUS", Attribute.STATUS_SUCCESS);
 
                 baseDao.insert(NameSpace.MenuMapper, "insertMenu", paramMap);
-                resultMap.put(MagicValue.LOG, "添加菜单:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加菜单:" + formatColumnName(TableName.SYS_MENU, paramMap));
             } else {
                 Map<String, Object> oldMap = queryMenuById(id);
 
                 baseDao.update(NameSpace.MenuMapper, "updateMenu", paramMap);
-                resultMap.put(MagicValue.LOG, "更新菜单,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新菜单,更新前:" + formatColumnName(TableName.SYS_MENU, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_MENU, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -177,7 +177,7 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
 
             Map<String, Object> oldMap = queryMenuById(id);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_MENU);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_MENU);
             baseDao.update(NameSpace.MenuMapper, "updateMenu", paramMap);
             resultMap.put(MagicValue.LOG, "更新菜单状态,菜单:" + toString(oldMap.get("SM_NAME")) + ",状态更新为:" + ParamTypeResolve.statusExplain(mapParam.get("IS_STATUS")));
 
@@ -281,7 +281,7 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
 
             deleteMenuByParentId(baseDao, toString(mapParam.get("ID")));
 
-            resultMap.put(MagicValue.LOG, "删除菜单,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除菜单,信息:" + formatColumnName(TableName.SYS_MENU, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -327,7 +327,7 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
 
             copyMenuByParentId(baseDao, ID, SM_PARENTID, replaceMap);
 
-            resultMap.put(MagicValue.LOG, "拷贝菜单:" + toString(menu));
+            resultMap.put(MagicValue.LOG, "拷贝菜单:" + formatColumnName(TableName.SYS_MENU, menu));
 
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -412,7 +412,7 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
         //先删除自身
         paramMap.clear();
         //记录日志
-        paramMap.put("SVR_TABLE_NAME", TableName.SYS_MENU);
+        paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_MENU);
         paramMap.put("ID", menuParentId);
         baseDao.delete(NameSpace.MenuMapper, "deleteMenu", paramMap);
         //查询子菜单

@@ -39,7 +39,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_TEACHER);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_TEACHER);
 
             paramMap.put("ID", id);
             paramMap.put("BDM_ID", mapParam.get("BDM_ID"));
@@ -95,7 +95,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectTeacher(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_TEACHER);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_TEACHER);
             baseDao.delete(NameSpace.TeacherMapper, "deleteTeacher", paramMap);
 
             resultMap.put(MagicValue.LOG, "删除教师,信息:" + toString(oldMap));

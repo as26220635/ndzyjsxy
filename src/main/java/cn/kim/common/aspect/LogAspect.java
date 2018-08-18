@@ -175,11 +175,12 @@ public class LogAspect extends BaseData {
         if (!event.startsWith("查看")) {
             return false;
         }
+        String key = CacheName.LOG_RECORD_CACHE + userId;
         //判断缓存中是否存在
-        Cache cache = CacheUtil.getCache(CacheName.LOG_RECORD_CACHE);
-        String str = isEmpty(cache.get(userId)) ? null : cache.get(userId).toString();
+        Object val = SessionUtil.get(key);
+        String str = isEmpty(val) ? null : toString(val);
         if (isEmpty(str)) {
-            cache.put(userId, event + Attribute.COMPLEX_SPLIT + System.currentTimeMillis());
+            SessionUtil.set(key, event + Attribute.COMPLEX_SPLIT + System.currentTimeMillis());
             return false;
         }
 
@@ -192,7 +193,7 @@ public class LogAspect extends BaseData {
             return true;
         }
 
-        cache.remove(userId);
+        SessionUtil.remove(userId);
         return false;
     }
 

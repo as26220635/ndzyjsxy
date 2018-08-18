@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kim.mapper.DbMapper">
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+
+    <!--查询表字段信息-->
+    <select id="selectColumnsComment" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA =#{TABLE_SCHEMA}  AND TABLE_NAME = #{TABLE_NAME};
+    </select>
+
+    <!--查询关联表名称字段 SEARCH_COLUMN 没有默认为ID-->
+    <select id="selectTableName" parameterType="java.util.Map" resultType="java.lang.String" useCache="false">
+        SELECT ${TABLE_COLUMN} FROM ${TABLE_NAME} WHERE ${SEARCH_COLUMN} = #{TABLE_ID}
+    </select>
+</mapper>

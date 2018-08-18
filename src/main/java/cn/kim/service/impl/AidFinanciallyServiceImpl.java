@@ -66,7 +66,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
             //记录日志
             paramMap.clear();
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_AID_FINANCIALLY);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_FINANCIALLY);
 
             paramMap.put("ID", id);
             paramMap.put("BS_ID", mapParam.get("BS_ID"));
@@ -88,14 +88,14 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 paramMap.put("BAF_ENTRY_TIME", getDate());
 
                 baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidFinancially", paramMap);
-                resultMap.put(MagicValue.LOG, "添加资助:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加资助:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectAidFinancially(oldMap);
 
                 baseDao.update(NameSpace.AidFinanciallyMapper, "updateAidFinancially", paramMap);
-                resultMap.put(MagicValue.LOG, "更新资助,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新资助,更新前:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, paramMap));
             }
 
             status = STATUS_SUCCESS;
@@ -132,11 +132,11 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 throw new CustomException("流程办理中不能删除!");
             }
 
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_AID_FINANCIALLY);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_FINANCIALLY);
 
             baseDao.delete(NameSpace.AidFinanciallyMapper, "deleteAidFinancially", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除资助,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除资助,信息:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -246,7 +246,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
 
             paramMap.clear();
-            paramMap.put("SVR_TABLE_NAME", TableName.BUS_AID_FINANCIALLY);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_FINANCIALLY);
 
             paramMap.put("BS_ID", student.get("ID"));
             paramMap.put("BAF_YEAR", year);

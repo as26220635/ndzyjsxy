@@ -9,6 +9,14 @@ public class MagicValue {
     public static final String DATA_GRID = "dataGrid";
 
     /**
+     * 记录表名
+     */
+    public static final String SVR_TABLE_NAME = "SVR_TABLE_NAME";
+    /**
+     * 不需要记录
+     */
+    public static final String NOT_RECORD = "NOT_RECORD";
+    /**
      * 返回值参数
      */
     public static final String DESC = "desc";

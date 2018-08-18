@@ -73,8 +73,15 @@ public class Button extends BaseTagSupport {
         List<Map<String, Object>> buttons = menuService.selectOperatorNowMenu(mapParam);
 
         if (!ValidateUtil.isEmpty(buttons)) {
-            //根据权限过滤按钮
-            buttons.removeIf(map -> !AuthcUtil.isPermitted(toString(menu.get("SM_CODE")) + "_" + toString(map.get("SB_CODE"))));
+            //根据权限过滤按钮 返回不过滤
+            buttons.removeIf(map -> !"RETURN".equals(toString(map.get("SB_CODE"))) && !AuthcUtil.isPermitted(toString(menu.get("SM_CODE")) + "_" + toString(map.get("SB_CODE"))));
+            buttons.forEach(button->{
+                //有返回了就隐藏放回
+                if("RETURN".equals(toString(button.get("SB_CODE")))){
+                    back = false;
+                    return;
+                }
+            });
         }
 
 

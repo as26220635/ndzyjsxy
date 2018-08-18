@@ -33,7 +33,8 @@ public class ProcessCheck extends BaseServiceImpl {
         //资助管理-年度表彰
         if (Process.AID.toString().equals(busProcess) && Process.AID_COMMEND.toString().equals(busProcess2)) {
             AidProcessCheck aidProcessCheck = new AidProcessCheck();
-            error += aidProcessCheck.checkStudentPunishment(run);
+            //检测成绩是否达到要求
+            error += aidProcessCheck.checkCommendScore(run);
         }
 
 

@@ -49,7 +49,7 @@ public class AllocationServiceImpl extends BaseServiceImpl implements Allocation
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_ALLOCATION);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_ALLOCATION);
 
             paramMap.put("ID", mapParam.get("ID"));
             paramMap.put("SA_KEY", mapParam.get("SA_KEY"));
@@ -109,7 +109,7 @@ public class AllocationServiceImpl extends BaseServiceImpl implements Allocation
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_ALLOCATION);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_ALLOCATION);
             paramMap.put("ID", mapParam.get("ID"));
             paramMap.put("SA_KEY", mapParam.get("SA_KEY"));
             baseDao.delete(NameSpace.AllocationMapper, "deleteAllocation", paramMap);

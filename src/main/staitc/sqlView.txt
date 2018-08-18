@@ -238,7 +238,70 @@ FROM BUS_AID_FINANCIALLY BAF
 INNER JOIN BUS_STUDENT BS ON BS.ID = BAF.BS_ID
 INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
 INNER JOIN BUS_DEPARTMENT BDM ON BDM.ID = BS.BDM_ID
-INNER JOIN V_STUDENT_AVG_YEAR VSAY ON VSAY.BS_ID = BAF.BS_ID AND VSAY.BSC_YEAR = BAF.BAF_YEAR
+INNER JOIN (SELECT
+            	BSC.BS_ID AS BS_ID,
+            	BSC.BC_ID AS BC_ID,
+            	BSC.BSC_YEAR AS BSC_YEAR,
+            	BSC.BSC_TOTAL AS BSC_TOTAL,
+            	BSC.BSC_ACADEMIC_RECORD AS BSC_ACADEMIC_RECORD,
+            	(
+            	SELECT
+            	    COUNT(*) + 1
+            	FROM
+            		(
+            		SELECT
+            			BSC.BS_ID AS BS_ID,
+            			BS.BC_ID AS BC_ID,
+            			BSC.BSC_YEAR AS BSC_YEAR,
+            			AVG( BSC.BSC_TOTAL ) AS BSC_TOTAL
+            		FROM
+            			( BUS_STUDENT_COMPREHENSIVE BSC JOIN BUS_STUDENT BS ON ( ( BS.ID = BSC.BS_ID ) ) )
+            		GROUP BY
+            			BSC.BS_ID,
+            			BSC.BSC_YEAR
+            		) S
+            	WHERE
+            			S.BC_ID = BSC.BC_ID
+            			AND S.BSC_YEAR = BSC.BSC_YEAR
+            			AND S.BSC_TOTAL > BSC.BSC_TOTAL
+            	) AS BSC_TOTAL_RANK,
+            	(
+            	SELECT
+            		 COUNT(*) + 1
+            	FROM
+            		(
+            		SELECT
+            			BSC.BS_ID AS BS_ID,
+            			BS.BC_ID AS BC_ID,
+            			BSC.BSC_YEAR AS BSC_YEAR,
+            			AVG( BSC.BSC_TOTAL ) AS BSC_TOTAL,
+            			AVG( BSC.BSC_ACADEMIC_RECORD ) AS BSC_ACADEMIC_RECORD
+            		FROM
+            			BUS_STUDENT_COMPREHENSIVE BSC JOIN BUS_STUDENT BS ON BS.ID = BSC.BS_ID
+            		GROUP BY
+            			BSC.BS_ID,
+            			BSC.BSC_YEAR
+            		) S
+            	WHERE
+
+            			S.BC_ID = BSC.BC_ID
+            			AND S.BSC_YEAR = BSC.BSC_YEAR
+            			AND S.BSC_ACADEMIC_RECORD > BSC.BSC_ACADEMIC_RECORD
+            	) AS BSC_ACADEMIC_RECORD_RANK
+            FROM
+            	(
+            	SELECT
+            		BSC.BS_ID AS BS_ID,
+            		BS.BC_ID AS BC_ID,
+            		BSC.BSC_YEAR AS BSC_YEAR,
+            		AVG( BSC.BSC_TOTAL ) AS BSC_TOTAL,
+            		AVG( BSC.BSC_ACADEMIC_RECORD ) AS BSC_ACADEMIC_RECORD
+            	FROM
+            		BUS_STUDENT_COMPREHENSIVE BSC JOIN BUS_STUDENT BS ON BS.ID = BSC.BS_ID
+            	GROUP BY
+            		BSC.BS_ID,
+            	BSC.BSC_YEAR
+            	) BSC) VSAY ON VSAY.BS_ID = BAF.BS_ID AND VSAY.BSC_YEAR = BAF.BAF_YEAR
 
 WHERE BAF.BAF_TYPE = 10
 

@@ -1,6 +1,7 @@
 package cn.kim.dao.impl;
 
 import cn.kim.common.annotation.Validate;
+import cn.kim.common.attr.MagicValue;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.ValueRecordType;
 import cn.kim.common.sequence.Sequence;
@@ -61,9 +62,9 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
 
             if (parameter != null) {
                 //记录数据
-                String tableName = TextUtil.toString(parameter.get("SVR_TABLE_NAME"));
+                String tableName = TextUtil.toString(parameter.get(MagicValue.SVR_TABLE_NAME));
                 //是否不需要记录
-                boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
+                boolean notRecord = TextUtil.toBoolean(parameter.get(MagicValue.NOT_RECORD));
 
                 if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
                     this.record(parameter.get("ID"), tableName, null, TextUtil.toJSONString(parameter), ValueRecordType.INSERT.getType());
@@ -83,9 +84,9 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
 
             if (parameter != null) {
                 //记录数据
-                String tableName = TextUtil.toString(parameter.get("SVR_TABLE_NAME"));
+                String tableName = TextUtil.toString(parameter.get(MagicValue.SVR_TABLE_NAME));
                 //是否不需要记录
-                boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
+                boolean notRecord = TextUtil.toBoolean(parameter.get(MagicValue.NOT_RECORD));
                 //查询旧值
                 if (!notRecord && !ValidateUtil.isEmpty(tableName)) {
                     oldValue = selectValue(parameter.get("ID"), tableName);
@@ -122,9 +123,9 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
 
             if (parameter != null) {
                 //记录数据
-                String tableName = TextUtil.toString(parameter.get("SVR_TABLE_NAME"));
+                String tableName = TextUtil.toString(parameter.get(MagicValue.SVR_TABLE_NAME));
                 //是否不需要记录
-                boolean notRecord = TextUtil.toBoolean(parameter.get("NOT_RECORD"));
+                boolean notRecord = TextUtil.toBoolean(parameter.get(MagicValue.NOT_RECORD));
 
                 if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
                     this.record(parameter.get("ID"), tableName, null, null, ValueRecordType.DELETE.getType());
@@ -208,7 +209,7 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
     private Map<String, Object> selectValue(Object tableId, Object tableName) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
         paramMap.put("ID", tableId);
-        paramMap.put("SVR_TABLE_NAME", tableName);
+        paramMap.put(MagicValue.SVR_TABLE_NAME, tableName);
         return this.selectOne(NameSpace.ValueRecordMapper, "selectValue", paramMap);
     }
 
@@ -233,13 +234,13 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
         if (!ValidateUtil.isEmpty(activeUser)) {
             paramMap.put("SO_ID", activeUser.getId());
         }
-        paramMap.put("SVR_TABLE_NAME", tableName);
+        paramMap.put(MagicValue.SVR_TABLE_NAME, tableName);
         paramMap.put("SVR_TABLE_ID", tableId);
         paramMap.put("SVR_OLD_VALUE", oldValue);
         paramMap.put("SVR_NEW_VALUE", newValue);
         paramMap.put("SVR_ENTRY_TIME", DateUtil.getDate());
         paramMap.put("SVR_TYPE", type);
-        paramMap.put("NOT_RECORD", true);
+        paramMap.put(MagicValue.NOT_RECORD, true);
         this.insert(NameSpace.ValueRecordMapper, "insertValueRecord", paramMap);
     }
 

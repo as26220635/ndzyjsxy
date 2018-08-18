@@ -91,7 +91,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(8);
             String id = toString(mapParam.get("ID"));
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_DICT_TYPE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_DICT_TYPE);
 
             paramMap.put("ID", id);
             paramMap.put("SDT_NAME", mapParam.get("SDT_NAME"));
@@ -106,14 +106,14 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
                 paramMap.put("IS_STATUS", Attribute.STATUS_SUCCESS);
 
                 baseDao.insert(NameSpace.DictMapper, "insertDictType", paramMap);
-                resultMap.put(MagicValue.LOG, "添加字典类型:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加字典类型:" + formatColumnName(TableName.SYS_DICT_TYPE, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectDictType(oldMap);
 
                 baseDao.update(NameSpace.DictMapper, "updateDictType", paramMap);
-                resultMap.put(MagicValue.LOG, "更新字典类型,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新字典类型,更新前:" + formatColumnName(TableName.SYS_DICT_TYPE, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_DICT_TYPE, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -148,10 +148,10 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectDictType(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_DICT_TYPE);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_DICT_TYPE);
             baseDao.delete(NameSpace.DictMapper, "deleteDictType", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除字典类型,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除字典类型,信息:" + formatColumnName(TableName.SYS_DICT_TYPE, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -191,7 +191,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
 
             paramMap.clear();
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_DICT_INFO);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_DICT_INFO);
 
             paramMap.put("ID", id);
             paramMap.put("SDT_ID", mapParam.get("SDT_ID"));
@@ -218,14 +218,14 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
                 paramMap.put("SDT_CODE", dictType.get("SDT_CODE"));
 
                 baseDao.insert(NameSpace.DictMapper, "insertDictInfo", paramMap);
-                resultMap.put(MagicValue.LOG, "添加字典类型:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加字典信息:" + formatColumnName(TableName.SYS_DICT_INFO, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectDictInfo(oldMap);
 
                 baseDao.update(NameSpace.DictMapper, "updateDictInfo", paramMap);
-                resultMap.put(MagicValue.LOG, "更新字典类型,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新字典信息,更新前:" + formatColumnName(TableName.SYS_DICT_INFO, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_DICT_INFO, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -256,7 +256,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
             oldMap.put("ID", id);
             oldMap = selectDictInfo(oldMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_DICT_INFO);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_DICT_INFO);
 
             baseDao.update(NameSpace.DictMapper, "updateDictInfo", paramMap);
             resultMap.put(MagicValue.LOG, "更新字典类型状态,字典:" + toString(oldMap.get("SDT_NAME")) + ",信息:" + toString(oldMap.get("SDI_NAME")) + ",状态更新为:" + ParamTypeResolve.statusExplain(mapParam.get("IS_STATUS")));
@@ -290,10 +290,10 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectDictInfo(paramMap);
             //记录日志
-            paramMap.put("SVR_TABLE_NAME", TableName.SYS_DICT_INFO);
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_DICT_INFO);
             baseDao.delete(NameSpace.DictMapper, "deleteDictInfo", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除字典类型,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除字典信息,信息:" + formatColumnName(TableName.SYS_DICT_INFO, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
