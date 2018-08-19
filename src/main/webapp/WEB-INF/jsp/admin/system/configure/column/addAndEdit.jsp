@@ -22,15 +22,17 @@
         <input type="text" class="form-control" ${fns:validField("SYS_CONFIGURE_COLUMN","SCC_FIELD")}
                value="${COLUMN.SCC_FIELD}">
     </div>
-    <div class="form-group has-feedback">
-        <label>对齐方式:</label>
-        <s:combobox sdtCode="SYS_ALIGN" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_ALIGN")}'
-                    value="${COLUMN.SCC_ALIGN}" defaultValue="center"></s:combobox>
-    </div>
-    <div class="form-group has-feedback">
-        <label>宽度:</label>
-        <input type="text" class="form-control" ${fns:validField("SYS_CONFIGURE_COLUMN","SCC_WIDTH")}
-               value="${empty COLUMN ? '100px' :COLUMN.SCC_WIDTH}">
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>对齐方式:</label>
+            <s:combobox sdtCode="SYS_ALIGN" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_ALIGN")}'
+                        value="${COLUMN.SCC_ALIGN}" defaultValue="center"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>宽度:</label>
+            <input type="text" class="form-control" ${fns:validField("SYS_CONFIGURE_COLUMN","SCC_WIDTH")}
+                   value="${empty COLUMN ? '100px' :COLUMN.SCC_WIDTH}">
+        </div>
     </div>
     <div class="form-group has-feedback">
         <label>样式CLASS:</label>
@@ -47,25 +49,29 @@
         <input type="text" class="form-control" ${fns:validField("SYS_CONFIGURE_COLUMN","SCC_SDT_CODE")}
                value="${COLUMN.SCC_SDT_CODE}">
     </div>
-    <div class="form-group has-feedback">
-        <label>是否是操作列:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_OPERATION")}'
-                    value="${COLUMN.SCC_IS_OPERATION}" defaultValue="0"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否是操作列:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_OPERATION")}'
+                        value="${COLUMN.SCC_IS_OPERATION}" defaultValue="0"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否合并操作列:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_MERGE")}'
+                        value="${COLUMN.SCC_IS_MERGE}"></s:combobox>
+        </div>
     </div>
-    <div class="form-group has-feedback">
-        <label>是否合并操作列:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_MERGE")}'
-                    value="${COLUMN.SCC_IS_MERGE}"></s:combobox>
-    </div>
-    <div class="form-group has-feedback">
-        <label>是否是状态列:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_STATUS")}'
-                    value="${COLUMN.SCC_IS_STATUS}" defaultValue="0"></s:combobox>
-    </div>
-    <div class="form-group has-feedback">
-        <label>是否显示:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_VISIBLE")}'
-                    value="${COLUMN.SCC_IS_VISIBLE}" defaultValue="1"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否是状态列:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_STATUS")}'
+                        value="${COLUMN.SCC_IS_STATUS}" defaultValue="0"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否显示:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_VISIBLE")}'
+                        value="${COLUMN.SCC_IS_VISIBLE}" defaultValue="1"></s:combobox>
+        </div>
     </div>
     <div class="form-group has-feedback">
         <label>排序:</label>

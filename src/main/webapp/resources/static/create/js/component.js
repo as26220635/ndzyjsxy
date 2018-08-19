@@ -386,11 +386,7 @@ tableView = {
                 var val = cache[$select.prop('name')];
                 //选中option
                 if (!isEmpty(val)) {
-                    $select.find('option').each(function () {
-                        if ($(this).val() == val) {
-                            $select.val(val).trigger('change');
-                        }
-                    });
+                    $select.val(val).trigger('change');
                 }
             });
             //设置input
@@ -540,6 +536,7 @@ tableView = {
             columnDefs: settings.columnDefs,
             //是否开启选择
             select: settings.select,
+            //ID列
             rowId: 'ID',
             language: {
                 lengthMenu: '<select class="form-control">' + '<option value="5">5</option>' + '<option value="10">10</option>' + '<option value="20">20</option>' + '<option value="30">30</option>' + '<option value="40">40</option>' + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
@@ -619,7 +616,12 @@ tableView = {
                     if (tableView.isSerach) {
                         var formData = options.queryForm.serializeArray();//把form里面的数据序列化成数组
                         formData.forEach(function (e) {
-                            param[e.name] = e.value;
+                            //同KEY合并
+                            if (param[e.name] != undefined) {
+                                param[e.name] = param[e.name] + SERVICE_SPLIT + e.value;
+                            } else {
+                                param[e.name] = e.value;
+                            }
                         });
                     }
                     return param;//自定义需要传递的参数。
@@ -727,6 +729,11 @@ tableView = {
         }
         //设置样式
         $('.card .material-datatables label').addClass('form-group');
+
+        $.fn.dataTable.ext.errMode = function (settings, tn, msg) {
+            //打印msg，和tn来判断，进了这个方法都是ajax走了error才会到这里来
+
+        }
 
         return $table;
     }
@@ -2311,7 +2318,12 @@ function packFormParams($form) {
     var params = {};
     var formData = $form.serializeArray();
     formData.forEach(function (e) {
-        params[e.name] = e.value;
+        //同KEY合并
+        if (params[e.name] != undefined) {
+            params[e.name] = params[e.name] + SERVICE_SPLIT + e.value;
+        } else {
+            params[e.name] = e.value;
+        }
     });
     return params;
 }

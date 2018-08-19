@@ -199,24 +199,32 @@ public class QuerySet implements Serializable {
 
         //List集合
         if (method.equals(IN)) {
-            List<Object> list = toObject((List) val);
+            if (val instanceof List) {
+                List<Object> list = toObject((List) val);
 
-            String params = "";
-            for (int i = 0; i < list.size(); i++) {
-                Object obj = list.get(i);
-                String keyValue = TextUtil.toString(obj);
-                if (ValidateUtil.isEmpty(keyValue)) {
-                    continue;
+                String params = "";
+                for (int i = 0; i < list.size(); i++) {
+                    Object obj = list.get(i);
+                    String keyValue = TextUtil.toString(obj);
+                    if (ValidateUtil.isEmpty(keyValue)) {
+                        continue;
+                    }
+                    params += obj instanceof String ? "'" + keyValue + "'" : keyValue;
+                    if (i + 1 != list.size()) {
+                        params += ",";
+                    }
                 }
-                params += obj instanceof String ? "'" + keyValue + "'" : keyValue;
-                if (i + 1 != list.size()) {
-                    params += ",";
+                if (!ValidateUtil.isEmpty(params)) {
+                    sb.append("(");
+                    sb.append(params);
+                    sb.append(")");
                 }
-            }
-            if (!ValidateUtil.isEmpty(params)) {
-                sb.append("(");
-                sb.append(params);
-                sb.append(")");
+            } else if (val instanceof String) {
+                if (!ValidateUtil.isEmpty(val)) {
+                    sb.append("(");
+                    sb.append(val);
+                    sb.append(")");
+                }
             }
         } else {
             if (val instanceof String) {

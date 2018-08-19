@@ -21,25 +21,29 @@
         <input type="text" class="form-control" ${fns:validField("SYS_CONFIGURE","SC_VIEW")}
                value="${CONFIGURE.SC_VIEW}">
     </div>
-    <div class="form-group has-feedback">
-        <label>是否开启选择:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_SELECT")}'
-                    value="${CONFIGURE.SC_IS_SELECT}"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否开启选择:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_SELECT")}'
+                        value="${CONFIGURE.SC_IS_SELECT}"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否单选:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_SINGLE")}'
+                        value="${CONFIGURE.SC_IS_SINGLE}"></s:combobox>
+        </div>
     </div>
-    <div class="form-group has-feedback">
-        <label>是否单选:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_SINGLE")}'
-                    value="${CONFIGURE.SC_IS_SINGLE}"></s:combobox>
-    </div>
-    <div class="form-group has-feedback">
-        <label>是否分页:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_PAGING")}'
-                    value="${CONFIGURE.SC_IS_PAGING}" defaultValue="1"></s:combobox>
-    </div>
-    <div class="form-group has-feedback">
-        <label>是否开启搜索:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_SEARCH")}'
-                    value="${CONFIGURE.SC_IS_SEARCH}" defaultValue="1"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否分页:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_PAGING")}'
+                        value="${CONFIGURE.SC_IS_PAGING}" defaultValue="1"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否开启搜索:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_SEARCH")}'
+                        value="${CONFIGURE.SC_IS_SEARCH}" defaultValue="1"></s:combobox>
+        </div>
     </div>
     <div class="form-group has-feedback">
         <label>是否开启自定义过滤:</label>

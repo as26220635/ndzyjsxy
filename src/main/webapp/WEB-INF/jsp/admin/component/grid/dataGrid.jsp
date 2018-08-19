@@ -39,7 +39,8 @@
                                value="${ProcessShowStatus.ALL.toString()}">
                         <c:if test="${CONFIGURE.SC_IS_SEARCH == Attribute.STATUS_SUCCESS && SEARCH_LIST ne null && SEARCH_LIST.size() > 0 }">
                             <%--搜索条件--%>
-                            <c:forEach items="${SEARCH_LIST}" var="SEARCH">
+                            <c:forEach items="${SEARCH_LIST}" var="SEARCH" varStatus="status">
+
                                 <c:choose>
                                     <%--文本--%>
                                     <c:when test="${SEARCH.SCS_TYPE eq 1}">
@@ -84,6 +85,10 @@
                                     <c:otherwise>
                                     </c:otherwise>
                                 </c:choose>
+                                <%--4个换行--%>
+                                <c:if test="${(status.index + 1) % 4 == 0}">
+                                    <div class="row"></div>
+                                </c:if>
                             </c:forEach>
 
                             <div class="btn-group-search">
@@ -156,6 +161,7 @@
     <c:set scope="request" var="MENU_TITLE" value="${EXTRA.TITLE}-"></c:set>
 </c:if>
 <%@ include file="/WEB-INF/jsp/admin/component/setTitleParams.jsp" %>
+<%--excel导入模块--%>
 <%@ include file="/WEB-INF/jsp/admin/component/execlImport.jsp" %>
 <script>
     $(".select2").select2({language: "zh-CN"});

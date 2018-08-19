@@ -27,25 +27,29 @@
         <input type="text" class="form-control" ${fns:validField("SYS_CONFIGURE_SEARCH","SCS_SDT_CODE")}
                value="${SEARCH.SCS_SDT_CODE}">
     </div>
-    <div class="form-group has-feedback">
-        <label>类型:</label>
-        <s:combobox sdtCode="SYS_SEARCH_TYPE" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCS_TYPE")}'
-                    value="${SEARCH.SCS_TYPE}" defaultValue="1"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>类型:</label>
+            <s:combobox sdtCode="SYS_SEARCH_TYPE" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCS_TYPE")}'
+                        value="${SEARCH.SCS_TYPE}" defaultValue="1"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6" id="SCS_IS_STUDENT_YEAR_DIV">
+            <label>是否学年:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCS_IS_STUDENT_YEAR")}'
+                        value="${SEARCH.SCS_IS_STUDENT_YEAR}" defaultValue="1"></s:combobox>
+        </div>
     </div>
-    <div class="form-group has-feedback" id="SCS_IS_STUDENT_YEAR_DIV">
-        <label>是否学年:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCS_IS_STUDENT_YEAR")}'
-                    value="${SEARCH.SCS_IS_STUDENT_YEAR}" defaultValue="1"></s:combobox>
-    </div>
-    <div class="form-group has-feedback">
-        <label>查询条件:</label>
-        <s:combobox sdtCode="SYS_SEARCH_METHOD" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCS_METHOD_TYPE")}'
-                    value="${SEARCH.SCS_METHOD_TYPE}" defaultValue="like"></s:combobox>
-    </div>
-    <div class="form-group has-feedback">
-        <label>是否显示:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCC_IS_VISIBLE")}'
-                    value="${SEARCH.SCC_IS_VISIBLE}" defaultValue="1"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>查询条件:</label>
+            <s:combobox sdtCode="SYS_SEARCH_METHOD" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCS_METHOD_TYPE")}'
+                        value="${SEARCH.SCS_METHOD_TYPE}" defaultValue="like"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否显示:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_SEARCH","SCC_IS_VISIBLE")}'
+                        value="${SEARCH.SCC_IS_VISIBLE}" defaultValue="1"></s:combobox>
+        </div>
     </div>
     <div class="form-group has-feedback">
         <label>备注:</label>
