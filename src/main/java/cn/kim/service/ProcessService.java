@@ -14,12 +14,12 @@ public interface ProcessService extends BaseService {
     /**
      * 查询流程项目名称
      *
-     * @param definitionTableId
-     * @param definitionUpdateTable
-     * @param definitionUpdateName
+     * @param tableId
+     * @param busProcess
+     * @param busProcess2
      * @return
      */
-    String selectProcessTableName(String definitionTableId, String definitionUpdateTable, String definitionUpdateName);
+    String selectProcessTableName(String tableId, String busProcess, String busProcess2);
 
     /**
      * -1 无 0 提交按钮 1 撤回按钮
@@ -84,6 +84,15 @@ public interface ProcessService extends BaseService {
     Map<String, Object> processWithdraw(Map<String, Object> mapParam);
 
     /****   流程定义    ***/
+
+    /**
+     * 根据ID查询流程定义
+     *
+     * @param ID
+     * @return
+     */
+    Map<String, Object> selectProcessDefinitionById(String ID);
+
     Map<String, Object> selectProcessDefinition(Map<String, Object> mapParam);
 
     List<Tree> selectProcessDefinitionTreeList(Map<String, Object> mapParam);

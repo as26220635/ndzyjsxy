@@ -76,7 +76,7 @@ public class GridDataFilter extends BaseServiceImpl {
                 TableViewName.V_LOG_USE.equals(configureView) ||
                 TableViewName.V_LOG_PERSONAL.equals(configureView) ||
                 TableViewName.V_LOG_SEE.equals(configureView)) {
-            //日志 管理员可以看到全部
+            //日志管理 管理员可以看到全部
             if (!SystemEnum.MANAGER.toString().equals(operatorType)) {
                 resultBuilder.append(" AND SO_ID =" + operatorId);
             }

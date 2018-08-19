@@ -32,6 +32,11 @@
                     value="${BUTTON.SB_CLASS}"></s:combobox>
     </div>
     <div class="form-group has-feedback">
+        <label>按钮扩展样式:</label>
+        <input type="text" class="form-control" ${fns:validField("SYS_BUTTON", "SB_EXTEND_CLASS")}
+               value="${BUTTON.SB_EXTEND_CLASS}">
+    </div>
+    <div class="form-group has-feedback">
         <label>按钮类型:</label>
         <s:combobox sdtCode="SYS_BUTTON_TYPE" custom='${fns:validField("SYS_BUTTON", "SB_TYPE")}'
                     value="${BUTTON.SB_TYPE}"></s:combobox>

@@ -3,6 +3,11 @@
 <mapper namespace="cn.kim.mapper.DbMapper">
     <cache type="org.mybatis.caches.redis.RedisCache"/>
 
+    <!--查询全库表信息-->
+    <select id="selectDBTableName" parameterType="java.util.Map" resultType="java.util.Map">
+           SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = #{TABLE_SCHEMA}
+    </select>
+
     <!--查询表字段信息-->
     <select id="selectColumnsComment" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA =#{TABLE_SCHEMA}  AND TABLE_NAME = #{TABLE_NAME};

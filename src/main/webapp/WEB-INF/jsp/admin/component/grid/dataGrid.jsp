@@ -76,7 +76,8 @@
                                                 <s:datebox id="SEARCH_${SEARCH.SCS_FIELD}" name="${SEARCH.SCS_FIELD}"
                                                            type="${SEARCH.SCS_TYPE - 3}"
                                                            placeholder="${SEARCH.SCS_REMARK}"
-                                                           clear="true" studentYear="${fns:trueOrFalse(SEARCH.SCS_IS_STUDENT_YEAR, 'true' , 'false')}"></s:datebox>
+                                                           clear="true"
+                                                           studentYear="${fns:trueOrFalse(SEARCH.SCS_IS_STUDENT_YEAR, 'true' , 'false')}"></s:datebox>
                                             </div>
                                         </div>
                                     </c:when>
@@ -186,6 +187,18 @@
         <c:if test="${CONFIGURE.SC_IS_PAGING != Attribute.STATUS_SUCCESS}">
         headLength: false,
         </c:if>
+        <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
+        <c:choose>
+        <%--单选--%>
+        <c:when test="${CONFIGURE.SC_IS_SINGLE ne null && CONFIGURE.SC_IS_SINGLE  eq Attribute.STATUS_SUCCESS}">
+        select: choiceBox.mode.SINGLE,
+        </c:when>
+        <%--多选--%>
+        <c:otherwise>
+        select: choiceBox.mode.MULTIPLE,
+        </c:otherwise>
+        </c:choose>
+        </c:if>
         <%--搜索额外参数--%>
         searchParams: function (params) {
             if (typeof searchParams == 'function') {
@@ -201,7 +214,11 @@
             <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
             {
                 data: null,
-                width: '20px'
+                width: '20px',
+                <c:if test="${CONFIGURE.SC_IS_SINGLE  ne Attribute.STATUS_SUCCESS}">
+                className: 'select-checkbox text-center',
+                title: '<input type="checkbox" id="dataGridSelectAll">',
+                </c:if>
             },
             </c:if>
             {
@@ -260,7 +277,7 @@
             <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
             {
                 className: 'select-checkbox',
-                targets: 0
+                targets: 0,
             },
             </c:if>
             <%--加载列格式化--%>
@@ -375,31 +392,83 @@
         }
     });
 
-    <%--是否开启选择模式--%>
-    <c:if test="${CONFIGURE.SC_IS_SELECT ne null && CONFIGURE.SC_IS_SELECT eq Attribute.STATUS_SUCCESS}">
-    <%--单选多选模式--%>
-    $dataGridTable.find('tbody').on('click', 'tr', function () {
-        <c:choose>
-        <%--单选--%>
-        <c:when test="${CONFIGURE.SC_IS_SINGLE ne null && CONFIGURE.SC_IS_SINGLE  eq Attribute.STATUS_SUCCESS}">
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
+    <%--开启checkbox--%>
+    <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
+    <c:if test="${CONFIGURE.SC_IS_SINGLE  ne Attribute.STATUS_SUCCESS}">
+    $('#dataGridSelectAll').on('change', function () {
+        var checked = $(this).prop('checked');
+        if (checked) {
+            $dataGrid.rows().select();
         } else {
-            $dataGrid.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
+            $dataGrid.rows().deselect();
         }
-        </c:when>
-        <%--多选--%>
-        <c:when test="${CONFIGURE.SC_IS_SINGLE ne null && CONFIGURE.SC_IS_SINGLE  eq Attribute.STATUS_ERROR}">
-        $(this).toggleClass('selected');
-        </c:when>
-        <c:otherwise>
-        </c:otherwise>
-        </c:choose>
     });
+    //监听选择
+    $dataGrid.on('select', function (e, dt, type, indexes) {
+        if (type === 'row') {
+            var data = getDataGridSelected();
+            if (data.length == $dataGrid.rows().data().length) {
+                $('#dataGridSelectAll').prop('checked', true);
+            }
+        }
+    });
+    //监听取消选择
+    $dataGrid.on('deselect', function (e, dt, type, indexes) {
+        if (type === 'row') {
+            var data = $dataGrid.rows().data();
+            var selectData = getDataGridSelected();
+            if (data.length == 0 || data.length != selectData.length) {
+                $('#dataGridSelectAll').prop('checked', false);
+            }
+        }
+    });
+    </c:if>
     </c:if>
 
     <c:if test="${!fns:isEmpty(MENU.BUS_PROCESS)}">
+    //流程批量提交
+    $('#processSubmit').on('click', function () {
+        var dataArray = getDataGridSelected();
+        if (dataArray.length == 0) {
+            demo.showNotify(ALERT_WARNING, '请选择流程!');
+            return;
+        }
+        //判断一个流程一个状态
+        var IDS = '';
+        var BUS_PROCESS;
+        var BUS_PROCESS2;
+        var SPS_AUDIT_STATUS;
+        for (var i = 0; i < dataArray.length; i++) {
+            var data = dataArray[i];
+            if (i > 0) {
+                if (data.BUS_PROCESS != BUS_PROCESS || data.BUS_PROCESS2 != BUS_PROCESS2) {
+                    demo.showNotify(ALERT_WARNING, '请选择同一流程!');
+                    return;
+                }
+                if (data.SPS_AUDIT_STATUS != SPS_AUDIT_STATUS) {
+                    demo.showNotify(ALERT_WARNING, '请选择处于同一审核状态的流程!');
+                    return;
+                }
+            }
+
+            BUS_PROCESS = data.BUS_PROCESS;
+            BUS_PROCESS2 = data.BUS_PROCESS2;
+            SPS_AUDIT_STATUS = data.SPS_AUDIT_STATUS;
+            if (i > 0) {
+                IDS += ",";
+            }
+            IDS += data.ID;
+        }
+        process.showProcessHome({
+            ID: IDS,
+            BUS_PROCESS: BUS_PROCESS,
+            BUS_PROCESS2: BUS_PROCESS2,
+            SHOW_SO_ID: data.SHOW_SO_ID,
+            PROCESS_TYPE: '${ProcessType.SUBMIT.toString()}',
+            dataGrid: $dataGrid
+        });
+    });
+
     //流程提交
     $dataGridTable.find('tbody').on('click', '#PROCESS_SUBMIT', function () {
         var data = getRowData(this);
@@ -496,6 +565,6 @@
      * 获取选中的行
      */
     function getDataGridSelected() {
-        return $dataGrid.rows('.selected').data();
+        return $dataGrid.rows({selected: true}).data();
     }
 </script>

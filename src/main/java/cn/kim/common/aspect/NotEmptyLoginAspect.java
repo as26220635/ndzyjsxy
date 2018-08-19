@@ -12,6 +12,7 @@ import cn.kim.util.AuthcUtil;
 import cn.kim.util.ValidateUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -46,7 +47,7 @@ public class NotEmptyLoginAspect extends BaseData {
     @Around("notEmptyLoginAspect()")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         if (isEmpty(AuthcUtil.getCurrentUser())) {
-            throw new CustomException("没有登录!");
+            throw new UnauthorizedException("没有登录!");
         }
         return pjp.proceed();
     }

@@ -4,16 +4,14 @@ import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.eu.ButtonType;
-import cn.kim.common.eu.ProcessShowStatus;
 import cn.kim.common.eu.UseType;
+import cn.kim.common.tag.Button;
 import cn.kim.entity.DataTablesView;
 import cn.kim.exception.CustomException;
 import cn.kim.service.*;
 import cn.kim.util.CommonUtil;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.checkerframework.checker.nullness.qual.AssertNonNullIfNonNull;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -104,6 +102,18 @@ public class BaseDataController extends BaseController {
             List<Map<String, Object>> listButton = new LinkedList<>();
             buttons.forEach(button -> {
                 int buttonType = toInt(button.get("SB_TYPE"));
+                //额外的class
+                String additionalClass = "";
+                //在ajax时候禁止点击
+                if (Button.BTN_ID_AJAX_CLOSE.contains(button.get("SB_BUTTONID"))) {
+                    additionalClass = " model-ok ";
+                }
+                if (!isEmpty(button.get("SB_EXTEND_CLASS"))) {
+                    additionalClass += " " + button.get("SB_EXTEND_CLASS") + " ";
+                }
+                if (!isEmpty(additionalClass)) {
+                    button.put("SB_CLASS", button.get("SB_CLASS") + additionalClass);
+                }
                 if (ButtonType.TOP.getType() == buttonType) {
                     //顶部菜单
                     topButton.add(button);

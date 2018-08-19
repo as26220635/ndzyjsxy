@@ -69,6 +69,7 @@ public class ButtonServiceImpl extends BaseServiceImpl implements ButtonService 
             paramMap.put("SB_BUTTONID", mapParam.get("SB_BUTTONID"));
             paramMap.put("SB_FUNC", mapParam.get("SB_FUNC"));
             paramMap.put("SB_CLASS", mapParam.get("SB_CLASS"));
+            paramMap.put("SB_EXTEND_CLASS", mapParam.get("SB_EXTEND_CLASS"));
             paramMap.put("SB_ICON", mapParam.get("SB_ICON"));
             paramMap.put("SB_CODE", mapParam.get("SB_CODE"));
             paramMap.put("SB_ORDER", mapParam.get("SB_ORDER"));

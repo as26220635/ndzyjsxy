@@ -29,15 +29,19 @@
     <div class="process-error text-center">
         <h1>${message}</h1>
     </div>
+    <script>
+        model.closeSubmit($('.process-error'));
+    </script>
 </c:if>
 
 
 <form id="processForm">
     <input type="hidden" name="IS_DISCONTINUATION" value="${not empty message ? 1 : 0}">
     <input type="hidden" name="${SUBMIT_TOKEN_NAME}" value="${token}">
-    <input type="hidden" name="SPS_TABLE_ID" value="${SPS_TABLE_ID}">
+    <%--<input type="hidden" name="SPS_TABLE_ID" value="${SPS_TABLE_ID}">--%>
     <input type="hidden" name="SPS_TABLE_NAME" value="${SPS_TABLE_NAME}">
-    <input type="hidden" name="SPD_ID" value="${SPD.ID}">
+    <input type="hidden" name="BUS_PROCESS" value="${SPD.BUS_PROCESS}">
+    <input type="hidden" name="BUS_PROCESS2" value="${SPD.BUS_PROCESS2}">
     <input type="hidden" name="SPS_ID" value="${STEP.ID}">
     <input type="hidden" name="NEXT_SPS_ID" value="${NEXT_STEP.ID}">
     <c:if test="${not empty SHOW_SO_ID}">
@@ -57,8 +61,11 @@
     <%--<span>${STEP_NAME}</span>--%>
     <%--</div>--%>
     <div class="form-group has-feedback">
-        <label>办理名称:</label>
-        <span>${SPS_TABLE_NAME}</span>
+        <label>办理流程:</label>
+        <s:combobox id="SPS_TABLE_ID" name="SPS_TABLE_ID" single="false"
+                    dataList="${submitProcessList}"
+                    readonly="${fns:trueOrFalse(submitProcessList.size() == 1,true, false)}">
+        </s:combobox>
     </div>
     <div class="form-group has-feedback">
         <label>下一步执行:</label>

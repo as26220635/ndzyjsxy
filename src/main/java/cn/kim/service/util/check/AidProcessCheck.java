@@ -115,7 +115,7 @@ public class AidProcessCheck extends BaseData {
                 if (academicScore.compareTo(new BigDecimal(85)) == -1) {
                     throw new CustomException("学生:" + BS_NAME + ",学年:" + BAF_YEAR + ",学习平均成绩:" + academicScore.toString() + ",小于要求的85分。");
                 }
-            } else if ("OUTSTANDING_STUDENT_CADRES".equalsIgnoreCase(BAF_AID_TYPE)) {
+            } else if ("FINE_STUDENT_CADRES".equalsIgnoreCase(BAF_AID_TYPE)) {
                 //优秀学生干部要求学习成绩+测评成绩 成绩75分以 上综合素质测评80分以上
                 if (academicScore.compareTo(new BigDecimal(75)) == -1) {
                     throw new CustomException("学生:" + BS_NAME + ",学年:" + BAF_YEAR + ",学习平均成绩:" + academicScore.toString() + ",小于要求的75分。");

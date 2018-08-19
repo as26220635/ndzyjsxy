@@ -498,6 +498,7 @@ tableView = {
     },
     init: function (options) {
         var settings = $.extend({
+            select: false,
             info: true,
             paging: true,
             cache: true,
@@ -537,6 +538,9 @@ tableView = {
             columns: options.columns,
             //操作按钮
             columnDefs: settings.columnDefs,
+            //是否开启选择
+            select: settings.select,
+            rowId: 'ID',
             language: {
                 lengthMenu: '<select class="form-control">' + '<option value="5">5</option>' + '<option value="10">10</option>' + '<option value="20">20</option>' + '<option value="30">30</option>' + '<option value="40">40</option>' + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
                 search: '搜索：',//右上角的搜索文本，可以写html标签
@@ -554,7 +558,12 @@ tableView = {
                 //下面三者构成了总体的左下角的内容。
                 info: "总共_PAGES_ 页，显示第_START_ 到第 _END_ ，总共 _TOTAL_ 条",//左下角的信息显示，大写的词为关键字。
                 infoEmpty: "0条记录",//筛选为空时左下角的显示。
-                infoFiltered: ""//筛选之后的左下角筛选提示，
+                infoFiltered: "",//筛选之后的左下角筛选提示，
+                select: {
+                    rows: {
+                        _: "你选择了 %d 行",
+                    }
+                }
             },
             //在每次table被draw完后回调函数
             fnDrawCallback: function () {
@@ -767,7 +776,7 @@ validator = {
 
 /**
  * 模态框
- * @type {{size: {LG: string, SM: string, NONE: string}, class: {DEFAULT: string, PRIMARY: string, INFO: string, WARNING: string, SUCCESS: string, DANGER: string}, btnName: {DEL: string, SAVE: string, CLOSE: string, OK: string, RESET: string, SUBMIT: string, BACK: string, WITHDRAW: string}, footerModel: {ADMIN: string, MY_HOME: string}, show: Function, noDelay: model.noDelay, init: model.init, hide: model.hide, tips: model.tips, confirm: model.confirm}}
+ * @type {{size: {LG: string, SM: string, NONE: string}, class: {DEFAULT: string, PRIMARY: string, INFO: string, WARNING: string, SUCCESS: string, DANGER: string}, btnName: {DEL: string, SAVE: string, CLOSE: string, OK: string, RESET: string, SUBMIT: string, BACK: string, WITHDRAW: string}, footerModel: {ADMIN: string, MY_HOME: string}, show: Function, noDelay: model.noDelay, init: model.init, hide: model.hide, closeSubmit: model.closeSubmit, tips: model.tips, confirm: model.confirm}}
  */
 model = {
     //模态框大小
@@ -918,6 +927,15 @@ model = {
             $(model).modal('hide');
         }
     },
+    /**
+     * 关闭提交按钮
+     * @param div
+     */
+    closeSubmit: function (div) {
+        var $footer = $(div).parents('.modal-content:first').children('.modal-footer');
+        $footer.find('.model-ok').remove();
+        $footer.find('.pull-left').removeClass('pull-left');
+    },
     //提示框
     tips: function (options) {
         options.isConfirm = false;
@@ -961,7 +979,7 @@ model = {
  * @type {{mode: {MULTIPLE: string, SINGLE: string}, init: choiceBox.init, student: choiceBox.student}}
  */
 choiceBox = {
-    mode: {MULTIPLE: 'MULTIPLE', SINGLE: 'SINGLE'},
+    mode: {MULTIPLE: 'multi', SINGLE: 'single'},
     init: function (options) {
         var settings = $.extend({
             title: '请选择',
@@ -983,9 +1001,10 @@ choiceBox = {
         var tableFields = '';
         //tabel查询字段
         var tableDatas = [];
+
         //添加选择框 序号字段
-        settings.fields.unshift({min_width: 30, name: '', data: null});
         settings.fields.unshift({min_width: 30, name: '序号', data: null});
+        settings.fields.unshift({min_width: 30, name: '', data: null});
 
         for (var i in settings.fields) {
             var map = settings.fields[i];
@@ -1063,6 +1082,7 @@ choiceBox = {
                             targets: 0
                         },
                     ],
+                    select: settings.selectMode,
                     //关闭缓存
                     cache: false,
                     //添加搜索参数
@@ -1078,23 +1098,23 @@ choiceBox = {
                     //设置
                     setting: function ($table) {
                         //设置选择模式
-                        if (settings.selectMode == choiceBox.mode.SINGLE) {
-                            //设置单选
-                            $('#' + tableId + ' tbody').on('click', 'tr', function () {
-                                if ($(this).hasClass('selected')) {
-                                    $(this).removeClass('selected');
-                                } else {
-                                    $table.$('tr.selected').removeClass('selected');
-                                    $(this).addClass('selected');
-                                }
-                            });
-
-                        } else if (settings.selectMode == choiceBox.mode.MULTIPLE) {
-                            //设置多选
-                            $('#' + tableId + ' tbody').on('click', 'tr', function () {
-                                $(this).toggleClass('selected');
-                            });
-                        }
+                        // if (settings.selectMode == choiceBox.mode.SINGLE) {
+                        //     //设置单选
+                        //     $('#' + tableId + ' tbody').on('click', 'tr', function () {
+                        //         if ($(this).hasClass('selected')) {
+                        //             $(this).removeClass('selected');
+                        //         } else {
+                        //             $table.$('tr.selected').removeClass('selected');
+                        //             $(this).addClass('selected');
+                        //         }
+                        //     });
+                        //
+                        // } else if (settings.selectMode == choiceBox.mode.MULTIPLE) {
+                        //     //设置多选
+                        //     $('#' + tableId + ' tbody').on('click', 'tr', function () {
+                        //         $(this).toggleClass('selected');
+                        //     });
+                        // }
                     }
                     ,
                 })
@@ -1102,7 +1122,7 @@ choiceBox = {
             },
             //点击回调
             confirm: function ($model) {
-                var data = $table.rows('.selected').data();
+                var data = $table.row({selected: true}).data();
                 if (settings.isCancel == true && data.length != 0) {
                     model.hide($model);
                 }
@@ -2158,7 +2178,7 @@ $.fn.selectInput = function (callback) {
  * floatObj.multiply(19.9, 100) >> 1990
  *
  */
-var floatObj = function() {
+var floatObj = function () {
 
     /*
      * 判断obj是否为一个整数
@@ -2179,13 +2199,13 @@ var floatObj = function() {
             ret.num = floatNum
             return ret
         }
-        var strfi  = floatNum + ''
+        var strfi = floatNum + ''
         var dotPos = strfi.indexOf('.')
-        var len    = strfi.substr(dotPos+1).length
-        var times  = Math.pow(10, len)
+        var len = strfi.substr(dotPos + 1).length
+        var times = Math.pow(10, len)
         var intNum = parseInt(floatNum * times + 0.5, 10)
-        ret.times  = times
-        ret.num    = intNum
+        ret.times = times
+        ret.num = intNum
         return ret
     }
 
@@ -2240,12 +2260,15 @@ var floatObj = function() {
     function add(a, b, digits) {
         return operation(a, b, digits, 'add')
     }
+
     function subtract(a, b, digits) {
         return operation(a, b, digits, 'subtract')
     }
+
     function multiply(a, b, digits) {
         return operation(a, b, digits, 'multiply')
     }
+
     function divide(a, b, digits) {
         return operation(a, b, digits, 'divide')
     }

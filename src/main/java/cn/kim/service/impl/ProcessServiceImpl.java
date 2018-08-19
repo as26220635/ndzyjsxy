@@ -26,12 +26,26 @@ import java.util.*;
 @Service
 public class ProcessServiceImpl extends BaseServiceImpl implements ProcessService {
     /****   流程    ***/
+
+    /**
+     * 查询流程项目名称
+     *
+     * @param tableId
+     * @param busProcess
+     * @param busProcess2
+     * @return
+     */
     @Override
-    public String selectProcessTableName(String definitionTableId, String definitionUpdateTable, String definitionUpdateName) {
+    public String selectProcessTableName(String tableId, String busProcess, String busProcess2) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
-        paramMap.put("SPD_TABLE_ID", definitionTableId);
-        paramMap.put("SPD_UPDATE_TABLE", definitionUpdateTable);
-        paramMap.put("SPD_UPDATE_NAME", definitionUpdateName);
+        paramMap.put("BUS_PROCESS", busProcess);
+        paramMap.put("BUS_PROCESS2", busProcess2);
+        Map<String, Object> definition = this.selectProcessDefinition(paramMap);
+
+        paramMap.clear();
+        paramMap.put("SPD_TABLE_ID", tableId);
+        paramMap.put("SPD_UPDATE_TABLE", definition.get("SPD_UPDATE_TABLE"));
+        paramMap.put("SPD_UPDATE_NAME", definition.get("SPD_UPDATE_NAME"));
 
         return baseDao.selectOne(NameSpace.ProcessMapper, "selectProcessTableName", paramMap);
     }
@@ -249,10 +263,21 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         int status = STATUS_ERROR;
         String desc = Tips.PROCESS_ERROR;
         try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(8);
+
+            //查询流程
+            paramMap.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
+            paramMap.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
+            Map<String, Object> definition = this.selectProcessDefinition(paramMap);
+            //流程停用就没有按钮
+            if (isDiscontinuation(definition)) {
+                throw new CustomException("流程已经停用!");
+            }
+
             //流程办理类型
             String processType = toString(mapParam.get("PROCESS_TYPE"));
             //流程定义ID
-            String definitionId = toString(mapParam.get("SPD_ID"));
+            String definitionId = toString(definition.get("ID"));
             //流程办理ID
             String scheduleTableId = toString(mapParam.get("SPS_TABLE_ID"));
             //流程办理表名称
@@ -268,15 +293,6 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
 
             if (isEmpty(scheduleTableId) || isEmpty(definitionId) || isEmpty(processType)) {
                 throw new CustomException("参数错误!");
-            }
-
-            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(8);
-
-            paramMap.put("ID", definitionId);
-            Map<String, Object> definition = this.selectProcessDefinition(paramMap);
-            //流程停用就没有按钮
-            if (isDiscontinuation(definition)) {
-                throw new CustomException("流程已经停用!");
             }
 
             //错误提示信息
@@ -570,8 +586,15 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
     /****   流程定义    ***/
 
     @Override
-    public Map<String, Object> selectProcessDefinition(Map<String, Object> mapParam) {
+    public Map<String, Object> selectProcessDefinitionById(String ID) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", ID);
+        return this.selectProcessDefinition(paramMap);
+    }
+
+    @Override
+    public Map<String, Object> selectProcessDefinition(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
         paramMap.put("ID", mapParam.get("ID"));
         paramMap.put("BUS_PROCESS", mapParam.get("BUS_PROCESS"));
         paramMap.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));

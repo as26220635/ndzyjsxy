@@ -47,7 +47,21 @@ public class TextUtil {
      */
     private static final Pattern TABLE_NAME_PATTERN = Pattern.compile("@(.*?)@");
 
-    // 将汉字转换为全拼
+    /**
+     * SQL过滤词语
+     */
+    private static final String[] SQL_FILTER_WORDS = {"and", "exec", "execute", "insert", "select", "delete", "update", "count", "drop", "chr", "mid", "master", "truncate", "char", "declare", "sitename", "net user", "xp_cmdshell", "like", "and", "exec", "execute", "insert", "create", "drop", "table", "from", "grant", "use", "group_concat", "column_name", "information_schema.columns", "table_schema", "union", "where", "select", "delete", "update", "order", "by", "count", "chr", "mid", "master", "truncate", "char", "declare", "or"};
+    /**
+     * SQL过滤特殊字符
+     */
+    private static final String[] SQL_FILTER_WORDS2 = {"\\*", "'", ";", "or", "--", "\\+", "//", "/", "%", "#"};
+
+    /**
+     * 将汉字转换为全拼
+     *
+     * @param src
+     * @return
+     */
     public static String getPingYin(String src) {
         src = src.replaceAll("（", "(").replaceAll("）", ")");
         char[] t1 = null;
@@ -413,24 +427,19 @@ public class TextUtil {
     public static String sqlValidate(String str) {
         //统一转为小写
         String str2 = str.toLowerCase();
-        //词语
-        String[] sqlStr1 = {"and", "exec", "execute", "insert", "select", "delete", "update", "count", "drop", "chr", "mid", "master", "truncate", "char", "declare", "sitename", "net user", "xp_cmdshell", "like", "and", "exec", "execute", "insert", "create", "drop", "table", "from", "grant", "use", "group_concat", "column_name", "information_schema.columns", "table_schema", "union", "where", "select", "delete", "update", "order", "by", "count", "chr", "mid", "master", "truncate", "char", "declare", "or"};
-        //特殊字符
-        String[] sqlStr2 = {"\\*", "'", ";", "or", "--", "\\+", "//", "/", "%", "#"};
 
-        for (int i = 0; i < sqlStr1.length; i++) {
-            if (str2.indexOf(sqlStr1[i]) >= 0) {
+        for (int i = 0; i < SQL_FILTER_WORDS.length; i++) {
+            if (str2.indexOf(SQL_FILTER_WORDS[i]) >= 0) {
                 //正则替换词语，无视大小写
-                str = str.replaceAll("(?i)" + sqlStr1[i], "");
+                str = str.replaceAll("(?i)" + SQL_FILTER_WORDS[i], "");
             }
         }
-        for (int i = 0; i < sqlStr2.length; i++) {
-            if (str2.indexOf(sqlStr2[i]) >= 0) {
-                str = str.replaceAll(sqlStr2[i], "");
+        for (int i = 0; i < SQL_FILTER_WORDS2.length; i++) {
+            if (str2.indexOf(SQL_FILTER_WORDS2[i]) >= 0) {
+                str = str.replaceAll(SQL_FILTER_WORDS2[i], "");
             }
         }
 
-        System.out.println(str);
         return str;
     }
 

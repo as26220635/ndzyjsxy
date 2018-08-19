@@ -2,6 +2,7 @@ package cn.kim.tools;
 
 import cn.kim.common.attr.Attribute;
 import cn.kim.common.eu.ProcessType;
+import cn.kim.exception.CustomException;
 import cn.kim.service.ProcessService;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by 余庚鑫 on 2018/6/11
@@ -87,6 +91,99 @@ public class ProcessTool {
             return "<button type='button' class='btn btn-danger " + cls + "' id='PROCESS_WITHDRAW'><i class='mdi mdi-arrow-down-thick'></i>撤回</button>";
         }
         return "";
+    }
+
+    /**
+     * 检测是否同一流程同一状态
+     *
+     * @param tableIds
+     * @return
+     */
+    public static boolean checkProcessUnified(String[] tableIds) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+
+        //上一个流程
+        String prevDefinitionId = null;
+        //上一个审核状态
+        String prevAuditStatus = null;
+
+        for (int i = 0; i < tableIds.length; i++) {
+            paramMap.clear();
+            paramMap.put("SPS_TABLE_ID", tableIds[i]);
+            paramMap.put("SPS_IS_CANCEL", TextUtil.toString(Attribute.STATUS_ERROR));
+            Map<String, Object> schedule = processTool.processService.selectProcessSchedule(paramMap);
+
+            if (i > 0) {
+                //有的找到有的没有找到不是同一个流程
+                if (ValidateUtil.isEmpty(prevDefinitionId) && !ValidateUtil.isEmpty(schedule)) {
+                    return false;
+                }
+                //是否是同一个流程
+                if (!prevDefinitionId.equals(TextUtil.toString(schedule.get("SPD_ID")))) {
+                    return false;
+                }
+                //是否是同一个审核状态
+                if (!prevAuditStatus.equals(TextUtil.toString(schedule.get("SPS_AUDIT_STATUS")))) {
+                    return false;
+                }
+            }
+
+            if (!ValidateUtil.isEmpty(schedule)) {
+                prevDefinitionId = TextUtil.toString(schedule.get("SPD_ID"));
+                prevAuditStatus = TextUtil.toString(schedule.get("SPS_AUDIT_STATUS"));
+            }
+
+        }
+
+        return true;
+    }
+
+    /**
+     * 是否有权限审核
+     *
+     * @param PROCESS_TYPE 审核类型
+     * @param SPS_TABLE_ID 主键
+     * @param BUS_PROCESS  流程大类
+     * @param BUS_PROCESS2 流程小类
+     * @return
+     * @throws Exception
+     */
+    public static boolean checkProcess(int PROCESS_TYPE, String SPS_TABLE_ID, String BUS_PROCESS, String BUS_PROCESS2) throws Exception {
+        boolean isCheck = true;
+
+        //判断当前是否拥有审核权限
+        Set<String> processBtn = new HashSet(Arrays.asList(processTool.processService.showDataGridProcessBtn(SPS_TABLE_ID, BUS_PROCESS, BUS_PROCESS2).split(Attribute.SERVICE_SPLIT)));
+        if (ValidateUtil.isEmpty(processBtn)) {
+            isCheck = false;
+        }
+
+        if (PROCESS_TYPE == ProcessType.SUBMIT.getType()) {
+            if (!processBtn.contains(ProcessType.SUBMIT.toString())) {
+                isCheck = false;
+            }
+        } else if (PROCESS_TYPE == ProcessType.BACK.getType()) {
+            if (!processBtn.contains(ProcessType.BACK.toString())) {
+                isCheck = false;
+            }
+        } else if (PROCESS_TYPE == ProcessType.WITHDRAW.getType()) {
+            if (!processBtn.contains(ProcessType.WITHDRAW.toString())) {
+                isCheck = false;
+            }
+        }
+
+        return isCheck;
+    }
+
+    /**
+     * 查询流程名称
+     *
+     * @param tableId
+     * @param busProcess
+     * @param busProcess2
+     * @return
+     */
+    public static String selectProcessTableName(String tableId, String busProcess, String busProcess2) {
+        return processTool.processService.selectProcessTableName(tableId, busProcess, busProcess2);
     }
 
     /**

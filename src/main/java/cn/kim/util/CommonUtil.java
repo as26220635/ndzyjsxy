@@ -9,6 +9,7 @@ import cn.kim.entity.DataTablesView;
 import cn.kim.entity.Tree;
 import cn.kim.service.MenuService;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.sun.org.apache.xml.internal.security.keys.content.MgmtData;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,7 +39,7 @@ public class CommonUtil {
     /**
      * 加密解密字段
      */
-    public static String[] CONTAINS_ENCRYPT_FIELDS = {"id", "key", "sps_step_transactor"};
+    public static String[] CONTAINS_ENCRYPT_FIELDS = {"id", "key", "sps_step_transactor", "bus_process"};
     /**
      * URL转义字段
      */
@@ -47,14 +48,7 @@ public class CommonUtil {
     /**
      * 不加密字段
      */
-    public static Map<String, String> NO_ENCRYPT_FIELDS = Maps.newHashMapWithExpectedSize(2);
-
-    static {
-        NO_ENCRYPT_FIELDS.put("SCC_WIDTH", "SCC_WIDTH");
-        NO_ENCRYPT_FIELDS.put("SB_BUTTONID", "SB_BUTTONID");
-        NO_ENCRYPT_FIELDS.put("BS_ID_CARD", "BS_ID_CARD");
-        NO_ENCRYPT_FIELDS.put("BAF_AID_TYPE", "BAF_AID_TYPE");
-    }
+    public static Set<String> NO_ENCRYPT_FIELDS = Sets.newHashSet("SCC_WIDTH", "SB_BUTTONID", "BS_ID_CARD", "BAF_AID_TYPE");
 
     @Autowired
     private MenuService menuService;
@@ -558,8 +552,8 @@ public class CommonUtil {
                     if (object instanceof CustomParam) {
                         CustomParam param = (CustomParam) object;
                         if (param.isEncrypt()) {
-                            String key = param.getKey();
-                            param.setKey(ValidateUtil.isNumber(key) ? AESUtil.encode(key) : key);
+                            String val = param.getValue();
+                            param.setValue(ValidateUtil.isNumber(val) ? AESUtil.encode(val) : val);
                         }
                     } else if (object instanceof Tree) {
                         Tree tree = (Tree) object;
@@ -647,8 +641,8 @@ public class CommonUtil {
                     if (object instanceof CustomParam) {
                         CustomParam param = (CustomParam) object;
                         if (param.isEncrypt()) {
-                            String key = param.getKey();
-                            param.setKey(ValidateUtil.isNumber(key) ? key : AESUtil.dncode(key));
+                            String val = param.getValue();
+                            param.setValue(ValidateUtil.isNumber(val) ? val : AESUtil.dncode(val));
                         }
                     } else if (object instanceof Tree) {
                         Tree tree = (Tree) object;
@@ -714,13 +708,13 @@ public class CommonUtil {
             return (List<T>) list;
         }
 
-        List<T> reusltList = new ArrayList<T>();
+        List<T> resultList = new ArrayList<T>();
 
         for (Object obj : list) {
             try {
                 T newInstance = c.newInstance();
                 BeanUtil.copyProperties(obj, newInstance);
-                reusltList.add(newInstance);
+                resultList.add(newInstance);
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -728,7 +722,7 @@ public class CommonUtil {
             }
         }
 
-        return reusltList;
+        return resultList;
     }
 
     /**
@@ -758,14 +752,14 @@ public class CommonUtil {
         if (ValidateUtil.isEmpty(val)) {
             return false;
         }
-        return isContains(CONTAINS_ENCRYPT_FIELDS, key.toString()) && !NO_ENCRYPT_FIELDS.containsKey(key.toString()) && MagicValue.JAVA_LANG_STRING.equals(val.getClass().getName());
+        return isContains(CONTAINS_ENCRYPT_FIELDS, key.toString()) && !NO_ENCRYPT_FIELDS.contains(key.toString()) && MagicValue.JAVA_LANG_STRING.equals(val.getClass().getName());
     }
 
     public static boolean isEncrypt(Object key, Class<?> type) {
         if (ValidateUtil.isEmpty(type)) {
             return false;
         }
-        return isContains(CONTAINS_ENCRYPT_FIELDS, key.toString()) && !NO_ENCRYPT_FIELDS.containsKey(key.toString()) && type == String.class;
+        return isContains(CONTAINS_ENCRYPT_FIELDS, key.toString()) && !NO_ENCRYPT_FIELDS.contains(key.toString()) && type == String.class;
     }
 
     /**
@@ -779,14 +773,14 @@ public class CommonUtil {
         if (ValidateUtil.isEmpty(type)) {
             return false;
         }
-        return isContains(CONTAINS_ENCRYPT_FIELDS, key.toString()) && !NO_ENCRYPT_FIELDS.containsKey(key.toString()) && MagicValue.CLASS_JAVA_LANG_STRING.equals(type);
+        return isContains(CONTAINS_ENCRYPT_FIELDS, key.toString()) && !NO_ENCRYPT_FIELDS.contains(key.toString()) && MagicValue.CLASS_JAVA_LANG_STRING.equals(type);
     }
 
     public static boolean isEncrypt(Object key, boolean isString) {
         if (!isString) {
             return false;
         }
-        return isContains(CONTAINS_ENCRYPT_FIELDS, key.toString()) && !NO_ENCRYPT_FIELDS.containsKey(key.toString());
+        return isContains(CONTAINS_ENCRYPT_FIELDS, key.toString()) && !NO_ENCRYPT_FIELDS.contains(key.toString());
     }
 
     /**

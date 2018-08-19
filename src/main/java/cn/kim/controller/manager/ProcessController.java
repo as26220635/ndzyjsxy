@@ -4,9 +4,11 @@ import cn.kim.common.annotation.NotEmptyLogin;
 import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.annotation.Token;
 import cn.kim.common.annotation.Validate;
+import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.eu.UseType;
 import cn.kim.common.eu.ProcessType;
+import cn.kim.entity.CustomParam;
 import cn.kim.entity.DataTablesView;
 import cn.kim.entity.ResultState;
 import cn.kim.entity.Tree;
@@ -28,6 +30,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by 余庚鑫 on 2018/5/22
@@ -87,9 +90,21 @@ public class ProcessController extends BaseController {
     @Token(save = true)
     public String showDataGridProcess(String ID, String SHOW_SO_ID, String BUS_PROCESS, String BUS_PROCESS2, int PROCESS_TYPE, Model model) throws Exception {
         try {
+            //取第一个ID拿来查询流程
+            String[] tableIds = ID.split(SERVICE_SPLIT);
             String processBtnType = ProcessType.SUBMIT.toString();
             List<Map<String, Object>> transactorList = new ArrayList<>();
 
+            //判断是否处于同一流程同一状态
+            if (!ProcessTool.checkProcessUnified(tableIds)) {
+                throw new CustomException("流程或流程状态不统一!");
+            }
+            //判断当前是否拥有审核权限
+            if (!ProcessTool.checkProcess(PROCESS_TYPE, tableIds[0], BUS_PROCESS, BUS_PROCESS2)) {
+                throw new CustomException("当前用户没有审核权限!");
+            }
+
+            //根据大小类查询流程定义
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
             paramMap.put("BUS_PROCESS", BUS_PROCESS);
             paramMap.put("BUS_PROCESS2", BUS_PROCESS2);
@@ -97,10 +112,11 @@ public class ProcessController extends BaseController {
             String SPD_ID = toString(definition.get("ID"));
             //查询当前流程办理步骤
             paramMap.clear();
-            paramMap.put("SPS_TABLE_ID", ID);
+            paramMap.put("SPS_TABLE_ID", tableIds[0]);
             paramMap.put("SPD_ID", SPD_ID);
             paramMap.put("SPS_IS_CANCEL", toString(STATUS_ERROR));
             Map<String, Object> schedule = processService.selectProcessSchedule(paramMap);
+
             //审核状态
             String SPS_AUDIT_STATUS;
             if (!isEmpty(schedule) && !"0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
@@ -116,6 +132,15 @@ public class ProcessController extends BaseController {
                 } else {
                     throw new CustomException("当前用户没有提交审核权限!");
                 }
+            }
+
+            //拼接提交项目
+            List<CustomParam> submitProcessList = new ArrayList<>();
+            for (String tableId : tableIds) {
+                CustomParam customParam = new CustomParam(ProcessTool.selectProcessTableName(tableId, BUS_PROCESS, BUS_PROCESS2), tableId);
+                customParam.setDefaultParam(true);
+                customParam.setEncrypt(true);
+                submitProcessList.add(customParam);
             }
 
             paramMap.clear();
@@ -263,8 +288,8 @@ public class ProcessController extends BaseController {
             model.addAttribute("PROCESS_TYPE", PROCESS_TYPE);
             //默认办理意见
             model.addAttribute("DEFAULT_OPINION", DEFAULT_OPINION);
-            //查询项目名称
-            model.addAttribute("SPS_TABLE_NAME", processService.selectProcessTableName(ID, toString(definition.get("SPD_UPDATE_TABLE")), toString(definition.get("SPD_UPDATE_NAME"))));
+            //提交项目list
+            model.addAttribute("submitProcessList", submitProcessList);
             //步骤名称
             model.addAttribute("STEP_NAME", DictUtil.getDictName("SYS_PROCESS_STATUS", SPS_AUDIT_STATUS));
             //下一步步骤
@@ -291,14 +316,49 @@ public class ProcessController extends BaseController {
     @Validate(value = {"SYS_PROCESS_LOG", "SYS_PROCESS_SCHEDULE"})
     @ResponseBody
     public ResultState submit(@RequestParam Map<String, Object> mapParam) throws Exception {
+        //办理类型
+        int PROCESS_TYPE = toInt(mapParam.get("PROCESS_TYPE"));
         //流程办理ID
-        String SPS_TABLE_ID = toString(mapParam.get("SPS_TABLE_ID"));
-        //公平锁进行等待
-        return fairLock(SPS_TABLE_ID, () -> {
-            Map<String, Object> resultMap = ProcessTool.submitProcess(mapParam);
+        String[] tableIds = toString(mapParam.get("SPS_TABLE_ID")).split(SERVICE_SPLIT);
+        //拿到大小类
+        String BUS_PROCESS = toString(mapParam.get("BUS_PROCESS"));
+        String BUS_PROCESS2 = toString(mapParam.get("BUS_PROCESS2"));
 
-            return resultState(resultMap);
-        });
+        //判断是否处于同一流程同一状态
+        if (!ProcessTool.checkProcessUnified(tableIds)) {
+            throw new CustomException("流程或流程状态不统一!");
+        }
+
+        if (!ProcessTool.checkProcess(PROCESS_TYPE, tableIds[0], BUS_PROCESS, BUS_PROCESS2)) {
+            throw new CustomException("当前用户没有审核权限!");
+        }
+
+        //错误消息
+        StringBuilder errorBuilder = new StringBuilder();
+        //循环提交
+        for (String tableId : tableIds) {
+            mapParam.put("SPS_TABLE_ID", tableId);
+            //公平锁
+            ResultState state = fairLock(tableId, () -> {
+                Map<String, Object> resultMap = ProcessTool.submitProcess(mapParam);
+
+                return resultState(resultMap);
+            });
+            //只有1个流程直接返回
+            if (tableIds.length == 1) {
+                return state;
+            }
+            //判断返回结果
+            if (state.getCode() == STATUS_ERROR) {
+                String tableName = ProcessTool.selectProcessTableName(tableId, BUS_PROCESS, BUS_PROCESS2);
+                errorBuilder.append("流程:" + tableName + ",异常原因:" + state.getMessage() + ",请修改后再次尝试!<br/>");
+            }
+        }
+        if (isEmpty(errorBuilder)) {
+            return resultSuccess("流程批量提交成功!", "流程批量提交成功,SPS_TABLE_IDS:" + toString(tableIds));
+        } else {
+            return resultError("异常流程:<br/>" + errorBuilder.toString(), "流程提交成功!出现问题流程:" + errorBuilder.toString());
+        }
     }
 
     /**
@@ -314,6 +374,13 @@ public class ProcessController extends BaseController {
     public ResultState withdraw(@RequestParam Map<String, Object> mapParam) throws Exception {
         //流程办理ID
         String SPS_TABLE_ID = toString(mapParam.get("SPS_TABLE_ID"));
+        //拿到大小类
+        String BUS_PROCESS = toString(mapParam.get("BUS_PROCESS"));
+        String BUS_PROCESS2 = toString(mapParam.get("BUS_PROCESS2"));
+        if (!ProcessTool.checkProcess(ProcessType.WITHDRAW.getType(), SPS_TABLE_ID, BUS_PROCESS, BUS_PROCESS2)) {
+            throw new CustomException("当前用户没有审核权限!");
+        }
+
         //公平锁进行等待
         return fairLock(SPS_TABLE_ID, () -> {
             Map<String, Object> resultMap = ProcessTool.withdrawProcess(mapParam);

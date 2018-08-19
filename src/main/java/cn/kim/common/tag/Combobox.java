@@ -60,7 +60,7 @@ public class Combobox extends BaseTagSupport {
     /**
      * 参数
      */
-    private List<Map<String, Object>> dataList;
+    private List<CustomParam> dataList;
 
     /**
      * 显示级别 0 全部 1 第一级 2 第二级
@@ -161,11 +161,11 @@ public class Combobox extends BaseTagSupport {
         try {
             StringBuilder builder = new StringBuilder();
 
-            builder.append("<select " + toTagId(custom, id, name) + " class='form-control select2' style='width:" + width + ";' " + (required ? "required" : "") + " readonly multiple>");
+            builder.append("<select " + toTagId(custom, id, name) + " class='form-control select2' style='width:" + width + ";' " + (required ? "required" : "") + " readonly " + (readonly ? " disabled " : "") + " multiple>");
 
-            if (!isEmpty(sdtCode)) {
-                appendSdtCodeOption(builder);
-            }
+            //添加内容
+            appendSdtCodeOption(builder);
+
             builder.append("</select>");
 
             builder.append("<script>$('#" + id + "').select2({language: 'zh-CN'});</script>");
@@ -208,8 +208,8 @@ public class Combobox extends BaseTagSupport {
                 }
             }
         } else if (!isEmpty(dataList)) {
-            dataList.forEach(map -> {
-                builder.append(splitOption(toString(map.get("ID")), toString(map.get("NAME")), "", Attribute.STATUS_SUCCESS));
+            dataList.forEach(customParam -> {
+                builder.append(splitOption(customParam.getValue(), customParam.getKey(), customParam.getDefaultParam() ? " selected " : "", Attribute.STATUS_SUCCESS));
             });
         }
     }
@@ -344,14 +344,13 @@ public class Combobox extends BaseTagSupport {
         this.url = url;
     }
 
-    public List<Map<String, Object>> getDataList() {
+    public List<CustomParam> getDataList() {
         return dataList;
     }
 
-    public void setDataList(List<Map<String, Object>> dataList) {
+    public void setDataList(List<CustomParam> dataList) {
         this.dataList = dataList;
     }
-
 
     public int getLevel() {
         return level;

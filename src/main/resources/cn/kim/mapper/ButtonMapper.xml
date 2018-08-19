@@ -28,6 +28,7 @@
             <if test="SB_BUTTONID != null">SB_BUTTONID,</if>
             <if test="SB_FUNC != null">SB_FUNC,</if>
             <if test="SB_CLASS != null">SB_CLASS,</if>
+            <if test="SB_EXTEND_CLASS != null">SB_EXTEND_CLASS,</if>
             <if test="SB_ICON != null">SB_ICON,</if>
             <if test="SB_CODE != null">SB_CODE,</if>
             <if test="SB_ORDER != null">SB_ORDER,</if>
@@ -39,6 +40,7 @@
             <if test="SB_BUTTONID != null">#{SB_BUTTONID},</if>
             <if test="SB_FUNC != null">#{SB_FUNC},</if>
             <if test="SB_CLASS != null">#{SB_CLASS},</if>
+            <if test="SB_EXTEND_CLASS != null">#{SB_EXTEND_CLASS},</if>
             <if test="SB_ICON != null">#{SB_ICON},</if>
             <if test="SB_CODE != null">#{SB_CODE},</if>
             <if test="SB_ORDER != null">#{SB_ORDER},</if>
@@ -55,6 +57,7 @@
             <if test="SB_BUTTONID != null">SB_BUTTONID=#{SB_BUTTONID},</if>
             <if test="SB_FUNC != null">SB_FUNC=#{SB_FUNC},</if>
             <if test="SB_CLASS != null">SB_CLASS=#{SB_CLASS},</if>
+            <if test="SB_EXTEND_CLASS != null">SB_EXTEND_CLASS=#{SB_EXTEND_CLASS},</if>
             <if test="SB_ICON != null">SB_ICON=#{SB_ICON},</if>
             <if test="SB_CODE != null">SB_CODE=#{SB_CODE},</if>
             <if test="SB_ORDER != null">SB_ORDER=#{SB_ORDER},</if>

@@ -7,6 +7,7 @@ import cn.kim.common.sequence.Sequence;
 import cn.kim.service.MenuService;
 import cn.kim.util.*;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
@@ -14,18 +15,17 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import javax.xml.soap.Text;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by 余庚鑫 on 2018/3/29
  * 按钮
  */
 public class Button extends BaseTagSupport {
-
-    private static String[] BTN_ID_AJAX_CLOSE = {"save"};
+    /**
+     * ajax开始的时候不能点击 结束ajax恢复
+     */
+    public static Set<String> BTN_ID_AJAX_CLOSE = Sets.newHashSet("save", "cache");
 
     private MenuService menuService;
 
@@ -75,9 +75,9 @@ public class Button extends BaseTagSupport {
         if (!ValidateUtil.isEmpty(buttons)) {
             //根据权限过滤按钮 返回不过滤
             buttons.removeIf(map -> !"RETURN".equals(toString(map.get("SB_CODE"))) && !AuthcUtil.isPermitted(toString(menu.get("SM_CODE")) + "_" + toString(map.get("SB_CODE"))));
-            buttons.forEach(button->{
+            buttons.forEach(button -> {
                 //有返回了就隐藏放回
-                if("RETURN".equals(toString(button.get("SB_CODE")))){
+                if ("RETURN".equals(toString(button.get("SB_CODE")))) {
                     back = false;
                     return;
                 }
@@ -129,8 +129,11 @@ public class Button extends BaseTagSupport {
                 buttons.forEach(button -> {
                     //额外的class
                     String additionalClass = "";
-                    if (Arrays.binarySearch(BTN_ID_AJAX_CLOSE, button.get("SB_BUTTONID")) != -1) {
+                    if (BTN_ID_AJAX_CLOSE.contains(button.get("SB_BUTTONID"))) {
                         additionalClass = " model-ok ";
+                    }
+                    if (!isEmpty(button.get("SB_EXTEND_CLASS"))) {
+                        additionalClass += " " + button.get("SB_EXTEND_CLASS") + " ";
                     }
                     builder.append("<button id='" + button.get("SB_BUTTONID") + "' type='button' class='" + button.get("SB_CLASS") + additionalClass + "' onclick='" + button.get("SB_FUNC") + "'><i class='" + button.get("SB_ICON") + "'></i>" + button.get("SB_NAME") + "</button>");
                 });
