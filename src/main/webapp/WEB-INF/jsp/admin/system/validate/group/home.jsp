@@ -53,13 +53,7 @@
                             return;
                         }
 
-                        var SVF_IDS = '';
-                        $("#addAndEditForm #SVF_IDS option:selected").each(function (index) {
-                            SVF_IDS += $(this).val() + SERVICE_SPLIT;
-                        })
-
                         var params = packFormParams($form);
-                        params.SVF_IDS = SVF_IDS;
 
                         ajax.post('${VALIDATE_GROUP_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
@@ -89,13 +83,7 @@
                             return;
                         }
 
-                        var SVF_IDS = '';
-                        $("#addAndEditForm #SVF_IDS option:selected").each(function (index) {
-                            SVF_IDS += $(this).val() + SERVICE_SPLIT;
-                        })
-
                         var params = packFormParams($form);
-                        params.SVF_IDS = SVF_IDS;
 
                         ajax.put('${VALIDATE_GROUP_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);

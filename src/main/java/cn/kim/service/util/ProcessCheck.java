@@ -4,6 +4,8 @@ import cn.kim.common.eu.Process;
 import cn.kim.entity.ProcessRunBean;
 import cn.kim.service.impl.BaseServiceImpl;
 import cn.kim.service.util.check.AidProcessCheck;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +14,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProcessCheck extends BaseServiceImpl {
+
+    /**
+     * 资助验证
+     */
+    @Autowired
+    private AidProcessCheck aidProcessCheck;
 
     /**
      * 前进校验
@@ -27,12 +35,10 @@ public class ProcessCheck extends BaseServiceImpl {
 
         //资助管理
         if (Process.AID.toString().equals(busProcess)) {
-            AidProcessCheck aidProcessCheck = new AidProcessCheck();
             error += aidProcessCheck.checkStudentPunishment(run);
         }
         //资助管理-年度表彰
         if (Process.AID.toString().equals(busProcess) && Process.AID_COMMEND.toString().equals(busProcess2)) {
-            AidProcessCheck aidProcessCheck = new AidProcessCheck();
             //检测成绩是否达到要求
             error += aidProcessCheck.checkCommendScore(run);
         }

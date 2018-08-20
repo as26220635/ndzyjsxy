@@ -9,6 +9,7 @@ import cn.kim.entity.ProcessRunBean;
 import cn.kim.exception.CustomException;
 import cn.kim.util.AllocationUtil;
 import com.google.common.collect.Maps;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
  * Created by 余庚鑫 on 2018/8/13
  * 资助流程验证
  */
+@Component
 public class AidProcessCheck extends BaseData {
 
     /**

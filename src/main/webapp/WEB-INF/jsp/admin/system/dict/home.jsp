@@ -26,19 +26,7 @@
                             return;
                         }
 
-                        var SDT_ROLE_DOWN = '';
-                        $("#addAndEditForm #SDT_ROLE_DOWN option:selected").each(function (index) {
-                            SDT_ROLE_DOWN += $(this).val() + SERVICE_SPLIT;
-                        })
-
-                        var SDT_ROLE_DEL = '';
-                        $("#addAndEditForm #SDT_ROLE_DEL option:selected").each(function (index) {
-                            SDT_ROLE_DEL += $(this).val() + SERVICE_SPLIT;
-                        })
-
                         var params = packFormParams($form);
-                        params.SDT_ROLE_DOWN = SDT_ROLE_DOWN;
-                        params.SDT_ROLE_DEL = SDT_ROLE_DEL;
 
                         ajax.post('${DICT_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
@@ -77,19 +65,7 @@
                             return;
                         }
 
-                        var SDT_ROLE_DOWN = '';
-                        $("#addAndEditForm #SDT_ROLE_DOWN option:selected").each(function (index) {
-                            SDT_ROLE_DOWN += $(this).val() + SERVICE_SPLIT;
-                        })
-
-                        var SDT_ROLE_DEL = '';
-                        $("#addAndEditForm #SDT_ROLE_DEL option:selected").each(function (index) {
-                            SDT_ROLE_DEL += $(this).val() + SERVICE_SPLIT;
-                        })
-
                         var params = packFormParams($form);
-                        params.SDT_ROLE_DOWN = SDT_ROLE_DOWN;
-                        params.SDT_ROLE_DEL = SDT_ROLE_DEL;
 
                         ajax.put('${DICT_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);

@@ -46,19 +46,13 @@
                             return;
                         }
 
-                        //拼接提交流程ID
-                        var SPS_TABLE_ID = '';
-                        $("#processForm #SPS_TABLE_ID option:selected").each(function (index) {
-                            SPS_TABLE_ID += $(this).val() + SERVICE_SPLIT;
-                        })
-                        if(isEmpty(SPS_TABLE_ID)){
-                            demo.showNotify(ALERT_WARNING, '请选择办理流程!');
-                            return;
-                        }
                         var params = packFormParams($form);
-                        params.SPS_TABLE_ID = SPS_TABLE_ID;
                         if (params.IS_DISCONTINUATION == '1') {
                             demo.showNotify(ALERT_WARNING, '流程已经禁用!');
+                            return;
+                        }
+                        if(isEmpty(params.SPS_TABLE_ID)){
+                            demo.showNotify(ALERT_WARNING, '请选择办理流程!');
                             return;
                         }
 
