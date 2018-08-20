@@ -46,6 +46,8 @@ public class DictController extends BaseController {
     @Validate("SYS_DICT_TYPE")
     @ResponseBody
     public ResultState add(@RequestParam Map<String, Object> mapParam) throws Exception {
+        mapParam.put("SDT_ROLE_DOWN",idDecrypt(mapParam.get("SDT_ROLE_DOWN")));
+        mapParam.put("SDT_ROLE_DEL",idDecrypt(mapParam.get("SDT_ROLE_DEL")));
         Map<String, Object> resultMap = dictService.insertAndUpdateDictType(mapParam);
 
         return resultState(resultMap);
@@ -57,7 +59,11 @@ public class DictController extends BaseController {
     public String updateHtml(Model model, @PathVariable("ID") String ID) throws Exception {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         mapParam.put("ID", ID);
-        model.addAttribute("DICT", dictService.selectDictType(mapParam));
+        Map<String, Object> dict = dictService.selectDictType(mapParam);
+        dict.put("SDT_ROLE_DOWN",idEncrypt(dict.get("SDT_ROLE_DOWN")));
+        dict.put("SDT_ROLE_DEL",idEncrypt(dict.get("SDT_ROLE_DEL")));
+
+        model.addAttribute("DICT", dict);
         return "admin/system/dict/addAndEdit";
     }
 
@@ -67,6 +73,8 @@ public class DictController extends BaseController {
     @Validate("SYS_DICT_TYPE")
     @ResponseBody
     public ResultState update(@RequestParam Map<String, Object> mapParam) throws Exception {
+        mapParam.put("SDT_ROLE_DOWN",idDecrypt(mapParam.get("SDT_ROLE_DOWN")));
+        mapParam.put("SDT_ROLE_DEL",idDecrypt(mapParam.get("SDT_ROLE_DEL")));
         Map<String, Object> resultMap = dictService.insertAndUpdateDictType(mapParam);
         return resultState(resultMap);
     }

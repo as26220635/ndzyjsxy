@@ -36,12 +36,12 @@
         url: '${PROCESS_LOG_LIST}',
         createdRow: function (row, data, dataIndex) {
             //提交
-            if (data.SPL_TYPE == '0') {
+            if (data.SPL_TYPE == '${ProcessType.SUBMIT.toString()}') {
                 $(row).addClass('text-green');
-            } else if (data.SPL_TYPE == '1') {
+            } else if (data.SPL_TYPE == '${ProcessType.BACK.toString()}') {
                 //退回
                 $(row).addClass('text-red');
-            } else if (data.SPL_TYPE == '2') {
+            } else if (data.SPL_TYPE == '${ProcessType.WITHDRAW.toString()}') {
                 //撤回
                 $(row).addClass('text-yellow');
             }

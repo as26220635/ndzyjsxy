@@ -99,7 +99,7 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
                     Map<String, Object> newValue = Maps.newHashMapWithExpectedSize(16);
                     //把更新的字段取出来
                     oldValue.keySet().forEach(key -> {
-                        if (parameter.containsKey(key)) {
+                        if (parameter.containsKey(key) && parameter.get(key) != null) {
                             newValue.put(key, parameter.get(key));
                         }
                     });
@@ -119,7 +119,6 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
     public int delete(NameSpace nameSpace, String sqlId, Map<String, Object> parameter) throws Exception {
         int count = 0;
         try {
-            count = super.getSqlSession().delete(getStatement(nameSpace, sqlId), parameter);
 
             if (parameter != null) {
                 //记录数据
@@ -128,9 +127,14 @@ public class BaseDaoImpl extends SqlSessionDaoSupport implements BaseDao {
                 boolean notRecord = TextUtil.toBoolean(parameter.get(MagicValue.NOT_RECORD));
 
                 if (!notRecord && !ValidateUtil.isEmpty(tableName) && !ValidateUtil.isEmpty(parameter.get("ID"))) {
-                    this.record(parameter.get("ID"), tableName, null, null, ValueRecordType.DELETE.getType());
+                    //查询旧值
+                    Map<String, Object> oldValue = selectValue(parameter.get("ID"), tableName);
+
+                    this.record(parameter.get("ID"), tableName, TextUtil.toJSONString(oldValue), null, ValueRecordType.DELETE.getType());
                 }
             }
+
+            count = super.getSqlSession().delete(getStatement(nameSpace, sqlId), parameter);
         } catch (Exception e) {
             throw e;
         }

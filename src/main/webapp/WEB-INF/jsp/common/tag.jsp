@@ -33,6 +33,7 @@
 <%--列表地址--%>
 <c:set var="DATA_GRID_URL" value="${MANAGER_URL}dataGrid/data/"/>
 <c:set var="TREE_GRID_URL" value="${MANAGER_URL}treeGrid/data/"/>
+<c:set var="DIFF_URL" value="${MANAGER_URL}diff"/>
 <%--系统配置管理--%>
 <c:set var="ALLOCATION_BASE_URL" value="${MANAGER_URL}allocation/"/>
 <%--邮箱配置管理--%>
@@ -46,6 +47,11 @@
 <c:set var="AUTHORIZATION_BASE_URL" value="${MANAGER_URL}authorization/"/>
 <c:set var="AUTHORIZATION_TREE_URL" value="${AUTHORIZATION_BASE_URL}tree"/>
 <c:set var="AUTHORIZATION_UPDATE_URL" value="${AUTHORIZATION_BASE_URL}update"/>
+<%--日志--%>
+<c:set var="LOG_BASE_URL" value="${MANAGER_URL}log/"/>
+<%--变动记录--%>
+<c:set var="LOG_VALUE_RECORD_BASE_URL" value="${LOG_BASE_URL}valueRecord/"/>
+<c:set var="LOG_VALUE_RECORD_DETAIL_URL" value="${LOG_VALUE_RECORD_BASE_URL}detail/column"/>
 <%--菜单管理--%>
 <c:set var="MENU_BASE_URL" value="${MANAGER_URL}menu/"/>
 <c:set var="MENU_LIST_URL" value="${MENU_BASE_URL}list"/>

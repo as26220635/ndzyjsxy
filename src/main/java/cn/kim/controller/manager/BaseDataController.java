@@ -1,5 +1,6 @@
 package cn.kim.controller.manager;
 
+import cn.kim.common.annotation.NotEmptyLogin;
 import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
@@ -12,6 +13,7 @@ import cn.kim.service.*;
 import cn.kim.util.CommonUtil;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -272,5 +274,22 @@ public class BaseDataController extends BaseController {
             //404跳转
             return return404(model);
         }
+    }
+
+    /**
+     * 文本比对
+     *
+     * @param oldValue
+     * @param newValue
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/admin/diff")
+    @NotEmptyLogin
+    public String valueRecordLog(String oldValue, String newValue, Model model) throws Exception {
+        model.addAttribute("oldValue", oldValue);
+        model.addAttribute("newValue", newValue);
+        return "admin/component/diff";
     }
 }

@@ -447,7 +447,8 @@ tableView = {
     }, 1),
     //返回列表的data数据
     rowData: function (table, row) {
-        return table.row($(row).parents('tr')).data();
+        var $row = $(row);
+        return table.row($row[0].tagName == 'TR' ? $row : $row.parents('tr')).data();
     },
     //为行添加class
     addClass: function (table, row, addClass) {

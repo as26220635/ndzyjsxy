@@ -19,17 +19,21 @@
     <!--插入字典类型-->
     <insert id="insertDictType" parameterType="java.util.Map">
         INSERT INTO SYS_DICT_TYPE
-        <trim prefix="(" suffix=")" suffixOverrides=",">
+        <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="ID != null">ID,</if>
             <if test="SDT_NAME != null">SDT_NAME,</if>
             <if test="SDT_CODE != null">SDT_CODE,</if>
+            <if test="SDT_ROLE_DOWN != null">SDT_ROLE_DOWN,</if>
+            <if test="SDT_ROLE_DEL != null">SDT_ROLE_DEL,</if>
             <if test="IS_STATUS != null">IS_STATUS,</if>
             <if test="IS_HIDDEN != null">IS_HIDDEN,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="ID != null">#{ID},</if>
             <if test="SDT_NAME != null">#{SDT_NAME},</if>
             <if test="SDT_CODE != null">#{SDT_CODE},</if>
+            <if test="SDT_ROLE_DOWN != null">#{SDT_ROLE_DOWN},</if>
+            <if test="SDT_ROLE_DEL != null">#{SDT_ROLE_DEL},</if>
             <if test="IS_STATUS != null">#{IS_STATUS},</if>
             <if test="IS_HIDDEN != null">#{IS_HIDDEN},</if>
         </trim>
@@ -42,6 +46,8 @@
             <if test="ID != null">ID=#{ID},</if>
             <if test="SDT_NAME != null">SDT_NAME=#{SDT_NAME},</if>
             <if test="SDT_CODE != null">SDT_CODE=#{SDT_CODE},</if>
+            <if test="SDT_ROLE_DOWN != null">SDT_ROLE_DOWN=#{SDT_ROLE_DOWN},</if>
+            <if test="SDT_ROLE_DEL != null">SDT_ROLE_DEL=#{SDT_ROLE_DEL},</if>
             <if test="IS_STATUS != null">IS_STATUS=#{IS_STATUS},</if>
             <if test="IS_HIDDEN != null">IS_HIDDEN=#{IS_HIDDEN},</if>
         </set>

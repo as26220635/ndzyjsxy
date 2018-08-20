@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -79,5 +80,12 @@ public class LogServiceImpl extends BaseServiceImpl implements LogService {
         paramMap.put("SLT_CONTENT", mapParam.get("SLT_CONTENT"));
         //插入日志内容
         baseDao.insert(NameSpace.LogMapper, "insertLogText", paramMap);
+    }
+
+    @Override
+    public Map<String, Object> selectValueRecordById(String id) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", id);
+        return baseDao.selectOne(NameSpace.ValueRecordMapper, "selectValueRecord", paramMap);
     }
 }

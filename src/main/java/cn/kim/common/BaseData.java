@@ -1,15 +1,12 @@
 package cn.kim.common;
 
-import cn.kim.common.attr.MagicValue;
+import cn.kim.common.attr.*;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.sequence.Sequence;
 import cn.kim.dao.BaseDao;
 import cn.kim.dao.impl.BaseDaoImpl;
 import cn.kim.entity.ActiveUser;
 import cn.kim.entity.ResultState;
-import cn.kim.common.attr.Attribute;
-import cn.kim.common.attr.ParamTypeResolve;
-import cn.kim.common.attr.Tips;
 import cn.kim.common.sequence.Sequence;
 import cn.kim.entity.ResultState;
 import cn.kim.entity.StudentYearSemester;
@@ -556,5 +553,136 @@ public abstract class BaseData {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 格式化日志列名称 改为数据库备注
+     *
+     * @param tableName 表名
+     * @param formatMap 格式化的map
+     * @return
+     */
+    protected String formatColumnName(String tableName, Map<String, Object> formatMap) {
+        return formatColumnName(tableName, formatMap, null);
+    }
+
+    /**
+     * 格式化日志列名称 改为数据库备注
+     *
+     * @param tableName 表名
+     * @param formatMap 格式化的map
+     * @param removeMap 保留字段map
+     * @return
+     */
+    protected String formatColumnName(String tableName, Map<String, Object> formatMap, Map<String, Object> removeMap) {
+        return toString(formatColumnNameMap(tableName, formatMap, removeMap));
+    }
+
+    /**
+     * 格式化日志列名称 改为数据库备注
+     *
+     * @param tableName 表名
+     * @param formatMap 格式化的map
+     * @return
+     */
+    protected Map<String, Object> formatColumnNameMap(String tableName, Map<String, Object> formatMap) {
+        return formatColumnNameMap(tableName, formatMap, null);
+    }
+
+    /**
+     * 格式化日志列名称 改为数据库备注
+     *
+     * @param tableName 表名
+     * @param formatMap 格式化的map
+     * @param removeMap 保留字段map
+     * @return
+     */
+    protected Map<String, Object> formatColumnNameMap(String tableName, Map<String, Object> formatMap, Map<String, Object> removeMap) {
+        if (isEmpty(tableName) || isEmpty(formatMap)) {
+            return formatMap;
+        }
+        //和removeMap 不一样的字段就移除
+        if (!isEmpty(removeMap)) {
+            formatMap.keySet().removeIf(key -> !removeMap.containsKey(key));
+        }
+        //清除空参数字段
+        formatMap.keySet().removeIf(key -> MagicValue.SVR_TABLE_NAME.equals(key) || isEmpty(formatMap.get(key)));
+
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+        Map<String, Object> resultMap = Maps.newLinkedHashMapWithExpectedSize(formatMap.size());
+
+        //查询对应表名
+        paramMap.put("TABLE_SCHEMA", ConfigProperties.DB_DBNAME);
+        paramMap.put("TABLE_NAME", tableName);
+        List<Map<String, Object>> columnsCommentList = DaoSession.daoSession.baseDao.selectList(NameSpace.DbMapper, "selectColumnsComment", paramMap);
+        if (isEmpty(columnsCommentList)) {
+            return formatMap;
+        }
+        //转为key value
+        Map<String, Object> columnsCommentMap = toMapKeyValue(columnsCommentList, "COLUMN_NAME", "COLUMN_COMMENT");
+
+        //移除不是表里面的字段
+        formatMap.keySet().removeIf(key -> !columnsCommentMap.containsKey(key));
+
+        formatMap.keySet().forEach(key -> {
+            String newKey = key;
+            String val = toString(formatMap.get(key));
+            if (columnsCommentMap.containsKey(key)) {
+                newKey = toString(columnsCommentMap.get(newKey));
+                //判断字段是否有格式化字典
+                if (newKey.contains("$")) {
+                    //获取字典标记
+                    String[] dictTypes = TextUtil.getSubBetween(newKey, "\\$", "\\$").split(Attribute.SERVICE_SPLIT);
+                    //格式化字典参数
+                    for (String dictType : dictTypes) {
+                        String dictName = DictUtil.getDictName(dictType, val);
+                        //内容不相同为字典查找成功
+                        if (!dictName.equals(val)) {
+                            //替换参数内容
+                            val = dictName;
+                            break;
+                        }
+                    }
+
+                    //移除字典标记
+                    newKey = TextUtil.removeDictType(newKey);
+                }
+                //判断字段是否有 关联查询字段
+                if (newKey.contains("@")) {
+                    String[] tableUse = TextUtil.getSubBetween(newKey, "@", "@").split(Attribute.SERVICE_SPLIT);
+                    if (tableUse.length >= 2) {
+                        //查询表
+                        String tableNameUse;
+                        //查询字段
+                        String tableColumn;
+                        //搜索字段 默认为ID
+                        String searchColumn = "ID";
+                        if (tableUse.length == 2) {
+                            tableNameUse = tableUse[0];
+                            tableColumn = tableUse[1];
+                        } else {
+                            tableNameUse = tableUse[0];
+                            searchColumn = tableUse[1];
+                            tableColumn = tableUse[2];
+                        }
+                        paramMap.clear();
+                        paramMap.put("TABLE_NAME", tableNameUse);
+                        paramMap.put("TABLE_COLUMN", tableColumn);
+                        paramMap.put("SEARCH_COLUMN", searchColumn);
+                        paramMap.put("TABLE_ID", val);
+
+                        String columnName = DaoSession.daoSession.baseDao.selectOne(NameSpace.DbMapper, "selectTableName", paramMap);
+                        if (!isEmpty(columnName)) {
+                            val = columnName;
+                        }
+                    }
+                    newKey = TextUtil.removeTableName(newKey);
+                }
+            }
+
+            resultMap.put(isEmpty(newKey) ? key : newKey, val);
+        });
+
+        return resultMap;
     }
 }
