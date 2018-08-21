@@ -11,6 +11,7 @@ import cn.kim.entity.DataTablesView;
 import cn.kim.exception.CustomException;
 import cn.kim.service.*;
 import cn.kim.util.CommonUtil;
+import cn.kim.util.HttpRequestDeviceUtils;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -67,7 +69,7 @@ public class BaseDataController extends BaseController {
      */
     @GetMapping("/admin/dataGrid/{ID}")
     @SystemControllerLog(useType = UseType.SEE, isDataGrid = true, event = "查看列表")
-    public String dataGrid(@PathVariable("ID") String ID, @RequestParam Map<String, Object> extra, Model model) throws Exception {
+    public String dataGrid(@PathVariable("ID") String ID, @RequestParam Map<String, Object> extra, Model model, HttpServletRequest request) throws Exception {
         isInvalidKey(extra);
         try {
             Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(2);
@@ -142,7 +144,16 @@ public class BaseDataController extends BaseController {
             model.addAttribute("TOP_BUTTON", topButton);
             model.addAttribute("LIST_BUTTON", listButton);
             //拿到左边固定列个数
-
+            int fixedLength = toInt(configure.get("FIXED_LENGTH"));
+            if (fixedLength > 0 && !HttpRequestDeviceUtils.isMobileDevice(request)) {
+                //序号
+                fixedLength += 1;
+                //是否有选择框
+                if (isSuccess(configure.get("SC_IS_SELECT")) && !isSuccess(configure.get("SC_IS_SINGLE"))) {
+                    fixedLength += 1;
+                }
+                model.addAttribute("FIXED_LENGTH", fixedLength);
+            }
             //URL额外参数
             model.addAttribute("EXTRA", extra);
 

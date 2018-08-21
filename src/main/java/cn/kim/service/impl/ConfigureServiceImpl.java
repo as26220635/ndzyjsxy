@@ -220,6 +220,7 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
             paramMap.put("SCC_CLASS", mapParam.get("SCC_CLASS"));
             paramMap.put("SCC_FUNC", mapParam.get("SCC_FUNC"));
             paramMap.put("SCC_SDT_CODE", mapParam.get("SCC_SDT_CODE"));
+            paramMap.put("SCC_IS_FIXED", mapParam.get("SCC_IS_FIXED"));
             paramMap.put("SCC_IS_OPERATION", mapParam.get("SCC_IS_OPERATION"));
             paramMap.put("SCC_IS_MERGE", mapParam.get("SCC_IS_MERGE"));
             paramMap.put("SCC_IS_VISIBLE", mapParam.get("SCC_IS_VISIBLE"));

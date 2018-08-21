@@ -16,12 +16,13 @@
     }
 
     .DTFC_LeftBodyLiner {
-        top: -12px !important;
+        top: -15px !important;
     }
 
     .table-striped > tbody > tr:nth-of-type(even) {
         background-color: #fff;
     }
+
     .DTFC_LeftHeadWrapper thead tr {
         background-color: #fff;
     }
@@ -44,10 +45,10 @@
                             </button>
                         </c:forEach>
                     </div>
+                    <%--流程查询状态 0 查看全部 1待审 2已审--%>
+                    <input type="hidden" id="processStatus" name="processStatus"
+                           value="${ProcessShowStatus.ALL.toString()}">
                     <form id="queryForm${MENU.ID}" class="form-horizontal">
-                        <%--流程查询状态 0 查看全部 1待审 2已审--%>
-                        <input type="hidden" id="processStatus" name="processStatus"
-                               value="${ProcessShowStatus.ALL.toString()}">
                         <c:if test="${CONFIGURE.SC_IS_SEARCH == Attribute.STATUS_SUCCESS && SEARCH_LIST ne null && SEARCH_LIST.size() > 0 }">
                             <%--搜索条件--%>
                             <c:forEach items="${SEARCH_LIST}" var="SEARCH" varStatus="status">
@@ -156,7 +157,15 @@
                             </c:if>
                             <div class="box-body">
                                 <table id="dataGrid${MENU.ID}"
-                                       class="table table-bordered table-striped row-border order-column">
+                                       class="table table-bordered table-striped
+                                    <c:choose>
+                                    <c:when test="${FIXED_LENGTH > 0}">
+                                    row-border order-column
+                                    </c:when>
+                                    <c:otherwise>
+                                    table-overflow-x
+                                    </c:otherwise>
+                                    </c:choose>">
                                 </table>
                             </div>
                         </div>
@@ -216,6 +225,10 @@
         </c:otherwise>
         </c:choose>
         </c:if>
+        //固定列
+        <c:if test="${FIXED_LENGTH > 0}">
+        fixedColumns: ${FIXED_LENGTH},
+        </c:if>
         <%--搜索额外参数--%>
         searchParams: function (params) {
             if (typeof searchParams == 'function') {
@@ -234,7 +247,7 @@
                 width: '20px',
                 <c:if test="${CONFIGURE.SC_IS_SINGLE  ne Attribute.STATUS_SUCCESS}">
                 className: 'select-checkbox text-center',
-                title: '<input type="checkbox" id="dataGridSelectAll">',
+                title: '<input type="checkbox" data-id="dataGridSelectAll" onclick="dataGridSwitchSelectAll(this.checked);">',
                 </c:if>
             },
             </c:if>
@@ -366,9 +379,11 @@
             <%--选择框--%>
             <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
             tableView.choiceBox(api, 0);
+            $('.select-checkbox').css('width','20px');
             </c:if>
             <%--序号--%>
             tableView.orderNumber(api, ${fns:trueOrFalse(CONFIGURE.SC_IS_SELECT, 1 ,0 )});
+            $('.dataTable-column-min-width-sort').css('width','35px');
             <%--切换按钮--%>
             $('[name="STATUS_SWITCH"]').bootstrapSwitch({
                 onText: "开启",
@@ -412,20 +427,20 @@
     <%--开启checkbox--%>
     <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
     <c:if test="${CONFIGURE.SC_IS_SINGLE  ne Attribute.STATUS_SUCCESS}">
-    $('#dataGridSelectAll').on('change', function () {
-        var checked = $(this).prop('checked');
+
+    function dataGridSwitchSelectAll(checked){
         if (checked) {
             $dataGrid.rows().select();
         } else {
             $dataGrid.rows().deselect();
         }
-    });
+    }
     //监听选择
     $dataGrid.on('select', function (e, dt, type, indexes) {
         if (type === 'row') {
             var data = getDataGridSelected();
             if (data.length == $dataGrid.rows().data().length) {
-                $('#dataGridSelectAll').prop('checked', true);
+                $('input[type="checkbox"][data-id="dataGridSelectAll"]').prop('checked', true);
             }
         }
     });
@@ -435,7 +450,7 @@
             var data = $dataGrid.rows().data();
             var selectData = getDataGridSelected();
             if (data.length == 0 || data.length != selectData.length) {
-                $('#dataGridSelectAll').prop('checked', false);
+                $('input[type="checkbox"][data-id="dataGridSelectAll"]').prop('checked', false);
             }
         }
     });

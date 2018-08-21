@@ -5,6 +5,8 @@
 
     <!--查询配置列表-->
     <select id="selectConfigure" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT SC.*,IFNULL(SCCL.FIXED_LENGTH,0) AS FIXED_LENGTH
+        FROM(
         SELECT * FROM SYS_CONFIGURE
         <where>
             <if test="ID != NULL and ID != ''">
@@ -14,6 +16,8 @@
                 AND SC_ID = #{SC_ID}
             </if>
         </where>
+        )SC
+        LEFT JOIN (SELECT SC_ID,COUNT(*) AS FIXED_LENGTH FROM SYS_CONFIGURE_COLUMN WHERE SCC_IS_FIXED = 1 GROUP BY SC_ID)SCCL ON SCCL.SC_ID = SC.ID
     </select>
 
     <!--插入配置列表-->
@@ -81,7 +85,7 @@
                 AND SC_ID = #{SC_ID}
             </if>
         </where>
-        ORDER BY SCC_ORDER ASC
+        ORDER BY SCC_IS_FIXED DESC,SCC_ORDER ASC
     </select>
 
     <!--插入配置列表字段-->
@@ -97,6 +101,7 @@
             <if test="SCC_CLASS != null">SCC_CLASS,</if>
             <if test="SCC_FUNC != null">SCC_FUNC,</if>
             <if test="SCC_SDT_CODE != null">SCC_SDT_CODE,</if>
+            <if test="SCC_IS_FIXED != null">SCC_IS_FIXED,</if>
             <if test="SCC_IS_OPERATION != null">SCC_IS_OPERATION,</if>
             <if test="SCC_IS_MERGE != null">SCC_IS_MERGE,</if>
             <if test="SCC_IS_VISIBLE != null">SCC_IS_VISIBLE,</if>
@@ -113,6 +118,7 @@
             <if test="SCC_CLASS != null">#{SCC_CLASS},</if>
             <if test="SCC_FUNC != null">#{SCC_FUNC},</if>
             <if test="SCC_SDT_CODE != null">#{SCC_SDT_CODE},</if>
+            <if test="SCC_IS_FIXED != null">#{SCC_IS_FIXED},</if>
             <if test="SCC_IS_OPERATION != null">#{SCC_IS_OPERATION},</if>
             <if test="SCC_IS_MERGE != null">#{SCC_IS_MERGE},</if>
             <if test="SCC_IS_VISIBLE != null">#{SCC_IS_VISIBLE},</if>
@@ -134,6 +140,7 @@
             <if test="SCC_CLASS != null">SCC_CLASS=#{SCC_CLASS},</if>
             <if test="SCC_FUNC != null">SCC_FUNC=#{SCC_FUNC},</if>
             <if test="SCC_SDT_CODE != null">SCC_SDT_CODE=#{SCC_SDT_CODE},</if>
+            <if test="SCC_IS_FIXED != null">SCC_IS_FIXED=#{SCC_IS_FIXED},</if>
             <if test="SCC_IS_OPERATION != null">SCC_IS_OPERATION=#{SCC_IS_OPERATION},</if>
             <if test="SCC_IS_MERGE != null">SCC_IS_MERGE=#{SCC_IS_MERGE},</if>
             <if test="SCC_IS_VISIBLE != null">SCC_IS_VISIBLE=#{SCC_IS_VISIBLE},</if>

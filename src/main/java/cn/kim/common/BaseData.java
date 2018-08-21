@@ -330,6 +330,15 @@ public abstract class BaseData {
 
     /**
      * 是否成功
+     * @param value
+     * @return
+     */
+    protected boolean isSuccess(Object value) {
+        return isEmpty(value) ? false : toInt(toString(value)) == STATUS_SUCCESS;
+    }
+
+    /**
+     * 是否成功
      *
      * @param resultMap
      * @return
