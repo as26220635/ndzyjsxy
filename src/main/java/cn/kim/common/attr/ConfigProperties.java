@@ -93,17 +93,17 @@ public class ConfigProperties {
     }
 
     @Value("#{config['mappingPath']}")
-    public static void setMappingPath(String mappingPath) {
+    public void setMappingPath(String mappingPath) {
         ConfigProperties.mappingPath = mappingPath;
     }
 
     @Value("#{config['worker.id']}")
-    public static void setWorkerId(long workerId) {
+    public void setWorkerId(long workerId) {
         WORKER_ID = workerId;
     }
 
     @Value("#{config['datacenter.id']}")
-    public static void setDatacenterId(long datacenterId) {
+    public void setDatacenterId(long datacenterId) {
         DATACENTER_ID = datacenterId;
     }
 }

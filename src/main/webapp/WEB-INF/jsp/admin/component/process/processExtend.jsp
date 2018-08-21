@@ -51,7 +51,7 @@
                             demo.showNotify(ALERT_WARNING, '流程已经禁用!');
                             return;
                         }
-                        if(isEmpty(params.SPS_TABLE_ID)){
+                        if (isEmpty(params.SPS_TABLE_ID)) {
                             demo.showNotify(ALERT_WARNING, '请选择办理流程!');
                             return;
                         }
@@ -64,11 +64,14 @@
                                     ajax.put('${PROCESS_SUBMIT}', params, function (data) {
                                         ajaxReturn.data(data, $model, option.dataGrid, false, {
                                             error: function () {
+                                                model.hide($model);
                                                 model.tips({
                                                     title: '流程异常',
                                                     message: data.message,
+                                                    callback: function () {
+                                                        $('body').css('padding-right', '0px');
+                                                    }
                                                 });
-                                                model.hide($model);
                                             }
                                         });
                                     });

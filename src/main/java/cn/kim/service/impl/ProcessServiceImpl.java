@@ -15,6 +15,7 @@ import cn.kim.util.CacheUtil;
 import cn.kim.util.DateUtil;
 import cn.kim.util.TextUtil;
 import com.google.common.collect.Maps;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,18 @@ import java.util.*;
  */
 @Service
 public class ProcessServiceImpl extends BaseServiceImpl implements ProcessService {
+
+    /**
+     * 前进校验
+     */
+    @Autowired
+    private ProcessCheck processCheck;
+    /**
+     * 前进执行
+     */
+    @Autowired
+    private ProcessExecute processExecute;
+
     /****   流程    ***/
 
     /**
@@ -341,7 +354,6 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             if (processType.equals(ProcessType.SUBMIT.toString())) {
                 //是否前进校验
                 if (toInt(step.get("SPS_IS_ADVANCE_CHECK")) == STATUS_SUCCESS) {
-                    ProcessCheck processCheck = new ProcessCheck();
                     error = processCheck.advanceCheck(processRunBean);
                 }
                 //如果有错误就抛出
@@ -360,7 +372,6 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             } else if (processType.equals(ProcessType.BACK.toString())) {
                 //是否退回校验
                 if (toInt(step.get("SPS_IS_RETREAT_CHECK")) == STATUS_SUCCESS) {
-                    ProcessCheck processCheck = new ProcessCheck();
                     error = processCheck.retreatCheck(processRunBean);
                 }
                 //如果有错误就抛出
@@ -468,13 +479,11 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             if (processType.equals(ProcessType.SUBMIT.toString())) {
                 //是否前进执行
                 if (toInt(step.get("SPS_IS_ADVANCE_EXECUTE")) == STATUS_SUCCESS) {
-                    ProcessExecute processExecute = new ProcessExecute();
                     error = processExecute.advanceExecute(processRunBean);
                 }
             } else if (processType.equals(ProcessType.BACK.toString())) {
                 //是否退回执行
                 if (toInt(step.get("SPS_IS_RETREAT_EXECUTE")) == STATUS_SUCCESS) {
-                    ProcessExecute processExecute = new ProcessExecute();
                     error = processExecute.retreatExecute(processRunBean);
                 }
             }

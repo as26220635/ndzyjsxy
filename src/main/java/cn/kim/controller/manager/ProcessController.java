@@ -252,24 +252,24 @@ public class ProcessController extends BaseController {
             String stepId = toString(step.get("ID"));
             String nextStepId = toString(nextStep.get("ID"));
             StringBuilder stepGroupName = new StringBuilder();
-            stepGroupName.append(TextUtil.greaterThanHtml("开始", 3));
+            stepGroupName.append("开始" + MagicValue.RIGHT_ARROW);
             FuncUtil.forEach(stepList, (index, map) -> {
                 Object SPS_NAME = map.get("SPS_NAME");
                 if (toString(map.get("ID")).equals(stepId)) {
-                    stepGroupName.append(TextUtil.joinFirstTextSymbol("<span style='color:blue;'>" + TextUtil.greaterThanHtml(SPS_NAME + "(当前步骤)", 3) + "</span>", MagicValue.NBSP, 1));
+                    stepGroupName.append(TextUtil.joinFirstTextSymbol("<span style='color:blue;'>" + SPS_NAME + "(当前步骤)" + MagicValue.RIGHT_ARROW + "</span>", MagicValue.NBSP, 1));
                 } else if (toString(map.get("ID")).equals(nextStepId)) {
                     if (index + 1 == stepList.size()) {
                         stepGroupName.append(TextUtil.joinFirstTextSymbol("<span style='color:red;'>" + SPS_NAME + "(下一步骤)" + "</span>", MagicValue.NBSP, 1));
                     } else {
-                        stepGroupName.append(TextUtil.joinFirstTextSymbol("<span style='color:red;'>" + TextUtil.greaterThanHtml(SPS_NAME + "(下一步骤)", 3) + "</span>", MagicValue.NBSP, 1));
+                        stepGroupName.append(TextUtil.joinFirstTextSymbol("<span style='color:red;'>" + SPS_NAME + "(下一步骤)" + MagicValue.RIGHT_ARROW + "</span>", MagicValue.NBSP, 1));
                     }
                 } else {
-                    stepGroupName.append(TextUtil.joinFirstTextSymbol(TextUtil.greaterThanHtml(SPS_NAME, 3), MagicValue.NBSP, 1));
+                    stepGroupName.append(TextUtil.joinFirstTextSymbol(SPS_NAME + MagicValue.RIGHT_ARROW, MagicValue.NBSP, 1));
                 }
             });
 
             //流程步骤
-            model.addAttribute("SPS_GROUP_NAME", TextUtil.interceptSymbol(stepGroupName.toString(), MagicValue.GREATER_THAN + MagicValue.GREATER_THAN + MagicValue.GREATER_THAN));
+            model.addAttribute("SPS_GROUP_NAME", TextUtil.interceptSymbol(stepGroupName.toString(), MagicValue.RIGHT_ARROW));
             //办理表ID
             model.addAttribute("SPS_TABLE_ID", ID);
             //查看人SO_ID

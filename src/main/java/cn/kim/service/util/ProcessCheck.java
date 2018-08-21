@@ -1,5 +1,6 @@
 package cn.kim.service.util;
 
+import cn.kim.common.BaseData;
 import cn.kim.common.eu.Process;
 import cn.kim.entity.ProcessRunBean;
 import cn.kim.service.impl.BaseServiceImpl;
@@ -7,13 +8,16 @@ import cn.kim.service.util.check.AidProcessCheck;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by 余庚鑫 on 2018/6/14
  * 流程校验
  */
 @Component
-public class ProcessCheck extends BaseServiceImpl {
+public class ProcessCheck extends BaseData {
 
     /**
      * 资助验证

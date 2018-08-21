@@ -63,8 +63,7 @@
     <div class="form-group has-feedback">
         <label>办理流程:</label>
         <s:combobox id="SPS_TABLE_ID" name="SPS_TABLE_ID" single="false"
-                    dataList="${submitProcessList}"
-                    readonly="${fns:trueOrFalse(submitProcessList.size() == 1,true, false)}">
+                    dataList="${submitProcessList}">
         </s:combobox>
     </div>
     <div class="form-group has-feedback">
