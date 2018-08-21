@@ -584,6 +584,16 @@ tableView = {
                 }
             },
         };
+        //启用固定列
+        if (!isEmpty(options.fixedColumns)) {
+            // scrollY:        300,
+            optionData.scrollX = true;
+            optionData.scrollCollapse = true;
+            optionData.fixedColumns = {
+                //左边固定几列
+                leftColumns: options.fixedColumns
+            };
+        }
         //启用ajax模式
         if (!isEmpty(options.url)) {
             optionData.ajax = {
@@ -609,10 +619,7 @@ tableView = {
                     param.draw = d.draw;
                     param.start = d.start;
                     param.length = d.length;
-                    //添加自定义参数
-                    if (options.searchParams != undefined) {
-                        options.searchParams(param);
-                    }
+
                     //需要定义tableView.isSerach是否搜索
                     if (tableView.isSerach) {
                         var formData = options.queryForm.serializeArray();//把form里面的数据序列化成数组
@@ -624,6 +631,11 @@ tableView = {
                                 param[e.name] = e.value;
                             }
                         });
+                    }
+
+                    //添加自定义参数
+                    if (options.searchParams != undefined) {
+                        options.searchParams(param);
                     }
                     return param;//自定义需要传递的参数。
                 },
@@ -717,7 +729,7 @@ tableView = {
             options.clearBtn.addClass('disabled-1s');
 
             options.clearBtn.on('click', function () {
-                $table.$('tr.selected').removeClass('selected');
+                $table.rows().deselect();
             });
         }
         //设置

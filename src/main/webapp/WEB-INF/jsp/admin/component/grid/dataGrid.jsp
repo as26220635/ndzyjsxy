@@ -14,6 +14,17 @@
     .dataTable-column {
         word-break: break-all;
     }
+
+    .DTFC_LeftBodyLiner {
+        top: -12px !important;
+    }
+
+    .table-striped > tbody > tr:nth-of-type(even) {
+        background-color: #fff;
+    }
+    .DTFC_LeftHeadWrapper thead tr {
+        background-color: #fff;
+    }
 </style>
 
 <%--设置字段偏移值--%>
@@ -145,7 +156,7 @@
                             </c:if>
                             <div class="box-body">
                                 <table id="dataGrid${MENU.ID}"
-                                       class="table table-bordered table-striped table-overflow-x">
+                                       class="table table-bordered table-striped row-border order-column">
                                 </table>
                             </div>
                         </div>

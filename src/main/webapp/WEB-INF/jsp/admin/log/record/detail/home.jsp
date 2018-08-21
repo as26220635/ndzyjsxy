@@ -23,6 +23,7 @@
             }, function (html) {
                 model.show({
                     title: '字段变动详细',
+                    tips: '点击蓝色修改行可以查看变动详细',
                     content: html,
                     size: model.size.LG,
                     footerModel: model.footerModel.ADMIN,

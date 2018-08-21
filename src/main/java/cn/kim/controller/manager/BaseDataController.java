@@ -141,6 +141,8 @@ public class BaseDataController extends BaseController {
             model.addAttribute("COLUMN_LIST", columnList);
             model.addAttribute("TOP_BUTTON", topButton);
             model.addAttribute("LIST_BUTTON", listButton);
+            //拿到左边固定列个数
+
             //URL额外参数
             model.addAttribute("EXTRA", extra);
 

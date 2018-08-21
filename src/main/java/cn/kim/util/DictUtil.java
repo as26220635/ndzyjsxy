@@ -72,7 +72,7 @@ public class DictUtil {
             mapParam.put("IS_STATUS", Attribute.STATUS_SUCCESS);
             dictType.setInfos(dictUtil.dictService.selectDictInfoList(mapParam));
             //放入缓存MAP
-            cacheDictTypeMap.put(dictType.getSdtCode(), dictType);
+            cacheDictTypeMap.put(dictType.getSdtCode().toUpperCase(), dictType);
         });
         //设置到缓存中
         setDictCache(cacheDictTypeMap);
@@ -122,7 +122,7 @@ public class DictUtil {
     public static String getDictName(String dictTypeCode, Object dictInfoCode) {
         String result = TextUtil.toString(dictInfoCode);
 
-        DictType dictType = getDictCache().get(dictTypeCode);
+        DictType dictType = getDictCache().get(dictTypeCode.toUpperCase());
         if (ValidateUtil.isEmpty(dictType)) {
             return result;
         }
@@ -172,7 +172,7 @@ public class DictUtil {
     public static String getDictCode(String dictTypeCode, Object dictInfoName) {
         String result = TextUtil.toString(dictInfoName);
 
-        DictType dictType = getDictCache().get(dictTypeCode);
+        DictType dictType = getDictCache().get(dictTypeCode.toUpperCase());
         if (ValidateUtil.isEmpty(dictType)) {
             return result;
         }
