@@ -153,7 +153,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
                 id = getId();
                 paramMap.put("ID", id);
                 //插入账号和账号信息
-                String operatorId = insertOperator(baseDao, mapParam.get("BDP_NAME"), SystemEnum.DIVISION.getType());
+                String operatorId = insertOperator(baseDao, SystemEnum.DIVISION.getType(), id, mapParam.get("BDP_NAME"));
                 paramMap.put("SO_ID", operatorId);
 
                 //插入部门人员

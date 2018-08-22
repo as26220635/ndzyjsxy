@@ -134,7 +134,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 paramMap.put("ID", id);
                 paramMap.put("BS_ENTRY_TIME", getDate());
                 //插入账号和账号信息
-                String operatorId = insertOperator(baseDao, mapParam.get("BS_NAME"), SystemEnum.STUDENT.getType());
+                String operatorId = insertOperator(baseDao, SystemEnum.STUDENT.getType(), id, mapParam.get("BS_NAME"));
                 paramMap.put("SO_ID", operatorId);
 
                 baseDao.insert(NameSpace.StudentMapper, "insertStudent", paramMap);

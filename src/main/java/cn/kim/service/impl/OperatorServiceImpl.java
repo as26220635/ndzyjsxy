@@ -73,6 +73,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
                 paramMap.put("SAI_NAME", mapParam.get("SAI_NAME"));
                 paramMap.put("SAI_PHONE", mapParam.get("SAI_PHONE"));
                 paramMap.put("SAI_EMAIL", mapParam.get("SAI_EMAIL"));
+                paramMap.put("SAI_TABLE_ID", operatorId);
                 paramMap.put("SAI_TYPE", SystemEnum.MANAGER.getType());
                 baseDao.insert(NameSpace.OperatorMapper, "insertAccountInfo", paramMap);
 

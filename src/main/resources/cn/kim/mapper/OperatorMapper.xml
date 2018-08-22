@@ -221,6 +221,7 @@
             <if test="SAI_NAME != null">SAI_NAME,</if>
             <if test="SAI_PHONE != null">SAI_PHONE,</if>
             <if test="SAI_EMAIL != null">SAI_EMAIL,</if>
+            <if test="SAI_TABLE_ID != null">SAI_TABLE_ID,</if>
             <if test="SAI_TYPE != null">SAI_TYPE,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -229,6 +230,7 @@
             <if test="SAI_NAME != null">#{SAI_NAME},</if>
             <if test="SAI_PHONE != null">#{SAI_PHONE},</if>
             <if test="SAI_EMAIL != null">#{SAI_EMAIL},</if>
+            <if test="SAI_TABLE_ID != null">#{SAI_TABLE_ID},</if>
             <if test="SAI_TYPE != null">#{SAI_TYPE},</if>
         </trim>
     </insert>
@@ -242,6 +244,7 @@
             <if test="SAI_NAME != null">SAI_NAME=#{SAI_NAME},</if>
             <if test="SAI_PHONE != null">SAI_PHONE=#{SAI_PHONE},</if>
             <if test="SAI_EMAIL != null">SAI_EMAIL=#{SAI_EMAIL},</if>
+            <if test="SAI_TABLE_ID != null">SAI_TABLE_ID=#{SAI_TABLE_ID},</if>
             <if test="SAI_TYPE != null">SAI_TYPE=#{SAI_TYPE},</if>
         </set>
         <where>

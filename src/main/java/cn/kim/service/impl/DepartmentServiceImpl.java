@@ -154,7 +154,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
                 id = getId();
                 paramMap.put("ID", id);
                 //插入账号和账号信息
-                String operatorId = insertOperator(baseDao, mapParam.get("BDMP_NAME"), SystemEnum.DEPARTMENT.getType());
+                String operatorId = insertOperator(baseDao, SystemEnum.DEPARTMENT.getType(), id, mapParam.get("BDMP_NAME"));
                 paramMap.put("SO_ID", operatorId);
 
                 //插入系部人员

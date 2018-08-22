@@ -52,7 +52,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
                 paramMap.put("BT_ENTRY_TIME", getDate());
 
                 //插入账号和账号信息
-                String operatorId = insertOperator(baseDao, mapParam.get("BT_NAME"), SystemEnum.TEACHER.getType());
+                String operatorId = insertOperator(baseDao, SystemEnum.TEACHER.getType(), id, mapParam.get("BT_NAME"));
                 paramMap.put("SO_ID", operatorId);
 
                 baseDao.insert(NameSpace.TeacherMapper, "insertTeacher", paramMap);

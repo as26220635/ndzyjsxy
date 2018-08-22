@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 21/08/2018 19:13:25
+ Date: 22/08/2018 11:28:38
 */
 
 SET NAMES utf8mb4;
@@ -342,26 +342,28 @@ CREATE TABLE `sys_account_info`  (
   `SAI_NAME` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账号名称',
   `SAI_PHONE` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '手机',
   `SAI_EMAIL` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `SAI_TABLE_ID` char(59) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户类型关联ID',
   `SAI_TYPE` int(5) NULL DEFAULT NULL COMMENT '用户类型1管理员2部门3系部4学生5教师',
   PRIMARY KEY (`ID`) USING BTREE,
-  INDEX `SO_ID`(`SO_ID`) USING BTREE
+  INDEX `SO_ID`(`SO_ID`) USING BTREE,
+  INDEX `SAI_TABLE_ID`(`SAI_TABLE_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_account_info
 -- ----------------------------
-INSERT INTO `sys_account_info` VALUES ('1', '1', 'admin', '17012342032', '851758629@qq.com', 1);
-INSERT INTO `sys_account_info` VALUES ('28281555403145216', '28281555327647744', '测试人员2', '', '', 1);
-INSERT INTO `sys_account_info` VALUES ('28281967954886656', '28281967912943616', '测试人员3', '', '', 1);
-INSERT INTO `sys_account_info` VALUES ('28281983910019072', '28281983868076032', '测试人员4', '', '', 1);
-INSERT INTO `sys_account_info` VALUES ('28281998485225472', '28281998451671040', '测试人员5', '', '', 1);
-INSERT INTO `sys_account_info` VALUES ('4112733184196608', '4112733112893440', '测试人员', '17012342032', '851758629@qq.com', 1);
-INSERT INTO `sys_account_info` VALUES ('48303136338608128', '48303136200196097', 'division_test', '17012342032', '851758629@qq.com', 2);
-INSERT INTO `sys_account_info` VALUES ('48601652139130880', '48601651874889729', 'department_test', '17012342031', '851758628@qq.com', 3);
-INSERT INTO `sys_account_info` VALUES ('48679555824615424', '48679555707174913', 'teacher_test', '17012342030', '851758627@qq.com', 5);
-INSERT INTO `sys_account_info` VALUES ('48944951974690816', '48944951878221825', 'student_test', '17012342035', '851758621@qq.com', 4);
-INSERT INTO `sys_account_info` VALUES ('51930103629742080', '51930103373889536', 'student_test2', NULL, NULL, 4);
-INSERT INTO `sys_account_info` VALUES ('52504512727875584', '52504512421691393', 'department_manager', NULL, NULL, 3);
+INSERT INTO `sys_account_info` VALUES ('1', '1', 'admin', '17012342032', '851758629@qq.com', NULL, 1);
+INSERT INTO `sys_account_info` VALUES ('28281555403145216', '28281555327647744', '测试人员2', '', '', NULL, 1);
+INSERT INTO `sys_account_info` VALUES ('28281967954886656', '28281967912943616', '测试人员3', '', '', NULL, 1);
+INSERT INTO `sys_account_info` VALUES ('28281983910019072', '28281983868076032', '测试人员4', '', '', NULL, 1);
+INSERT INTO `sys_account_info` VALUES ('28281998485225472', '28281998451671040', '测试人员5', '', '', NULL, 1);
+INSERT INTO `sys_account_info` VALUES ('4112733184196608', '4112733112893440', '测试人员', '17012342032', '851758629@qq.com', NULL, 1);
+INSERT INTO `sys_account_info` VALUES ('48303136338608128', '48303136200196097', 'division_test', '17012342032', '851758629@qq.com', NULL, 2);
+INSERT INTO `sys_account_info` VALUES ('48601652139130880', '48601651874889729', 'department_test', '17012342031', '851758628@qq.com', NULL, 3);
+INSERT INTO `sys_account_info` VALUES ('48679555824615424', '48679555707174913', 'teacher_test', '17012342030', '851758627@qq.com', NULL, 5);
+INSERT INTO `sys_account_info` VALUES ('48944951974690816', '48944951878221825', 'student_test', '17012342035', '851758621@qq.com', '48944951878221824', 4);
+INSERT INTO `sys_account_info` VALUES ('51930103629742080', '51930103373889536', 'student_test2', NULL, NULL, '51930103357112320', 4);
+INSERT INTO `sys_account_info` VALUES ('52504512727875584', '52504512421691393', 'department_manager', NULL, NULL, NULL, 3);
 
 -- ----------------------------
 -- Table structure for sys_allocation

@@ -197,12 +197,13 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
     /***
      * 插入账号  SYS_OPERATOR SYS_ACCOUNT_INFO
      * @param baseDao
-     * @param accountInfoName
-     * @param type
+     * @param type 类型
+     * @param tableId 类型关联id
+     * @param accountInfoName 真实姓名
      * @return
      * @throws Exception
      */
-    protected String insertOperator(BaseDao baseDao, Object accountInfoName, int type) throws Exception {
+    protected String insertOperator(BaseDao baseDao, int type, String tableId, Object accountInfoName) throws Exception {
         //插入账号和账号信息
         String operatorId = getId();
         //插入账号和账号信息
@@ -222,6 +223,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         operatorMap.put("ID", getId());
         operatorMap.put("SO_ID", operatorId);
         operatorMap.put("SAI_NAME", toString(accountInfoName));
+        operatorMap.put("SAI_TABLE_ID", tableId);
         operatorMap.put("SAI_TYPE", type);
         baseDao.insert(NameSpace.OperatorMapper, "insertAccountInfo", operatorMap);
 
