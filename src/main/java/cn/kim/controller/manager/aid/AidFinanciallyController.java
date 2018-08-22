@@ -175,4 +175,76 @@ public class AidFinanciallyController extends BaseController {
         });
     }
 
+    /******************     绿色通道   *****************/
+
+    @GetMapping("/greenChannel/add")
+    @RequiresPermissions("AID:GREEN_CHANNEL_INSERT")
+    @Token(save = true)
+    public String addHtmlGreenChannel(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("aid", setStudentYearSemester(aid, "BAF_YEAR", "BAF_SEMESTER"));
+        return "admin/aid/greenChannel/addAndEdit";
+    }
+
+
+    @PostMapping("/greenChannel/add")
+    @RequiresPermissions("AID:GREEN_CHANNEL_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加绿色通道")
+    @Token(remove = true)
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState addGreenChannel(@RequestParam Map<String, Object> mapParam) throws Exception {
+        //流程
+        mapParam.put("BUS_PROCESS", Process.AID.toString());
+        mapParam.put("BUS_PROCESS2", Process.AID_GREEN_CHANNEL.toString());
+        //类型
+        mapParam.put("BAF_TYPE", AidType.GREEN_CHANNEL.toString());
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/greenChannel/update/{ID}")
+    @RequiresPermissions("AID:GREEN_CHANNEL_UPDATE")
+    public String updateHtmlGreenChannel(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("aid", aidFinanciallyService.selectAidFinancially(mapParam));
+        return "admin/aid/greenChannel/addAndEdit";
+    }
+
+    @PutMapping("/greenChannel/update")
+    @RequiresPermissions("AID:GREEN_CHANNEL_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改绿色通道")
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState updateGreenChannel(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/greenChannel/delete/{ID}")
+    @RequiresPermissions("AID:GREEN_CHANNEL_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除绿色通道")
+    @ResponseBody
+    public ResultState deleteGreenChannel(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = aidFinanciallyService.deleteAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/greenChannel/import")
+    @RequiresPermissions("AID:GREEN_CHANNEL_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入绿色通道")
+    @ResponseBody
+    public ResultState importGreenChannel(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importGreenChannel", 600, 600, () -> {
+            Map<String, Object> resultMap = aidFinanciallyService.importGreenChannel(excelFile);
+            return resultState(resultMap);
+        });
+    }
+
 }

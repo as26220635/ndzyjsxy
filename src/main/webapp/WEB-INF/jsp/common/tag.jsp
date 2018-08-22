@@ -270,3 +270,9 @@
 <c:set var="COMMEND_UPDATE_URL" value="${COMMEND_BASE_URL}update"/>
 <c:set var="COMMEND_DELETE_URL" value="${COMMEND_BASE_URL}delete"/>
 <c:set var="COMMEND_IMPORT_URL" value="${COMMEND_BASE_URL}import"/>
+<%--绿色通道--%>
+<c:set var="GREEN_CHANNEL_BASE_URL" value="${AID_BASE_URL}greenChannel/"/>
+<c:set var="GREEN_CHANNEL_ADD_URL" value="${GREEN_CHANNEL_BASE_URL}add"/>
+<c:set var="GREEN_CHANNEL_UPDATE_URL" value="${GREEN_CHANNEL_BASE_URL}update"/>
+<c:set var="GREEN_CHANNEL_DELETE_URL" value="${GREEN_CHANNEL_BASE_URL}delete"/>
+<c:set var="GREEN_CHANNEL_IMPORT_URL" value="${GREEN_CHANNEL_BASE_URL}import"/>

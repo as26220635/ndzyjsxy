@@ -15,7 +15,7 @@ public class StudentYearSemester {
     /**
      * 学期
      */
-    private int semester;
+    private Integer semester;
 
     public String getYear() {
         return year;
@@ -33,11 +33,11 @@ public class StudentYearSemester {
         this.semesterStr = semesterStr;
     }
 
-    public int getSemester() {
+    public Integer getSemester() {
         return semester;
     }
 
-    public void setSemester(int semester) {
+    public void setSemester(Integer semester) {
         this.semester = semester;
     }
 

@@ -430,4 +430,24 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
 
         baseDao.insert(NameSpace.ProcessMapper, "insertProcessSchedule", paramMap);
     }
+
+    /**
+     * 删除流程
+     *
+     * @param tableId
+     * @param tableName
+     * @throws Exception
+     */
+    protected void deleteProcessSchedule(String tableId, String tableName) throws Exception {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
+        paramMap.put("SPS_TABLE_ID", tableId);
+        paramMap.put("SPS_TABLE_NAME", tableName);
+        Map<String, Object> schedule = baseDao.selectOne(NameSpace.ProcessMapper, "selectProcessSchedule", paramMap);
+        if (!isEmpty(schedule)) {
+            paramMap.clear();
+            paramMap.put("ID", schedule.get("ID"));
+
+            baseDao.delete(NameSpace.ProcessMapper, "deleteProcessSchedule", paramMap);
+        }
+    }
 }

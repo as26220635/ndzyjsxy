@@ -77,6 +77,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             paramMap.put("BAF_REDUCTION_QUOTA", mapParam.get("BAF_REDUCTION_QUOTA"));
             paramMap.put("BAF_DIFFICULTY_LEVEL", mapParam.get("BAF_DIFFICULTY_LEVEL"));
             paramMap.put("BAF_DIFFICULTY_TYPE", mapParam.get("BAF_DIFFICULTY_TYPE"));
+            paramMap.put("BUS_REMARKS", mapParam.get("BUS_REMARKS"));
 
             if (isEmpty(id)) {
                 id = getId();
@@ -136,6 +137,8 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
             baseDao.delete(NameSpace.AidFinanciallyMapper, "deleteAidFinancially", paramMap);
 
+            //删除流程
+            deleteProcessSchedule(id, TableName.BUS_AID_FINANCIALLY);
             resultMap.put(MagicValue.LOG, "删除资助,信息:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
@@ -202,6 +205,78 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
     }
 
     /**
+     * 导入年度表彰
+     *
+     * @param excelFile
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> importGreenChannel(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = IMPORT_ERROR;
+        try {
+            ActiveUser activeUser = getActiveUser();
+
+            List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 1);
+            //校验数据
+            List<String[]> errorList = checkExcelDataGreenChannel(dataList);
+            if (!isEmpty(errorList)) {
+                resultMap.put(MagicValue.DATA, errorList);
+                throw new CustomException("检测数据异常!");
+            }
+
+            String year;
+
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
+
+            //导入数据
+            for (String[] data : dataList) {
+                //学号
+                String BS_NUMBER = data[2];
+                //解析学年和学期
+                StudentYearSemester studentYearSemester = parseStudentYear(data[4]);
+                year = studentYearSemester.getYear();
+
+                paramMap.clear();
+                paramMap.put("BS_NUMBER", BS_NUMBER);
+                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                if (isEmpty(student)) {
+                    throw new CustomException("学生数据查询出错!");
+                }
+                paramMap.clear();
+                paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_FINANCIALLY);
+
+                paramMap.put("BS_ID", student.get("ID"));
+                paramMap.put("BAF_YEAR", year);
+
+                paramMap.put("BAF_TYPE", AidType.GREEN_CHANNEL.getType());
+                paramMap.put("SO_ID", activeUser.getId());
+                paramMap.put("BUS_PROCESS", Process.AID.toString());
+                paramMap.put("BUS_PROCESS2", Process.AID_GREEN_CHANNEL.toString());
+                //备注
+                paramMap.put("BUS_REMARKS", data.length >= 6 ? data[5] : null);
+                Map<String, Object> insertMap = this.insertAndUpdateAidFinancially(paramMap);
+                validateResultMap(insertMap);
+
+                //插入流程
+                createProcessSchedule(toString(insertMap.get("ID")), toString(student.get("BS_NAME")),
+                        activeUser.getId(), toString(student.get("SO_ID")), Process.AID.toString(), Process.AID_GREEN_CHANNEL.toString());
+            }
+
+            resultMap.put(MagicValue.LOG, "导入绿色通道数据,数据:" + toString(dataList));
+            status = STATUS_SUCCESS;
+            desc = IMPORT_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
      * 资助通用导入
      *
      * @param resultMap   返回map
@@ -226,7 +301,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         }
 
         String year;
-        int semester;
+        Integer semester;
 
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
 
@@ -236,14 +311,26 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             String BS_NUMBER = data[1];
             //奖项
             String BAF_AID_TYPE = data[7];
+            //学年字段
+            String YEAR_FIELD_DATA = data.length >= 9 ? data[8] : null;
+
             //解析学年和学期
-            StudentYearSemester studentYearSemester = parseStudentYearSemester(data.length >= 9 ? data[8] : null);
+            StudentYearSemester studentYearSemester = null;
+            if (aidType == AidType.COMMEND) {
+                //只解析学年
+                studentYearSemester = parseStudentYear(YEAR_FIELD_DATA);
+            } else {
+                studentYearSemester = parseStudentYearSemester(YEAR_FIELD_DATA);
+            }
             year = studentYearSemester.getYear();
             semester = studentYearSemester.getSemester();
 
             paramMap.clear();
             paramMap.put("BS_NUMBER", BS_NUMBER);
             Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+            if (isEmpty(student)) {
+                throw new CustomException("学生数据查询出错!");
+            }
 
             paramMap.clear();
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_FINANCIALLY);
@@ -288,7 +375,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
 
         String year;
-        int semester;
+        Integer semester;
 
         for (int i = 0; i < dataList.size(); i++) {
             //行
@@ -303,8 +390,16 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             String BS_NUMBER = data[1];
             //奖项
             String BAF_AID_TYPE = data[7];
+            //学年字段
+            String YEAR_FIELD_DATA = data.length >= 9 ? data[8] : null;
             //解析学年和学期
-            StudentYearSemester studentYearSemester = parseStudentYearSemester(data.length >= 9 ? data[8] : null);
+            StudentYearSemester studentYearSemester = null;
+            if (aidType == AidType.COMMEND) {
+                //只解析学年
+                studentYearSemester = parseStudentYear(YEAR_FIELD_DATA);
+            } else {
+                studentYearSemester = parseStudentYearSemester(YEAR_FIELD_DATA);
+            }
             year = studentYearSemester.getYear();
             semester = studentYearSemester.getSemester();
 
@@ -368,4 +463,67 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         return resultList;
     }
 
+    /**
+     * 检测excel数据是否有问题
+     * 绿色通道
+     *
+     * @param dataList
+     * @return
+     */
+    public List<String[]> checkExcelDataGreenChannel(List<String[]> dataList) {
+        List<String[]> resultList = new ArrayList<>();
+        if (isEmpty(dataList)) {
+            resultList.add(packErrorData("文件数据错误", "没有找到可以导入数据"));
+            return resultList;
+        }
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+
+        for (int i = 0; i < dataList.size(); i++) {
+            //行
+            String row = joinRowStr(i + 2);
+
+            String[] data = dataList.get(i);
+            if (data.length <= 5) {
+                resultList.add(packErrorData(row, "数据错误!"));
+                continue;
+            }
+            //学号
+            String BS_NUMBER = data[2];
+            String year = data[4];
+
+            if (!checkStudentYear(year)) {
+                resultList.add(packErrorData(row, "学年错误!"));
+                continue;
+            } else {
+                //解析学年和学期
+                StudentYearSemester studentYearSemester = parseStudentYear(data[4]);
+                year = studentYearSemester.getYear();
+            }
+
+            if (isEmpty(BS_NUMBER)) {
+                resultList.add(packErrorData(row, "学号为空"));
+            } else {
+                //查询数据库检查学号是否为空
+                paramMap.clear();
+                paramMap.put("BS_NUMBER", BS_NUMBER);
+                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                if (isEmpty(student)) {
+                    resultList.add(packErrorData(row, "学号错误,没有找到对应的学生"));
+                } else {
+                    //检测是否重复导入
+                    paramMap.clear();
+                    paramMap.put("BS_ID", student.get("ID"));
+                    paramMap.put("BAF_TYPE", AidType.GREEN_CHANNEL.getType());
+                    paramMap.put("BAF_YEAR", year);
+
+                    Map<String, Object> aid = baseDao.selectOne(NameSpace.AidFinanciallyMapper, "selectAidFinancially", paramMap);
+                    if (!isEmpty(aid)) {
+                        resultList.add(packErrorData(row, "数据重复导入"));
+                    }
+                }
+            }
+        }
+
+        return resultList;
+    }
 }

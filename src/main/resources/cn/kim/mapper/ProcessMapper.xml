@@ -19,6 +19,9 @@
                 <if test="SPS_TABLE_ID != NULL and SPS_TABLE_ID != ''">
                     AND SPS_TABLE_ID = #{SPS_TABLE_ID}
                 </if>
+                <if test="SPS_TABLE_NAME != NULL and SPS_TABLE_NAME != ''">
+                    AND SPS_TABLE_NAME = #{SPS_TABLE_NAME}
+                </if>
                 <if test="SPD_ID != NULL and SPD_ID != ''">
                     AND SPD_ID = #{SPD_ID}
                 </if>

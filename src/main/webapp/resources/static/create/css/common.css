@@ -286,7 +286,7 @@
 }
 
 table.dataTable tbody tr.selected {
-    background-color: rgba(60, 141, 188, 0.74);
+    background-color: #93c5de;
 }
 
 /* Wrapper */

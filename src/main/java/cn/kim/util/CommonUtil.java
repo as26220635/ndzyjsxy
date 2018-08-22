@@ -39,7 +39,7 @@ public class CommonUtil {
     /**
      * 加密解密字段
      */
-    public static String[] CONTAINS_ENCRYPT_FIELDS = {"id", "key", "sps_step_transactor", "bus_process"};
+    public static String[] CONTAINS_ENCRYPT_FIELDS = {"id", "key", "sps_step_transactor"};
     /**
      * URL转义字段
      */

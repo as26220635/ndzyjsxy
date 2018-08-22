@@ -330,6 +330,7 @@ public abstract class BaseData {
 
     /**
      * 是否成功
+     *
      * @param value
      * @return
      */
@@ -447,9 +448,9 @@ public abstract class BaseData {
         int nowMonth = DateUtil.getMonth();
 
         if (nowMonth >= 9) {
-            return nowYear + "~" + (nowYear + 1);
+            return nowYear + "-" + (nowYear + 1);
         } else {
-            return (nowYear - 1) + "~" + nowYear;
+            return (nowYear - 1) + "-" + nowYear;
         }
     }
 
@@ -485,12 +486,12 @@ public abstract class BaseData {
     }
 
     /**
-     * 检测文本中学年和学期是否正确
+     * 检测文本中学年是否正确
      *
      * @param title
      * @return
      */
-    protected boolean checkStudentYearSemester(String title) {
+    protected boolean checkStudentYear(String title) {
         try {
             if (isEmpty(title)) {
                 return false;
@@ -503,17 +504,60 @@ public abstract class BaseData {
                 return false;
             }
             String year = title.substring(startYearindex - 4, startYearindex) + "-" + title.substring(startYearindex + 1, startYearindex + 5);
-//            if (!TextUtil.isStudentYear(year)) {
-//                return false;
-//            }
-//            if (!title.contains("第一学期") && !title.contains("第1学期") && !title.contains("第二学期") && !title.contains("第2学期")) {
-//                return false;
-//            }
+            if (!TextUtil.isStudentYear(year)) {
+                return false;
+            }
 
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * 检测文本中学年和学期是否正确
+     *
+     * @param title
+     * @return
+     */
+    protected boolean checkStudentYearSemester(String title) {
+        try {
+            if (isEmpty(title)) {
+                return false;
+            }
+            if (!checkStudentYear(title)) {
+                return false;
+            }
+            if (!title.contains("第一学期") && !title.contains("第1学期") && !title.contains("第二学期") && !title.contains("第2学期")) {
+                return false;
+            }
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * 根据标题解析出学年
+     * 空就返回当前的学年
+     *
+     * @param title
+     * @return
+     */
+    protected StudentYearSemester parseStudentYear(String title) {
+        StudentYearSemester studentYearSemester = new StudentYearSemester();
+        if (checkStudentYear(title)) {
+            //去除空格
+            title = TextUtil.replaceBlank(title);
+            //2017-2018 中间符号的位置
+            int startYearindex = title.indexOf("-");
+            //2017-2018学年第一学期
+            studentYearSemester.setYear(title.substring(startYearindex - 4, startYearindex) + "-" + title.substring(startYearindex + 1, startYearindex + 5));
+        } else {
+            studentYearSemester.setYear(getStudentYear());
+        }
+        return studentYearSemester;
     }
 
     /**

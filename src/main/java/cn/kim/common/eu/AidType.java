@@ -7,11 +7,18 @@ import cn.kim.util.TextUtil;
  * 资助类型
  */
 public enum AidType {
+    //绿色通道
+    GREEN_CHANNEL(1),
+    //减免学费
+    TUITION_WAIVER(7),
     //学院奖学金
     COLLEGE_SCHOLARSHIP(9),
     //年度表彰
     COMMEND(10),
-
+    //困难毕业生就业补助
+    JOBSEEKER_SUPPORT(11),
+    //应急求助
+    EMERGENCY_HELP(13),
     ;
 
     private int type;

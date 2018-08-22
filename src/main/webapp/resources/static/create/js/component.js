@@ -712,8 +712,6 @@ tableView = {
         }
         //刷新按钮
         if (options.refreshBtn != undefined) {
-            //1秒只能点击一次
-            options.refreshBtn.addClass('disabled-1s');
 
             options.refreshBtn.on('click', function () {
                 tableView.reload($table, false);

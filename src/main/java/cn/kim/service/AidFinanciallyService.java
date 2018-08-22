@@ -49,4 +49,12 @@ public interface AidFinanciallyService extends BaseService {
      * @return
      */
     Map<String, Object> importCommend(MultipartFile excelFile);
+
+    /**
+     * 导入绿色通道
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importGreenChannel(MultipartFile excelFile);
 }

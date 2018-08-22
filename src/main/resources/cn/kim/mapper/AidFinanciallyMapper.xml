@@ -29,7 +29,7 @@
         )BAF
         INNER JOIN BUS_STUDENT BS ON BS.ID = BAF.BS_ID
         INNER JOIN BUS_CLASS BC ON BC.ID = BS.BC_ID
-        INNER JOIN BUS_STUDENT_COMPREHENSIVE BSC ON BSC.BS_ID = BAF.BS_ID AND BSC.BSC_YEAR = BAF.BAF_YEAR AND BSC.BSC_SEMESTER = BAF.BAF_SEMESTER
+        LEFT JOIN BUS_STUDENT_COMPREHENSIVE BSC ON BSC.BS_ID = BAF.BS_ID AND BSC.BSC_YEAR = BAF.BAF_YEAR AND BSC.BSC_SEMESTER = BAF.BAF_SEMESTER
     </select>
 
     <!--插入资助-->
@@ -50,6 +50,7 @@
             <if test="BAF_ENTRY_TIME != null">BAF_ENTRY_TIME,</if>
             <if test="BUS_PROCESS != null">BUS_PROCESS,</if>
             <if test="BUS_PROCESS2 != null">BUS_PROCESS2,</if>
+            <if test="BUS_REMARKS != null">BUS_REMARKS,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="ID != null">#{ID},</if>
@@ -66,6 +67,7 @@
             <if test="BAF_ENTRY_TIME != null">#{BAF_ENTRY_TIME},</if>
             <if test="BUS_PROCESS != null">#{BUS_PROCESS},</if>
             <if test="BUS_PROCESS2 != null">#{BUS_PROCESS2},</if>
+            <if test="BUS_REMARKS != null">#{BUS_REMARKS},</if>
         </trim>
     </insert>
 
@@ -87,6 +89,7 @@
             <if test="BAF_ENTRY_TIME != null">BAF_ENTRY_TIME=#{BAF_ENTRY_TIME},</if>
             <if test="BUS_PROCESS != null">BUS_PROCESS=#{BUS_PROCESS},</if>
             <if test="BUS_PROCESS2 != null">BUS_PROCESS2=#{BUS_PROCESS2},</if>
+            <if test="BUS_REMARKS != null">BUS_REMARKS=#{BUS_REMARKS},</if>
         </set>
         <where>
             <if test="ID !=null">ID=#{ID}</if>
