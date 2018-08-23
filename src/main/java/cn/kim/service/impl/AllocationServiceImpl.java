@@ -6,7 +6,7 @@ import cn.kim.common.eu.NameSpace;
 import cn.kim.exception.CustomException;
 import cn.kim.service.AllocationService;
 import com.google.common.collect.Maps;
-import com.sun.istack.internal.NotNull;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

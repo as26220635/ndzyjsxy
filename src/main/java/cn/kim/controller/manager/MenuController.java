@@ -9,7 +9,7 @@ import cn.kim.entity.Tree;
 import cn.kim.service.ButtonService;
 import cn.kim.service.MenuService;
 import com.google.common.collect.Maps;
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

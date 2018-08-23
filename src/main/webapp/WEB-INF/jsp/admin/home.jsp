@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/tag.jsp" %>
+<%@ include file="/WEB-INF/jsp/common/common_config.jsp" %>
 <%@ include file="/WEB-INF/jsp/common/common_url.jsp" %>
 <html>
 <head>

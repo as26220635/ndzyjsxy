@@ -7,7 +7,7 @@ import cn.kim.entity.DictType;
 import cn.kim.util.DictUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;

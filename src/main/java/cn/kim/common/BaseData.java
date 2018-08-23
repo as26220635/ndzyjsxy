@@ -325,6 +325,11 @@ public abstract class BaseData {
         return ValidateUtil.isJson(json);
     }
 
+    protected boolean isNumber(String str) {
+        return ValidateUtil.isNumber(str);
+    }
+
+
     /**
      * 是否成功
      *

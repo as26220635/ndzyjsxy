@@ -289,6 +289,10 @@ table.dataTable tbody tr.selected {
     background-color: #93c5de;
 }
 
+table.dataTable tbody tr.selected .btn {
+    color: #fff;
+}
+
 /* Wrapper */
 @-moz-keyframes wrapper {
     0% {

@@ -3,7 +3,6 @@ package cn.kim.controller.manager.aid;
 import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.annotation.Token;
 import cn.kim.common.annotation.Validate;
-import cn.kim.common.attr.Attribute;
 import cn.kim.common.eu.AidType;
 import cn.kim.common.eu.Process;
 import cn.kim.common.eu.UseType;
@@ -247,4 +246,219 @@ public class AidFinanciallyController extends BaseController {
         });
     }
 
+    /******************     减免学费   *****************/
+
+    @GetMapping("/tuitionWaiver/add")
+    @RequiresPermissions("AID:TUITION_WAIVER_INSERT")
+    @Token(save = true)
+    public String addHtmlTuitionWaiver(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("aid", setStudentYearSemester(aid, "BAF_YEAR", "BAF_SEMESTER"));
+        return "admin/aid/tuitionWaiver/addAndEdit";
+    }
+
+
+    @PostMapping("/tuitionWaiver/add")
+    @RequiresPermissions("AID:TUITION_WAIVER_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加减免学费")
+    @Token(remove = true)
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState addTuitionWaiver(@RequestParam Map<String, Object> mapParam) throws Exception {
+        //流程
+        mapParam.put("BUS_PROCESS", Process.AID.toString());
+        mapParam.put("BUS_PROCESS2", Process.AID_TUITION_WAIVER.toString());
+        //类型
+        mapParam.put("BAF_TYPE", AidType.TUITION_WAIVER.toString());
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/tuitionWaiver/update/{ID}")
+    @RequiresPermissions("AID:TUITION_WAIVER_UPDATE")
+    public String updateHtmlTuitionWaiver(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("aid", aidFinanciallyService.selectAidFinancially(mapParam));
+        return "admin/aid/tuitionWaiver/addAndEdit";
+    }
+
+    @PutMapping("/tuitionWaiver/update")
+    @RequiresPermissions("AID:TUITION_WAIVER_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改减免学费")
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState updateTuitionWaiver(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/tuitionWaiver/delete/{ID}")
+    @RequiresPermissions("AID:TUITION_WAIVER_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除减免学费")
+    @ResponseBody
+    public ResultState deleteTuitionWaiver(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = aidFinanciallyService.deleteAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/tuitionWaiver/import")
+    @RequiresPermissions("AID:TUITION_WAIVER_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入减免学费")
+    @ResponseBody
+    public ResultState importTuitionWaiver(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importTuitionWaiver", 600, 600, () -> {
+            Map<String, Object> resultMap = aidFinanciallyService.importTuitionWaiver(excelFile);
+            return resultState(resultMap);
+        });
+    }
+
+    /******************     困难毕业生就业补助   *****************/
+
+    @GetMapping("/jobseekerSupport/add")
+    @RequiresPermissions("AID:JOBSEEKER_SUPPORT_INSERT")
+    @Token(save = true)
+    public String addHtmlJobseekerSupport(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("aid", setStudentYearSemester(aid, "BAF_YEAR", "BAF_SEMESTER"));
+        return "admin/aid/jobseekerSupport/addAndEdit";
+    }
+
+
+    @PostMapping("/jobseekerSupport/add")
+    @RequiresPermissions("AID:JOBSEEKER_SUPPORT_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加困难毕业生就业补助")
+    @Token(remove = true)
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState addJobseekerSupport(@RequestParam Map<String, Object> mapParam) throws Exception {
+        //流程
+        mapParam.put("BUS_PROCESS", Process.AID.toString());
+        mapParam.put("BUS_PROCESS2", Process.AID_JOBSEEKER_SUPPORT.toString());
+        //类型
+        mapParam.put("BAF_TYPE", AidType.JOBSEEKER_SUPPORT.toString());
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/jobseekerSupport/update/{ID}")
+    @RequiresPermissions("AID:JOBSEEKER_SUPPORT_UPDATE")
+    public String updateHtmlJobseekerSupport(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("aid", aidFinanciallyService.selectAidFinancially(mapParam));
+        return "admin/aid/jobseekerSupport/addAndEdit";
+    }
+
+    @PutMapping("/jobseekerSupport/update")
+    @RequiresPermissions("AID:JOBSEEKER_SUPPORT_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改困难毕业生就业补助")
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState updateJobseekerSupport(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/jobseekerSupport/delete/{ID}")
+    @RequiresPermissions("AID:JOBSEEKER_SUPPORT_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除困难毕业生就业补助")
+    @ResponseBody
+    public ResultState deleteJobseekerSupport(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = aidFinanciallyService.deleteAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/jobseekerSupport/import")
+    @RequiresPermissions("AID:JOBSEEKER_SUPPORT_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入困难毕业生就业补助")
+    @ResponseBody
+    public ResultState importJobseekerSupport(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importJobseekerSupport", 600, 600, () -> {
+            Map<String, Object> resultMap = aidFinanciallyService.importJobseekerSupport(excelFile);
+            return resultState(resultMap);
+        });
+    }
+
+    /******************     应急求助   *****************/
+
+    @GetMapping("/emergencyHelp/add")
+    @RequiresPermissions("AID:EMERGENCY_HELP_INSERT")
+    @Token(save = true)
+    public String addHtmlEmergencyHelp(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("aid", setStudentYearSemester(aid, "BAF_YEAR", "BAF_SEMESTER"));
+        return "admin/aid/emergencyHelp/addAndEdit";
+    }
+
+
+    @PostMapping("/emergencyHelp/add")
+    @RequiresPermissions("AID:EMERGENCY_HELP_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加应急求助")
+    @Token(remove = true)
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState addEmergencyHelp(@RequestParam Map<String, Object> mapParam) throws Exception {
+        //流程
+        mapParam.put("BUS_PROCESS", Process.AID.toString());
+        mapParam.put("BUS_PROCESS2", Process.AID_EMERGENCY_HELP.toString());
+        //类型
+        mapParam.put("BAF_TYPE", AidType.EMERGENCY_HELP.toString());
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/emergencyHelp/update/{ID}")
+    @RequiresPermissions("AID:EMERGENCY_HELP_UPDATE")
+    public String updateHtmlEmergencyHelp(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("aid", aidFinanciallyService.selectAidFinancially(mapParam));
+        return "admin/aid/emergencyHelp/addAndEdit";
+    }
+
+    @PutMapping("/emergencyHelp/update")
+    @RequiresPermissions("AID:EMERGENCY_HELP_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改应急求助")
+    @Validate("BUS_AID_FINANCIALLY")
+    @ResponseBody
+    public ResultState updateEmergencyHelp(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/emergencyHelp/delete/{ID}")
+    @RequiresPermissions("AID:EMERGENCY_HELP_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除应急求助")
+    @ResponseBody
+    public ResultState deleteEmergencyHelp(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = aidFinanciallyService.deleteAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/emergencyHelp/import")
+    @RequiresPermissions("AID:EMERGENCY_HELP_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入应急求助")
+    @ResponseBody
+    public ResultState importEmergencyHelp(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importEmergencyHelp", 600, 600, () -> {
+            Map<String, Object> resultMap = aidFinanciallyService.importEmergencyHelp(excelFile);
+            return resultState(resultMap);
+        });
+    }
 }

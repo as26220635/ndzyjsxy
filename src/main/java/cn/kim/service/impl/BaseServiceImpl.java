@@ -15,8 +15,8 @@ import cn.kim.exception.CustomException;
 import cn.kim.service.BaseService;
 import cn.kim.util.*;
 import com.google.common.collect.Maps;
-import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -442,12 +442,18 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
         paramMap.put("SPS_TABLE_ID", tableId);
         paramMap.put("SPS_TABLE_NAME", tableName);
-        Map<String, Object> schedule = baseDao.selectOne(NameSpace.ProcessMapper, "selectProcessSchedule", paramMap);
-        if (!isEmpty(schedule)) {
-            paramMap.clear();
-            paramMap.put("ID", schedule.get("ID"));
+        List<Map<String, Object> > scheduleList = baseDao.selectList(NameSpace.ProcessMapper, "selectProcessSchedule", paramMap);
+        if (!isEmpty(scheduleList)) {
+            for (Map<String, Object> schedule : scheduleList) {
+                //删除日志
+                paramMap.clear();
+                paramMap.put("SPS_ID", schedule.get("ID"));
+                baseDao.delete(NameSpace.ProcessMapper, "deleteProcessLog", paramMap);
 
-            baseDao.delete(NameSpace.ProcessMapper, "deleteProcessSchedule", paramMap);
+                paramMap.clear();
+                paramMap.put("ID", schedule.get("ID"));
+                baseDao.delete(NameSpace.ProcessMapper, "deleteProcessSchedule", paramMap);
+            }
         }
     }
 }

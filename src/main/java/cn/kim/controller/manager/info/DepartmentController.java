@@ -10,7 +10,7 @@ import cn.kim.entity.Tree;
 import cn.kim.service.DepartmentService;
 import cn.kim.service.OperatorService;
 import com.google.common.collect.Maps;
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

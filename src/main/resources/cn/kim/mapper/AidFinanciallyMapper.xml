@@ -43,10 +43,8 @@
             <if test="BAF_SEMESTER != null">BAF_SEMESTER,</if>
             <if test="BAF_TYPE != null">BAF_TYPE,</if>
             <if test="BAF_AID_TYPE != null">BAF_AID_TYPE,</if>
-            <if test="BAF_REDUCTION_LEVEL != null">BAF_REDUCTION_LEVEL,</if>
             <if test="BAF_REDUCTION_QUOTA != null">BAF_REDUCTION_QUOTA,</if>
-            <if test="BAF_DIFFICULTY_LEVEL != null">BAF_DIFFICULTY_LEVEL,</if>
-            <if test="BAF_DIFFICULTY_TYPE != null">BAF_DIFFICULTY_TYPE,</if>
+            <if test="BAF_DIFFICULTY_QUOTA != null">BAF_DIFFICULTY_QUOTA,</if>
             <if test="BAF_ENTRY_TIME != null">BAF_ENTRY_TIME,</if>
             <if test="BUS_PROCESS != null">BUS_PROCESS,</if>
             <if test="BUS_PROCESS2 != null">BUS_PROCESS2,</if>
@@ -60,10 +58,8 @@
             <if test="BAF_SEMESTER != null">#{BAF_SEMESTER},</if>
             <if test="BAF_TYPE != null">#{BAF_TYPE},</if>
             <if test="BAF_AID_TYPE != null">#{BAF_AID_TYPE},</if>
-            <if test="BAF_REDUCTION_LEVEL != null">#{BAF_REDUCTION_LEVEL},</if>
             <if test="BAF_REDUCTION_QUOTA != null">#{BAF_REDUCTION_QUOTA},</if>
-            <if test="BAF_DIFFICULTY_LEVEL != null">#{BAF_DIFFICULTY_LEVEL},</if>
-            <if test="BAF_DIFFICULTY_TYPE != null">#{BAF_DIFFICULTY_TYPE},</if>
+            <if test="BAF_DIFFICULTY_QUOTA != null">#{BAF_DIFFICULTY_QUOTA},</if>
             <if test="BAF_ENTRY_TIME != null">#{BAF_ENTRY_TIME},</if>
             <if test="BUS_PROCESS != null">#{BUS_PROCESS},</if>
             <if test="BUS_PROCESS2 != null">#{BUS_PROCESS2},</if>
@@ -82,10 +78,8 @@
             <if test="BAF_SEMESTER != null">BAF_SEMESTER=#{BAF_SEMESTER},</if>
             <if test="BAF_TYPE != null">BAF_TYPE=#{BAF_TYPE},</if>
             <if test="BAF_AID_TYPE != null">BAF_AID_TYPE=#{BAF_AID_TYPE},</if>
-            <if test="BAF_REDUCTION_LEVEL != null">BAF_REDUCTION_LEVEL=#{BAF_REDUCTION_LEVEL},</if>
             <if test="BAF_REDUCTION_QUOTA != null">BAF_REDUCTION_QUOTA=#{BAF_REDUCTION_QUOTA},</if>
-            <if test="BAF_DIFFICULTY_LEVEL != null">BAF_DIFFICULTY_LEVEL=#{BAF_DIFFICULTY_LEVEL},</if>
-            <if test="BAF_DIFFICULTY_TYPE != null">BAF_DIFFICULTY_TYPE=#{BAF_DIFFICULTY_TYPE},</if>
+            <if test="BAF_DIFFICULTY_QUOTA != null">BAF_DIFFICULTY_QUOTA=#{BAF_DIFFICULTY_QUOTA},</if>
             <if test="BAF_ENTRY_TIME != null">BAF_ENTRY_TIME=#{BAF_ENTRY_TIME},</if>
             <if test="BUS_PROCESS != null">BUS_PROCESS=#{BUS_PROCESS},</if>
             <if test="BUS_PROCESS2 != null">BUS_PROCESS2=#{BUS_PROCESS2},</if>

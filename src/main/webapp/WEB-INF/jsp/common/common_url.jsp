@@ -253,3 +253,21 @@
 <c:set var="GREEN_CHANNEL_UPDATE_URL" value="${GREEN_CHANNEL_BASE_URL}update" scope="application"/>
 <c:set var="GREEN_CHANNEL_DELETE_URL" value="${GREEN_CHANNEL_BASE_URL}delete" scope="application"/>
 <c:set var="GREEN_CHANNEL_IMPORT_URL" value="${GREEN_CHANNEL_BASE_URL}import" scope="application"/>
+<%--减免学费--%>
+<c:set var="TUITION_WAIVER_BASE_URL" value="${AID_BASE_URL}tuitionWaiver/" scope="application"/>
+<c:set var="TUITION_WAIVER_ADD_URL" value="${TUITION_WAIVER_BASE_URL}add" scope="application"/>
+<c:set var="TUITION_WAIVER_UPDATE_URL" value="${TUITION_WAIVER_BASE_URL}update" scope="application"/>
+<c:set var="TUITION_WAIVER_DELETE_URL" value="${TUITION_WAIVER_BASE_URL}delete" scope="application"/>
+<c:set var="TUITION_WAIVER_IMPORT_URL" value="${TUITION_WAIVER_BASE_URL}import" scope="application"/>
+<%--困难毕业生就业补助--%>
+<c:set var="JOBSEEKER_SUPPORT_BASE_URL" value="${AID_BASE_URL}jobseekerSupport/" scope="application"/>
+<c:set var="JOBSEEKER_SUPPORT_ADD_URL" value="${JOBSEEKER_SUPPORT_BASE_URL}add" scope="application"/>
+<c:set var="JOBSEEKER_SUPPORT_UPDATE_URL" value="${JOBSEEKER_SUPPORT_BASE_URL}update" scope="application"/>
+<c:set var="JOBSEEKER_SUPPORT_DELETE_URL" value="${JOBSEEKER_SUPPORT_BASE_URL}delete" scope="application"/>
+<c:set var="JOBSEEKER_SUPPORT_IMPORT_URL" value="${JOBSEEKER_SUPPORT_BASE_URL}import" scope="application"/>
+<%--应急求助--%>
+<c:set var="EMERGENCY_HELP_BASE_URL" value="${AID_BASE_URL}emergencyHelp/" scope="application"/>
+<c:set var="EMERGENCY_HELP_ADD_URL" value="${EMERGENCY_HELP_BASE_URL}add" scope="application"/>
+<c:set var="EMERGENCY_HELP_UPDATE_URL" value="${EMERGENCY_HELP_BASE_URL}update" scope="application"/>
+<c:set var="EMERGENCY_HELP_DELETE_URL" value="${EMERGENCY_HELP_BASE_URL}delete" scope="application"/>
+<c:set var="EMERGENCY_HELP_IMPORT_URL" value="${EMERGENCY_HELP_BASE_URL}import" scope="application"/>

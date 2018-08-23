@@ -57,4 +57,28 @@ public interface AidFinanciallyService extends BaseService {
      * @return
      */
     Map<String, Object> importGreenChannel(MultipartFile excelFile);
+
+    /**
+     * 导入减免学费
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importTuitionWaiver(MultipartFile excelFile);
+
+    /**
+     * 导入困难毕业生就业补助
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importJobseekerSupport(MultipartFile excelFile);
+
+    /**
+     * 导入应急求助
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importEmergencyHelp(MultipartFile excelFile);
 }

@@ -198,7 +198,7 @@
 
     <!--删除流程日志-->
     <delete id="deleteProcessLog" parameterType="java.util.Map">
-        DELETE FROM SYS_PROCESS_LOG WHERE ID = #{ID}
+        DELETE FROM SYS_PROCESS_LOG WHERE SPS_ID = #{SPS_ID}
     </delete>
 
     <!--查询作废记录-->

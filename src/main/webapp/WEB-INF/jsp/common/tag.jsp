@@ -13,13 +13,6 @@
 <%--自定义--%>
 <%@ taglib uri="/WEB-INF/tlds/fns.tld" prefix="fns" %>
 <%@ taglib uri="/WEB-INF/tlds/tag.tld" prefix="s" %>
-<%--标题参数--%>
-<c:set var="HEAD_TITLE" value="XXXXXXXX"/>
-<c:set var="LOGIN_TIPS_TITLE" value="XX"/>
-<c:set var="MANAGER_HTML_MENU_SMALL_TITLE" value="<b>X</b>X"/>
-<c:set var="MANAGER_HTML_MENU_NAME" value="菜单栏"/>
-<%--js css版本--%>
-<c:set var="VERSION" value="201802241536"/>
 <%--pjax地址--%>
 <c:set var="CONTAINER" value="container"/>
 <%--URL地址--%>
