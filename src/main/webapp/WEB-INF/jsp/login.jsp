@@ -113,9 +113,7 @@
             NProgress.done();
     }
 
-
     if ('${loginError}' != '') {
-        $('#19957202-dfd0-4009-9218-1a379a9e7e2e').text(Number($('#19957202-dfd0-4009-9218-1a379a9e7e2e').text()) - 1);
         demo.showNotify(ALERT_WARNING, '${loginError}');
     }
     var $form = $("#submitForm");
