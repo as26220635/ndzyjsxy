@@ -245,7 +245,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         String desc = IMPORT_ERROR;
         try {
             //导入
-            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.TUITION_WAIVER, Process.AID, Process.AID_TUITION_WAIVER, null);
+            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.TUITION_WAIVER, Process.AID, Process.AID_TUITION_WAIVER, "BUS_TUITION_WAIVER");
 
             resultMap.put(MagicValue.LOG, "导入减免学费,数据:" + toString(dataList));
             status = STATUS_SUCCESS;
@@ -272,7 +272,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         String desc = IMPORT_ERROR;
         try {
             //导入
-            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.JOBSEEKER_SUPPORT, Process.AID, Process.AID_JOBSEEKER_SUPPORT, null);
+            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.JOBSEEKER_SUPPORT, Process.AID, Process.AID_JOBSEEKER_SUPPORT, "BUS_DIFFICULTY_TYPE");
 
             resultMap.put(MagicValue.LOG, "导入困难毕业生就业补助,数据:" + toString(dataList));
             status = STATUS_SUCCESS;
@@ -299,7 +299,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         String desc = IMPORT_ERROR;
         try {
             //导入
-            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.EMERGENCY_HELP, Process.AID, Process.AID_EMERGENCY_HELP, null);
+            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.EMERGENCY_HELP, Process.AID, Process.AID_EMERGENCY_HELP, "BUS_DIFFICULTY_TYPE");
 
             resultMap.put(MagicValue.LOG, "导入应急求助,数据:" + toString(dataList));
             status = STATUS_SUCCESS;
@@ -546,8 +546,8 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     resultList.add(packErrorData(row, "数据错误!"));
                     continue;
                 }
-            } else if (aidType == AidType.EMERGENCY_HELP) {
-                if (data.length <= 8) {
+            }else if (aidType == AidType.TUITION_WAIVER || aidType == AidType.JOBSEEKER_SUPPORT) {
+                if (data.length <= 6) {
                     resultList.add(packErrorData(row, "数据错误!"));
                     continue;
                 }

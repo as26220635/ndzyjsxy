@@ -14,10 +14,10 @@ shiro-activeSessionCache:
 password-retry-cache:
   ttl: 600000
   maxIdleTime: 600000
-#记录上一次保存的日志信息,重复的日志2分钟记录一次
-log-record-cache:
-  ttl: 120000
-  maxIdleTime: 120000
+#字典缓存
+dict-cache:
+  ttl: 0
+  maxIdleTime: 0
 #各种值的集合
 value-collection:
   ttl: 0

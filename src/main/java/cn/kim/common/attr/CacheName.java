@@ -15,9 +15,9 @@ public class CacheName {
     public static final String PASSWORD_RETRY_CACHE = "password-retry-cache";
 
     /**
-     * 记录上一次保存的日志信息,重复的日志2分钟记录一次
+     * 字典缓存
      */
-    public static final String LOG_RECORD_CACHE = "log-record-cache";
+    public static final String DICT_CACHE = "dict-cache";
     /**
      * 各种值的集合
      */

@@ -27,7 +27,7 @@
     </div>
     <div class="form-group has-feedback">
         <label>减免等级:</label>
-        <s:combobox sdtCode="BUS_COMMEND_TYPE"
+        <s:combobox sdtCode="BUS_TUITION_WAIVER"
                     custom='${fns:validField(TableName.BUS_AID_FINANCIALLY,"BAF_AID_TYPE")}'
                     value="${aid.BAF_AID_TYPE}"></s:combobox>
     </div>

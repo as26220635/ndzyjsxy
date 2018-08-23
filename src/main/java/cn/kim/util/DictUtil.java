@@ -18,6 +18,9 @@ import cn.kim.service.DictService;
 import com.google.common.collect.Maps;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.cache.Cache;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,14 +54,14 @@ public class DictUtil {
     /**
      * 加载字典到缓存
      */
-    public static Map<String, DictType> initDictToCache() {
+    public static void initDictToCache() {
         System.out.println("====加载字典到缓存=====");
         //清空字典表缓存
         CacheUtil.clear(NameSpace.DictMapper.getValue());
         //清空文件表缓存
         CacheUtil.clear(NameSpace.FileMapper.getValue());
-        //字典存入缓存
-        Map<String, DictType> cacheDictTypeMap = Maps.newHashMapWithExpectedSize(16);
+        //清空cache
+        CacheUtil.clear(CacheName.DICT_CACHE);
 
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(3);
         //查询全部字典类型
@@ -71,45 +74,35 @@ public class DictUtil {
             mapParam.put("SDI_PARENTID", "0");
             mapParam.put("IS_STATUS", Attribute.STATUS_SUCCESS);
             dictType.setInfos(dictUtil.dictService.selectDictInfoList(mapParam));
-            //放入缓存MAP
-            cacheDictTypeMap.put(dictType.getSdtCode().toUpperCase(), dictType);
+            //放入缓存中
+            setDictType(dictType);
         });
-        //设置到缓存中
-        setDictCache(cacheDictTypeMap);
-
-        return cacheDictTypeMap;
     }
 
     /**
      * 设置字典缓存
      *
-     * @param dicts
+     * @param dict
      */
-    public static void setDictCache(Map<String, DictType> dicts) {
-        CacheUtil.put(CacheName.VALUE_COLLECTION, TableName.SYS_DICT_TYPE, dicts);
-    }
-
-    /**
-     * 获取字典缓存
-     *
-     * @return
-     */
-    public static Map<String, DictType> getDictCache() {
-        Object dicts = CacheUtil.get(CacheName.VALUE_COLLECTION, TableName.SYS_DICT_TYPE);
-        if (ValidateUtil.isEmpty(dicts)) {
-            dicts = initDictToCache();
-        }
-        return (Map<String, DictType>) dicts;
+    public static void setDictType(DictType dict) {
+        CacheUtil.put(CacheName.DICT_CACHE, dict.getSdtCode(), dict);
     }
 
     /**
      * 根据SDT_CODE获取字典
      *
-     * @param dictTypeCode
      * @return
      */
-    public static DictType getDictType(String dictTypeCode) {
-        return getDictCache().get(dictTypeCode);
+    @Nullable
+    public static DictType getDictType(String sdtCode) {
+        Cache cache = CacheUtil.getCache(CacheName.DICT_CACHE);
+        if (ValidateUtil.isEmpty(cache)) {
+            initDictToCache();
+            cache = CacheUtil.getCache(CacheName.DICT_CACHE);
+        }
+        Object val = cache.get(sdtCode);
+
+        return ValidateUtil.isEmpty(val) ? null : (DictType) val;
     }
 
     /**
@@ -119,10 +112,10 @@ public class DictUtil {
      * @param dictInfoCode
      * @return
      */
-    public static String getDictName(String dictTypeCode, Object dictInfoCode) {
+    public static String getDictName(@NotNull String dictTypeCode, Object dictInfoCode) {
         String result = TextUtil.toString(dictInfoCode);
 
-        DictType dictType = getDictCache().get(dictTypeCode.toUpperCase());
+        DictType dictType = getDictType(dictTypeCode.toUpperCase());
         if (ValidateUtil.isEmpty(dictType)) {
             return result;
         }
@@ -145,7 +138,7 @@ public class DictUtil {
      * @param dictInfoCode
      * @return
      */
-    public static String getDictName(List<DictInfo> dictInfoList, Object dictInfoCode) {
+    public static String getDictName(@NotNull List<DictInfo> dictInfoList, Object dictInfoCode) {
         String result = "";
         for (DictInfo dictInfo : dictInfoList) {
             if (dictInfo.getSdiCode().equals(dictInfoCode)) {
@@ -169,10 +162,10 @@ public class DictUtil {
      * @param dictInfoName
      * @return
      */
-    public static String getDictCode(String dictTypeCode, Object dictInfoName) {
+    public static String getDictCode(@NotNull String dictTypeCode, Object dictInfoName) {
         String result = TextUtil.toString(dictInfoName);
 
-        DictType dictType = getDictCache().get(dictTypeCode.toUpperCase());
+        DictType dictType = getDictType(dictTypeCode.toUpperCase());
         if (ValidateUtil.isEmpty(dictType)) {
             return result;
         }
@@ -195,7 +188,7 @@ public class DictUtil {
      * @param dictInfoName
      * @return
      */
-    public static String getDictCode(List<DictInfo> dictInfoList, Object dictInfoName) {
+    public static String getDictCode(@NotNull List<DictInfo> dictInfoList, Object dictInfoName) {
         String result = "";
         for (DictInfo dictInfo : dictInfoList) {
             if (dictInfo.getSdiName().equals(dictInfoName)) {

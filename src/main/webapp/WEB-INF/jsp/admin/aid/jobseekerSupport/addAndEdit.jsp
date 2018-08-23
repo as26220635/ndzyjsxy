@@ -27,7 +27,7 @@
     </div>
     <div class="form-group has-feedback">
         <label>困难类型:</label>
-        <s:combobox sdtCode="BUS_COMMEND_TYPE"
+        <s:combobox sdtCode="BUS_DIFFICULTY_TYPE"
                     custom='${fns:validField(TableName.BUS_AID_FINANCIALLY,"BAF_AID_TYPE")}'
                     value="${aid.BAF_AID_TYPE}"></s:combobox>
     </div>

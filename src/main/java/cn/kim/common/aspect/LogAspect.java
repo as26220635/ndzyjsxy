@@ -175,7 +175,7 @@ public class LogAspect extends BaseData {
         if (!event.startsWith("查看")) {
             return false;
         }
-        String key = CacheName.LOG_RECORD_CACHE + userId;
+        String key = "USER_ID:" + userId;
         //判断缓存中是否存在
         Object val = SessionUtil.get(key);
         String str = isEmpty(val) ? null : toString(val);
