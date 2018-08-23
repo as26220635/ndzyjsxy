@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/tag.jsp" %>
-
+<%@ include file="/WEB-INF/jsp/common/common_url.jsp" %>
 <html>
 <head>
     <%@ include file="/WEB-INF/jsp/common/common_meta.jsp" %>
@@ -51,7 +51,7 @@
                             <li>
                                 <ul class="menu">
                                     <li>
-                                        <a href="${BASE_URL}admin/msg/home" data-pjax="#${container}"
+                                        <a href="${BASE_URL}admin/msg/home" data-pjax="#${CONTAINER}"
                                            onclick="notifyMsg.obtainCount();">
                                             <i class="fa fa-bell-o text-aqua"></i>通知
                                         </a>
@@ -131,7 +131,7 @@
             <ul class="sidebar-menu" data-widget="tree">
                 <li class="header">${MANAGER_HTML_MENU_NAME}</li>
                 <li class="treeview" id="homeTreeview">
-                    <a href="${BASE_URL}admin/home" id="admin-home" data-pjax="#${container}">
+                    <a href="${BASE_URL}admin/home" id="admin-home" data-pjax="#${CONTAINER}">
                         <i class="fa fa-dashboard"></i> <span>首页</span>
                     </a>
                 </li>
@@ -157,7 +157,7 @@
         </section>
 
         <section class="content" id="contentSection">
-            <div class="row" id="${container}">
+            <div class="row" id="${CONTAINER}">
             </div>
         </section>
     </div>
@@ -232,7 +232,7 @@
 
     mainInit.initPjax();
     // 加载内容到指定容器
-    $.pjax({url: this.href, container: '#${container}', replace: true});
+    $.pjax({url: this.href, container: '#${CONTAINER}', replace: true});
 
     //修改用户信息
     $('#editActiveUserBtn').on('click', function () {
@@ -388,12 +388,12 @@
 
     //pjax加载
     function loadUrl(url) {
-        $.pjax({url: url, container: '#${container}'});
+        $.pjax({url: url, container: '#${CONTAINER}'});
     }
 
     //回到主页
     function indexHtml() {
-        $.pjax({url: MANAGER_URL + 'home', container: '#${container}'});
+        $.pjax({url: MANAGER_URL + 'home', container: '#${CONTAINER}'});
     }
 
     //后退
@@ -403,7 +403,7 @@
 
     //刷新
     function refresh() {
-        $.pjax.reload('#${container}');
+        $.pjax.reload('#${CONTAINER}');
     }
 
 </script>

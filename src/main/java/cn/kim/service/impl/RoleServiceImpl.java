@@ -138,14 +138,14 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 
                 paramMap.put("IS_STATUS", STATUS_SUCCESS);
                 baseDao.insert(NameSpace.RoleMapper, "insertRole", paramMap);
-                resultMap.put(MagicValue.LOG, "添加角色:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加角色:" + formatColumnName(TableName.SYS_ROLE, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectRole(oldMap);
 
                 baseDao.update(NameSpace.RoleMapper, "updateRole", paramMap);
-                resultMap.put(MagicValue.LOG, "更新角色,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新角色,更新前:" + formatColumnName(TableName.SYS_ROLE, oldMap)+ ",更新后:" + formatColumnName(TableName.SYS_ROLE, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -398,7 +398,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_ROLE);
             baseDao.delete(NameSpace.RoleMapper, "deleteRole", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除角色,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除角色,信息:" + formatColumnName(TableName.SYS_ROLE, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

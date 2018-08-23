@@ -65,14 +65,14 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
                 paramMap.put("IS_STATUS", Attribute.STATUS_SUCCESS);
 
                 baseDao.insert(NameSpace.ValidateMapper, "insertValidate", paramMap);
-                resultMap.put(MagicValue.LOG, "添加验证:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加验证:" + formatColumnName(TableName.SYS_VALIDATE, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectValidate(oldMap);
 
                 baseDao.update(NameSpace.ValidateMapper, "updateValidate", paramMap);
-                resultMap.put(MagicValue.LOG, "更新验证,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新验证,更新前:" + formatColumnName(TableName.SYS_VALIDATE, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_VALIDATE, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -164,7 +164,7 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_VALIDATE);
             baseDao.delete(NameSpace.ValidateMapper, "deleteValidate", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除验证,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除验证,信息:" + formatColumnName(TableName.SYS_VALIDATE, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -236,14 +236,14 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
                 paramMap.put("IS_STATUS", Attribute.STATUS_SUCCESS);
 
                 baseDao.insert(NameSpace.ValidateMapper, "insertValidateField", paramMap);
-                resultMap.put(MagicValue.LOG, "添加验证字段:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加验证字段:" + formatColumnName(TableName.SYS_VALIDATE_FIELD, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectValidateField(oldMap);
 
                 baseDao.update(NameSpace.ValidateMapper, "updateValidateField", paramMap);
-                resultMap.put(MagicValue.LOG, "更新验证字段,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新验证字段,更新前:" + formatColumnName(TableName.SYS_VALIDATE_FIELD, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_VALIDATE_FIELD, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -321,7 +321,7 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_VALIDATE_FIELD);
             baseDao.delete(NameSpace.ValidateMapper, "deleteValidateField", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除验证字段,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除验证字段,信息:" + formatColumnName(TableName.SYS_VALIDATE_FIELD, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -357,7 +357,7 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
             //记录日志
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_VALIDATE_REGEX);
 
-            paramMap.put("ID",id);
+            paramMap.put("ID", id);
             paramMap.put("SVR_NAME", mapParam.get("SVR_NAME"));
             paramMap.put("SVR_REGEX", mapParam.get("SVR_REGEX"));
             paramMap.put("SVR_REGEX_MESSAGE", mapParam.get("SVR_REGEX_MESSAGE"));
@@ -369,14 +369,14 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
                 paramMap.put("IS_STATUS", Attribute.STATUS_SUCCESS);
 
                 baseDao.insert(NameSpace.ValidateMapper, "insertValidateRegex", paramMap);
-                resultMap.put(MagicValue.LOG, "添加验证正则:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加验证正则:" + formatColumnName(TableName.SYS_VALIDATE_REGEX, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectValidateRegex(oldMap);
 
                 baseDao.update(NameSpace.ValidateMapper, "updateValidateRegex", paramMap);
-                resultMap.put(MagicValue.LOG, "更新验证正则,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新验证正则,更新前:" + formatColumnName(TableName.SYS_VALIDATE_REGEX, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_VALIDATE_REGEX, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -443,7 +443,7 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_VALIDATE_REGEX);
             baseDao.delete(NameSpace.ValidateMapper, "deleteValidateRegex", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除验证正则,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除验证正则,信息:" + formatColumnName(TableName.SYS_VALIDATE_REGEX, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -506,14 +506,14 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.ValidateMapper, "insertValidateGroup", paramMap);
-                resultMap.put(MagicValue.LOG, "添加验证组:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加验证组:" + formatColumnName(TableName.SYS_VALIDATE_GROUP, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectValidateGroup(oldMap);
 
                 baseDao.update(NameSpace.ValidateMapper, "updateValidateGroup", paramMap);
-                resultMap.put(MagicValue.LOG, "更新验证组,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新验证组,更新前:" + formatColumnName(TableName.SYS_VALIDATE_GROUP, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_VALIDATE_GROUP, paramMap));
             }
 
             //删除旧SVGF字段信息
@@ -568,7 +568,7 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_VALIDATE_GROUP);
             baseDao.delete(NameSpace.ValidateMapper, "deleteValidateGroup", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除验证正则,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除验证正则,信息:" + formatColumnName(TableName.SYS_VALIDATE_GROUP, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

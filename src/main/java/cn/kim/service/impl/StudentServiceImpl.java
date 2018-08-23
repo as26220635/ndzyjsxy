@@ -138,7 +138,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 paramMap.put("SO_ID", operatorId);
 
                 baseDao.insert(NameSpace.StudentMapper, "insertStudent", paramMap);
-                resultMap.put(MagicValue.LOG, "添加学生:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加学生:" + formatColumnName(TableName.BUS_STUDENT, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
@@ -180,7 +180,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT);
             baseDao.delete(NameSpace.StudentMapper, "deleteStudent", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除学生,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除学生,信息:" + formatColumnName(TableName.BUS_STUDENT, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -227,14 +227,14 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 paramMap.put("BSA_ENTRY_TIME", getDate());
 
                 baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentAttendance", paramMap);
-                resultMap.put(MagicValue.LOG, "添加学生考勤:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加学生考勤:" + formatColumnName(TableName.BUS_STUDENT_ATTENDANCE, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectStudentAttendance(oldMap);
 
                 baseDao.update(NameSpace.StudentExtendMapper, "updateStudentAttendance", paramMap);
-                resultMap.put(MagicValue.LOG, "更新学生考勤,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新学生考勤,更新前:" + formatColumnName(TableName.BUS_STUDENT_ATTENDANCE, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_STUDENT_ATTENDANCE, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -270,7 +270,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentAttendance", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除学生考勤,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除学生考勤,信息:" + formatColumnName(TableName.BUS_STUDENT_ATTENDANCE, oldMap) );
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -321,14 +321,14 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 paramMap.put("BSP_ENTRY_TIME", getDate());
 
                 baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentPunishment", paramMap);
-                resultMap.put(MagicValue.LOG, "添加学生处分:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加学生处分:" + formatColumnName(TableName.BUS_STUDENT_PUNISHMENT, paramMap) );
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectStudentPunishment(oldMap);
 
                 baseDao.update(NameSpace.StudentExtendMapper, "updateStudentPunishment", paramMap);
-                resultMap.put(MagicValue.LOG, "更新学生处分,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新学生处分,更新前:" + formatColumnName(TableName.BUS_STUDENT_ATTENDANCE, oldMap)  + ",更新后:" + formatColumnName(TableName.BUS_STUDENT_PUNISHMENT, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -402,7 +402,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentPunishment", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除学生处分,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除学生处分,信息:" + formatColumnName(TableName.BUS_STUDENT_PUNISHMENT, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -495,14 +495,14 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentComprehensive", paramMap);
-                resultMap.put(MagicValue.LOG, "添加学生综合素质测评:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加学生综合素质测评:" +  formatColumnName(TableName.BUS_STUDENT_COMPREHENSIVE, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectStudentComprehensive(oldMap);
 
                 baseDao.update(NameSpace.StudentExtendMapper, "updateStudentComprehensive", paramMap);
-                resultMap.put(MagicValue.LOG, "更新学生综合素质测评,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新学生综合素质测评,更新前:" + formatColumnName(TableName.BUS_STUDENT_COMPREHENSIVE, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_STUDENT_COMPREHENSIVE, paramMap));
             }
 
             //计算排名
@@ -546,7 +546,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentComprehensive", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除学生综合素质测评,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除学生综合素质测评,信息:" + formatColumnName(TableName.BUS_STUDENT_COMPREHENSIVE, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

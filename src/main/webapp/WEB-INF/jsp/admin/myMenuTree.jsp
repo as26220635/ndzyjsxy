@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/tag.jsp" %>
+
 <%--递归菜单--%>
 <c:forEach var="menu" items="${treeList}" varStatus="vs">
     <%--状态为1 --%>
@@ -22,7 +23,7 @@
             </c:if>
                 <%--菜单href不为空--%>
             <c:if test="${menu.SM_URL != null && !menu.SM_URL.equals('')}">
-                <a href="${BASE_URL}${menu.SM_URL}" id="${menu.SM_URL.replace("/","-")}" data-pjax="#${container}">
+                <a href="${BASE_URL}${menu.SM_URL}" id="${menu.SM_URL.replace("/","-")}" data-pjax="#${CONTAINER}">
                     <i class="${menu.SM_CLASSICON}"></i>
                     <span>${menu.SM_NAME }</span>
                 </a>

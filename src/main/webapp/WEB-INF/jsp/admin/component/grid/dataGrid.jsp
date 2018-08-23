@@ -9,7 +9,7 @@
 <%@ include file="/WEB-INF/jsp/common/tag.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="cn.kim.common.eu.ProcessShowStatus" %>
-<%@ page import="java.util.Random" %>
+<%@ page import="cn.kim.common.eu.ProcessStatus" %>
 <style>
     .dataTable-column {
         word-break: break-all;
@@ -285,7 +285,7 @@
                     <%--是否查询流程操作按钮--%>
                     <c:if test="${!fns:isEmpty(MENU.BUS_PROCESS)}">
                     <%--查询权限菜单--%>
-                    if (rowData.SPS_AUDIT_STATUS != 999) {
+                    if (rowData.SPS_AUDIT_STATUS != ${ProcessStatus.COMPLETE.type}) {
                         ajax.get('${PROCESS_DATAGRID_BTN}', {
                             ID: cellData,
                             BUS_PROCESS: rowData.BUS_PROCESS,
@@ -379,11 +379,11 @@
             <%--选择框--%>
             <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
             tableView.choiceBox(api, 0);
-            $('.select-checkbox').css('width','20px');
+            $('.select-checkbox').css('width', '20px');
             </c:if>
             <%--序号--%>
             tableView.orderNumber(api, ${fns:trueOrFalse(CONFIGURE.SC_IS_SELECT, 1 ,0 )});
-            $('.dataTable-column-min-width-sort').css('width','35px');
+            $('.dataTable-column-min-width-sort').css('width', '35px');
             <%--切换按钮--%>
             $('[name="STATUS_SWITCH"]').bootstrapSwitch({
                 onText: "开启",
@@ -428,13 +428,14 @@
     <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
     <c:if test="${CONFIGURE.SC_IS_SINGLE  ne Attribute.STATUS_SUCCESS}">
 
-    function dataGridSwitchSelectAll(checked){
+    function dataGridSwitchSelectAll(checked) {
         if (checked) {
             $dataGrid.rows().select();
         } else {
             $dataGrid.rows().deselect();
         }
     }
+
     //监听选择
     $dataGrid.on('select', function (e, dt, type, indexes) {
         if (type === 'row') {

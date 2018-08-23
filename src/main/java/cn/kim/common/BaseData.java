@@ -27,9 +27,6 @@ public abstract class BaseData {
 
     protected static final String SERVICE_SPLIT = Attribute.SERVICE_SPLIT;
 
-    protected static final int BACK_CODE = Attribute.BACK_CODE;
-    protected static final int COMPLETE_CODE = Attribute.COMPLETE_CODE;
-
     protected static final int STATUS_SUCCESS = Attribute.STATUS_SUCCESS;
     protected static final int STATUS_ERROR = Attribute.STATUS_ERROR;
     protected static final String SAVE_SUCCESS = Tips.SAVE_SUCCESS;

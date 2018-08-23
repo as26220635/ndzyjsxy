@@ -2,6 +2,7 @@ package cn.kim.service.impl;
 
 import cn.kim.common.attr.*;
 import cn.kim.common.eu.NameSpace;
+import cn.kim.common.eu.ProcessStatus;
 import cn.kim.common.eu.ProcessType;
 import cn.kim.entity.ActiveUser;
 import cn.kim.entity.ProcessRunBean;
@@ -94,14 +95,14 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         paramMap.put("SPD_ID", definitionId);
         paramMap.put("SPS_IS_CANCEL", toString(STATUS_ERROR));
         Map<String, Object> schedule = this.selectProcessSchedule(paramMap);
-        //2:判断是否进度为空或者状态为0，说明没有启动
-        if (!isEmpty(schedule) && !"0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
+        //2:判断是否进度为空或者状态为启动人员，说明没有启动
+        if (!isEmpty(schedule) && toInt(schedule.get("SPS_AUDIT_STATUS")) != ProcessStatus.START.getType()) {
             //3:判断是否已完成
-            if (Attribute.COMPLETE_CODE == toInt(schedule.get("SPS_AUDIT_STATUS"))) {
+            if (ProcessStatus.COMPLETE.getType() == toInt(schedule.get("SPS_AUDIT_STATUS"))) {
                 return ProcessType.NONE.toString();
             }
             //4:判断进度是不是退回状态
-            if (toInt(schedule.get("SPS_AUDIT_STATUS")) == -1) {
+            if (toInt(schedule.get("SPS_AUDIT_STATUS")) == ProcessStatus.BACK.getType()) {
                 if (toString(schedule.get("SPS_STEP_TRANSACTOR")).equals(getActiveUser().getId())) {
                     //查询当前流程步骤是否存在
                     paramMap.clear();
@@ -396,7 +397,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 scheduleBackStatusTransactor = processHandles[0];
                 scheduleStepTransactor = processHandles[1];
                 //退回审核状态
-                scheduleAuditStatus = "-1";
+                scheduleAuditStatus = ProcessStatus.BACK.toString();
                 scheduleBackStatus = ProcessType.BACK.toString();
             }
 
@@ -407,7 +408,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("SPS_IS_CANCEL", toString(STATUS_ERROR));
             Map<String, Object> schedule = this.selectProcessSchedule(paramMap);
             //如果为空就插入
-            if (isEmpty(schedule) || "0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
+            if (isEmpty(schedule) || ProcessStatus.START.toString().equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
                 if (isEmpty(schedule)) {
                     schedule = Maps.newHashMapWithExpectedSize(16);
                     schedule.put("SPD_ID", definitionId);
@@ -415,11 +416,11 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                     schedule.put("SO_ID", activeUser.getId());
                     schedule.put("SHOW_SO_ID", mapParam.get("SHOW_SO_ID"));
                 }
-                schedule.put("SPS_PREV_AUDIT_STATUS", "0");
+                schedule.put("SPS_PREV_AUDIT_STATUS", ProcessStatus.START.toString());
             } else {
                 //判断流程是否重复审核
-                if (toInt(schedule.get("SPS_AUDIT_STATUS")) != -1 &&
-                        toInt(schedule.get("SPS_PREV_AUDIT_STATUS")) != -1 &&
+                if (toInt(schedule.get("SPS_AUDIT_STATUS")) != ProcessStatus.BACK.getType() &&
+                        toInt(schedule.get("SPS_PREV_AUDIT_STATUS")) != ProcessStatus.BACK.getType() &&
                         toString(schedule.get("SPS_PREV_AUDIT_STATUS")).equals(scheduleAuditStatus)) {
                     throw new CustomException("流程重复审核!");
                 }
@@ -539,7 +540,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("SPS_IS_CANCEL", toString(STATUS_ERROR));
             Map<String, Object> schedule = this.selectProcessSchedule(paramMap);
             //判断流程是否可以撤回
-            if (toInt(schedule.get("SPS_AUDIT_STATUS")) == -1 ||
+            if (toInt(schedule.get("SPS_AUDIT_STATUS")) == ProcessStatus.BACK.getType() ||
                     !toString(schedule.get("SPS_PREV_STEP_TRANSACTOR")).equals(activeUser.getId())) {
                 throw new CustomException("流程撤回失败,请检查流程状态!");
             }
@@ -550,7 +551,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             Map<String, Object> withdrawStep = this.processPrevStepList(paramMap).get(0);
             //上一步流程审核状态
             schedule.put("SPS_PREV_AUDIT_STATUS", schedule.get("SPS_AUDIT_STATUS"));
-            schedule.put("SPS_AUDIT_STATUS", -1);
+            schedule.put("SPS_AUDIT_STATUS", ProcessStatus.BACK.getType());
             schedule.put("SPS_BACK_STATUS", ProcessType.WITHDRAW.toString());
             schedule.put("SPS_BACK_STATUS_TRANSACTOR", withdrawStep.get("SPS_PROCESS_STATUS"));
             schedule.put("SPS_STEP_TYPE", 2);
@@ -575,7 +576,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("SPL_OPINION", "用户撤回(系统)");
             paramMap.put("SPL_ENTRY_TIME", getSqlDate());
             paramMap.put("SPL_TYPE", ProcessType.WITHDRAW.toString());
-            paramMap.put("SPL_PROCESS_STATUS", -1);
+            paramMap.put("SPL_PROCESS_STATUS", ProcessStatus.BACK.getType());
 
             resultIUMap = this.insertProcessLog(paramMap);
             validateResultMap(resultIUMap);

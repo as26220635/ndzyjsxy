@@ -29,10 +29,6 @@ public class Attribute {
      */
     public static final String SUBMIT_TOKEN_NAME = "token";
 
-    /*******************   审核标记 ******************/
-    public static final int BACK_CODE = -1;
-    public static final int COMPLETE_CODE = 999;
-
     /*******************    前台使用 ******************/
     public static final String LOADING_IMAGE = "resources/reception/assets/img/loading.gif";
     /**

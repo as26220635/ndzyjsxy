@@ -56,14 +56,14 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
                 paramMap.put("SO_ID", operatorId);
 
                 baseDao.insert(NameSpace.TeacherMapper, "insertTeacher", paramMap);
-                resultMap.put(MagicValue.LOG, "添加教师:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加教师:" + formatColumnName(TableName.BUS_TEACHER, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectTeacher(oldMap);
 
                 baseDao.update(NameSpace.TeacherMapper, "updateTeacher", paramMap);
-                resultMap.put(MagicValue.LOG, "更新教师,更新前:" + toString(oldMap) + ",更新后:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "更新教师,更新前:" + formatColumnName(TableName.BUS_TEACHER, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_TEACHER, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -98,7 +98,7 @@ public class TeacherServiceImpl extends BaseServiceImpl implements TeacherServic
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_TEACHER);
             baseDao.delete(NameSpace.TeacherMapper, "deleteTeacher", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除教师,信息:" + toString(oldMap));
+            resultMap.put(MagicValue.LOG, "删除教师,信息:" + formatColumnName(TableName.BUS_TEACHER, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

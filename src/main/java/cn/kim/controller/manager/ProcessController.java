@@ -6,6 +6,7 @@ import cn.kim.common.annotation.Token;
 import cn.kim.common.annotation.Validate;
 import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
+import cn.kim.common.eu.ProcessStatus;
 import cn.kim.common.eu.UseType;
 import cn.kim.common.eu.ProcessType;
 import cn.kim.entity.CustomParam;
@@ -121,7 +122,7 @@ public class ProcessController extends BaseController {
             String SPS_AUDIT_STATUS;
             if (!isEmpty(schedule) && !"0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
                 SPS_AUDIT_STATUS = toString(schedule.get("SPS_AUDIT_STATUS"));
-                if (toInt(SPS_AUDIT_STATUS) == BACK_CODE) {
+                if (toInt(SPS_AUDIT_STATUS) == ProcessStatus.COMPLETE.getType()) {
                     SPS_AUDIT_STATUS = toString(schedule.get("SPS_BACK_STATUS_TRANSACTOR"));
                 }
             } else {
@@ -161,7 +162,7 @@ public class ProcessController extends BaseController {
                 }
                 String SR_ID = toString(nextStep.get("SR_ID"));
                 //下一步是否为结束
-                if (toInt(nextStep.get("SPS_PROCESS_STATUS")) != COMPLETE_CODE) {
+                if (toInt(nextStep.get("SPS_PROCESS_STATUS")) != ProcessStatus.COMPLETE.getType()) {
                     //查询下一步办理人
                     if (MagicValue.ONE.equals(toString(nextStep.get("SPS_STEP_TYPE")))) {
                         //下一步为角色
