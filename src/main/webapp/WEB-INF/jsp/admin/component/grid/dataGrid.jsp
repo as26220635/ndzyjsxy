@@ -441,8 +441,16 @@
                     demo.showNotify(ALERT_WARNING, '请至少选择一项导出!');
                     return;
                 }
+                var columnIds = '';
+                for (var i in data) {
+                    var column = data[i];
+                    if (i != 0) {
+                        columnIds += SERVICE_SPLIT;
+                    }
+                    columnIds += column.id;
+                }
                 //导出
-                console.log(data)
+                window.open('${EXPORT_URL}${CONFIGURE.ID}/' + columnIds);
                 model.hide($model);
             }
         });

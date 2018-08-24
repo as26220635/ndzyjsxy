@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.activation.DataHandler;
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.ConnectException;
@@ -800,7 +801,8 @@ public class FileUtil {
     public static String convertToString(InputStream in) {
         BufferedReader bf = null;
         try {
-            bf = new BufferedReader(new InputStreamReader(in, "UTF-8")); //最好在将字节流转换为字符流的时候 进行转码
+            //最好在将字节流转换为字符流的时候 进行转码
+            bf = new BufferedReader(new InputStreamReader(in, "UTF-8"));
             StringBuffer buffer = new StringBuffer();
             String line = "";
             while ((line = bf.readLine()) != null) {
@@ -819,6 +821,72 @@ public class FileUtil {
             }
         }
         return "";
+    }
+
+    /**
+     * 转换为InputStream
+     *
+     * @param filePath
+     * @return
+     * @throws FileNotFoundException
+     */
+    public static InputStream getInputStreamByFilePath(String filePath) throws FileNotFoundException {
+        return new FileInputStream(new File(filePath));
+    }
+
+    /**
+     * 浏览器下载
+     *
+     * @param response
+     * @param inputStream
+     * @param fileName
+     * @param prefix      后缀
+     * @return
+     * @throws IOException
+     */
+    public static boolean download(HttpServletResponse response, InputStream inputStream, String fileName, String prefix) throws IOException {
+        byte[] b = null;
+
+        BufferedInputStream bufferedInputStream = null;
+        BufferedOutputStream bufferedOutputStream = null;
+
+        try {
+            bufferedInputStream = new BufferedInputStream(inputStream);
+            bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());
+            // 设置下载文件名
+            String pdf = new String(new String(fileName.getBytes(), "ISO-8859-1")) + "." + prefix;
+
+            response.setContentType("application/x-msdownload");
+            response.setHeader("Content-Disposition", "attachment;filename=" + pdf);
+            b = new byte[1024];
+            int len = 0;
+            while ((len = bufferedInputStream.read(b)) != -1) {
+                bufferedOutputStream.write(b, 0, len);
+            }
+            bufferedOutputStream.flush();
+
+            System.out.println(DateUtil.getDate() + "下载文件,项目名:" + fileName + prefix);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("浏览器下载异常...");
+        } finally {
+            try {
+                b = null;
+                if (bufferedInputStream != null) {
+                    bufferedInputStream.close();
+                }
+                if (bufferedOutputStream != null) {
+                    bufferedOutputStream.close();
+                }
+            } catch (IOException e) {
+                // e.printStackTrace();
+                System.out.println("浏览器下载IO异常...");
+            }
+        }
+
+        return false;
     }
 
     public static void main(String[] args) throws IOException {

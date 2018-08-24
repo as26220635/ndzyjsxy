@@ -23,6 +23,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.security.InvalidKeyException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -244,4 +247,17 @@ public abstract class BaseController extends BaseData {
         }
     }
 
+    /**
+     * 浏览器下载获取文件流
+     *
+     * @param response
+     * @param fileName
+     * @return
+     * @throws IOException
+     */
+    protected static OutputStream getResponseOutputStream(HttpServletResponse response, String fileName) throws IOException {
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-disposition", "attachment;filename=" + new String(fileName.getBytes("UTF-8"), "ISO8859-1"));
+        return response.getOutputStream();
+    }
 }

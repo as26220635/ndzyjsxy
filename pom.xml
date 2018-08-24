@@ -65,6 +65,7 @@
         <javax.mail.version>1.6.1</javax.mail.version>
         <poi.version>3.15</poi.version>
         <bcprov.version>1.60</bcprov.version>
+        <lombok.version>1.18.2</lombok.version>
     </properties>
 
     <dependencies>
@@ -448,6 +449,15 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>${bcprov.version}</version>
         </dependency>
+
+        <!--lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <!--spring地址-->

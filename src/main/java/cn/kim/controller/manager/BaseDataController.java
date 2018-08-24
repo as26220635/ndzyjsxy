@@ -12,11 +12,14 @@ import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.*;
+import cn.kim.tools.ExportExcelTool;
 import cn.kim.util.CommonUtil;
+import cn.kim.util.FuncUtil;
 import cn.kim.util.HttpRequestDeviceUtils;
 import cn.kim.util.TextUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by 余庚鑫 on 2018/3/21
@@ -262,6 +269,57 @@ public class BaseDataController extends BaseController {
             });
         });
         return trees;
+    }
+
+    /**
+     * 导出列表菜单数据
+     *
+     * @param ID         菜单 id
+     * @param COLUMN_IDS 需要导出的字段IDS
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/admin/export/{ID}/{COLUMN_IDS}")
+    public void export(@PathVariable("ID") String ID, @PathVariable("COLUMN_IDS") String COLUMN_IDS, @RequestParam Map<String, Object> mapParam, HttpServletResponse response) throws Exception {
+        isInvalidKey(mapParam);
+
+        //查询菜单
+        Map<String, Object> menu = menuService.queryMenuById(ID);
+        //判断权限
+        if (!isEmpty(menu.get("SM_CODE")) && !isPermitted(toString(menu.get("SM_CODE")) + "_EXPORT")) {
+            throw new UnauthorizedException("权限错误!");
+        }
+        String configureId = toString(menu.get("SC_ID"));
+
+        if (isEmpty(configureId)) {
+            throw new CustomException("配置管理ID为空!");
+        }
+        //查询配置列表
+        Map<String, Object> configureMap = dataGridService.selectConfigureById(configureId);
+        //查询字段
+        List<Map<String, Object>> columnList = (List<Map<String, Object>>) configureMap.get("columnList");
+
+        //拿到需要导出的字段
+        Set<String> exportIds = Sets.newHashSet(COLUMN_IDS.split(SERVICE_SPLIT));
+        //移除没有导出的字段
+        columnList.removeIf(map -> !exportIds.contains(map.get("ID")));
+        String[] columnArrays = new String[columnList.size()];
+        FuncUtil.forEach(columnList, (i, column) -> {
+            columnArrays[i] = toString(column.get("SC_NAME"));
+        });
+
+        //查询数据
+        mapParam.put("ID", configureId);
+        mapParam.put("SM_ID", ID);
+        mapParam.put("start", "0");
+        mapParam.put("length", "-1");
+        List<Map<String, Object>> list = dataGridService.selectByMap(mapParam).getData();
+
+        ExportExcelTool<List<Map<String, Object>>> exportExcel = new ExportExcelTool<>();
+        //设置导出文件名称
+        OutputStream out = getResponseOutputStream(response, getDate() + ":导出" + toString(menu.get("SM_NAME")) + "数据");
+
+        exportExcel.exportExcelByColumn("Title", columnArrays, columnArrays, list, out, null);
     }
 
     /**
