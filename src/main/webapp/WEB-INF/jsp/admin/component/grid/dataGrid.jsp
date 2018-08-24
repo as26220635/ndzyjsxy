@@ -15,15 +15,15 @@
         word-break: break-all;
     }
 
-    .DTFC_LeftBodyLiner {
-        top: -15px !important;
+    .DTFC_LeftBodyLiner, .DTFC_RightBodyLiner {
+        top: -13px !important;
     }
 
     .table-striped > tbody > tr:nth-of-type(even) {
         background-color: #fff;
     }
 
-    .DTFC_LeftHeadWrapper thead tr {
+    .DTFC_LeftHeadWrapper thead tr, .DTFC_RightHeadWrapper thead tr {
         background-color: #fff;
     }
 </style>
@@ -159,7 +159,7 @@
                                 <table id="dataGrid${MENU.ID}"
                                        class="table table-bordered table-striped
                                     <c:choose>
-                                    <c:when test="${FIXED_LENGTH > 0}">
+                                    <c:when test="${IS_FIXED}">
                                     row-border order-column
                                     </c:when>
                                     <c:otherwise>
@@ -226,8 +226,11 @@
         </c:choose>
         </c:if>
         //固定列
-        <c:if test="${FIXED_LENGTH > 0}">
-        fixedColumns: ${FIXED_LENGTH},
+        <c:if test="${IS_FIXED}">
+        fixedColumns: {
+            leftColumns: ${LEFT_FIXED_LENGTH},
+            rightColumns: ${RIGHT_FIXED_LENGTH}
+        },
         </c:if>
         <%--搜索额外参数--%>
         searchParams: function (params) {
@@ -423,6 +426,27 @@
             }
         }
     });
+
+    /**
+     * 导出excel表格
+     **/
+    function exportData() {
+        treeBox.init({
+            title: '选择导出列',
+            data:${EXPORT_LIST},
+            okBtnName: model.btnName.EXPORT,
+            isConfirm: true,
+            confirm: function ($model, data) {
+                if (data.length == 0) {
+                    demo.showNotify(ALERT_WARNING, '请至少选择一项导出!');
+                    return;
+                }
+                //导出
+                console.log(data)
+                model.hide($model);
+            }
+        });
+    }
 
     <%--开启checkbox--%>
     <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">

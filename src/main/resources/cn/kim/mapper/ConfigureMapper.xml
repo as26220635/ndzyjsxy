@@ -5,19 +5,17 @@
 
     <!--查询配置列表-->
     <select id="selectConfigure" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT SC.*,IFNULL(SCCL.FIXED_LENGTH,0) AS FIXED_LENGTH
+        SELECT SC.*,IFNULL(SCCL.LEFT_FIXED_LENGTH,0) AS LEFT_FIXED_LENGTH,IFNULL(SCCR.RIGHT_FIXED_LENGTH,0) AS RIGHT_FIXED_LENGTH
         FROM(
         SELECT * FROM SYS_CONFIGURE
         <where>
             <if test="ID != NULL and ID != ''">
                 AND ID = #{ID}
             </if>
-            <if test="SC_ID != NULL and SC_ID != ''">
-                AND SC_ID = #{SC_ID}
-            </if>
         </where>
         )SC
-        LEFT JOIN (SELECT SC_ID,COUNT(*) AS FIXED_LENGTH FROM SYS_CONFIGURE_COLUMN WHERE SCC_IS_FIXED = 1 GROUP BY SC_ID)SCCL ON SCCL.SC_ID = SC.ID
+        LEFT JOIN (SELECT SC_ID,COUNT(*) AS LEFT_FIXED_LENGTH FROM SYS_CONFIGURE_COLUMN WHERE SCC_IS_FIXED = 1 GROUP BY SC_ID)SCCL ON SCCL.SC_ID = SC.ID
+        LEFT JOIN (SELECT SC_ID,COUNT(*) AS RIGHT_FIXED_LENGTH FROM SYS_CONFIGURE_COLUMN WHERE SCC_IS_FIXED = -1 GROUP BY SC_ID)SCCR ON SCCR.SC_ID = SC.ID
     </select>
 
     <!--插入配置列表-->
@@ -102,6 +100,7 @@
             <if test="SCC_FUNC != null">SCC_FUNC,</if>
             <if test="SCC_SDT_CODE != null">SCC_SDT_CODE,</if>
             <if test="SCC_IS_FIXED != null">SCC_IS_FIXED,</if>
+            <if test="SCC_IS_EXPORT != null">SCC_IS_EXPORT,</if>
             <if test="SCC_IS_OPERATION != null">SCC_IS_OPERATION,</if>
             <if test="SCC_IS_MERGE != null">SCC_IS_MERGE,</if>
             <if test="SCC_IS_VISIBLE != null">SCC_IS_VISIBLE,</if>
@@ -119,6 +118,7 @@
             <if test="SCC_FUNC != null">#{SCC_FUNC},</if>
             <if test="SCC_SDT_CODE != null">#{SCC_SDT_CODE},</if>
             <if test="SCC_IS_FIXED != null">#{SCC_IS_FIXED},</if>
+            <if test="SCC_IS_EXPORT != null">#{SCC_IS_EXPORT},</if>
             <if test="SCC_IS_OPERATION != null">#{SCC_IS_OPERATION},</if>
             <if test="SCC_IS_MERGE != null">#{SCC_IS_MERGE},</if>
             <if test="SCC_IS_VISIBLE != null">#{SCC_IS_VISIBLE},</if>
@@ -141,6 +141,7 @@
             <if test="SCC_FUNC != null">SCC_FUNC=#{SCC_FUNC},</if>
             <if test="SCC_SDT_CODE != null">SCC_SDT_CODE=#{SCC_SDT_CODE},</if>
             <if test="SCC_IS_FIXED != null">SCC_IS_FIXED=#{SCC_IS_FIXED},</if>
+            <if test="SCC_IS_EXPORT != null">SCC_IS_EXPORT=#{SCC_IS_EXPORT},</if>
             <if test="SCC_IS_OPERATION != null">SCC_IS_OPERATION=#{SCC_IS_OPERATION},</if>
             <if test="SCC_IS_MERGE != null">SCC_IS_MERGE=#{SCC_IS_MERGE},</if>
             <if test="SCC_IS_VISIBLE != null">SCC_IS_VISIBLE=#{SCC_IS_VISIBLE},</if>

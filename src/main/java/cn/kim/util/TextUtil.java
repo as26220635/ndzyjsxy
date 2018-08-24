@@ -183,6 +183,10 @@ public class TextUtil {
         }
     }
 
+    public static String toJSONString(List<?> list) {
+        return JSON.toJSONString(list);
+    }
+
     public static String toJSONString(Map<?, ?> map) {
         return JSON.toJSONString(map);
     }

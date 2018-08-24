@@ -589,10 +589,7 @@ tableView = {
             // scrollY:        300,
             optionData.scrollX = true;
             optionData.scrollCollapse = true;
-            optionData.fixedColumns = {
-                //左边固定几列
-                leftColumns: options.fixedColumns
-            };
+            optionData.fixedColumns = options.fixedColumns;
         }
         //启用ajax模式
         if (!isEmpty(options.url)) {
@@ -809,7 +806,7 @@ model = {
         DANGER: 'modal-danger'
     },
     //按钮名字
-    btnName: {DEL: '删除', SAVE: '保存', CLOSE: '关闭', OK: '确定', RESET: '重置', SUBMIT: '提交', BACK: '退回', WITHDRAW: '撤回'},
+    btnName: {DEL: '删除', SAVE: '保存', CLOSE: '关闭', OK: '确定', RESET: '重置', SUBMIT: '提交', BACK: '退回', WITHDRAW: '撤回', EXPORT: '导出'},
     //底部的样式
     footerModel: {ADMIN: 'admin', MY_HOME: 'my_home'},
     //显示,1秒内只能执行一次防止多次点击
@@ -1221,9 +1218,12 @@ treeBox = {
             showIcon: false,
             showCheckbox: true,
             url: '',
+            data: [],
             searchParams: {},
             modelSize: model.size.NONE,
             footerModel: model.footerModel.ADMIN,
+            isConfirm: false,
+            okBtnName: model.btnName.SAVE,
         }, options);
 
         //设置参数
@@ -1248,17 +1248,46 @@ treeBox = {
             selectMode = '(多选)';
         }
 
-        ajax.get(settings.url, settings.searchParams, function (data) {
+        //判断是否访问网络连接
+        if (!isEmpty(settings.url)) {
+            ajax.get(settings.url, settings.searchParams, function (data) {
+                model.show({
+                    title: settings.title + selectMode,
+                    content: html,
+                    footerModel: settings.footerModel,
+                    size: settings.modelSize,
+                    isConfirm: settings.isConfirm,
+                    okBtnName: settings.okBtnName,
+                    //HTML加载完成回调
+                    loadContentComplete: function () {
+                        //创建树菜单
+                        settings.data = data;
+                        treeBox.create(settings);
+                        //监听输入框回车事件
+                        $(searchInput).unbind('keypress');
+                        $(searchInput).bind('keypress', function (event) {
+                            if (event.keyCode == 13) {
+                                $(searchInput + 'btn').click();
+                            }
+                        });
+                    },
+                    //点击回调
+                    confirm: function (model) {
+                        options.confirm(model, $(tree).treeview('getChecked'));
+                    }
+                });
+            });
+        } else {
             model.show({
                 title: settings.title + selectMode,
                 content: html,
                 footerModel: settings.footerModel,
                 size: settings.modelSize,
                 isConfirm: settings.isConfirm,
+                okBtnName: settings.okBtnName,
                 //HTML加载完成回调
                 loadContentComplete: function () {
                     //创建树菜单
-                    settings.data = data;
                     treeBox.create(settings);
                     //监听输入框回车事件
                     $(searchInput).unbind('keypress');
@@ -1273,7 +1302,8 @@ treeBox = {
                     options.confirm(model, $(tree).treeview('getChecked'));
                 }
             });
-        });
+        }
+
     },
     //创建树
     create: function (options) {

@@ -8,10 +8,14 @@ import cn.kim.common.eu.ButtonType;
 import cn.kim.common.eu.UseType;
 import cn.kim.common.tag.Button;
 import cn.kim.entity.DataTablesView;
+import cn.kim.entity.Tree;
+import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.*;
 import cn.kim.util.CommonUtil;
 import cn.kim.util.HttpRequestDeviceUtils;
+import cn.kim.util.TextUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -96,6 +100,33 @@ public class BaseDataController extends BaseController {
             if (!isEmpty(searchList)) {
                 searchList.removeIf(map -> toInt(map.get("SCC_IS_VISIBLE")) == Attribute.STATUS_ERROR);
             }
+            //导出字段
+            List<Tree> exportList = new LinkedList<>();
+            columnList.forEach(column -> {
+                Object SCC_IS_EXPORT = column.get("SCC_IS_EXPORT");
+                //是否导出列
+                if (!isEmpty(SCC_IS_EXPORT) && toInt(SCC_IS_EXPORT) == STATUS_SUCCESS) {
+                    //不是操作列
+                    if (isEmpty(column.get("SCC_IS_OPERATION")) || toInt(column.get("SCC_IS_OPERATION")) == STATUS_ERROR) {
+                        Tree tree = new Tree();
+                        tree.setId(toString(column.get("ID")));
+                        tree.setText(toString(column.get("SCC_NAME")));
+
+                        TreeState state = new TreeState();
+                        //是否选中
+                        state.setChecked(true);
+                        //选中的设置打开
+                        state.setExpanded(true);
+                        //设置状态
+                        tree.setState(state);
+
+                        exportList.add(tree);
+                    }
+                }
+            });
+            //加密
+            idEncrypt(exportList);
+
             //查询操作按钮
             mapParam.clear();
             mapParam.put("SM_ID", ID);
@@ -141,19 +172,30 @@ public class BaseDataController extends BaseController {
             model.addAttribute("CONFIGURE", configure);
             model.addAttribute("SEARCH_LIST", searchList);
             model.addAttribute("COLUMN_LIST", columnList);
+            model.addAttribute("EXPORT_LIST", TextUtil.toJSONString(exportList));
             model.addAttribute("TOP_BUTTON", topButton);
             model.addAttribute("LIST_BUTTON", listButton);
-            //拿到左边固定列个数
-            int fixedLength = toInt(configure.get("FIXED_LENGTH"));
-            if (fixedLength > 0 && !HttpRequestDeviceUtils.isMobileDevice(request)) {
-                //序号
-                fixedLength += 1;
-                //是否有选择框
-                if (isSuccess(configure.get("SC_IS_SELECT")) && !isSuccess(configure.get("SC_IS_SINGLE"))) {
-                    fixedLength += 1;
+            //拿到左右固定列个数
+            boolean isFixed = false;
+            int leftFixedLength = toInt(configure.get("LEFT_FIXED_LENGTH"));
+            int rightFixedLength = toInt(configure.get("RIGHT_FIXED_LENGTH"));
+            //移动设备不开启固定列
+            if (!HttpRequestDeviceUtils.isMobileDevice(request)) {
+                if (leftFixedLength != 0 || rightFixedLength != 0) {
+                    if (leftFixedLength > 0) {
+                        //序号
+                        leftFixedLength += 1;
+                        //是否有选择框
+                        if (isSuccess(configure.get("SC_IS_SELECT")) && !isSuccess(configure.get("SC_IS_SINGLE"))) {
+                            leftFixedLength += 1;
+                        }
+                    }
+                    isFixed = true;
+                    model.addAttribute("LEFT_FIXED_LENGTH", leftFixedLength);
+                    model.addAttribute("RIGHT_FIXED_LENGTH", rightFixedLength);
                 }
-                model.addAttribute("FIXED_LENGTH", fixedLength);
             }
+            model.addAttribute("IS_FIXED", isFixed);
             //URL额外参数
             model.addAttribute("EXTRA", extra);
 

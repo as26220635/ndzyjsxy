@@ -76,8 +76,13 @@
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">
             <label>是否是固定列:</label>
-            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_FIXED")}'
+            <s:combobox sdtCode="SYS_FIXED" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_FIXED")}'
                         value="${COLUMN.SCC_IS_FIXED}" defaultValue="0"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否导出:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE_COLUMN","SCC_IS_EXPORT")}'
+                        value="${COLUMN.SCC_IS_EXPORT}" defaultValue="1"></s:combobox>
         </div>
     </div>
     <div class="form-group has-feedback">

@@ -8,10 +8,7 @@ import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.Process;
 import cn.kim.common.eu.SystemEnum;
 import cn.kim.dao.BaseDao;
-import cn.kim.entity.ActiveUser;
-import cn.kim.entity.DataTablesView;
-import cn.kim.entity.QuerySet;
-import cn.kim.entity.StudentYearSemester;
+import cn.kim.entity.*;
 import cn.kim.exception.CustomException;
 import cn.kim.service.AidFinanciallyService;
 import cn.kim.util.CommonUtil;
@@ -546,7 +543,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     resultList.add(packErrorData(row, "数据错误!"));
                     continue;
                 }
-            }else if (aidType == AidType.TUITION_WAIVER || aidType == AidType.JOBSEEKER_SUPPORT) {
+            } else if (aidType == AidType.TUITION_WAIVER || aidType == AidType.JOBSEEKER_SUPPORT) {
                 if (data.length <= 6) {
                     resultList.add(packErrorData(row, "数据错误!"));
                     continue;
@@ -592,9 +589,17 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 if (isEmpty(BAF_AID_TYPE)) {
                     resultList.add(packErrorData(row, "奖项为空"));
                 } else {
-                    String sdiCode = DictUtil.getDictCode(sdtCode, BAF_AID_TYPE);
-                    if (isEmpty(sdiCode)) {
+                    DictInfo dictInfo = DictUtil.getDictInfo(sdtCode, BAF_AID_TYPE);
+                    if (isEmpty(dictInfo)) {
                         resultList.add(packErrorData(row, "奖项数据错误,请检查"));
+                    } else {
+                        //校验额外信息
+                        if (aidType == AidType.TUITION_WAIVER) {
+                            //是否相等
+                            if (new BigDecimal(BAF_REDUCTION_QUOTA).compareTo(new BigDecimal(dictInfo.getSdiRemark())) != 0) {
+                                resultList.add(packErrorData(row, "减免金额:" + BAF_REDUCTION_QUOTA + "错误,正确对应金额:" + dictInfo.getSdiRemark()));
+                            }
+                        }
                     }
                 }
             }

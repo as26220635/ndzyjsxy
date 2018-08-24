@@ -85,7 +85,7 @@ public class DictUtil {
      * @param dict
      */
     public static void setDictType(DictType dict) {
-        CacheUtil.put(CacheName.DICT_CACHE, dict.getSdtCode(), dict);
+        CacheUtil.put(CacheName.DICT_CACHE, dict.getSdtCode().toUpperCase(), dict);
     }
 
     /**
@@ -106,29 +106,23 @@ public class DictUtil {
     }
 
     /**
-     * 根据字典类型和字典编码获取字典名称
+     * 根据字典类型和字典编码获取 字典
      *
      * @param dictTypeCode
      * @param dictInfoCode
      * @return
      */
-    public static String getDictName(@NotNull String dictTypeCode, Object dictInfoCode) {
-        String result = TextUtil.toString(dictInfoCode);
-
+    public static DictInfo getDictInfo(@NotNull String dictTypeCode, Object dictInfoCode) {
         DictType dictType = getDictType(dictTypeCode.toUpperCase());
         if (ValidateUtil.isEmpty(dictType)) {
-            return result;
+            return null;
         }
         List<DictInfo> dictInfoList = dictType.getInfos();
         if (ValidateUtil.isEmpty(dictInfoList)) {
-            return result;
+            return null;
         }
-        String dictName = getDictName(dictInfoList, dictInfoCode);
-        if (ValidateUtil.isEmpty(dictName)) {
-            return result;
-        }
-
-        return dictName;
+        DictInfo dictInfo = getDictInfo(dictInfoList, dictInfoCode);
+        return dictInfo;
     }
 
     /**
@@ -138,21 +132,31 @@ public class DictUtil {
      * @param dictInfoCode
      * @return
      */
-    public static String getDictName(@NotNull List<DictInfo> dictInfoList, Object dictInfoCode) {
-        String result = "";
+    public static DictInfo getDictInfo(@NotNull List<DictInfo> dictInfoList, Object dictInfoCode) {
         for (DictInfo dictInfo : dictInfoList) {
             if (dictInfo.getSdiCode().equals(dictInfoCode)) {
-                return dictInfo.getSdiName();
+                return dictInfo;
             }
             if (!ValidateUtil.isEmpty(dictInfo.getChildren())) {
-                result = getDictName(dictInfo.getChildren(), dictInfoCode);
-                if (!ValidateUtil.isEmpty(result)) {
-                    return result;
+                dictInfo = getDictInfo(dictInfo.getChildren(), dictInfoCode);
+                if (!ValidateUtil.isEmpty(dictInfo)) {
+                    return dictInfo;
                 }
             }
         }
+        return null;
+    }
 
-        return result;
+    /**
+     * 根据字典类型和字典编码获取字典名称
+     *
+     * @param dictTypeCode
+     * @param dictInfoCode
+     * @return
+     */
+    public static String getDictName(@NotNull String dictTypeCode, Object dictInfoCode) {
+        DictInfo dictInfo = getDictInfo(dictTypeCode, dictInfoCode);
+        return ValidateUtil.isEmpty(dictInfo) ? TextUtil.toString(dictInfoCode) : dictInfo.getSdiName();
     }
 
     /**
