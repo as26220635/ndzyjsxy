@@ -449,8 +449,13 @@
                     }
                     columnIds += column.id;
                 }
+                //格式化参数
+                var params = packFormParams($('#queryForm${MENU.ID}'));
+                params['SM_ID'] = '${MENU.ID}';
+                params['processStatus'] = $('#processStatus').val();
+
                 //导出
-                window.open('${EXPORT_URL}${CONFIGURE.ID}/' + columnIds);
+                window.open('${EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(params);
                 model.hide($model);
             }
         });
