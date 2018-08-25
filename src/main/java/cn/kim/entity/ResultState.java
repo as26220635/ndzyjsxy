@@ -9,6 +9,7 @@ import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import lombok.Data;
 import org.w3c.dom.Attr;
 
 import javax.xml.soap.Text;
@@ -19,6 +20,7 @@ import java.util.UUID;
  * Created by 余庚鑫 on 2018/3/21.
  * ajax返回json状态
  */
+@Data
 public class ResultState {
 
     public static ResultState create() {
@@ -127,59 +129,4 @@ public class ResultState {
     @JSONField(serialize = false)
     private String logMessage;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getLocked() {
-        return locked;
-    }
-
-    public void setLocked(String locked) {
-        this.locked = locked;
-    }
-
-    public String getLogMessage() {
-        return logMessage;
-    }
-
-    public void setLogMessage(String logMessage) {
-        this.logMessage = logMessage;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
 }

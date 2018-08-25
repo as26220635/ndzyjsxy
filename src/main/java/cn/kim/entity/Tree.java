@@ -1,6 +1,7 @@
 package cn.kim.entity;
 
 import cn.kim.util.TextUtil;
+import lombok.Data;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ import java.util.List;
  * Created by 余庚鑫 on 2018/3/20
  * 树节点参数
  */
+@Data
 public class Tree {
     /**
      * String(自定义)	列的ID
@@ -76,107 +78,4 @@ public class Tree {
         this.text = TextUtil.toString(text);
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getSdiCode() {
-        return sdiCode;
-    }
-
-    public void setSdiCode(String sdiCode) {
-        this.sdiCode = sdiCode;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getSelectedIcon() {
-        return selectedIcon;
-    }
-
-    public void setSelectedIcon(String selectedIcon) {
-        this.selectedIcon = selectedIcon;
-    }
-
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(String href) {
-        this.href = href;
-    }
-
-    public boolean isSelectable() {
-        return selectable;
-    }
-
-    public void setSelectable(boolean selectable) {
-        this.selectable = selectable;
-    }
-
-    public TreeState getState() {
-        return state;
-    }
-
-    public void setState(TreeState state) {
-        this.state = state;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getBackColor() {
-        return backColor;
-    }
-
-    public void setBackColor(String backColor) {
-        this.backColor = backColor;
-    }
-
-    public String[] getTags() {
-        return tags;
-    }
-
-    public void setTags(String[] tags) {
-        this.tags = tags;
-    }
-
-    public List<Tree> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(List<Tree> nodes) {
-        this.nodes = nodes;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
 }

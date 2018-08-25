@@ -1,10 +1,12 @@
 package cn.kim.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import lombok.Data;
 
 /**
  * Created by 余庚鑫 on 2017/3/22.
  */
+@Data
 public class CustomParam {
     private String key;
     private String value;
@@ -45,50 +47,6 @@ public class CustomParam {
         this.value = value;
         this.type = type;
         this.icon = icon;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public Boolean getDefaultParam() {
-        return defaultParam;
-    }
-
-    public void setDefaultParam(Boolean defaultParam) {
-        this.defaultParam = defaultParam;
-    }
-
-    public boolean isEncrypt() {
-        return isEncrypt;
     }
 
     /**

@@ -6,6 +6,7 @@ import cn.kim.util.DateUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Maps;
+import lombok.Data;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
@@ -16,6 +17,7 @@ import java.util.*;
  * Created by 余庚鑫 on 2018/2/22.
  * 查询条件类
  */
+@Data
 public class QuerySet implements Serializable {
     /**
      * 等于

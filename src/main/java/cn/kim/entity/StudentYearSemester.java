@@ -1,8 +1,11 @@
 package cn.kim.entity;
 
+import lombok.Data;
+
 /**
  * Created by 余庚鑫 on 2018/8/15
  */
+@Data
 public class StudentYearSemester {
     /**
      * 学年
@@ -17,36 +20,4 @@ public class StudentYearSemester {
      */
     private Integer semester;
 
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public String getSemesterStr() {
-        return semesterStr;
-    }
-
-    public void setSemesterStr(String semesterStr) {
-        this.semesterStr = semesterStr;
-    }
-
-    public Integer getSemester() {
-        return semester;
-    }
-
-    public void setSemester(Integer semester) {
-        this.semester = semester;
-    }
-
-    @Override
-    public String toString() {
-        return "StudentYearSemester{" +
-                "year='" + year + '\'' +
-                ", semesterStr='" + semesterStr + '\'' +
-                ", semester=" + semester +
-                '}';
-    }
 }

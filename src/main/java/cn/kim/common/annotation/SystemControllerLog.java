@@ -26,4 +26,11 @@ public @interface SystemControllerLog {
      */
     boolean isDataGrid() default false;
 
+    /**
+     * 是否是导出excel
+     *
+     * @return
+     */
+    boolean isExport() default false;
+
 }

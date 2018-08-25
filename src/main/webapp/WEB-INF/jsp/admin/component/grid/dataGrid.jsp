@@ -157,7 +157,7 @@
                             </c:if>
                             <div class="box-body">
                                 <table id="dataGrid${MENU.ID}"
-                                       class="table table-bordered table-striped
+                                       class="table table-bordered table-striped table-overflow-all-width
                                     <c:choose>
                                     <c:when test="${IS_FIXED}">
                                     row-border order-column
@@ -455,7 +455,7 @@
                 params['processStatus'] = $('#processStatus').val();
 
                 //导出
-                window.open('${EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(params);
+                window.open('${EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(params));
                 model.hide($model);
             }
         });

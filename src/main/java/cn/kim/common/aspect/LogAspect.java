@@ -23,6 +23,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,99 +67,104 @@ public class LogAspect extends BaseData {
         //执行该方法
         Object object = pjp.proceed();
 
-        //如果返回类型是ResultState就记录日志
-        if (object instanceof ResultState || object instanceof String || object instanceof JSONObject) {
-            HttpServletRequest request = HttpUtil.getRequest();
-            //读取session中的用户
-            ActiveUser activeUser = AuthcUtil.getCurrentUser();
+        HttpServletRequest request = HttpUtil.getRequest();
+        //读取session中的用户
+        ActiveUser activeUser = AuthcUtil.getCurrentUser();
 
-            //获取注解
-            SystemControllerLog systemControllerLog = AnnotationUtil.getAnnotation(pjp, SystemControllerLog.class);
-            //事件
-            String event = systemControllerLog.event();
-            //日志类型
-            int logType = systemControllerLog.useType().getType();
-            //是否是配置列表
-            boolean isDataGrid = systemControllerLog.isDataGrid();
+        //获取注解
+        SystemControllerLog systemControllerLog = AnnotationUtil.getAnnotation(pjp, SystemControllerLog.class);
+        //事件
+        String event = systemControllerLog.event();
+        //日志类型
+        int logType = systemControllerLog.useType().getType();
+        //是否是配置列表
+        boolean isDataGrid = systemControllerLog.isDataGrid();
+        //是否是导出
+        boolean isExport = systemControllerLog.isExport();
 
-            String message = "";
+        String message = "";
 
-            //是否成功
-            int code = 0;
+        //是否成功
+        int code = 0;
 
-            if (!isDataGrid) {
-                //判断返回类型
-                if (object instanceof ResultState) {
-                    ResultState resultState = (ResultState) object;
-                    code = resultState.getCode();
-                    if (resultState.getCode() == Attribute.STATUS_SUCCESS) {
-                        if (resultState.getLogMessage() != null) {
-                            message = HtmlUtils.htmlEscape(HtmlUtils.htmlUnescape(resultState.getLogMessage()));
-                        }
-                    } else {
-                        message = resultState.getMessage();
+        if (isDataGrid) {
+            code = Attribute.STATUS_SUCCESS;
+            //记录查看的列表
+            Object[] objs = pjp.getArgs();
+            MethodSignature signature = (MethodSignature) pjp.getSignature();
+            Method method = signature.getMethod();
+
+            //得到标注@PathVariable注解的参数
+            List<AnnotationParam> params = AnnotationUtil.getAnnotationParams(PathVariable.class, method, objs);
+            if (!isEmpty(params)) {
+
+                String menuId = toString(idDecrypt(params.get(0).getValue()));
+                //查询菜单
+                Map<String, Object> menu = menuService.queryMenuById(menuId);
+                message = "查看" + toString(menu.get("SM_NAME"));
+
+                //判断是否2分钟内重复记录日志,重复的话直接返回
+                if (isRepeatVisit(activeUser.getId(), message)) {
+                    return object;
+                }
+            }
+        } else if (isExport) {
+            code = Attribute.STATUS_SUCCESS;
+            //导出excel
+            Object[] objs = pjp.getArgs();
+            MethodSignature signature = (MethodSignature) pjp.getSignature();
+            Method method = signature.getMethod();
+
+            //得到标注@PathVariable注解的参数
+            List<AnnotationParam> params = AnnotationUtil.getAnnotationParams(PathVariable.class, method, objs);
+            if (!isEmpty(params)) {
+
+                String menuId = toString(idDecrypt(params.get(0).getValue()));
+                String columnIds = toString(idDecrypt(params.get(1).getValue()));
+                //查询菜单
+                Map<String, Object> menu = menuService.queryMenuById(menuId);
+                message = "导出" + toString(menu.get("SM_NAME")) + "数据,导出列ID:" + columnIds + ",过滤参数" + toString(objs[2]);
+            }
+        } else {
+            //判断返回类型
+            if (object instanceof ResultState) {
+                ResultState resultState = (ResultState) object;
+                code = resultState.getCode();
+                if (resultState.getCode() == Attribute.STATUS_SUCCESS) {
+                    if (resultState.getLogMessage() != null) {
+                        message = HtmlUtils.htmlEscape(HtmlUtils.htmlUnescape(resultState.getLogMessage()));
                     }
-                } else if (object instanceof String || object instanceof JSONObject) {
-                    //不是个人日志与返回的是String JSON
-                    if (logType != UseType.PERSONAL.getType() && isJson(object.toString())) {
-                        JSONObject jsonObject = JSONObject.parseObject(object.toString());
-                        code = toInt(jsonObject.get("code"));
+                } else {
+                    message = resultState.getMessage();
+                }
+            } else if (object instanceof String || object instanceof JSONObject) {
+                //返回的是String JSON
+                if (isJson(object.toString())) {
+                    JSONObject jsonObject = JSONObject.parseObject(object.toString());
+                    code = toInt(jsonObject.get("code"));
 
-                        if (isEmpty(code)) {
-                            logger.warn("没有找到code,请求方法:"
-                                    + (pjp.getTarget().getClass().getName() + "." + pjp.getSignature().getName() + "()")
-                                    + ",方法描述:" + event);
-                            return object;
-                        }
+                    if (isEmpty(code)) {
+                        logger.warn("没有找到code,请求方法:"
+                                + (pjp.getTarget().getClass().getName() + "." + pjp.getSignature().getName() + "()")
+                                + ",方法描述:" + event);
+                        return object;
+                    }
 
-                        if (code == Attribute.STATUS_SUCCESS) {
+                    if (code == Attribute.STATUS_SUCCESS) {
+                        message = jsonObject.getString("logMessage");
+                    } else {
+                        if (!isEmpty(jsonObject.get("logMessage"))) {
                             message = jsonObject.getString("logMessage");
                         } else {
-                            if (!isEmpty(jsonObject.get("logMessage"))) {
-                                message = jsonObject.getString("logMessage");
-                            } else {
-                                message = jsonObject.getString("message");
-                            }
+                            message = jsonObject.getString("message");
                         }
-                    } else {
-                        //判断是否2分钟内重复记录日志,重复的话直接返回
-                        if (isRepeatVisit(activeUser.getId(), event)) {
-                            return object;
-                        }
-
-                        //不是Json说明返回的是URL
-                        message = "访问链接:" + HttpUtil.getUrl(request, false);
-
-                        code = Attribute.STATUS_SUCCESS;
-                    }
-                }
-            } else {
-                code = Attribute.STATUS_SUCCESS;
-                //记录查看的列表
-                Object[] objs = pjp.getArgs();
-                MethodSignature signature = (MethodSignature) pjp.getSignature();
-                Method method = signature.getMethod();
-
-                //得到标注@PathVariable注解的参数
-                List<AnnotationParam> params = AnnotationUtil.getAnnotationParams(PathVariable.class, method, objs);
-                if (!isEmpty(params)) {
-
-                    String menuId = toString(idDecrypt(params.get(0).getValue()));
-                    //查询菜单
-                    Map<String, Object> menu = menuService.queryMenuById(menuId);
-                    event = "查看数据列表";
-                    message = "查看" + toString(menu.get("SM_NAME"));
-
-                    //判断是否2分钟内重复记录日志,重复的话直接返回
-                    if (isRepeatVisit(activeUser.getId(), message)) {
-                        return object;
                     }
                 }
             }
-
-            //记录日志
-            LogUtil.recordLog(event, message, logType, code);
         }
+
+        //记录日志
+        LogUtil.recordLog(event, message, logType, code);
 
         return object;
     }

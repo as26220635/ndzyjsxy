@@ -1,5 +1,7 @@
 package cn.kim.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * Created by 余庚鑫 on 2018/3/26
  * 字典类型
  */
+@Data
 public class DictType implements Serializable {
     private String id;
     private String sdtName;
@@ -17,43 +20,4 @@ public class DictType implements Serializable {
      */
     private List<DictInfo> infos;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getSdtName() {
-        return sdtName;
-    }
-
-    public void setSdtName(String sdtName) {
-        this.sdtName = sdtName;
-    }
-
-    public String getSdtCode() {
-        return sdtCode;
-    }
-
-    public void setSdtCode(String sdtCode) {
-        this.sdtCode = sdtCode;
-    }
-
-    public Integer getIsStatus() {
-        return isStatus;
-    }
-
-    public void setIsStatus(Integer isStatus) {
-        this.isStatus = isStatus;
-    }
-
-    public List<DictInfo> getInfos() {
-        return infos;
-    }
-
-    public void setInfos(List<DictInfo> infos) {
-        this.infos = infos;
-    }
 }

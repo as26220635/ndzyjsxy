@@ -10,8 +10,11 @@
 表格
  */
 .table-overflow-x {
-    width: 100% !important;
     overflow-x: auto;
+}
+
+.table-overflow-all-width {
+    width: 100% !important;
 }
 
 @media (max-width: 1280px) {

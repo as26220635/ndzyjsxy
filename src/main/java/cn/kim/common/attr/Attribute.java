@@ -29,6 +29,10 @@ public class Attribute {
      */
     public static final String SUBMIT_TOKEN_NAME = "token";
 
+    /*******************    文件后缀 ******************/
+
+    public static final String EXCEL_XLSX = ".xlsx";
+
     /*******************    前台使用 ******************/
     public static final String LOADING_IMAGE = "resources/reception/assets/img/loading.gif";
     /**

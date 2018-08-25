@@ -279,7 +279,8 @@ public class BaseDataController extends BaseController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/admin/export/{ID}/{COLUMN_IDS}")
+    @GetMapping("/file/export/{ID}/{COLUMN_IDS}")
+    @SystemControllerLog(useType = UseType.USE, isExport = true, event = "导出列表excel数据")
     public void export(@PathVariable("ID") String ID, @PathVariable("COLUMN_IDS") String COLUMN_IDS, @RequestParam Map<String, Object> mapParam, HttpServletResponse response) throws Exception {
         isInvalidKey(mapParam);
 
@@ -303,9 +304,11 @@ public class BaseDataController extends BaseController {
         Set<String> exportIds = Sets.newHashSet(COLUMN_IDS.split(SERVICE_SPLIT));
         //移除没有导出的字段
         columnList.removeIf(map -> !exportIds.contains(map.get("ID")));
+        String[] titleArrays = new String[columnList.size()];
         String[] columnArrays = new String[columnList.size()];
         FuncUtil.forEach(columnList, (i, column) -> {
-            columnArrays[i] = toString(column.get("SC_NAME"));
+            titleArrays[i] = toString(column.get("SCC_NAME"));
+            columnArrays[i] = toString(column.get("SCC_FIELD"));
         });
 
         //查询数据
@@ -317,9 +320,9 @@ public class BaseDataController extends BaseController {
 
         ExportExcelTool<List<Map<String, Object>>> exportExcel = new ExportExcelTool<>();
         //设置导出文件名称
-        OutputStream out = getResponseOutputStream(response, getDate() + ":导出" + toString(menu.get("SM_NAME")) + "数据");
+        OutputStream out = getResponseOutputStream(response, getDate() + ":导出" + toString(menu.get("SM_NAME")) + Attribute.EXCEL_XLSX);
 
-        exportExcel.exportExcelByColumn("Title", columnArrays, columnArrays, list, out, null);
+        exportExcel.exportExcelByColumn(toString(menu.get("SM_NAME")), titleArrays, columnArrays, list, out, null);
     }
 
     /**

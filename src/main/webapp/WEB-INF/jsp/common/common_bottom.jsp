@@ -35,7 +35,7 @@
 <%--数据表--%>
 <script src="${BASE_URL}resources/static/plugins/datatables/js/jquery.dataTables.min.js?ver=${VERSION}"></script>
 <script src="${BASE_URL}resources/static/plugins/datatables/js/dataTables.bootstrap.min.js?ver=${VERSION}"></script>
-<script src="${BASE_URL}resources/static/plugins/datatables/js/dataTables.select.min.js?ver=${VERSION}"></script>
+<script src="${BASE_URL}resources/static/plugins/datatables/extensions/Select/js/dataTables.select.min.js?ver=${VERSION}"></script>
 <script src="${BASE_URL}resources/static/plugins/datatables/extensions/FixedColumns/js/dataTables.fixedColumns.min.js?ver=${VERSION}"></script>
 <%--加载条--%>
 <script src="${BASE_URL}resources/reception/plugins/nprogress/nprogress.js?ver=${VERSION}" type="text/javascript"></script>

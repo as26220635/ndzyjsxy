@@ -1,6 +1,7 @@
 package cn.kim.entity;
 
 import cn.kim.dao.BaseDao;
+import lombok.Data;
 
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import java.util.Map;
  * Created by 余庚鑫 on 2018/8/13
  * 流程传递使用
  */
+@Data
 public class ProcessRunBean {
     /***
      * dao
@@ -30,44 +32,4 @@ public class ProcessRunBean {
      */
     private Map<String, Object> executeMap;
 
-
-    public BaseDao getBaseDao() {
-        return baseDao;
-    }
-
-    public void setBaseDao(BaseDao baseDao) {
-        this.baseDao = baseDao;
-    }
-
-    public String getBusProcess() {
-        return busProcess;
-    }
-
-    public void setBusProcess(String busProcess) {
-        this.busProcess = busProcess;
-    }
-
-    public String getBusProcess2() {
-        return busProcess2;
-    }
-
-    public void setBusProcess2(String busProcess2) {
-        this.busProcess2 = busProcess2;
-    }
-
-    public String getBusTableId() {
-        return busTableId;
-    }
-
-    public void setBusTableId(String busTableId) {
-        this.busTableId = busTableId;
-    }
-
-    public Map<String, Object> getExecuteMap() {
-        return executeMap;
-    }
-
-    public void setExecuteMap(Map<String, Object> executeMap) {
-        this.executeMap = executeMap;
-    }
 }

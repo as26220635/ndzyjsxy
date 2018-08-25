@@ -19,9 +19,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * excel工具
- *
- * @author 余庚鑫
+ * Created by 余庚鑫 on 2018/8/24.
+ * EXCEL导出工具类
  */
 public class ExportExcelTool<T> extends BaseData {
     /**
@@ -50,7 +49,7 @@ public class ExportExcelTool<T> extends BaseData {
         // 生成一个 表格标题行样式
         CellStyle style = workbook.createCellStyle();
         // 设置这些样式
-        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         style.setBorderBottom(BorderStyle.THIN);
         style.setBorderLeft(BorderStyle.THIN);
@@ -59,7 +58,7 @@ public class ExportExcelTool<T> extends BaseData {
         style.setAlignment(HorizontalAlignment.CENTER);
         // 生成一个字体
         Font font = workbook.createFont();
-        font.setColor(IndexedColors.WHITE.getIndex());
+        font.setColor(IndexedColors.BLACK.getIndex());
         font.setFontHeightInPoints((short) 12);
         font.setBold(true);
         // font.setBoldweight((short)700));

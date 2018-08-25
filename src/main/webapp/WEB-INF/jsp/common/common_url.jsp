@@ -7,10 +7,11 @@
 <%--图片地址url--%>
 <c:set var="IMG_URL" value="${BASE_URL}${AttributePath.FILE_PREVIEW_URL}" scope="application"/>
 <c:set var="DOWN_URL" value="${BASE_URL}${AttributePath.FILE_DOWNLOAD_URL}" scope="application"/>
+<%--excel导出地址--%>
+<c:set var="EXPORT_URL" value="${BASE_URL}file/export/" scope="application"/>
 <%--列表地址--%>
 <c:set var="DATA_GRID_URL" value="${MANAGER_URL}dataGrid/data/" scope="application"/>
 <c:set var="TREE_GRID_URL" value="${MANAGER_URL}treeGrid/data/" scope="application"/>
-<c:set var="EXPORT_URL" value="${MANAGER_URL}/export/" scope="application"/>
 <c:set var="DIFF_URL" value="${MANAGER_URL}diff" scope="application"/>
 <%--系统配置管理--%>
 <c:set var="ALLOCATION_BASE_URL" value="${MANAGER_URL}allocation/" scope="application"/>
