@@ -13,6 +13,8 @@ import cn.kim.entity.DictType;
 import cn.kim.service.FileService;
 import cn.kim.util.*;
 import com.google.common.collect.Maps;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
 import javax.servlet.jsp.JspException;
@@ -26,6 +28,8 @@ import java.util.Random;
  * Created by 余庚鑫 on 2018/3/29
  * 文件上传
  */
+@Setter
+@Getter
 public class FileInput extends BaseTagSupport {
     /**
      * 预览类型
@@ -303,126 +307,6 @@ public class FileInput extends BaseTagSupport {
 
     private String mosaicOffice(Object url) {
         return "<iframe class=\"kv-preview-data file-preview-office\" src=\"" + toString(url) + "\"></iframe>";
-    }
-
-    public FileService getFileService() {
-        return fileService;
-    }
-
-    public void setFileService(FileService fileService) {
-        this.fileService = fileService;
-    }
-
-    public String getSdtCode() {
-        return sdtCode;
-    }
-
-    public void setSdtCode(String sdtCode) {
-        this.sdtCode = sdtCode;
-    }
-
-    public String getTableId() {
-        return tableId;
-    }
-
-    public void setTableId(String tableId) {
-        this.tableId = tableId;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
-    public String getTypeCode() {
-        return typeCode;
-    }
-
-    public void setTypeCode(String typeCode) {
-        this.typeCode = typeCode;
-    }
-
-    public int getSeeType() {
-        return seeType;
-    }
-
-    public void setSeeType(int seeType) {
-        this.seeType = seeType;
-    }
-
-    public boolean isMultiple() {
-        return multiple;
-    }
-
-    public void setMultiple(boolean multiple) {
-        this.multiple = multiple;
-    }
-
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
-
-    public boolean isShowUpload() {
-        return showUpload;
-    }
-
-    public void setShowUpload(boolean showUpload) {
-        this.showUpload = showUpload;
-    }
-
-    public int getMaxFilesNum() {
-        return maxFilesNum;
-    }
-
-    public void setMaxFilesNum(int maxFilesNum) {
-        this.maxFilesNum = maxFilesNum;
-    }
-
-    public int getMaxFileCount() {
-        return maxFileCount;
-    }
-
-    public void setMaxFileCount(int maxFileCount) {
-        this.maxFileCount = maxFileCount;
-    }
-
-    public long getMaxFileSize() {
-        return maxFileSize;
-    }
-
-    public void setMaxFileSize(long maxFileSize) {
-        this.maxFileSize = maxFileSize;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isShowRemove() {
-        return showRemove;
-    }
-
-    public void setShowRemove(boolean showRemove) {
-        this.showRemove = showRemove;
-    }
-
-    public boolean isAllowFile() {
-        return allowFile;
-    }
-
-    public void setAllowFile(boolean allowFile) {
-        this.allowFile = allowFile;
     }
 }
 

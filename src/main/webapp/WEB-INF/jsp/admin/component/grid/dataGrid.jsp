@@ -75,7 +75,8 @@
                                                             id="SEARCH_${SEARCH.SCS_FIELD}"
                                                             name="${SEARCH.SCS_FIELD}"
                                                             disabled="false"
-                                                            single="${fns:trueOrFalse(SEARCH.SCS_TYPE eq 2, true ,false )}"></s:combobox>
+                                                            single="${fns:trueOrFalse(SEARCH.SCS_TYPE eq 2, true ,false )}"
+                                                            inValue="${SEARCH.inValue}"></s:combobox>
                                             </div>
 
                                         </div>
@@ -157,7 +158,7 @@
                             </c:if>
                             <div class="box-body">
                                 <table id="dataGrid${MENU.ID}"
-                                       class="table table-bordered table-striped table-overflow-all-width
+                                       class="table table-bordered table-striped
                                     <c:choose>
                                     <c:when test="${IS_FIXED}">
                                     row-border order-column
@@ -183,6 +184,8 @@
 <%@ include file="/WEB-INF/jsp/admin/component/setTitleParams.jsp" %>
 <%--excel导入模块--%>
 <%@ include file="/WEB-INF/jsp/admin/component/execlImport.jsp" %>
+<%--excel导出模块--%>
+<%@ include file="/WEB-INF/jsp/admin/component/execlExport.jsp" %>
 <script>
     $(".select2").select2({language: "zh-CN"});
 
@@ -426,40 +429,6 @@
             }
         }
     });
-
-    /**
-     * 导出excel表格
-     **/
-    function exportData() {
-        treeBox.init({
-            title: '选择导出列',
-            data:${EXPORT_LIST},
-            okBtnName: model.btnName.EXPORT,
-            isConfirm: true,
-            confirm: function ($model, data) {
-                if (data.length == 0) {
-                    demo.showNotify(ALERT_WARNING, '请至少选择一项导出!');
-                    return;
-                }
-                var columnIds = '';
-                for (var i in data) {
-                    var column = data[i];
-                    if (i != 0) {
-                        columnIds += SERVICE_SPLIT;
-                    }
-                    columnIds += column.id;
-                }
-                //格式化参数
-                var params = packFormParams($('#queryForm${MENU.ID}'));
-                params['SM_ID'] = '${MENU.ID}';
-                params['processStatus'] = $('#processStatus').val();
-
-                //导出
-                window.open('${EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(params));
-                model.hide($model);
-            }
-        });
-    }
 
     <%--开启checkbox--%>
     <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">

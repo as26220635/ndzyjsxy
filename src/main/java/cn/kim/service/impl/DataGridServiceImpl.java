@@ -50,6 +50,14 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
     }
 
     @Override
+    public String selectProcessStepGroupByStatus(String busProcess, String busProcess2) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
+        paramMap.put("BUS_PROCESS", busProcess);
+        paramMap.put("BUS_PROCESS2", busProcess2);
+        return baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessStepGroupByStatus", paramMap);
+    }
+
+    @Override
     public DataTablesView<Map<String, Object>> selectByMap(Map<String, Object> mapParam) throws Exception {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
         String configureId = toString(mapParam.get("ID"));
@@ -130,7 +138,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
 
                 //流程配置了自身角色可以查看全部的话就不进行过滤
                 if (!isProcessAll || !ProcessShowStatus.ALL.toString().equals(processStatus)) {
-                    processWhereBuilder.append(" AND ID IN(");
+                    processWhereBuilder.append(" AND DG.ID IN(");
                 }
                 if (ProcessShowStatus.ALL.toString().equals(processStatus)) {
                     //全部

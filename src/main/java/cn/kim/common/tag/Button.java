@@ -8,6 +8,8 @@ import cn.kim.service.MenuService;
 import cn.kim.util.*;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.tags.RequestContextAwareTag;
 
@@ -21,6 +23,8 @@ import java.util.*;
  * Created by 余庚鑫 on 2018/3/29
  * 按钮
  */
+@Setter
+@Getter
 public class Button extends BaseTagSupport {
     /**
      * ajax开始的时候不能点击 结束ajax恢复
@@ -128,13 +132,7 @@ public class Button extends BaseTagSupport {
             if (!isEmpty(buttons)) {
                 buttons.forEach(button -> {
                     //额外的class
-                    String additionalClass = "";
-                    if (BTN_ID_AJAX_CLOSE.contains(button.get("SB_BUTTONID"))) {
-                        additionalClass = " model-ok ";
-                    }
-                    if (!isEmpty(button.get("SB_EXTEND_CLASS"))) {
-                        additionalClass += " " + button.get("SB_EXTEND_CLASS") + " ";
-                    }
+                    String additionalClass = additionalClass(button.get("SB_BUTTONID"), button.get("SB_EXTEND_CLASS"));
                     builder.append("<button id='" + button.get("SB_BUTTONID") + "' type='button' class='" + button.get("SB_CLASS") + additionalClass + "' onclick='" + button.get("SB_FUNC") + "'><i class='" + button.get("SB_ICON") + "'></i>" + button.get("SB_NAME") + "</button>");
                 });
             }
@@ -172,28 +170,23 @@ public class Button extends BaseTagSupport {
         return EVAL_BODY_INCLUDE;
     }
 
-    public String getSmId() {
-        return smId;
-    }
-
-    public void setSmId(String smId) {
-        this.smId = smId;
-    }
-
-    public boolean isBack() {
-        return back;
-    }
-
-    public void setBack(boolean back) {
-        this.back = back;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
+    /**
+     * 返回额外的class
+     *
+     * @param SB_BUTTONID
+     * @param SB_EXTEND_CLASS
+     * @return
+     */
+    public static String additionalClass(Object SB_BUTTONID, Object SB_EXTEND_CLASS) {
+        String additionalClass = "";
+        //在ajax时候禁止点击
+        if (Button.BTN_ID_AJAX_CLOSE.contains(TextUtil.toString(SB_BUTTONID))) {
+            additionalClass = " model-ok ";
+        }
+        if (!ValidateUtil.isEmpty(SB_EXTEND_CLASS)) {
+            additionalClass += " " + TextUtil.toString(SB_EXTEND_CLASS) + " ";
+        }
+        return additionalClass;
     }
 }
 

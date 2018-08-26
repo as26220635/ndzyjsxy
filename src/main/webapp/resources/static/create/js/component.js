@@ -2389,15 +2389,18 @@ var urlEncode = function (param, key, encode) {
  */
 function packFormParams($form) {
     var params = {};
-    var formData = $form.serializeArray();
-    formData.forEach(function (e) {
-        //同KEY合并
-        if (params[e.name] != undefined) {
-            params[e.name] = params[e.name] + SERVICE_SPLIT + e.value;
-        } else {
-            params[e.name] = e.value;
-        }
-    });
+    try {
+        var formData = $form.serializeArray();
+        formData.forEach(function (e) {
+            //同KEY合并
+            if (params[e.name] != undefined) {
+                params[e.name] = params[e.name] + SERVICE_SPLIT + e.value;
+            } else {
+                params[e.name] = e.value;
+            }
+        });
+    }catch (e) {
+    }
     return params;
 }
 

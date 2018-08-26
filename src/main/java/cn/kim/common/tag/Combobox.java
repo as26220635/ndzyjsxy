@@ -7,18 +7,22 @@ import cn.kim.entity.DictType;
 import cn.kim.util.DictUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
+import com.google.common.collect.Sets;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by 余庚鑫 on 2018/3/27
  * 下拉框通用组件
  */
+@Setter
+@Getter
 public class Combobox extends BaseTagSupport {
     /**
      * 自定义select参数
@@ -66,6 +70,10 @@ public class Combobox extends BaseTagSupport {
      * 显示级别 0 全部 1 第一级 2 第二级
      */
     private int level = 0;
+    /**
+     * 只有在其中的value才显示
+     */
+    private String inValue = "";
 
     @Override
     protected int doStartTagInternal() throws Exception {
@@ -113,6 +121,7 @@ public class Combobox extends BaseTagSupport {
         readonly = false;
         dataList = null;
         level = 0;
+        inValue = "";
         return super.doEndTag();
     }
 
@@ -125,13 +134,6 @@ public class Combobox extends BaseTagSupport {
     public int single(JspWriter out) {
         try {
             StringBuilder builder = new StringBuilder();
-
-//            <select id="locked" name="locked" class="form-control select2" style="width:100%;">
-//                                    <option value="" selected>请选择</option>
-//                                    <c:forEach items="${status}" var="status">
-//                                        <option value="${status.key}">${status.value}</option>
-//                                    </c:forEach>
-//                                </select>
 
             builder.append("<select " + (isEmpty(id) ? "" : "id = '" + id + "'") + " " + (isEmpty(name) ? "" : "name = '" + name + "'") + " " + custom + " class='form-control select2' style='width:" + width + ";' " + (required ? "required" : "") + " " + (readonly ? " disabled " : "") + ">");
 
@@ -192,16 +194,26 @@ public class Combobox extends BaseTagSupport {
         if (!isEmpty(sdtCode)) {
             DictType dictType = DictUtil.getDictType(sdtCode);
             if (!isEmpty(dictType)) {
+                //在其中才显示
+                Set<String> inSet = null;
+                if (!isEmpty(inValue)) {
+                    inSet = Sets.newHashSet(inValue.split(Attribute.SERVICE_SPLIT));
+                }
+                Set<String> finalInSet = inSet;
                 if (level == 0) {
                     List<DictInfo> infoList = dictType.getInfos();
                     infoList.forEach(info -> {
-                        builder.append(splitOption(info.getSdiCode(), info.getSdiName(), getSelected(info.getSdiCode()), info.getIsStatus()));
+                        if (finalInSet == null || finalInSet.contains(info.getSdiCode())) {
+                            builder.append(splitOption(info.getSdiCode(), info.getSdiName(), getSelected(info.getSdiCode()), info.getIsStatus()));
+                        }
                     });
                 } else if (level == 1) {
                     dictType.getInfos().forEach(info -> {
 //                        builder.append("<optgroup label='" + info.getSdiName() + "'>");
                         info.getChildren().forEach(children -> {
-                            builder.append(splitOption(children.getSdiCode(), children.getSdiName(), getSelected(children.getSdiCode()), children.getIsStatus(), "data-parent-id=" + info.getSdiCode()));
+                            if (finalInSet == null || finalInSet.contains(children.getSdiCode())) {
+                                builder.append(splitOption(children.getSdiCode(), children.getSdiName(), getSelected(children.getSdiCode()), children.getIsStatus(), "data-parent-id=" + info.getSdiCode()));
+                            }
                         });
 //                        builder.append("</optgroup>");
                     });
@@ -252,120 +264,6 @@ public class Combobox extends BaseTagSupport {
             }
         }
         return selected;
-    }
-
-    public String getCustom() {
-        return custom;
-    }
-
-    public void setCustom(String custom) {
-        this.custom = custom;
-    }
-
-    public String getWidth() {
-        return width;
-    }
-
-    public void setWidth(String width) {
-        this.width = width;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSdtCode() {
-        return sdtCode;
-    }
-
-    public void setSdtCode(String sdtCode) {
-        this.sdtCode = sdtCode;
-    }
-
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
-
-    public String getDefaultValue() {
-        return defaultValue;
-    }
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
-    }
-
-    public boolean isSingle() {
-        return single;
-    }
-
-    public void setSingle(boolean single) {
-        this.single = single;
-    }
-
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public List<CustomParam> getDataList() {
-        return dataList;
-    }
-
-    public void setDataList(List<CustomParam> dataList) {
-        this.dataList = dataList;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public boolean isReadonly() {
-        return readonly;
-    }
-
-    public void setReadonly(boolean readonly) {
-        this.readonly = readonly;
     }
 }
 

@@ -2,6 +2,8 @@ package cn.kim.common.tag;
 
 import cn.kim.util.HttpUtil;
 import cn.kim.util.ValidateUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.jsp.JspException;
@@ -12,6 +14,8 @@ import java.util.Map;
  * Created by 余庚鑫 on 2018/3/27
  * 点击弹出树菜单
  */
+@Setter
+@Getter
 public class TreeBox extends BaseTagSupport {
     /**
      * 默认选中的值
@@ -141,123 +145,5 @@ public class TreeBox extends BaseTagSupport {
         return EVAL_BODY_INCLUDE;
     }
 
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getCustom() {
-        return custom;
-    }
-
-    public void setCustom(String custom) {
-        this.custom = custom;
-    }
-
-    public String getNameValue() {
-        return nameValue;
-    }
-
-    public void setNameValue(String nameValue) {
-        this.nameValue = nameValue;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isSingle() {
-        return single;
-    }
-
-    public void setSingle(boolean single) {
-        this.single = single;
-    }
-
-    @Override
-    public boolean isEmpty(Object o) {
-        return ValidateUtil.isEmpty(o);
-    }
-
-    public String getSdtId() {
-        return sdtId;
-    }
-
-    public void setSdtId(String sdtId) {
-        this.sdtId = sdtId;
-    }
-
-    public String getNotId() {
-        return notId;
-    }
-
-    public void setNotId(String notId) {
-        this.notId = notId;
-    }
-
-    public String getModelSize() {
-        return modelSize;
-    }
-
-    public void setModelSize(String modelSize) {
-        this.modelSize = modelSize;
-    }
-
-    public String getRequestParams() {
-        return requestParams;
-    }
-
-    public void setRequestParams(String requestParams) {
-        this.requestParams = requestParams;
-    }
-
-    public String getSdtCode() {
-        return sdtCode;
-    }
-
-    public void setSdtCode(String sdtCode) {
-        this.sdtCode = sdtCode;
-    }
 }
 

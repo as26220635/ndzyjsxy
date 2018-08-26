@@ -4,6 +4,8 @@ import cn.kim.common.annotation.Validate;
 import cn.kim.common.sequence.Sequence;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -16,6 +18,8 @@ import java.util.Map;
  * Created by 余庚鑫 on 2018/3/31
  * 时间选择控件
  */
+@Setter
+@Getter
 public class Datebox extends BaseTagSupport {
     private String custom = "";
     private String id = "";
@@ -116,78 +120,5 @@ public class Datebox extends BaseTagSupport {
         return "";
     }
 
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getCustom() {
-        return custom;
-    }
-
-    public void setCustom(String custom) {
-        this.custom = custom;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public String getPlaceholder() {
-        return placeholder;
-    }
-
-    public void setPlaceholder(String placeholder) {
-        this.placeholder = placeholder;
-    }
-
-    public boolean isClear() {
-        return clear;
-    }
-
-    public void setClear(boolean clear) {
-        this.clear = clear;
-    }
-
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
-
-    public boolean isStudentYear() {
-        return studentYear;
-    }
-
-    public void setStudentYear(boolean studentYear) {
-        this.studentYear = studentYear;
-    }
 }
 

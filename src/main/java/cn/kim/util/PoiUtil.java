@@ -530,8 +530,15 @@ public class PoiUtil {
             case Cell.CELL_TYPE_BLANK:
                 result = "";
                 break;
+            case Cell.CELL_TYPE_FORMULA:
+                try {
+                    result = cell.getStringCellValue();
+                } catch (IllegalStateException e) {
+                    result = String.valueOf(cell.getNumericCellValue());
+                }
+                break;
             default:
-                result = "";
+                result = cell.getStringCellValue();
                 break;
         }
         return result;

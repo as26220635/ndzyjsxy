@@ -5,6 +5,8 @@ import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.eu.ButtonType;
+import cn.kim.common.eu.Process;
+import cn.kim.common.eu.ProcessStatus;
 import cn.kim.common.eu.UseType;
 import cn.kim.common.tag.Button;
 import cn.kim.entity.DataTablesView;
@@ -107,6 +109,19 @@ public class BaseDataController extends BaseController {
             if (!isEmpty(searchList)) {
                 searchList.removeIf(map -> toInt(map.get("SCC_IS_VISIBLE")) == Attribute.STATUS_ERROR);
             }
+            //是否是审核状态过滤
+            searchList.forEach(search -> {
+                if (toString(search.get("SCS_FIELD")).equals("SPS_AUDIT_STATUS")) {
+                    //判断流程是否开启，查询根据流程大小类查询过滤
+                    if (!isEmpty(menu.get("BUS_PROCESS"))) {
+                        search.put("inValue", ProcessStatus.BACK + SERVICE_SPLIT +
+                                ProcessStatus.START + SERVICE_SPLIT +
+                                ProcessStatus.COMPLETE + SERVICE_SPLIT +
+                                dataGridService.selectProcessStepGroupByStatus(toString(menu.get("BUS_PROCESS")), toString(menu.get("BUS_PROCESS2")))
+                        );
+                    }
+                }
+            });
             //导出字段
             List<Tree> exportList = new LinkedList<>();
             columnList.forEach(column -> {
@@ -145,14 +160,7 @@ public class BaseDataController extends BaseController {
             buttons.forEach(button -> {
                 int buttonType = toInt(button.get("SB_TYPE"));
                 //额外的class
-                String additionalClass = "";
-                //在ajax时候禁止点击
-                if (Button.BTN_ID_AJAX_CLOSE.contains(button.get("SB_BUTTONID"))) {
-                    additionalClass = " model-ok ";
-                }
-                if (!isEmpty(button.get("SB_EXTEND_CLASS"))) {
-                    additionalClass += " " + button.get("SB_EXTEND_CLASS") + " ";
-                }
+                String additionalClass = Button.additionalClass(button.get("SB_BUTTONID"), button.get("SB_EXTEND_CLASS"));
                 if (!isEmpty(additionalClass)) {
                     button.put("SB_CLASS", button.get("SB_CLASS") + additionalClass);
                 }
@@ -186,9 +194,9 @@ public class BaseDataController extends BaseController {
             boolean isFixed = false;
             int leftFixedLength = toInt(configure.get("LEFT_FIXED_LENGTH"));
             int rightFixedLength = toInt(configure.get("RIGHT_FIXED_LENGTH"));
-            //移动设备不开启固定列
-            if (!HttpRequestDeviceUtils.isMobileDevice(request)) {
-                if (leftFixedLength != 0 || rightFixedLength != 0) {
+            if (leftFixedLength != 0 || rightFixedLength != 0) {
+                //移动设备不开启固定列
+                if (!HttpRequestDeviceUtils.isMobileDevice(request)) {
                     if (leftFixedLength > 0) {
                         //序号
                         leftFixedLength += 1;
@@ -200,6 +208,7 @@ public class BaseDataController extends BaseController {
                     isFixed = true;
                     model.addAttribute("LEFT_FIXED_LENGTH", leftFixedLength);
                     model.addAttribute("RIGHT_FIXED_LENGTH", rightFixedLength);
+
                 }
             }
             model.addAttribute("IS_FIXED", isFixed);

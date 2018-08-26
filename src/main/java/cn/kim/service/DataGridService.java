@@ -18,6 +18,15 @@ public interface DataGridService extends BaseService {
     Map<String, Object> selectConfigureById(String configureId);
 
     /**
+     * 根据大小类查询流程步骤状态集合
+     *
+     * @param busProcess
+     * @param busProcess2
+     * @return
+     */
+    String selectProcessStepGroupByStatus(String busProcess, String busProcess2);
+
+    /**
      * 通用列表数据
      *
      * @param mapParam

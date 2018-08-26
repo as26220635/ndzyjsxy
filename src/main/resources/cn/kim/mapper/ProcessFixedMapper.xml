@@ -335,4 +335,18 @@
         DELETE FROM SYS_PROCESS_START WHERE ID = #{ID}
     </delete>
 
+    <!--根据大类小类查询流程步骤拥有的状态-->
+    <select id="selectProcessStepGroupByStatus" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT GROUP_CONCAT(SPS.SPS_PROCESS_STATUS) AS SPS_PROCESS_STATUS
+        FROM SYS_PROCESS_STEP SPS
+        INNER JOIN SYS_PROCESS_DEFINITION SPD ON SPD.ID = SPS.SPD_ID
+        <where>
+            <if test="BUS_PROCESS != NULL and BUS_PROCESS != ''">
+                AND SPD.BUS_PROCESS = #{BUS_PROCESS}
+            </if>
+            <if test="BUS_PROCESS2 != NULL and BUS_PROCESS2 != ''">
+                AND SPD.BUS_PROCESS2 = #{BUS_PROCESS2}
+            </if>
+        </where>
+    </select>
 </mapper>

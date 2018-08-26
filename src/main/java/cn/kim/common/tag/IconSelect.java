@@ -5,6 +5,8 @@ import cn.kim.common.sequence.Sequence;
 import cn.kim.entity.DictType;
 import cn.kim.util.DictUtil;
 import cn.kim.util.ValidateUtil;
+import lombok.Getter;
+import lombok.Setter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -18,6 +20,8 @@ import java.util.UUID;
  * Created by 余庚鑫 on 2018/3/29
  * 选择图标组件
  */
+@Setter
+@Getter
 public class IconSelect extends BaseTagSupport {
     //自定义
     private String custom = "";
@@ -73,40 +77,6 @@ public class IconSelect extends BaseTagSupport {
             return SKIP_BODY;
         }
         return EVAL_BODY_INCLUDE;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public String getCustom() {
-        return custom;
-    }
-
-    public void setCustom(String custom) {
-        this.custom = custom;
     }
 }
 

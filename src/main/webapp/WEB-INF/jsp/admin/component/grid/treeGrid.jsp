@@ -62,6 +62,8 @@
 </section>
 <%--设置列表属性--%>
 <%@ include file="/WEB-INF/jsp/admin/component/setTitleParams.jsp" %>
+<%--excel导出模块--%>
+<%@ include file="/WEB-INF/jsp/admin/component/execlExport.jsp" %>
 <script>
     $(".select2").select2({language: "zh-CN"});
 
