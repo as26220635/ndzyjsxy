@@ -1672,11 +1672,17 @@ ajaxReturn = {
 }
 /**
  * 日期初始化器
- * @type {{model: {YMD: string, YM: string, Y: string}, format: {YYYYMMDD: string, YYYYMM: string, YYYY: string}, init: datepick.init}}
+ * @type {{model: {YMDHI: string, YMD: string, YMD_NONE: string, YM: string, Y: string}, format: {YYYYMMDDHHII: string, YYYYMMDD: string, YYYYMMDD_NONE: string, YYYYMM: string, YYYY: string}, init: (function(*=): *)}}
  */
 datepick = {
-    model: {YMDHI: 'yyyy-MM-dd HH:ii', YMD: 'yyyy-mm-dd', YM: 'yyyy-mm', Y: 'yyyy'},
-    format: {YYYYMMDDHHII: 'yyyy-MM-dd HH:ii', YYYYMMDD: 'yyyy-mm-dd', YYYYMM: 'yyyy-mm', YYYY: 'yyyy'},
+    model: {YMDHI: 'yyyy-MM-dd HH:ii', YMD: 'yyyy-mm-dd', YMD_NONE: 'yyyymmdd', YM: 'yyyy-mm', Y: 'yyyy'},
+    format: {
+        YYYYMMDDHHII: 'yyyy-MM-dd HH:ii',
+        YYYYMMDD: 'yyyy-mm-dd',
+        YYYYMMDD_NONE: 'yyyymmdd',
+        YYYYMM: 'yyyy-mm',
+        YYYY: 'yyyy'
+    },
     init: function (options) {
         var settings = $.extend({
             obj: '',
@@ -1702,6 +1708,18 @@ datepick = {
                 settings.maxViewMode = 1;
                 settings.minViewMode = 1;
                 settings.format = datepick.format.YYYYMM;
+            } else if (options.model == datepick.model.YMD) {
+                settings.startView = 4;
+                settings.minView = 4;
+                settings.maxViewMode = 4;
+                settings.minViewMode = 4;
+                settings.format = datepick.format.YYYYMMDD;
+            } else if (options.model == datepick.model.YMD_NONE) {
+                settings.startView = 4;
+                settings.minView = 4;
+                settings.maxViewMode = 4;
+                settings.minViewMode = 4;
+                settings.format = datepick.format.YYYYMMDD_NONE;
             } else if (options.model == datepick.model.YMDHI) {
                 settings.startView = 5;
                 settings.minView = 5;
@@ -2399,7 +2417,7 @@ function packFormParams($form) {
                 params[e.name] = e.value;
             }
         });
-    }catch (e) {
+    } catch (e) {
     }
     return params;
 }

@@ -18,7 +18,7 @@
                value="${aid.BS_NAME}">
     </div>
     <div class="row">
-        <div class="form-group has-feedback col-md-6">
+        <div class="form-group has-feedback form-group-md-6">
             <label>学年:</label>
             <s:datebox
                     custom='${fns:validField(TableName.BUS_AID_FINANCIALLY, "BAF_YEAR")}'

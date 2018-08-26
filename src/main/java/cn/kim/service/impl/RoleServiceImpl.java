@@ -9,6 +9,7 @@ import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.RoleService;
 import cn.kim.util.CacheUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,7 +93,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
         paramMap.put("SR_ID", mapParam.get("SR_ID"));
         paramMap.put("SM_ID", mapParam.get("SM_ID"));
         Map<String, Object> roleMenu = baseDao.selectOne(NameSpace.RoleMapper, "selectRoleMenu", paramMap);
-        List<Map<String, Object>> nowMenuButtons = new ArrayList<>();
+        List<Map<String, Object>> nowMenuButtons = Lists.newArrayList();
         if (!isEmpty(roleMenu)) {
             paramMap.clear();
             paramMap.put("SRM_ID", roleMenu.get("ID"));
@@ -417,7 +418,7 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
      * @return
      */
     public List<Tree> getMenuButtonTree(List<Map<String, Object>> buttons, Map<String, String> roleButtons) {
-        List<Tree> menuButtonTree = new ArrayList<>();
+        List<Tree> menuButtonTree = Lists.newArrayList();
         if (!isEmpty(buttons)) {
             buttons.forEach(button -> {
                 String id = toString(button.get("SB_ID"));

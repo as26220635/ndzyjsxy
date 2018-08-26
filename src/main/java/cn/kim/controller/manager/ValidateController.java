@@ -8,6 +8,7 @@ import cn.kim.entity.ResultState;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.service.ValidateService;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -297,7 +298,7 @@ public class ValidateController extends BaseController {
      * @return
      */
     public List<Tree> toRegexTree(List<Map<String, Object>> regexList, String regexId) {
-        List<Tree> resultTrees = new ArrayList<>();
+        List<Tree> resultTrees = Lists.newArrayList();
         for (Map<String, Object> regexMap : regexList) {
             String id = toString(regexMap.get("ID"));
             String regex = toString(regexMap.get("SVR_REGEX"));

@@ -1,5 +1,6 @@
 package cn.kim.util;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.*;
@@ -25,7 +26,7 @@ public class FuncUtil {
         Map<String, List<Integer>> positionsMap = Maps.newHashMapWithExpectedSize(16);
 
         FuncUtil.forEach(list, (index, str) -> {
-            positionsMap.computeIfAbsent(str, k -> new ArrayList<>(1)).add(index);
+            positionsMap.computeIfAbsent(str, k -> Lists.newArrayList(1)).add(index);
         });
 
         return positionsMap;

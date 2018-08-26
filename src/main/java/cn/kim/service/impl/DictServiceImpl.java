@@ -14,6 +14,7 @@ import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.DictService;
 import cn.kim.util.ValidateUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.xml.internal.ws.wsdl.writer.document.ParamType;
 import org.checkerframework.checker.units.qual.C;
@@ -49,7 +50,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
         paramMap.put("ID", mapParam.get("ID"));
         List<Map<String, Object>> results = baseDao.selectList(NameSpace.DictMapper, "selectDictType", paramMap);
 
-        List<DictType> dictTypes = new ArrayList<>();
+        List<DictType> dictTypes = Lists.newArrayList();
         results.stream().forEach(map -> {
             DictType dictType = new DictType();
             dictType.setId(toString(map.get("ID")));
@@ -360,7 +361,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
      * @return
      */
     private List<DictInfo> setDictInfoChildrenList(BaseDao baseDao, List<Map<String, Object>> parentList, String notId) {
-        List<DictInfo> results = new ArrayList<>();
+        List<DictInfo> results = Lists.newArrayList();
         if (!isEmpty(parentList)) {
             parentList.stream().forEach(map -> {
                 DictInfo dictInfo = new DictInfo();
@@ -389,7 +390,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
      * @return
      */
     private List<Tree> getDictInfoTree(List<DictInfo> dictInfs, String dictInfoParentId) {
-        List<Tree> dictInfoTrees = new ArrayList<>();
+        List<Tree> dictInfoTrees = Lists.newArrayList();
         dictInfs.forEach(info -> {
             String id = toString(info.getId());
 
@@ -428,7 +429,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
      * @return
      */
     private List<Tree> getDictInfoTreeBox(List<DictInfo> dictInfs, String selectId) {
-        List<Tree> dictInfoTrees = new ArrayList<>();
+        List<Tree> dictInfoTrees = Lists.newArrayList();
         dictInfs.forEach(info -> {
             String id = toString(info.getId());
             String sdiCode = toString(info.getSdiCode());

@@ -31,22 +31,40 @@
                         value="${aid.BAF_SEMESTER}"></s:combobox>
         </div>
     </div>
-    <div class="form-group has-feedback">
-        <label>困难类型:</label>
-        <s:combobox sdtCode="BUS_DIFFICULTY_TYPE"
-                    custom='${fns:validField(TableName.BUS_AID_FINANCIALLY,"BAF_AID_TYPE")}'
-                    value="${aid.BAF_AID_TYPE}"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>资助标准:</label>
+            <input type="text"
+                   class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_GRANTS, "BANG_FUNDING_STANDARDS")}
+                   value="${ng.BANG_FUNDING_STANDARDS}">
+        </div>
+        <div class="form-group has-feedback">
+            <label>应发金额:</label>
+            <input type="text"
+                   class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_GRANTS, "BANG_AMOUNT_PAYABLE")}
+                   value="${ng.BANG_AMOUNT_PAYABLE}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>实发金额:</label>
+            <input type="text"
+                   class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_GRANTS, "BANG_ACTUAL_AMOUNT")}
+                   value="${ng.BANG_ACTUAL_AMOUNT}">
+        </div>
+        <div class="form-group has-feedback">
+            <label>发放日期:</label>
+            <s:datebox
+                    type="33"
+                    custom='${fns:validField(TableName.BUS_AID_NATIONAL_GRANTS, "BANS_ISSUANCE_TIME")}'
+                    value="${ng.BANS_ISSUANCE_TIME}"></s:datebox>
+        </div>
     </div>
     <div class="form-group has-feedback">
-        <label>补助金额:</label>
-        <input type="text" class="form-control" ${fns:validField(TableName.BUS_AID_FINANCIALLY, "BAF_DIFFICULTY_QUOTA")}
-               value="${aid.BAF_DIFFICULTY_QUOTA}">
-    </div>
-    <div class="form-group has-feedback">
-        <label>备注:</label>
-        <textarea ${fns:validField(TableName.BUS_AID_FINANCIALLY,"BUS_REMARKS")}
-                class="form-control form-textarea"
-                rows="5">${aid.BUS_REMARKS}</textarea>
+        <label>申请理由:</label>
+        <input type="text"
+               class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_GRANTS, "BANG_APPLY_REASONS")}
+               value="${ng.BANG_APPLY_REASONS}">
     </div>
 </form>
 

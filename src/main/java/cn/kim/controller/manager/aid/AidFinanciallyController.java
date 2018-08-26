@@ -461,4 +461,160 @@ public class AidFinanciallyController extends BaseController {
             return resultState(resultMap);
         });
     }
+
+    /******************     国家奖学金   *****************/
+
+    @GetMapping("/nationalScholarship/add")
+    @RequiresPermissions("AID:NATIONAL_SCHOLARSHIP_INSERT")
+    @Token(save = true)
+    public String addHtmlNationalScholarship(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("aid", setStudentYearSemester(aid, "BAF_YEAR", "BAF_SEMESTER"));
+        return "admin/aid/nationalScholarship/addAndEdit";
+    }
+
+
+    @PostMapping("/nationalScholarship/add")
+    @RequiresPermissions("AID:NATIONAL_SCHOLARSHIP_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加国家奖学金")
+    @Token(remove = true)
+    @Validate({"BUS_AID_FINANCIALLY", "BUS_AID_NATIONAL_SCHOLARSHIP"})
+    @ResponseBody
+    public ResultState addNationalScholarship(@RequestParam Map<String, Object> mapParam) throws Exception {
+        //流程
+        mapParam.put("BUS_PROCESS", Process.AID.toString());
+        mapParam.put("BUS_PROCESS2", Process.AID_NATIONAL_SCHOLARSHIP.toString());
+        //类型
+        mapParam.put("BAF_TYPE", AidType.NATIONAL_SCHOLARSHIP.toString());
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/nationalScholarship/update/{ID}")
+    @RequiresPermissions("AID:NATIONAL_SCHOLARSHIP_UPDATE")
+    public String updateHtmlNationalScholarship(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> aid = aidFinanciallyService.selectAidFinancially(mapParam);
+        mapParam.clear();
+        mapParam.put("BAF_ID", aid.get("ID"));
+        Map<String, Object> ns = aidFinanciallyService.selectNationalScholarship(mapParam);
+
+        model.addAttribute("aid", aid);
+        model.addAttribute("ns", ns);
+        return "admin/aid/nationalScholarship/addAndEdit";
+    }
+
+    @PutMapping("/nationalScholarship/update")
+    @RequiresPermissions("AID:NATIONAL_SCHOLARSHIP_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改国家奖学金")
+    @Validate({"BUS_AID_FINANCIALLY", "BUS_AID_NATIONAL_SCHOLARSHIP"})
+    @ResponseBody
+    public ResultState updateNationalScholarship(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/nationalScholarship/delete/{ID}")
+    @RequiresPermissions("AID:NATIONAL_SCHOLARSHIP_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除国家奖学金")
+    @ResponseBody
+    public ResultState deleteNationalScholarship(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = aidFinanciallyService.deleteAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/nationalScholarship/import")
+    @RequiresPermissions("AID:NATIONAL_SCHOLARSHIP_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入国家奖学金")
+    @ResponseBody
+    public ResultState importNationalScholarship(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importNationalScholarship", 600, 600, () -> {
+            Map<String, Object> resultMap = aidFinanciallyService.importNationalScholarship(excelFile);
+            return resultState(resultMap);
+        });
+    }
+
+    /******************     国家助学金   *****************/
+
+    @GetMapping("/nationalGrants/add")
+    @RequiresPermissions("AID:NATIONAL_GRANTS_INSERT")
+    @Token(save = true)
+    public String addHtmlNationalGrants(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("aid", setStudentYearSemester(aid, "BAF_YEAR", "BAF_SEMESTER"));
+        return "admin/aid/nationalGrants/addAndEdit";
+    }
+
+
+    @PostMapping("/nationalGrants/add")
+    @RequiresPermissions("AID:NATIONAL_GRANTS_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加国家助学金")
+    @Token(remove = true)
+    @Validate({"BUS_AID_FINANCIALLY", "BUS_AID_NATIONAL_GRANTS"})
+    @ResponseBody
+    public ResultState addNationalGrants(@RequestParam Map<String, Object> mapParam) throws Exception {
+        //流程
+        mapParam.put("BUS_PROCESS", Process.AID.toString());
+        mapParam.put("BUS_PROCESS2", Process.AID_NATIONAL_GRANTS.toString());
+        //类型
+        mapParam.put("BAF_TYPE", AidType.NATIONAL_GRANTS.toString());
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/nationalGrants/update/{ID}")
+    @RequiresPermissions("AID:NATIONAL_GRANTS_UPDATE")
+    public String updateHtmlNationalGrants(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> aid = aidFinanciallyService.selectAidFinancially(mapParam);
+        mapParam.clear();
+        mapParam.put("BAF_ID", aid.get("ID"));
+        Map<String, Object> ng = aidFinanciallyService.selectNationalGrants(mapParam);
+
+        model.addAttribute("aid", aid);
+        model.addAttribute("ng", ng);
+        return "admin/aid/nationalGrants/addAndEdit";
+    }
+
+    @PutMapping("/nationalGrants/update")
+    @RequiresPermissions("AID:NATIONAL_GRANTS_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改国家助学金")
+    @Validate({"BUS_AID_FINANCIALLY", "BUS_AID_NATIONAL_GRANTS"})
+    @ResponseBody
+    public ResultState updateNationalGrants(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/nationalGrants/delete/{ID}")
+    @RequiresPermissions("AID:NATIONAL_GRANTS_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除国家助学金")
+    @ResponseBody
+    public ResultState deleteNationalGrants(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = aidFinanciallyService.deleteAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/nationalGrants/import")
+    @RequiresPermissions("AID:NATIONAL_GRANTS_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入国家助学金")
+    @ResponseBody
+    public ResultState importNationalGrants(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importNationalGrants", 600, 600, () -> {
+            Map<String, Object> resultMap = aidFinanciallyService.importNationalGrants(excelFile);
+            return resultState(resultMap);
+        });
+    }
 }

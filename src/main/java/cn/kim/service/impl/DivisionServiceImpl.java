@@ -12,6 +12,7 @@ import cn.kim.service.DivisionService;
 import cn.kim.service.DivisionService;
 import cn.kim.util.PasswordMd5;
 import cn.kim.util.RandomSalt;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -220,7 +221,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
      * @return
      */
     public List<Tree> getDivisionTreeList(String parentId, String selectId, String notId) {
-        List<Tree> treeList = new ArrayList<>();
+        List<Tree> treeList = Lists.newArrayList();
 
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
         paramMap.put("BD_PARENT_ID", parentId);

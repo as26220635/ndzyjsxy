@@ -81,4 +81,36 @@ public interface AidFinanciallyService extends BaseService {
      * @return
      */
     Map<String, Object> importEmergencyHelp(MultipartFile excelFile);
+
+    /**
+     * 查询国家奖学金
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> selectNationalScholarship(Map<String, Object> mapParam);
+
+    /**
+     * 导入国家奖学金
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importNationalScholarship(MultipartFile excelFile);
+
+    /**
+     * 查询国家助学金
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> selectNationalGrants(Map<String, Object> mapParam);
+
+    /**
+     * 导入国家助学金
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importNationalGrants(MultipartFile excelFile);
 }

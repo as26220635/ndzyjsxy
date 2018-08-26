@@ -11,6 +11,7 @@ import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.service.AuthorizationService;
 import cn.kim.util.DictUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.springframework.stereotype.Service;
@@ -132,10 +133,10 @@ public class AuthorizationServiceImpl extends BaseServiceImpl implements Authori
      * @return
      */
     public List<Tree> getAuthorizationTree(int level, int isChildren, String parentId, Map<String, String> selectMap) {
-        List<Tree> resultTreeList = new ArrayList<>();
+        List<Tree> resultTreeList = Lists.newArrayList();
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
 
-        List<Map<String, Object>> dataList = new ArrayList<>();
+        List<Map<String, Object>> dataList = Lists.newArrayList();
         //根据等级查询不同的数据
         if (level == AuthorizationType.COLLEGE.getType()) {
             //院系

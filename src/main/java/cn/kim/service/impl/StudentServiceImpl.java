@@ -12,6 +12,7 @@ import cn.kim.entity.*;
 import cn.kim.exception.CustomException;
 import cn.kim.service.StudentService;
 import cn.kim.util.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -692,7 +693,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
      * @return
      */
     public List<String[]> checkExcelData(List<String[]> dataList) {
-        List<String[]> resultList = new ArrayList<>();
+        List<String[]> resultList = Lists.newArrayList();
 
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
 
@@ -796,10 +797,10 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         paramMap.put("BSC_SEMESTER", semester);
         List<Map<String, Object>> comprehensiveList = baseDao.selectList(NameSpace.StudentExtendMapper, "selectStudentComprehensive", paramMap);
         //总排名
-        List<BigDecimal> totalList = new ArrayList<>();
+        List<BigDecimal> totalList = Lists.newArrayList();
         Map<String, BigDecimal> totalRankMap = Maps.newHashMapWithExpectedSize(16);
         //智育排名
-        List<BigDecimal> intellectualList = new ArrayList<>();
+        List<BigDecimal> intellectualList = Lists.newArrayList();
         Map<String, BigDecimal> intellectualRankMap = Maps.newHashMapWithExpectedSize(16);
 
         comprehensiveList.forEach(map -> {

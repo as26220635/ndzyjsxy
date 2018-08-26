@@ -172,4 +172,14 @@ public class TableName {
      * 资助
      */
     public static final String BUS_AID_FINANCIALLY = "BUS_AID_FINANCIALLY";
+
+    /**
+     * 国家奖学金
+     */
+    public static final String BUS_AID_NATIONAL_SCHOLARSHIP = "BUS_AID_NATIONAL_SCHOLARSHIP";
+
+    /**
+     * 国家助学金
+     */
+    public static final String BUS_AID_NATIONAL_GRANTS = "BUS_AID_NATIONAL_GRANTS";
 }

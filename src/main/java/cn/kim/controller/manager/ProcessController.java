@@ -22,6 +22,7 @@ import cn.kim.tools.ProcessTool;
 import cn.kim.util.DictUtil;
 import cn.kim.util.FuncUtil;
 import cn.kim.util.TextUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -94,7 +95,7 @@ public class ProcessController extends BaseController {
             //取第一个ID拿来查询流程
             String[] tableIds = ID.split(SERVICE_SPLIT);
             String processBtnType = ProcessType.SUBMIT.toString();
-            List<Map<String, Object>> transactorList = new ArrayList<>();
+            List<Map<String, Object>> transactorList = Lists.newArrayList();
 
             //判断是否处于同一流程同一状态
             if (!ProcessTool.checkProcessUnified(tableIds)) {
@@ -136,7 +137,7 @@ public class ProcessController extends BaseController {
             }
 
             //拼接提交项目
-            List<CustomParam> submitProcessList = new ArrayList<>();
+            List<CustomParam> submitProcessList = Lists.newArrayList();
             for (String tableId : tableIds) {
                 CustomParam customParam = new CustomParam(ProcessTool.selectProcessTableName(tableId, BUS_PROCESS, BUS_PROCESS2), tableId);
                 customParam.setDefaultParam(true);

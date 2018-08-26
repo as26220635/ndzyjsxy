@@ -14,6 +14,7 @@ import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.BaseService;
 import cn.kim.util.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -110,7 +111,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @return
      */
     public List<Map<String, Object>> getOperatorMenuTree(BaseDao baseDao, NameSpace nameSpace, String sqlId, String operatorId, String menuParentId, @Nullable String selectId, @Nullable String notParentId, @Nullable Map<String, String> roleMenus) {
-        List<Map<String, Object>> trees = new ArrayList<>();
+        List<Map<String, Object>> trees = Lists.newArrayList();
         if (!isEmpty(notParentId) && menuParentId.equals(notParentId)) {
             return trees;
         }
@@ -166,7 +167,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @return
      */
     public List<Tree> getOperatorRoleTree(List<Map<String, Object>> roles, Map<String, String> operatorRoles) {
-        List<Tree> operatorRoleTree = new ArrayList<>();
+        List<Tree> operatorRoleTree = Lists.newArrayList();
         if (!isEmpty(roles)) {
             roles.forEach(role -> {
                 String id = toString(role.get("ID"));

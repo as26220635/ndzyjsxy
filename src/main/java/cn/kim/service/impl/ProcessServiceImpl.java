@@ -15,6 +15,7 @@ import cn.kim.service.util.ProcessExecute;
 import cn.kim.util.CacheUtil;
 import cn.kim.util.DateUtil;
 import cn.kim.util.TextUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -1249,7 +1250,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
     }
 
     private List<Tree> getDefinitionTree(List<Map<String, Object>> definitionList, String selectId) {
-        List<Tree> definitionTreeList = new ArrayList<>();
+        List<Tree> definitionTreeList = Lists.newArrayList();
         if (!isEmpty(definitionList)) {
             definitionList.forEach(definition -> {
                 String id = toString(definition.get("ID"));

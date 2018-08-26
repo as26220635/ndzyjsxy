@@ -1,7 +1,7 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : my
+ Source Server         : db
  Source Server Type    : MySQL
  Source Server Version : 80011
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 25/08/2018 15:06:19
+ Date: 27/08/2018 00:34:19
 */
 
 SET NAMES utf8mb4;
@@ -39,7 +39,8 @@ CREATE TABLE `bus_aid_financially`  (
   INDEX `BS_ID`(`BS_ID`) USING BTREE,
   INDEX `BAF_TYPE`(`BAF_TYPE`) USING BTREE,
   INDEX `BAF_YEAR`(`BAF_YEAR`) USING BTREE,
-  INDEX `BAF_SEMESTER`(`BAF_SEMESTER`) USING BTREE
+  INDEX `BAF_SEMESTER`(`BAF_SEMESTER`) USING BTREE,
+  INDEX `ID`(`ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -51,6 +52,56 @@ INSERT INTO `bus_aid_financially` VALUES ('54713666137751552', '4860165187488972
 INSERT INTO `bus_aid_financially` VALUES ('54832017291870208', '48601651874889729', '51930103357112320', '2017-2018', NULL, 7, 'TEST', 11.1000, NULL, '2018-08-23 23:36:41', '100', '107', NULL);
 INSERT INTO `bus_aid_financially` VALUES ('54832265422700544', '48601651874889729', '51930103357112320', '2017-2018', NULL, 11, 'TEST2', NULL, 323.2000, '2018-08-23 23:37:40', '100', '111', NULL);
 INSERT INTO `bus_aid_financially` VALUES ('54832741484593152', '48601651874889729', '51930103357112320', '2017-2018', NULL, 13, 'TEST2', NULL, 213.0000, '2018-08-23 23:39:33', '100', '113', 'BBBBBB');
+INSERT INTO `bus_aid_financially` VALUES ('55931629410975744', '48601651874889729', '48944951878221824', '2017-2018', NULL, 2, NULL, NULL, NULL, '2018-08-27 00:26:09', '100', '102', 'A');
+INSERT INTO `bus_aid_financially` VALUES ('55932232270872576', '48601651874889729', '48944951878221824', '2017-2018', 1, 4, NULL, NULL, NULL, '2018-08-27 00:28:32', '100', '104', 'A');
+
+-- ----------------------------
+-- Table structure for bus_aid_national_grants
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_aid_national_grants`;
+CREATE TABLE `bus_aid_national_grants`  (
+  `ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+  `BAF_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '资助表',
+  `BANG_FUNDING_STANDARDS` decimal(10, 4) NOT NULL COMMENT '资助标准',
+  `BANG_AMOUNT_PAYABLE` decimal(10, 4) NOT NULL COMMENT '应发金额',
+  `BANG_ACTUAL_AMOUNT` decimal(10, 4) NOT NULL COMMENT '实发金额',
+  `BANG_APPLY_REASONS` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '申请理由',
+  `BANG_ISSUANCE_TIME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '发放日期',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `BAF_ID`(`BAF_ID`) USING BTREE,
+  CONSTRAINT `BANG_BAF_ID` FOREIGN KEY (`BAF_ID`) REFERENCES `bus_aid_financially` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of bus_aid_national_grants
+-- ----------------------------
+INSERT INTO `bus_aid_national_grants` VALUES ('55932232388313088', '55932232270872576', 5000.0000, 5000.0000, 5000.0000, 'A', '20170102');
+
+-- ----------------------------
+-- Table structure for bus_aid_national_scholarship
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_aid_national_scholarship`;
+CREATE TABLE `bus_aid_national_scholarship`  (
+  `ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+  `BAF_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '资助表',
+  `BANS_SCORE_RANK_TOTAL` int(5) NOT NULL COMMENT '成绩排名总人数',
+  `BANS_SCORE_RANK` int(5) NOT NULL COMMENT '成绩排名名次',
+  `BANS_REQUIRED_COURSE_PASS_NUMBER` int(5) NOT NULL COMMENT '必修课及格门数',
+  `BANS_REQUIRED_COURSE_NUMBER` int(5) NOT NULL COMMENT '必修课门数',
+  `BANS_IS_COMPREHENSIVE_RANK` int(5) NOT NULL COMMENT '是否实行综合考评排名',
+  `BANS_COMPREHENSIVE_RANK` int(5) NULL DEFAULT NULL COMMENT '综合考评排名名次',
+  `BANS_COMPREHENSIVE_RANK_NUMBER` int(5) NULL DEFAULT NULL COMMENT '综合考评排名总人数',
+  `BANS_ACTUAL_AMOUNT` decimal(10, 4) NOT NULL COMMENT '实发金额',
+  `BANS_ISSUANCE_TIME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '发放日期',
+  PRIMARY KEY (`ID`) USING BTREE,
+  UNIQUE INDEX `BAF_ID`(`BAF_ID`) USING BTREE,
+  CONSTRAINT `BANS_BAF_ID` FOREIGN KEY (`BAF_ID`) REFERENCES `bus_aid_financially` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of bus_aid_national_scholarship
+-- ----------------------------
+INSERT INTO `bus_aid_national_scholarship` VALUES ('55931629545193472', '55931629410975744', 2, 1, 2, 3, 1, 2, 2, 1000.0000, '20180827');
 
 -- ----------------------------
 -- Table structure for bus_authorization
@@ -521,6 +572,8 @@ INSERT INTO `sys_configure` VALUES ('54461392845012992', '资助管理-绿色通
 INSERT INTO `sys_configure` VALUES ('54825304677416960', '资助管理-减免学费', 'v_aid_tuition_waiver', 'BAF_YEAR DESC,CONVERT(ID,SIGNED) DESC', 'admin/aid/tuitionWaiver/home', '', '1', '1', '1', '');
 INSERT INTO `sys_configure` VALUES ('54825876130365440', '资助管理-困难毕业生就业补助', 'v_aid_jobseeker_support', 'BAF_YEAR DESC,CONVERT(ID,SIGNED) DESC', 'admin/aid/jobseekerSupport/home', '', '1', '1', '1', '');
 INSERT INTO `sys_configure` VALUES ('54826134583377920', '资助管理-应急求助', 'v_aid_emergency_help', 'BAF_YEAR DESC,CONVERT(ID,SIGNED) DESC', 'admin/aid/emergencyHelp/home', '', '1', '1', '1', '');
+INSERT INTO `sys_configure` VALUES ('55923270922272768', '资助管理-国家奖学金', 'v_aid_national_scholarship', 'BAF_YEAR DESC,CONVERT(ID,SIGNED) DESC', 'admin/aid/nationalScholarship/home', '', '1', '1', '1', '');
+INSERT INTO `sys_configure` VALUES ('55924918046425088', '资助管理-国家助学金', 'v_aid_national_grants', 'BAF_YEAR DESC,BAF_SEMESTER DESC,CONVERT(ID,SIGNED) DESC', 'admin/aid/nationalGrants/home', '', '1', '1', '1', '');
 
 -- ----------------------------
 -- Table structure for sys_configure_column
@@ -837,6 +890,38 @@ INSERT INTO `sys_configure_column` VALUES ('54826136261099520', '548261345833779
 INSERT INTO `sys_configure_column` VALUES ('54826273695858688', '54826134583377920', '学期', 'BAF_SEMESTER', 'center', '100px', '', '', 'BUS_SEMESTER', '0', '1', '0', '', '1', '0', 36);
 INSERT INTO `sys_configure_column` VALUES ('55012670088151040', '1758638922268672', '固定列', 'SCC_IS_FIXED', 'center', '70px', '', '', 'SYS_FIXED', '0', '1', '0', '', '1', '0', 75);
 INSERT INTO `sys_configure_column` VALUES ('55012866624847872', '1758638922268672', '是否导出', 'SCC_IS_EXPORT', 'center', '70px', '', '', 'SYS_YES_NO', '0', '1', '0', '', '1', '0', 76);
+INSERT INTO `sys_configure_column` VALUES ('55923271064879104', '55923270922272768', '学生', 'BS_NAME', 'center', '100px', '', '', '', '1', '1', '0', '', '1', '0', 1);
+INSERT INTO `sys_configure_column` VALUES ('55923271090044928', '55923270922272768', '学号', 'BS_NUMBER', 'center', '90px', '', '', '', '1', '1', '0', '', '1', '0', 20);
+INSERT INTO `sys_configure_column` VALUES ('55923271425589248', '55923270922272768', '系部', 'BDM_NAME', 'left', '170px', '', '', '', '0', '1', '0', '', '1', '0', 25);
+INSERT INTO `sys_configure_column` VALUES ('55923271966654464', '55923270922272768', '班级', 'BC_NAME', 'left', '170px', '', '', '', '0', '1', '0', '', '1', '0', 30);
+INSERT INTO `sys_configure_column` VALUES ('55923271983431680', '55923270922272768', '学年', 'BAF_YEAR', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 35);
+INSERT INTO `sys_configure_column` VALUES ('55923273497575424', '55923270922272768', '审核状态', 'PROCESS_STATUS_NAME', 'center', '100px', '', 'processLogFunc(targets, field);', '', '0', '1', '0', '', '1', '0', 175);
+INSERT INTO `sys_configure_column` VALUES ('55923273946365952', '55923270922272768', '操作', '', 'center', '200px', '', '', '', '0', '1', '1', '', '1', '0', 180);
+INSERT INTO `sys_configure_column` VALUES ('55923910834651136', '55923270922272768', '身份证', 'BS_ID_CARD', 'center', '150px', '', '', '', '0', '1', '0', '', '1', '0', 40);
+INSERT INTO `sys_configure_column` VALUES ('55924067676454912', '55923270922272768', '成绩排名总人数', 'BANS_SCORE_RANK_TOTAL', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 50);
+INSERT INTO `sys_configure_column` VALUES ('55924110890369024', '55923270922272768', '成绩排名名次', 'BANS_SCORE_RANK', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 60);
+INSERT INTO `sys_configure_column` VALUES ('55924190829608960', '55923270922272768', '备注', 'BUS_REMARKS', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 70);
+INSERT INTO `sys_configure_column` VALUES ('55924290603712512', '55923270922272768', '必修课及格门数', 'BANS_REQUIRED_COURSE_PASS_NUMBER', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 80);
+INSERT INTO `sys_configure_column` VALUES ('55924333251395584', '55923270922272768', '必修课门数', 'BANS_REQUIRED_COURSE_NUMBER', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 90);
+INSERT INTO `sys_configure_column` VALUES ('55924400020520960', '55923270922272768', '是否实行综合考评排名', 'BANS_IS_COMPREHENSIVE_RANK', 'center', '100px', '', '', 'SYS_YES_NO', '0', '1', '0', '', '1', '0', 100);
+INSERT INTO `sys_configure_column` VALUES ('55924474972733440', '55923270922272768', '综合考评排名名次', 'BANS_COMPREHENSIVE_RANK', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 110);
+INSERT INTO `sys_configure_column` VALUES ('55924520535457792', '55923270922272768', '综合考评排名总人数', 'BANS_COMPREHENSIVE_RANK_NUMBER', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 120);
+INSERT INTO `sys_configure_column` VALUES ('55924600889933824', '55923270922272768', '实发金额', 'BANS_ACTUAL_AMOUNT', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 130);
+INSERT INTO `sys_configure_column` VALUES ('55924667126382592', '55923270922272768', '发放日期', 'BANS_ISSUANCE_TIME', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 140);
+INSERT INTO `sys_configure_column` VALUES ('55924918184837120', '55924918046425088', '学生', 'BS_NAME', 'center', '100px', '', '', '', '1', '1', '0', '', '1', '0', 1);
+INSERT INTO `sys_configure_column` VALUES ('55924918197420032', '55924918046425088', '学号', 'BS_NUMBER', 'center', '90px', '', '', '', '1', '1', '0', '', '1', '0', 20);
+INSERT INTO `sys_configure_column` VALUES ('55924918314860544', '55924918046425088', '系部', 'BDM_NAME', 'left', '170px', '', '', '', '0', '1', '0', '', '1', '0', 25);
+INSERT INTO `sys_configure_column` VALUES ('55924918755262464', '55924918046425088', '班级', 'BC_NAME', 'left', '170px', '', '', '', '0', '1', '0', '', '1', '0', 30);
+INSERT INTO `sys_configure_column` VALUES ('55924918767845376', '55924918046425088', '学年', 'BAF_YEAR', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 35);
+INSERT INTO `sys_configure_column` VALUES ('55924919229218816', '55924918046425088', '身份证', 'BS_ID_CARD', 'center', '150px', '', '', '', '0', '1', '0', '', '1', '0', 40);
+INSERT INTO `sys_configure_column` VALUES ('55924922270089216', '55924918046425088', '审核状态', 'PROCESS_STATUS_NAME', 'center', '100px', '', 'processLogFunc(targets, field);', '', '0', '1', '0', '', '1', '0', 175);
+INSERT INTO `sys_configure_column` VALUES ('55924922748239872', '55924918046425088', '操作', '', 'center', '200px', '', '', '', '0', '1', '1', '', '1', '0', 180);
+INSERT INTO `sys_configure_column` VALUES ('55925212448817152', '55924918046425088', '学期', 'BAF_SEMESTER', 'center', '100px', '', '', 'BUS_SEMESTER', '0', '1', '0', '', '1', '0', 36);
+INSERT INTO `sys_configure_column` VALUES ('55925324906496000', '55924918046425088', '资助标准', 'BANG_FUNDING_STANDARDS', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 50);
+INSERT INTO `sys_configure_column` VALUES ('55925366329442304', '55924918046425088', '应发金额', 'BANG_AMOUNT_PAYABLE', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 60);
+INSERT INTO `sys_configure_column` VALUES ('55925419366416384', '55924918046425088', '实发金额', 'BANG_ACTUAL_AMOUNT', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 70);
+INSERT INTO `sys_configure_column` VALUES ('55925534198071296', '55924918046425088', '申请理由', 'BANG_APPLY_REASONS', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 80);
+INSERT INTO `sys_configure_column` VALUES ('55925633825374208', '55924918046425088', '发放日期', 'BANG_ISSUANCE_TIME', 'center', '100px', '', '', '', '0', '1', '0', '', '1', '0', 90);
 INSERT INTO `sys_configure_column` VALUES ('6', '2', '操作ID', 'SB_BUTTONID', 'center', '100px', NULL, NULL, NULL, '0', '1', '0', NULL, '1', '0', 2);
 INSERT INTO `sys_configure_column` VALUES ('7', '2', '图标', 'SB_ICON', 'center', '20px', NULL, 'btnClassFunc(targets,field)', NULL, '0', '1', '0', NULL, '1', '0', 3);
 INSERT INTO `sys_configure_column` VALUES ('8', '2', '权限编码', 'SB_CODE', 'center', '100px', NULL, NULL, NULL, '0', '1', '0', NULL, '1', '0', 4);
@@ -996,6 +1081,17 @@ INSERT INTO `sys_configure_search` VALUES ('54826137041240064', '548261345833779
 INSERT INTO `sys_configure_search` VALUES ('54826137380978688', '54826134583377920', '班级', 'BC_NAME', '', '4', '1', '1', '', '1', 40);
 INSERT INTO `sys_configure_search` VALUES ('54826137393561600', '54826134583377920', '困难类型', 'BAF_AID_TYPE', 'BUS_DIFFICULTY_TYPE', '1', '2', '1', '', '1', 50);
 INSERT INTO `sys_configure_search` VALUES ('54826372626907136', '54826134583377920', '学期', 'BAF_SEMESTER', 'BUS_SEMESTER', '1', '2', '1', '', '1', 25);
+INSERT INTO `sys_configure_search` VALUES ('55923274437099520', '55923270922272768', '学生', 'BS_NAME', '', '4', '1', '1', '', '1', 10);
+INSERT INTO `sys_configure_search` VALUES ('55923274466459648', '55923270922272768', '学年', 'BAF_YEAR', '', '1', '4', '1', '', '1', 20);
+INSERT INTO `sys_configure_search` VALUES ('55923274973970432', '55923270922272768', '系部', 'BDM_NAME', '', '4', '1', '1', '', '1', 30);
+INSERT INTO `sys_configure_search` VALUES ('55923275405983744', '55923270922272768', '班级', 'BC_NAME', '', '4', '1', '1', '', '1', 40);
+INSERT INTO `sys_configure_search` VALUES ('55924819773882368', '55923270922272768', '身份证', 'BS_ID_CARD', '', '4', '1', '1', '', '1', 15);
+INSERT INTO `sys_configure_search` VALUES ('55924923360608256', '55924918046425088', '学生', 'BS_NAME', '', '4', '1', '1', '', '1', 10);
+INSERT INTO `sys_configure_search` VALUES ('55924923373191168', '55924918046425088', '身份证', 'BS_ID_CARD', '', '4', '1', '1', '', '1', 15);
+INSERT INTO `sys_configure_search` VALUES ('55924923842953216', '55924918046425088', '学年', 'BAF_YEAR', '', '1', '4', '1', '', '1', 20);
+INSERT INTO `sys_configure_search` VALUES ('55924923855536128', '55924918046425088', '系部', 'BDM_NAME', '', '4', '1', '1', '', '1', 30);
+INSERT INTO `sys_configure_search` VALUES ('55924924216246272', '55924918046425088', '班级', 'BC_NAME', '', '4', '1', '1', '', '1', 40);
+INSERT INTO `sys_configure_search` VALUES ('55925733385568256', '55924918046425088', '学期', 'BAF_SEMESTER', 'BUS_SEMESTER', '1', '2', '1', '', '1', 25);
 
 -- ----------------------------
 -- Table structure for sys_dict_info
@@ -1199,6 +1295,8 @@ INSERT INTO `sys_dict_info` VALUES ('54998572008996864', '54824397692731392', 'B
 INSERT INTO `sys_dict_info` VALUES ('55006327197401088', '12', 'SYS_FIXED', '左', '1', '1', '0', '', 0, 1, 1);
 INSERT INTO `sys_dict_info` VALUES ('55006356515586048', '12', 'SYS_FIXED', '无', '0', '0', '0', '', 0, 2, 1);
 INSERT INTO `sys_dict_info` VALUES ('55006392745984000', '12', 'SYS_FIXED', '右', '-1', '-1', '0', '', 0, 3, 1);
+INSERT INTO `sys_dict_info` VALUES ('55922993825579008', '9', 'SYS_PROCESS_TYPE', '国家奖学金', '102', '100.102', '50802464470859776', '', 0, 2, 1);
+INSERT INTO `sys_dict_info` VALUES ('55923060267548672', '9', 'SYS_PROCESS_TYPE', '国家助学金', '104', '100.104', '50802464470859776', '', 0, 4, 1);
 INSERT INTO `sys_dict_info` VALUES ('6', '3', 'SYS_SEARCH_METHOD', '不等于', '2', 'ne', '0', '', 0, 2, 1);
 INSERT INTO `sys_dict_info` VALUES ('7', '3', 'SYS_SEARCH_METHOD', '在其中', '3', 'in', '0', '', 0, 3, 1);
 INSERT INTO `sys_dict_info` VALUES ('8', '3', 'SYS_SEARCH_METHOD', '模糊', '4', 'like', '0', '', 0, 4, 1);
@@ -3637,6 +3735,173 @@ INSERT INTO `sys_log` VALUES ('55428156064006144', '48601651874889729', NULL, '�
 INSERT INTO `sys_log` VALUES ('55428164033183744', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-25 15:05:33', 0);
 INSERT INTO `sys_log` VALUES ('55428167543816192', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-25 15:05:34', 0);
 INSERT INTO `sys_log` VALUES ('55428273689067520', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-25 15:05:59', 0);
+INSERT INTO `sys_log` VALUES ('55915978222993408', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:23:57', 9);
+INSERT INTO `sys_log` VALUES ('55916012347850752', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:24:05', 0);
+INSERT INTO `sys_log` VALUES ('55916019088097280', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:24:07', 0);
+INSERT INTO `sys_log` VALUES ('55916414833262592', '1', NULL, '添加验证正则', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:25:41', 2);
+INSERT INTO `sys_log` VALUES ('55916456658862080', '1', NULL, '修改验证正则', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:25:51', 2);
+INSERT INTO `sys_log` VALUES ('55919058444353536', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:36:11', 0);
+INSERT INTO `sys_log` VALUES ('55919078526681088', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:36:16', 2);
+INSERT INTO `sys_log` VALUES ('55919083006197760', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:36:17', 0);
+INSERT INTO `sys_log` VALUES ('55919212278841344', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:36:48', 2);
+INSERT INTO `sys_log` VALUES ('55919273935110144', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:37:03', 2);
+INSERT INTO `sys_log` VALUES ('55919334421168128', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:37:17', 2);
+INSERT INTO `sys_log` VALUES ('55919393116258304', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:37:31', 2);
+INSERT INTO `sys_log` VALUES ('55919442013454336', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:37:43', 2);
+INSERT INTO `sys_log` VALUES ('55919499680940032', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:37:57', 2);
+INSERT INTO `sys_log` VALUES ('55919556761223168', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:38:10', 2);
+INSERT INTO `sys_log` VALUES ('55919616190316544', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:38:24', 2);
+INSERT INTO `sys_log` VALUES ('55919670053568512', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:38:37', 2);
+INSERT INTO `sys_log` VALUES ('55919797468135424', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:39:08', 0);
+INSERT INTO `sys_log` VALUES ('55920843074568192', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:43:17', 2);
+INSERT INTO `sys_log` VALUES ('55920848573300736', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:43:18', 0);
+INSERT INTO `sys_log` VALUES ('55920939522588672', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:43:40', 2);
+INSERT INTO `sys_log` VALUES ('55920992224018432', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:43:52', 2);
+INSERT INTO `sys_log` VALUES ('55921044208222208', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:44:05', 2);
+INSERT INTO `sys_log` VALUES ('55921212450144256', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:44:45', 2);
+INSERT INTO `sys_log` VALUES ('55921263427715072', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:44:57', 2);
+INSERT INTO `sys_log` VALUES ('55921270524477440', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:44:59', 0);
+INSERT INTO `sys_log` VALUES ('55921274647478272', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:00', 0);
+INSERT INTO `sys_log` VALUES ('55921299712638976', '1', NULL, '修改验证字段', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:06', 2);
+INSERT INTO `sys_log` VALUES ('55921309384704000', '1', NULL, '修改验证字段', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:08', 2);
+INSERT INTO `sys_log` VALUES ('55921318431817728', '1', NULL, '修改验证字段', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:10', 2);
+INSERT INTO `sys_log` VALUES ('55921329160847360', '1', NULL, '修改验证字段', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:13', 2);
+INSERT INTO `sys_log` VALUES ('55921355442356224', '1', NULL, '修改验证字段', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:19', 2);
+INSERT INTO `sys_log` VALUES ('55921364988592128', '1', NULL, '修改验证字段', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:21', 2);
+INSERT INTO `sys_log` VALUES ('55921381027610624', '1', NULL, '修改验证字段', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:25', 2);
+INSERT INTO `sys_log` VALUES ('55921402481475584', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:30', 0);
+INSERT INTO `sys_log` VALUES ('55921520748265472', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:45:58', 0);
+INSERT INTO `sys_log` VALUES ('55921528855855104', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:46:00', 0);
+INSERT INTO `sys_log` VALUES ('55921534077763584', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:46:02', 0);
+INSERT INTO `sys_log` VALUES ('55922842948075520', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:51:14', 0);
+INSERT INTO `sys_log` VALUES ('55922864955588608', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:51:19', 0);
+INSERT INTO `sys_log` VALUES ('55922875458125824', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:51:21', 0);
+INSERT INTO `sys_log` VALUES ('55922894328299520', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:51:26', 0);
+INSERT INTO `sys_log` VALUES ('55922994219843584', '1', NULL, '添加字典信息', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:51:50', 2);
+INSERT INTO `sys_log` VALUES ('55923060770865152', '1', NULL, '添加字典信息', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:52:06', 2);
+INSERT INTO `sys_log` VALUES ('55923070740725760', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:52:08', 0);
+INSERT INTO `sys_log` VALUES ('55923115980488704', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:52:19', 0);
+INSERT INTO `sys_log` VALUES ('55923124301987840', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:52:21', 0);
+INSERT INTO `sys_log` VALUES ('55923275976409088', '1', NULL, '拷贝配置列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:52:57', 2);
+INSERT INTO `sys_log` VALUES ('55923283433881600', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:52:59', 0);
+INSERT INTO `sys_log` VALUES ('55923446168682496', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:53:37', 2);
+INSERT INTO `sys_log` VALUES ('55923474694144000', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:53:44', 2);
+INSERT INTO `sys_log` VALUES ('55923483472822272', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:53:46', 2);
+INSERT INTO `sys_log` VALUES ('55923530562273280', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:53:58', 2);
+INSERT INTO `sys_log` VALUES ('55923553274429440', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:54:03', 2);
+INSERT INTO `sys_log` VALUES ('55923584496828416', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:54:10', 2);
+INSERT INTO `sys_log` VALUES ('55923911056949248', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:55:28', 2);
+INSERT INTO `sys_log` VALUES ('55923937762082816', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:55:35', 2);
+INSERT INTO `sys_log` VALUES ('55924068083302400', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:56:06', 2);
+INSERT INTO `sys_log` VALUES ('55924111179776000', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:56:16', 2);
+INSERT INTO `sys_log` VALUES ('55924191152570368', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:56:35', 2);
+INSERT INTO `sys_log` VALUES ('55924290939256832', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:56:59', 2);
+INSERT INTO `sys_log` VALUES ('55924333385613312', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:57:09', 2);
+INSERT INTO `sys_log` VALUES ('55924400372842496', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:57:25', 2);
+INSERT INTO `sys_log` VALUES ('55924475320860672', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:57:43', 2);
+INSERT INTO `sys_log` VALUES ('55924521055551488', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:57:54', 2);
+INSERT INTO `sys_log` VALUES ('55924601091260416', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:13', 2);
+INSERT INTO `sys_log` VALUES ('55924667331903488', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:29', 2);
+INSERT INTO `sys_log` VALUES ('55924689268113408', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:34', 0);
+INSERT INTO `sys_log` VALUES ('55924693592440832', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:35', 0);
+INSERT INTO `sys_log` VALUES ('55924706980659200', '1', NULL, '删除配置列表搜索', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:38', 2);
+INSERT INTO `sys_log` VALUES ('55924724005339136', '1', NULL, '删除配置列表搜索', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:42', 2);
+INSERT INTO `sys_log` VALUES ('55924735720030208', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:45', 0);
+INSERT INTO `sys_log` VALUES ('55924739843031040', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:46', 0);
+INSERT INTO `sys_log` VALUES ('55924762395803648', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:51', 0);
+INSERT INTO `sys_log` VALUES ('55924766028070912', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:58:52', 0);
+INSERT INTO `sys_log` VALUES ('55924820205895680', '1', NULL, '添加配置列表搜索', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:05', 2);
+INSERT INTO `sys_log` VALUES ('55924829773103104', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:07', 0);
+INSERT INTO `sys_log` VALUES ('55924924354658304', '1', NULL, '拷贝配置列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:30', 2);
+INSERT INTO `sys_log` VALUES ('55924933535989760', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:32', 0);
+INSERT INTO `sys_log` VALUES ('55924969015607296', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:41', 2);
+INSERT INTO `sys_log` VALUES ('55924977303552000', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:43', 2);
+INSERT INTO `sys_log` VALUES ('55924986413580288', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:45', 2);
+INSERT INTO `sys_log` VALUES ('55924996668653568', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:47', 2);
+INSERT INTO `sys_log` VALUES ('55925005879345152', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:49', 2);
+INSERT INTO `sys_log` VALUES ('55925019330478080', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:53', 2);
+INSERT INTO `sys_log` VALUES ('55925028755079168', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:55', 2);
+INSERT INTO `sys_log` VALUES ('55925037785415680', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-26 23:59:57', 2);
+INSERT INTO `sys_log` VALUES ('55925212830498816', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:00:39', 2);
+INSERT INTO `sys_log` VALUES ('55925325414006784', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:01:06', 2);
+INSERT INTO `sys_log` VALUES ('55925366685958144', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:01:15', 2);
+INSERT INTO `sys_log` VALUES ('55925419798429696', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:01:28', 2);
+INSERT INTO `sys_log` VALUES ('55925458155339776', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:01:37', 2);
+INSERT INTO `sys_log` VALUES ('55925466699137024', '1', NULL, '删除配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:01:39', 2);
+INSERT INTO `sys_log` VALUES ('55925534659444736', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:01:55', 2);
+INSERT INTO `sys_log` VALUES ('55925634198667264', '1', NULL, '添加配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:02:19', 2);
+INSERT INTO `sys_log` VALUES ('55925641446424576', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:02:21', 0);
+INSERT INTO `sys_log` VALUES ('55925651651166208', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:02:23', 0);
+INSERT INTO `sys_log` VALUES ('55925661717495808', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:02:26', 0);
+INSERT INTO `sys_log` VALUES ('55925665005830144', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:02:26', 0);
+INSERT INTO `sys_log` VALUES ('55925733624643584', '1', NULL, '添加配置列表搜索', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:02:43', 2);
+INSERT INTO `sys_log` VALUES ('55925764742184960', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:02:50', 0);
+INSERT INTO `sys_log` VALUES ('55925922628370432', '1', NULL, '修改配置列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:28', 2);
+INSERT INTO `sys_log` VALUES ('55925942417096704', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:33', 0);
+INSERT INTO `sys_log` VALUES ('55925970149834752', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:39', 0);
+INSERT INTO `sys_log` VALUES ('55925985605844992', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:43', 0);
+INSERT INTO `sys_log` VALUES ('55925995739283456', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:45', 0);
+INSERT INTO `sys_log` VALUES ('55926003716849664', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:47', 0);
+INSERT INTO `sys_log` VALUES ('55926011677638656', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:49', 0);
+INSERT INTO `sys_log` VALUES ('55926013476995072', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:50', 0);
+INSERT INTO `sys_log` VALUES ('55926051049570304', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:59', 0);
+INSERT INTO `sys_log` VALUES ('55926054321127424', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:03:59', 0);
+INSERT INTO `sys_log` VALUES ('55926096603906048', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:04:09', 0);
+INSERT INTO `sys_log` VALUES ('55926179466575872', '1', NULL, '拷贝流程定义', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:04:29', 2);
+INSERT INTO `sys_log` VALUES ('55926214526763008', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:04:38', 0);
+INSERT INTO `sys_log` VALUES ('55926217592799232', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:04:38', 0);
+INSERT INTO `sys_log` VALUES ('55926222969896960', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:04:40', 0);
+INSERT INTO `sys_log` VALUES ('55926281836953600', '1', NULL, '拷贝流程定义', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:04:54', 2);
+INSERT INTO `sys_log` VALUES ('55926290162647040', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:04:56', 0);
+INSERT INTO `sys_log` VALUES ('55926291873923072', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:04:56', 0);
+INSERT INTO `sys_log` VALUES ('55926393569017856', '1', NULL, '拷贝菜单', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:05:20', 2);
+INSERT INTO `sys_log` VALUES ('55926640034709504', '1', NULL, '修改菜单', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:06:19', 2);
+INSERT INTO `sys_log` VALUES ('55926690580267008', '1', NULL, '拷贝菜单', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:06:31', 2);
+INSERT INTO `sys_log` VALUES ('55927178214244352', '1', NULL, '修改菜单', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:08:27', 2);
+INSERT INTO `sys_log` VALUES ('55927214624997376', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:08:36', 0);
+INSERT INTO `sys_log` VALUES ('55927269268389888', '1', NULL, '设置角色菜单权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:08:49', 2);
+INSERT INTO `sys_log` VALUES ('55927329318240256', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:03', 2);
+INSERT INTO `sys_log` VALUES ('55927339241963520', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:06', 2);
+INSERT INTO `sys_log` VALUES ('55927365062098944', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:12', 2);
+INSERT INTO `sys_log` VALUES ('55927371236114432', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:13', 2);
+INSERT INTO `sys_log` VALUES ('55927378219630592', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:15', 2);
+INSERT INTO `sys_log` VALUES ('55927444720320512', '1', NULL, '设置角色菜单权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:31', 2);
+INSERT INTO `sys_log` VALUES ('55927462470615040', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:35', 2);
+INSERT INTO `sys_log` VALUES ('55927491159654400', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:42', 2);
+INSERT INTO `sys_log` VALUES ('55927536995008512', '1', NULL, '设置角色菜单权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:53', 2);
+INSERT INTO `sys_log` VALUES ('55927560273395712', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:09:58', 2);
+INSERT INTO `sys_log` VALUES ('55927576014618624', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:10:02', 2);
+INSERT INTO `sys_log` VALUES ('55927627449368576', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:10:14', 0);
+INSERT INTO `sys_log` VALUES ('55928720187195392', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:14:35', 0);
+INSERT INTO `sys_log` VALUES ('55928839380926464', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:15:03', 0);
+INSERT INTO `sys_log` VALUES ('55929091131441152', '48601651874889729', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:16:03', 9);
+INSERT INTO `sys_log` VALUES ('55929107191431168', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:16:07', 0);
+INSERT INTO `sys_log` VALUES ('55929239072931840', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-27 00:16:39', 2);
+INSERT INTO `sys_log` VALUES ('55929465837977600', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-27 00:17:33', 2);
+INSERT INTO `sys_log` VALUES ('55929651050053632', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-27 00:18:17', 2);
+INSERT INTO `sys_log` VALUES ('55930249292021760', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-27 00:20:39', 2);
+INSERT INTO `sys_log` VALUES ('55930502862864384', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:21:40', 2);
+INSERT INTO `sys_log` VALUES ('55931248446537728', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:24:38', 0);
+INSERT INTO `sys_log` VALUES ('55931274828709888', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-27 00:24:44', 2);
+INSERT INTO `sys_log` VALUES ('55931378490933248', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-27 00:25:09', 2);
+INSERT INTO `sys_log` VALUES ('55931464256061440', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-27 00:25:29', 2);
+INSERT INTO `sys_log` VALUES ('55931548226027520', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 0, '2018-08-27 00:25:49', 2);
+INSERT INTO `sys_log` VALUES ('55931630556020736', '48601651874889729', NULL, '导入国家奖学金', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:26:09', 2);
+INSERT INTO `sys_log` VALUES ('55931776169672704', '48601651874889729', NULL, '导出列表excel数据', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:26:44', 2);
+INSERT INTO `sys_log` VALUES ('55932195738484736', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:28:24', 0);
+INSERT INTO `sys_log` VALUES ('55932203267260416', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:28:25', 0);
+INSERT INTO `sys_log` VALUES ('55932233566912512', '48601651874889729', NULL, '导入国家助学金', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:28:33', 2);
+INSERT INTO `sys_log` VALUES ('55932462307475456', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:29:27', 0);
+INSERT INTO `sys_log` VALUES ('55932472063426560', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:29:29', 0);
+INSERT INTO `sys_log` VALUES ('55932572118548480', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:29:53', 0);
+INSERT INTO `sys_log` VALUES ('55932623641378816', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:30:06', 0);
+INSERT INTO `sys_log` VALUES ('55932745418801152', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:30:35', 0);
+INSERT INTO `sys_log` VALUES ('55932854789472256', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:31:01', 0);
+INSERT INTO `sys_log` VALUES ('55932896195641344', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:31:11', 0);
+INSERT INTO `sys_log` VALUES ('55932927065718784', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:31:18', 0);
+INSERT INTO `sys_log` VALUES ('55932945227055104', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:31:22', 0);
+INSERT INTO `sys_log` VALUES ('55932983848206336', '48601651874889729', NULL, '导出列表excel数据', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:31:31', 2);
+INSERT INTO `sys_log` VALUES ('55933491128303616', '48601651874889729', NULL, '导出列表excel数据', '0:0:0:0:0:0:0:1', 1, '2018-08-27 00:33:32', 2);
 
 -- ----------------------------
 -- Table structure for sys_log_text
@@ -5930,6 +6195,173 @@ INSERT INTO `sys_log_text` VALUES ('55428156349218816', '55428156064006144', '�
 INSERT INTO `sys_log_text` VALUES ('55428164192567296', '55428164033183744', '查看处分管理');
 INSERT INTO `sys_log_text` VALUES ('55428167669645312', '55428167543816192', '查看考勤管理');
 INSERT INTO `sys_log_text` VALUES ('55428276398587904', '55428273689067520', '查看综合素质测评');
+INSERT INTO `sys_log_text` VALUES ('55915978759864320', '55915978222993408', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('55916012645646336', '55916012347850752', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('55916019213926400', '55916019088097280', '查看正则管理');
+INSERT INTO `sys_log_text` VALUES ('55916414866817024', '55916414833262592', '添加验证正则:{IS_STATUS=1, ID=55916414480941056, 正则表达式=\\d{4}(\\\\/|.)\\d{1,2}\\1\\d{1,2}, SVR_NAME=年月日日期(无下划线), 正则错误提示=1}');
+INSERT INTO `sys_log_text` VALUES ('55916456704999424', '55916456658862080', '更新验证正则,更新前:{IS_STATUS=1, 正则表达式=\\d{4}(\\\\/|.)\\d{1,2}\\1\\d{1,2}, 正则错误提示=1, ID=55916414480941056, SVR_NAME=年月日日期(无下划线)},更新后:{ID=55916414480941056, 正则表达式=\\d{4}(\\\\/|.)\\d{1,2}\\1\\d{1,2}, SVR_NAME=年月日日期(无下划线), 正则错误提示=请输入正确的日期(如19700101)!}');
+INSERT INTO `sys_log_text` VALUES ('55919059157385216', '55919058444353536', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('55919078556041216', '55919078526681088', '添加验证:{IS_STATUS=1, ID=55919078191136768, 表名=BUS_AID_NATIONAL_SCHOLARSHIP}');
+INSERT INTO `sys_log_text` VALUES ('55919083081695232', '55919083006197760', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('55919212341755904', '55919212278841344', '添加验证字段:{是否必填=1, 是否启用=1, ID=55919211960074240, 字段名称=成绩排名总人数, 查询字段=BANS_SCORE_RANK_TOTAL, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55919273977053184', '55919273935110144', '添加验证字段:{是否必填=1, 是否启用=1, ID=55919273662480384, 字段名称=成绩排名名次, 查询字段=BANS_SCORE_RANK, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55919334463111168', '55919334421168128', '添加验证字段:{是否必填=1, 是否启用=1, ID=55919333846548480, 字段名称=必修课及格门数, 查询字段=BANS_REQUIRED_COURSE_PASS_NUMBER, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55919393162395648', '55919393116258304', '添加验证字段:{是否必填=1, 是否启用=1, ID=55919392805879808, 字段名称=必修课门数, 查询字段=BANS_REQUIRED_COURSE_NUMBER, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55919442168643584', '55919442013454336', '添加验证字段:{是否必填=1, 是否启用=1, ID=55919441765990400, 字段名称=是否实行综合考评排名, 查询字段=BANS_IS_COMPREHENSIVE_RANK, SV_ID=55919078191136768}');
+INSERT INTO `sys_log_text` VALUES ('55919499714494464', '55919499680940032', '添加验证字段:{是否必填=0, 是否启用=1, ID=55919499303452672, 字段名称=综合考评排名名次, 查询字段=BANS_COMPREHENSIVE_RANK, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55919556790583296', '55919556761223168', '添加验证字段:{是否必填=0, 是否启用=1, ID=55919556211769344, 字段名称=综合考评排名总人数, 查询字段=BANS_COMPREHENSIVE_RANK_NUMBER, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55919616228065280', '55919616190316544', '添加验证字段:{是否必填=1, 是否启用=1, ID=55919615615696896, 字段名称=实发金额, 查询字段=BANS_ACTUAL_AMOUNT, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55919670095511552', '55919670053568512', '添加验证字段:{是否必填=1, 是否启用=1, ID=55919668375846912, 字段名称=发放日期, 查询字段=BANS_ISSUANCE_TIME, SV_ID=55919078191136768, 正则表ID=55916414480941056}');
+INSERT INTO `sys_log_text` VALUES ('55919797904343040', '55919797468135424', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('55920843112316928', '55920843074568192', '添加验证:{IS_STATUS=1, ID=55920842806132736, 表名=BUS_AID_NATIONAL_GRANTS}');
+INSERT INTO `sys_log_text` VALUES ('55920848707518464', '55920848573300736', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('55920939556143104', '55920939522588672', '添加验证字段:{是否必填=1, 最大字数=10, 是否启用=1, ID=55920939270930432, 字段名称=资助标准, 查询字段=BANG_FUNDING_STANDARDS, SV_ID=55920842806132736, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55920992253378560', '55920992224018432', '添加验证字段:{是否必填=1, 最大字数=10, 是否启用=1, ID=55920991968165888, 字段名称=应发金额, 查询字段=BANG_AMOUNT_PAYABLE, SV_ID=55920842806132736, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55921044237582336', '55921044208222208', '添加验证字段:{是否必填=1, 最大字数=10, 是否启用=1, ID=55921043759431680, 字段名称=实发金额, 查询字段=BANG_ACTUAL_AMOUNT, SV_ID=55920842806132736, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55921212643082240', '55921212450144256', '添加验证字段:{是否必填=1, 最大字数=100, 是否启用=1, ID=55921212219457536, 字段名称=申请理由, 查询字段=BANG_APPLY_REASONS, SV_ID=55920842806132736}');
+INSERT INTO `sys_log_text` VALUES ('55921263587098624', '55921263427715072', '添加验证字段:{是否必填=1, 是否启用=1, ID=55921263209611264, 字段名称=发放日期, 查询字段=BANG_ISSUANCE_TIME, SV_ID=55920842806132736, 正则表ID=55916414480941056}');
+INSERT INTO `sys_log_text` VALUES ('55921270633529344', '55921270524477440', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('55921274739752960', '55921274647478272', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('55921299741999104', '55921299712638976', '更新验证字段,更新前:{字段名称=成绩排名总人数, SV_ID=55919078191136768, 正则表ID=2521757806231552, 是否必填=1, 是否启用=1, ID=55919211960074240, 查询字段=BANS_SCORE_RANK_TOTAL},更新后:{是否必填=1, 最大字数=10, ID=55919211960074240, 字段名称=成绩排名总人数, 查询字段=BANS_SCORE_RANK_TOTAL, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55921309569253376', '55921309384704000', '更新验证字段,更新前:{字段名称=成绩排名名次, SV_ID=55919078191136768, 正则表ID=2521757806231552, 是否必填=1, 是否启用=1, ID=55919273662480384, 查询字段=BANS_SCORE_RANK},更新后:{是否必填=1, 最大字数=10, ID=55919273662480384, 字段名称=成绩排名名次, 查询字段=BANS_SCORE_RANK, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55921318687670272', '55921318431817728', '更新验证字段,更新前:{字段名称=必修课及格门数, SV_ID=55919078191136768, 正则表ID=2521757806231552, 是否必填=1, 是否启用=1, ID=55919333846548480, 查询字段=BANS_REQUIRED_COURSE_PASS_NUMBER},更新后:{是否必填=1, 最大字数=10, ID=55919333846548480, 字段名称=必修课及格门数, 查询字段=BANS_REQUIRED_COURSE_PASS_NUMBER, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55921329194401792', '55921329160847360', '更新验证字段,更新前:{字段名称=必修课门数, SV_ID=55919078191136768, 正则表ID=2521757806231552, 是否必填=1, 是否启用=1, ID=55919392805879808, 查询字段=BANS_REQUIRED_COURSE_NUMBER},更新后:{是否必填=1, 最大字数=10, ID=55919392805879808, 字段名称=必修课门数, 查询字段=BANS_REQUIRED_COURSE_NUMBER, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55921355475910656', '55921355442356224', '更新验证字段,更新前:{字段名称=综合考评排名名次, SV_ID=55919078191136768, 正则表ID=2521757806231552, 是否必填=0, 是否启用=1, ID=55919499303452672, 查询字段=BANS_COMPREHENSIVE_RANK},更新后:{是否必填=0, 最大字数=10, ID=55919499303452672, 字段名称=综合考评排名名次, 查询字段=BANS_COMPREHENSIVE_RANK, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55921365252833280', '55921364988592128', '更新验证字段,更新前:{字段名称=综合考评排名总人数, SV_ID=55919078191136768, 正则表ID=2521757806231552, 是否必填=0, 是否启用=1, ID=55919556211769344, 查询字段=BANS_COMPREHENSIVE_RANK_NUMBER},更新后:{是否必填=0, 最大字数=10, ID=55919556211769344, 字段名称=综合考评排名总人数, 查询字段=BANS_COMPREHENSIVE_RANK_NUMBER, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55921381258297344', '55921381027610624', '更新验证字段,更新前:{字段名称=实发金额, SV_ID=55919078191136768, 正则表ID=2521757806231552, 是否必填=1, 是否启用=1, ID=55919615615696896, 查询字段=BANS_ACTUAL_AMOUNT},更新后:{是否必填=1, 最大字数=10, ID=55919615615696896, 字段名称=实发金额, 查询字段=BANS_ACTUAL_AMOUNT, SV_ID=55919078191136768, 正则表ID=2521757806231552}');
+INSERT INTO `sys_log_text` VALUES ('55921402640859136', '55921402481475584', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('55921521125752832', '55921520748265472', '查看菜单管理');
+INSERT INTO `sys_log_text` VALUES ('55921528910381056', '55921528855855104', '查看流程定义');
+INSERT INTO `sys_log_text` VALUES ('55921534132289536', '55921534077763584', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('55922843157790720', '55922842948075520', '查看字典管理');
+INSERT INTO `sys_log_text` VALUES ('55922865039474688', '55922864955588608', '查看字典信息');
+INSERT INTO `sys_log_text` VALUES ('55922875596537856', '55922875458125824', '查看字典管理');
+INSERT INTO `sys_log_text` VALUES ('55922894399602688', '55922894328299520', '查看字典信息');
+INSERT INTO `sys_log_text` VALUES ('55922994500861952', '55922994219843584', '添加字典信息:{SDI_CODE=102, 是否必填=0, 字典排序=2, 字典名称=国家奖学金, 父ID=50802464470859776, 状态:0停用1启用=1, SDT_CODE=SYS_PROCESS_TYPE, 连接代码=100.102, ID=55922993825579008, 字典主表ID=9}');
+INSERT INTO `sys_log_text` VALUES ('55923060804419584', '55923060770865152', '添加字典信息:{SDI_CODE=104, 是否必填=0, 字典排序=4, 字典名称=国家助学金, 父ID=50802464470859776, 状态:0停用1启用=1, SDT_CODE=SYS_PROCESS_TYPE, 连接代码=100.104, ID=55923060267548672, 字典主表ID=9}');
+INSERT INTO `sys_log_text` VALUES ('55923070853971968', '55923070740725760', '查看字典管理');
+INSERT INTO `sys_log_text` VALUES ('55923116139872256', '55923115980488704', '查看流程定义');
+INSERT INTO `sys_log_text` VALUES ('55923124436205568', '55923124301987840', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('55923276014157824', '55923275976409088', '拷贝配置列表:{配置列表名称=资助管理-国家奖学金, JSP地址=admin/aid/nationalScholarship/home, 视图名=v_aid_national_scholarship, ORDER BY语句=BAF_YEAR DESC,CONVERT(ID,SIGNED) DESC, 是否分页=是, 是否开启搜索=是, 是否开启选择框=是, ID=55923270922272768}');
+INSERT INTO `sys_log_text` VALUES ('55923283568099328', '55923283433881600', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('55923446198042624', '55923446168682496', '删除配置列表字段:{列名=学期, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BAF_SEMESTER, 是否隐藏=1, 是否是操作列=0, ID=55923272415444992, SC_ID=55923270922272768, 是否导出=是, 字典SDT_CODE=BUS_SEMESTER, 排序=36}');
+INSERT INTO `sys_log_text` VALUES ('55923474727698432', '55923474694144000', '删除配置列表字段:{列名=补助金额, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BAF_DIFFICULTY_QUOTA, 是否隐藏=1, 是否是操作列=0, ID=55923272960704512, SC_ID=55923270922272768, 是否导出=是, 排序=45}');
+INSERT INTO `sys_log_text` VALUES ('55923483497988096', '55923483472822272', '删除配置列表字段:{列名=备注, 对齐方式=left, 是否是固定列=无, 是否是状态列=0, 宽度=150px, 数据查询字段=BUS_REMARKS, 是否隐藏=1, 是否是操作列=0, ID=55923273472409600, SC_ID=55923270922272768, 是否导出=是, 排序=50}');
+INSERT INTO `sys_log_text` VALUES ('55923530600022016', '55923530562273280', '更新配置列表字段,更新前:{列名=审核状态, 格式化函数=processLogFunc(targets, field);, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=PROCESS_STATUS_NAME, 是否隐藏=1, 是否是操作列=0, ID=55923273497575424, SC_ID=55923270922272768, 是否导出=是, 排序=75},更新后:{列名=审核状态, 格式化函数=processLogFunc(targets, field);, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=PROCESS_STATUS_NAME, 是否隐藏=1, 是否是操作列=0, ID=55923273497575424, SC_ID=55923270922272768, 是否导出=是, 排序=175}');
+INSERT INTO `sys_log_text` VALUES ('55923553324761088', '55923553274429440', '更新配置列表字段,更新前:{列名=操作, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=200px, 是否隐藏=1, 是否是操作列=1, ID=55923273946365952, SC_ID=55923270922272768, 是否导出=是, 排序=80},更新后:{列名=操作, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=200px, 是否隐藏=1, 是否是操作列=1, ID=55923273946365952, SC_ID=55923270922272768, 是否导出=是, 排序=180}');
+INSERT INTO `sys_log_text` VALUES ('55923584538771456', '55923584496828416', '删除配置列表字段:{列名=困难类型, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BAF_AID_TYPE, 是否隐藏=1, 是否是操作列=0, ID=55923272432222208, SC_ID=55923270922272768, 是否导出=是, 字典SDT_CODE=BUS_DIFFICULTY_TYPE, 排序=40}');
+INSERT INTO `sys_log_text` VALUES ('55923911241498624', '55923911056949248', '添加配置列表字段:{列名=BS_ID_CARD, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=150px, 数据查询字段=身份证, 是否隐藏=1, 是否是操作列=0, ID=55923910834651136, SC_ID=55923270922272768, 是否导出=是, 排序=40}');
+INSERT INTO `sys_log_text` VALUES ('55923937799831552', '55923937762082816', '更新配置列表字段,更新前:{列名=BS_ID_CARD, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=150px, 数据查询字段=身份证, 是否隐藏=1, 是否是操作列=0, ID=55923910834651136, SC_ID=55923270922272768, 是否导出=是, 排序=40},更新后:{列名=身份证, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=150px, 数据查询字段=BS_ID_CARD, 是否隐藏=1, 是否是操作列=0, ID=55923910834651136, SC_ID=55923270922272768, 是否导出=是, 排序=40}');
+INSERT INTO `sys_log_text` VALUES ('55924068121051136', '55924068083302400', '添加配置列表字段:{列名=成绩排名总人数, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_SCORE_RANK_TOTAL, 是否隐藏=1, 是否是操作列=0, ID=55924067676454912, SC_ID=55923270922272768, 是否导出=是, 排序=50}');
+INSERT INTO `sys_log_text` VALUES ('55924111209136128', '55924111179776000', '添加配置列表字段:{列名=成绩排名名次, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_SCORE_RANK, 是否隐藏=1, 是否是操作列=0, ID=55924110890369024, SC_ID=55923270922272768, 是否导出=是, 排序=60}');
+INSERT INTO `sys_log_text` VALUES ('55924191198707712', '55924191152570368', '添加配置列表字段:{列名=备注, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BUS_REMARKS, 是否隐藏=1, 是否是操作列=0, ID=55924190829608960, SC_ID=55923270922272768, 是否导出=是, 排序=70}');
+INSERT INTO `sys_log_text` VALUES ('55924290964422656', '55924290939256832', '添加配置列表字段:{列名=必修课及格门数, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_REQUIRED_COURSE_PASS_NUMBER, 是否隐藏=1, 是否是操作列=0, ID=55924290603712512, SC_ID=55923270922272768, 是否导出=是, 排序=80}');
+INSERT INTO `sys_log_text` VALUES ('55924333771489280', '55924333385613312', '添加配置列表字段:{列名=必修课门数, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_REQUIRED_COURSE_NUMBER, 是否隐藏=1, 是否是操作列=0, ID=55924333251395584, SC_ID=55923270922272768, 是否导出=是, 排序=90}');
+INSERT INTO `sys_log_text` VALUES ('55924400473505792', '55924400372842496', '添加配置列表字段:{列名=是否实行综合考评排名, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_IS_COMPREHENSIVE_RANK, 是否隐藏=1, 是否是操作列=0, ID=55924400020520960, SC_ID=55923270922272768, 是否导出=是, 字典SDT_CODE=SYS_YES_NO, 排序=100}');
+INSERT INTO `sys_log_text` VALUES ('55924475350220800', '55924475320860672', '添加配置列表字段:{列名=综合考评排名名次, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_COMPREHENSIVE_RANK, 是否隐藏=1, 是否是操作列=0, ID=55924474972733440, SC_ID=55923270922272768, 是否导出=是, 排序=110}');
+INSERT INTO `sys_log_text` VALUES ('55924521093300224', '55924521055551488', '添加配置列表字段:{列名=综合考评排名总人数, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_COMPREHENSIVE_RANK_NUMBER, 是否隐藏=1, 是否是操作列=0, ID=55924520535457792, SC_ID=55923270922272768, 是否导出=是, 排序=120}');
+INSERT INTO `sys_log_text` VALUES ('55924601439387648', '55924601091260416', '添加配置列表字段:{列名=实发金额, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_ACTUAL_AMOUNT, 是否隐藏=1, 是否是操作列=0, ID=55924600889933824, SC_ID=55923270922272768, 是否导出=是, 排序=130}');
+INSERT INTO `sys_log_text` VALUES ('55924667839414272', '55924667331903488', '添加配置列表字段:{列名=发放日期, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_ISSUANCE_TIME, 是否隐藏=1, 是否是操作列=0, ID=55924667126382592, SC_ID=55923270922272768, 是否导出=是, 排序=140}');
+INSERT INTO `sys_log_text` VALUES ('55924689351999488', '55924689268113408', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('55924693676326912', '55924693592440832', '查看设置搜索');
+INSERT INTO `sys_log_text` VALUES ('55924707014213632', '55924706980659200', '删除配置列表搜索:{查询条件=1, 搜索类型=2, 查询字段=BAF_AID_TYPE, 名称=困难类型, 是否学年搜索=1, 字典CODE=BUS_DIFFICULTY_TYPE, 是否要显示到界面上=1, ID=55923275418566656, SC_ID=55923270922272768, 排序=50}');
+INSERT INTO `sys_log_text` VALUES ('55924724143751168', '55924724005339136', '删除配置列表搜索:{查询条件=1, 搜索类型=2, 查询字段=BAF_SEMESTER, 名称=学期, 是否学年搜索=1, 字典CODE=BUS_SEMESTER, 是否要显示到界面上=1, ID=55923274961387520, SC_ID=55923270922272768, 排序=25}');
+INSERT INTO `sys_log_text` VALUES ('55924735925551104', '55924735720030208', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('55924740426039296', '55924739843031040', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('55924762492272640', '55924762395803648', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('55924766141317120', '55924766028070912', '查看设置搜索');
+INSERT INTO `sys_log_text` VALUES ('55924820235255808', '55924820205895680', '添加配置列表搜索:{查询条件=4, 搜索类型=1, 查询字段=BS_ID_CARD, 名称=身份证, 是否学年搜索=1, 是否要显示到界面上=1, ID=55924819773882368, SC_ID=55923270922272768, 排序=15}');
+INSERT INTO `sys_log_text` VALUES ('55924829877960704', '55924829773103104', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('55924924740534272', '55924924354658304', '拷贝配置列表:{配置列表名称=资助管理-国家助学金, JSP地址=admin/aid/nationalGrants/home, 视图名=v_aid_national_grants, ORDER BY语句=BAF_YEAR DESC,CONVERT(ID,SIGNED) DESC, 是否分页=是, 是否开启搜索=是, 是否开启选择框=是, ID=55924918046425088}');
+INSERT INTO `sys_log_text` VALUES ('55924933674401792', '55924933535989760', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('55924969053356032', '55924969015607296', '删除配置列表字段:{列名=综合考评排名总人数, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_COMPREHENSIVE_RANK_NUMBER, 是否隐藏=1, 是否是操作列=0, ID=55924921754189824, SC_ID=55924918046425088, 是否导出=是, 排序=120}');
+INSERT INTO `sys_log_text` VALUES ('55924977450352640', '55924977303552000', '删除配置列表字段:{列名=综合考评排名名次, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_COMPREHENSIVE_RANK, 是否隐藏=1, 是否是操作列=0, ID=55924921192153088, SC_ID=55924918046425088, 是否导出=是, 排序=110}');
+INSERT INTO `sys_log_text` VALUES ('55924986707181568', '55924986413580288', '删除配置列表字段:{列名=是否实行综合考评排名, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_IS_COMPREHENSIVE_RANK, 是否隐藏=1, 是否是操作列=0, ID=55924920747556864, SC_ID=55924918046425088, 是否导出=是, 字典SDT_CODE=SYS_YES_NO, 排序=100}');
+INSERT INTO `sys_log_text` VALUES ('55924996815454208', '55924996668653568', '删除配置列表字段:{列名=必修课门数, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_REQUIRED_COURSE_NUMBER, 是否隐藏=1, 是否是操作列=0, ID=55924920701419520, SC_ID=55924918046425088, 是否导出=是, 排序=90}');
+INSERT INTO `sys_log_text` VALUES ('55925005996785664', '55925005879345152', '删除配置列表字段:{列名=备注, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BUS_REMARKS, 是否隐藏=1, 是否是操作列=0, ID=55924920235851776, SC_ID=55924918046425088, 是否导出=是, 排序=70}');
+INSERT INTO `sys_log_text` VALUES ('55925019368226816', '55925019330478080', '删除配置列表字段:{列名=成绩排名总人数, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_SCORE_RANK_TOTAL, 是否隐藏=1, 是否是操作列=0, ID=55924919241801728, SC_ID=55924918046425088, 是否导出=是, 排序=50}');
+INSERT INTO `sys_log_text` VALUES ('55925028931239936', '55925028755079168', '删除配置列表字段:{列名=成绩排名名次, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_SCORE_RANK, 是否隐藏=1, 是否是操作列=0, ID=55924919678009344, SC_ID=55924918046425088, 是否导出=是, 排序=60}');
+INSERT INTO `sys_log_text` VALUES ('55925037940604928', '55925037785415680', '删除配置列表字段:{列名=必修课及格门数, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_REQUIRED_COURSE_PASS_NUMBER, 是否隐藏=1, 是否是操作列=0, ID=55924920248434688, SC_ID=55924918046425088, 是否导出=是, 排序=80}');
+INSERT INTO `sys_log_text` VALUES ('55925212876636160', '55925212830498816', '添加配置列表字段:{列名=学期, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BAF_SEMESTER, 是否隐藏=1, 是否是操作列=0, ID=55925212448817152, SC_ID=55924918046425088, 是否导出=是, 字典SDT_CODE=BUS_SEMESTER, 排序=36}');
+INSERT INTO `sys_log_text` VALUES ('55925325443366912', '55925325414006784', '添加配置列表字段:{列名=资助标准, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANG_FUNDING_STANDARDS, 是否隐藏=1, 是否是操作列=0, ID=55925324906496000, SC_ID=55924918046425088, 是否导出=是, 排序=50}');
+INSERT INTO `sys_log_text` VALUES ('55925366887284736', '55925366685958144', '添加配置列表字段:{列名=应发金额, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANG_AMOUNT_PAYABLE, 是否隐藏=1, 是否是操作列=0, ID=55925366329442304, SC_ID=55924918046425088, 是否导出=是, 排序=60}');
+INSERT INTO `sys_log_text` VALUES ('55925419831984128', '55925419798429696', '添加配置列表字段:{列名=实发金额, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANG_ACTUAL_AMOUNT, 是否隐藏=1, 是否是操作列=0, ID=55925419366416384, SC_ID=55924918046425088, 是否导出=是, 排序=70}');
+INSERT INTO `sys_log_text` VALUES ('55925458193088512', '55925458155339776', '删除配置列表字段:{列名=发放日期, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_ISSUANCE_TIME, 是否隐藏=1, 是否是操作列=0, ID=55924922257506304, SC_ID=55924918046425088, 是否导出=是, 排序=140}');
+INSERT INTO `sys_log_text` VALUES ('55925466736885760', '55925466699137024', '删除配置列表字段:{列名=实发金额, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANS_ACTUAL_AMOUNT, 是否隐藏=1, 是否是操作列=0, ID=55924921766772736, SC_ID=55924918046425088, 是否导出=是, 排序=130}');
+INSERT INTO `sys_log_text` VALUES ('55925534713970688', '55925534659444736', '添加配置列表字段:{列名=申请理由, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANG_APPLY_REASONS, 是否隐藏=1, 是否是操作列=0, ID=55925534198071296, SC_ID=55924918046425088, 是否导出=是, 排序=80}');
+INSERT INTO `sys_log_text` VALUES ('55925634295136256', '55925634198667264', '添加配置列表字段:{列名=发放日期, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=100px, 数据查询字段=BANG_ISSUANCE_TIME, 是否隐藏=1, 是否是操作列=0, ID=55925633825374208, SC_ID=55924918046425088, 是否导出=是, 排序=90}');
+INSERT INTO `sys_log_text` VALUES ('55925641559670784', '55925641446424576', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('55925651793772544', '55925651651166208', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('55925661855907840', '55925661717495808', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('55925665119076352', '55925665005830144', '查看设置搜索');
+INSERT INTO `sys_log_text` VALUES ('55925733662392320', '55925733624643584', '添加配置列表搜索:{查询条件=1, 搜索类型=2, 查询字段=BAF_SEMESTER, 名称=学期, 是否学年搜索=1, 字典CODE=BUS_SEMESTER, 是否要显示到界面上=1, ID=55925733385568256, SC_ID=55924918046425088, 排序=25}');
+INSERT INTO `sys_log_text` VALUES ('55925764868014080', '55925764742184960', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('55925922666119168', '55925922628370432', '更新配置列表,更新前:{配置列表名称=资助管理-国家助学金, JSP地址=admin/aid/nationalGrants/home, 视图名=v_aid_national_grants, ORDER BY语句=BAF_YEAR DESC,CONVERT(ID,SIGNED) DESC, 是否分页=是, 是否开启搜索=是, 是否开启选择框=是, ID=55924918046425088},更新后:{是否分页=是, 配置列表名称=资助管理-国家助学金, JSP地址=admin/aid/nationalGrants/home, 视图名=v_aid_national_grants, 是否开启搜索=是, 是否开启选择框=是, ID=55924918046425088, ORDER BY语句=BAF_YEAR DESC,BAF_SEMESTER DESC,CONVERT(ID,SIGNED) DESC}');
+INSERT INTO `sys_log_text` VALUES ('55925942584868864', '55925942417096704', '查看流程定义');
+INSERT INTO `sys_log_text` VALUES ('55925970510544896', '55925970149834752', '查看流程步骤');
+INSERT INTO `sys_log_text` VALUES ('55925985782005760', '55925985605844992', '查看流程步骤');
+INSERT INTO `sys_log_text` VALUES ('55925995860918272', '55925995739283456', '查看流程步骤');
+INSERT INTO `sys_log_text` VALUES ('55926003830095872', '55926003716849664', '查看流程定义');
+INSERT INTO `sys_log_text` VALUES ('55926011740553216', '55926011677638656', '查看流程步骤');
+INSERT INTO `sys_log_text` VALUES ('55926013510549504', '55926013476995072', '查看流程定义');
+INSERT INTO `sys_log_text` VALUES ('55926051418669056', '55926051049570304', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('55926054425985024', '55926054321127424', '查看字典管理');
+INSERT INTO `sys_log_text` VALUES ('55926096918478848', '55926096603906048', '查看流程定义');
+INSERT INTO `sys_log_text` VALUES ('55926179495936000', '55926179466575872', '拷贝流程定义:{流程大类=100, 院系ID字段=BDM_COLLEGE, 创建人=1, 流程小类=102, 班级ID字段=BC_ID, 是否启用=1, 系部ID字段=BDM_ID, 流程更新表名=V_AID_NATIONAL_SCHOLARSHIP, 是否允许多级回退=1, 流程版本=1.0, 添加时间=2018-08-12 23:07:07, ID=55926177663025152, 流程更新表名称字段=BS_NAME, 流程名称=资助管理-国家奖学金}');
+INSERT INTO `sys_log_text` VALUES ('55926214614843392', '55926214526763008', '查看流程步骤');
+INSERT INTO `sys_log_text` VALUES ('55926217638936576', '55926217592799232', '查看启动角色');
+INSERT INTO `sys_log_text` VALUES ('55926223016034304', '55926222969896960', '查看流程定义');
+INSERT INTO `sys_log_text` VALUES ('55926281962782720', '55926281836953600', '拷贝流程定义:{流程大类=100, 院系ID字段=BDM_COLLEGE, 创建人=1, 流程小类=104, 班级ID字段=BC_ID, 是否启用=1, 系部ID字段=BDM_ID, 流程更新表名=V_AID_NATIONAL_GRANTS, 是否允许多级回退=1, 流程版本=1.0, 添加时间=2018-08-12 23:07:07, ID=55926279777550336, 流程更新表名称字段=BS_NAME, 流程名称=资助管理-国家助学金}');
+INSERT INTO `sys_log_text` VALUES ('55926290330419200', '55926290162647040', '查看按钮管理');
+INSERT INTO `sys_log_text` VALUES ('55926291920060416', '55926291873923072', '查看菜单管理');
+INSERT INTO `sys_log_text` VALUES ('55926393606766592', '55926393569017856', '拷贝菜单:{流程大类=100, 访问URL=admin/dataGrid/, 流程小类=107, 是否是叶节点=0, 状态:0停用1启用=1, 用户类型:1管理员 2会员=1, 排序号=70, 权限编码=AID:TUITION_WAIVER, 权限名称=减免学费, 父权限ID=50751117243449344, ID=54826899775422464, 配置列表ID=54825304677416960, icon图片class=mdi mdi-chart-gantt}');
+INSERT INTO `sys_log_text` VALUES ('55926640064069632', '55926640034709504', '更新菜单,更新前:{流程大类=100, 访问URL=admin/dataGrid/, 流程小类=107, 是否是叶节点=0, 状态:0停用1启用=1, 用户类型:1管理员 2会员=1, 排序号=70, 权限编码=AID:NATIONAL_SCHOLARSHIP, 权限名称=国家奖学金, 父权限ID=50751117243449344, ID=55926391811604480, 配置列表ID=54825304677416960, icon图片class=mdi mdi-chart-gantt},更新后:{流程大类=100, 访问URL=admin/dataGrid/, 流程小类=102, 是否是叶节点=0, 用户类型:1管理员 2会员=1, 排序号=20, 权限编码=AID:NATIONAL_SCHOLARSHIP, 权限名称=国家奖学金, 父权限ID=50751117243449344, ID=55926391811604480, 配置列表ID=55923270922272768, icon图片class=mdi mdi-azure}');
+INSERT INTO `sys_log_text` VALUES ('55926690806759424', '55926690580267008', '拷贝菜单:{流程大类=100, 访问URL=admin/dataGrid/, 流程小类=102, 是否是叶节点=0, 状态:0停用1启用=1, 用户类型:1管理员 2会员=1, 排序号=20, 权限编码=AID:NATIONAL_SCHOLARSHIP, 权限名称=国家奖学金, 父权限ID=50751117243449344, ID=55926391811604480, 配置列表ID=55923270922272768, icon图片class=mdi mdi-azure}');
+INSERT INTO `sys_log_text` VALUES ('55927178247798784', '55927178214244352', '更新菜单,更新前:{流程大类=100, 访问URL=admin/dataGrid/, 流程小类=102, 是否是叶节点=0, 状态:0停用1启用=1, 用户类型:1管理员 2会员=1, 排序号=20, 权限编码=AID:NATIONAL_GRANTS, 权限名称=国家助学金, 父权限ID=50751117243449344, ID=55926689447804928, 配置列表ID=55923270922272768, icon图片class=mdi mdi-azure},更新后:{流程大类=100, 访问URL=admin/dataGrid/, 流程小类=104, 是否是叶节点=0, 用户类型:1管理员 2会员=1, 排序号=40, 权限编码=AID:NATIONAL_GRANTS, 权限名称=国家助学金, 父权限ID=50751117243449344, ID=55926689447804928, 配置列表ID=55924918046425088, icon图片class=mdi mdi-hops}');
+INSERT INTO `sys_log_text` VALUES ('55927214830518272', '55927214624997376', '查看角色管理');
+INSERT INTO `sys_log_text` VALUES ('55927269297750016', '55927269268389888', '角色:超级管理员,旧菜单:[1757509987598336, 2258969972178944, 26571410583322624, 26511186237325312, 26571551922978816, 50751117243449344, 54826899775422464, 2269941063483392, 54827926058696704, 48614229862776832, 49030149684854784, 50328019348226048, 38162771866550273, 48892279221387264, 38162771866550272, 2163861868249088, 23657888534757376, 28019952082485248, 54827925647654912, 21130604443598848, 26715728707059712, 48295058385928192, 48295058385928193, 20766815625936896, 21131205961318400, 48892124845834240, 1560059138015232, 26577844645658624, 49027088874733568, 52235902763663360, 26476504758091776, 1, 3316536806735872, 2, 26845813934129152, 3, 26714856669315072, 50338340347576320, 7, 49028146267160576, 2163592187084800, 8, 9, 54827385765232640, 49029256612675584, 48614104260149248, 54826900379402240, 49029176400805888, 52184511034687488, 1448716162564096, 3547951557246976, 49027774555357184, 2258672239509504, 50827078936821760, 54827385341607936, 38116041032728576, 53604331076714496, 52235853056966656, 33081241360138240, 38161659570683904, 48304916703215616, 48304916703215617, 38161659570683905, 13358417838080, 52294280949006336, 50827078076989440, 52184510715920384, 53389170629935104, 48667624430632960, 54464422239797248, 52259024812376064, 48673777285857280, 54464421824561152, 1451155909509120, 4103758959083520, 26577007949119488, 26579469829406720, 50341592241799168, 1846593582006272, 1427690443767808, 52294280579907584, 2910350022279168],新菜单:[1757509987598336, 2258969972178944, 26571410583322624, 26571551922978816, 26511186237325312, 54826899775422464, 50751117243449344, 2269941063483392, 54827926058696704, 55926690005647360, 48614229862776832, 49030149684854784, 50328019348226048, 48892279221387264, 38162771866550273, 38162771866550272, 23657888534757376, 2163861868249088, 28019952082485248, 54827925647654912, 21130604443598848, 26715728707059712, 48295058385928192, 48295058385928193, 20766815625936896, 21131205961318400, 55926392772100096, 48892124845834240, 26577844645658624, 1560059138015232, 49027088874733568, 52235902763663360, 26476504758091776, 55926689447804928, 3316536806735872, 1, 2, 26845813934129152, 3, 26714856669315072, 50338340347576320, 49028146267160576, 7, 2163592187084800, 8, 9, 54827385765232640, 49029256612675584, 48614104260149248, 54826900379402240, 52184511034687488, 49029176400805888, 3547951557246976, 1448716162564096, 49027774555357184, 2258672239509504, 54827385341607936, 50827078936821760, 38116041032728576, 53604331076714496, 52235853056966656, 33081241360138240, 38161659570683904, 48304916703215616, 48304916703215617, 38161659570683905, 13358417838080, 52294280949006336, 53389170629935104, 52184510715920384, 50827078076989440, 48667624430632960, 54464422239797248, 52259024812376064, 55926391811604480, 54464421824561152, 48673777285857280, 4103758959083520, 1451155909509120, 26577007949119488, 50341592241799168, 26579469829406720, 1846593582006272, 1427690443767808, 52294280579907584, 2910350022279168]');
+INSERT INTO `sys_log_text` VALUES ('55927329343406080', '55927329318240256', '角色:超级管理员,菜单名称:国家奖学金,旧按钮:,新按钮:[1, 48286450940116992, 793777245519872, 793562643955712]');
+INSERT INTO `sys_log_text` VALUES ('55927339292295168', '55927339241963520', '角色:超级管理员,菜单名称:编辑,旧按钮:,新按钮:[763206804963328]');
+INSERT INTO `sys_log_text` VALUES ('55927365104041984', '55927365062098944', '角色:超级管理员,菜单名称:国家助学金,旧按钮:,新按钮:[1, 48286450940116992, 793777245519872]');
+INSERT INTO `sys_log_text` VALUES ('55927371307417600', '55927371236114432', '角色:超级管理员,菜单名称:国家助学金,旧按钮:[1, 48286450940116992, 793777245519872],新按钮:[1, 48286450940116992, 793777245519872, 793562643955712]');
+INSERT INTO `sys_log_text` VALUES ('55927378244796416', '55927378219630592', '角色:超级管理员,菜单名称:编辑,旧按钮:,新按钮:[763206804963328]');
+INSERT INTO `sys_log_text` VALUES ('55927444749680640', '55927444720320512', '角色:学生处,旧菜单:[50827078076989440, 48892124845834240, 49027774555357184, 49027088874733568, 50827078936821760, 54827385341607936, 50751117243449344, 54826899775422464, 38116041032728576, 54464421824561152, 38161659570683904, 50338340347576320, 49028146267160576, 54827925647654912, 52294280579907584, 48295058385928192],新菜单:[50827078076989440, 48892124845834240, 49027774555357184, 49027088874733568, 54827385341607936, 50827078936821760, 54826899775422464, 55926391811604480, 50751117243449344, 55926689447804928, 38116041032728576, 54464421824561152, 50338340347576320, 38161659570683904, 49028146267160576, 54827925647654912, 52294280579907584, 48295058385928192]');
+INSERT INTO `sys_log_text` VALUES ('55927462625804288', '55927462470615040', '角色:学生处,菜单名称:国家奖学金,旧按钮:,新按钮:[48286450940116992, 52931029941354496]');
+INSERT INTO `sys_log_text` VALUES ('55927491197403136', '55927491159654400', '角色:学生处,菜单名称:国家助学金,旧按钮:,新按钮:[48286450940116992, 52931029941354496]');
+INSERT INTO `sys_log_text` VALUES ('55927537028562944', '55927536995008512', '角色:辅导员,旧菜单:[50827078076989440, 48892124845834240, 49027774555357184, 54464422239797248, 49027088874733568, 54827385341607936, 50751117243449344, 54826899775422464, 54464421824561152, 50338340347576320, 49028146267160576, 50341592241799168, 52294280579907584, 54827925647654912],新菜单:[50827078076989440, 48892124845834240, 49027774555357184, 54464422239797248, 49027088874733568, 54827385341607936, 54826899775422464, 55926391811604480, 50751117243449344, 55926689447804928, 54464421824561152, 50338340347576320, 49028146267160576, 50341592241799168, 54827925647654912, 52294280579907584]');
+INSERT INTO `sys_log_text` VALUES ('55927560302755840', '55927560273395712', '角色:辅导员,菜单名称:国家奖学金,旧按钮:,新按钮:[48286450940116992, 793777245519872, 52931029941354496, 48286237202579456]');
+INSERT INTO `sys_log_text` VALUES ('55927576039784448', '55927576014618624', '角色:辅导员,菜单名称:国家助学金,旧按钮:,新按钮:[48286450940116992, 793777245519872, 52931029941354496, 48286237202579456]');
+INSERT INTO `sys_log_text` VALUES ('55927627881381888', '55927627449368576', '查看菜单管理');
+INSERT INTO `sys_log_text` VALUES ('55928720501768192', '55928720187195392', '查看菜单管理');
+INSERT INTO `sys_log_text` VALUES ('55928839729053696', '55928839380926464', '查看综合素质测评');
+INSERT INTO `sys_log_text` VALUES ('55929091374710784', '55929091131441152', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('55929107581501440', '55929107191431168', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('55929239328784384', '55929239072931840', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('55929466039304192', '55929465837977600', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('55929651175882752', '55929651050053632', '网络异常,请联系管理员!');
+INSERT INTO `sys_log_text` VALUES ('55930249778561024', '55930249292021760', '网络异常,请联系管理员!');
+INSERT INTO `sys_log_text` VALUES ('55930502929973248', '55930502862864384', '导入国家奖学金,数据:[[Ljava.lang.String;@4f1c7bfd]');
+INSERT INTO `sys_log_text` VALUES ('55931248853385216', '55931248446537728', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('55931275164254208', '55931274828709888', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('55931378939723776', '55931378490933248', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('55931464587411456', '55931464256061440', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('55931548637069312', '55931548226027520', '检测数据异常!');
+INSERT INTO `sys_log_text` VALUES ('55931630610546688', '55931630556020736', '导入国家奖学金,数据:[[Ljava.lang.String;@2d4b662d]');
+INSERT INTO `sys_log_text` VALUES ('55931776513605632', '55931776169672704', '导出国家奖学金数据,导出列ID:55923271064879104,55923910834651136,55924067676454912,55924110890369024,55924190829608960,55924290603712512,55924333251395584,55924400020520960,55924474972733440,55924520535457792,55924600889933824,55924667126382592,过滤参数{processStatus=0, BS_NAME=, BDM_NAME=, BC_NAME=, SM_ID=55926391811604480, BS_ID_CARD=, BAF_YEAR=, ID=55923270922272768, start=0, length=-1}');
+INSERT INTO `sys_log_text` VALUES ('55932195990142976', '55932195738484736', '查看减免学费');
+INSERT INTO `sys_log_text` VALUES ('55932203338563584', '55932203267260416', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('55932233613049856', '55932233566912512', '导入国家助学金,数据:[[Ljava.lang.String;@19b795a5]');
+INSERT INTO `sys_log_text` VALUES ('55932462785626112', '55932462307475456', '查看减免学费');
+INSERT INTO `sys_log_text` VALUES ('55932472281530368', '55932472063426560', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('55932572605087744', '55932572118548480', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('55932623972728832', '55932623641378816', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('55932745632710656', '55932745418801152', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('55932855020158976', '55932854789472256', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('55932896342441984', '55932896195641344', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('55932927288016896', '55932927065718784', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('55932945449353216', '55932945227055104', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('55932983974035456', '55932983848206336', '导出国家助学金数据,导出列ID:55924918184837120,55924919229218816,55925324906496000,55925366329442304,55925419366416384,55925534198071296,55925633825374208,过滤参数{BAF_SEMESTER=, processStatus=0, BS_NAME=, BDM_NAME=, BC_NAME=, SM_ID=55926689447804928, BS_ID_CARD=, BAF_YEAR=, ID=55924918046425088, start=0, length=-1}');
+INSERT INTO `sys_log_text` VALUES ('55933491530956800', '55933491128303616', '导出国家助学金数据,导出列ID:55924918184837120,55924918197420032,55924918314860544,55924918755262464,55924918767845376,55925212448817152,55924919229218816,55925324906496000,55925366329442304,55925419366416384,55925534198071296,55925633825374208,55924922270089216,过滤参数{BAF_SEMESTER=, processStatus=0, BS_NAME=, BDM_NAME=, BC_NAME=, SM_ID=55926689447804928, BS_ID_CARD=, BAF_YEAR=, ID=55924918046425088, start=0, length=-1}');
 
 -- ----------------------------
 -- Table structure for sys_long_text
@@ -6053,6 +6485,10 @@ INSERT INTO `sys_menu` VALUES ('54827385341607936', '54825876130365440', '困难
 INSERT INTO `sys_menu` VALUES ('54827385765232640', '', '编辑', '54827385341607936', 'AID:JOBSEEKER_SUPPORT_UPDATE', '', '', '', '', '', '0', '', '1', 1, 1);
 INSERT INTO `sys_menu` VALUES ('54827925647654912', '54826134583377920', '应急求助', '50751117243449344', 'AID:EMERGENCY_HELP', 'admin/dataGrid/', '', 'mdi mdi-human-male-female', '100', '113', '0', '', '1', 130, 1);
 INSERT INTO `sys_menu` VALUES ('54827926058696704', '', '编辑', '54827925647654912', 'AID:EMERGENCY_HELP_UPDATE', '', '', '', '', '', '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('55926391811604480', '55923270922272768', '国家奖学金', '50751117243449344', 'AID:NATIONAL_SCHOLARSHIP', 'admin/dataGrid/', '', 'mdi mdi-azure', '100', '102', '0', '', '1', 20, 1);
+INSERT INTO `sys_menu` VALUES ('55926392772100096', '', '编辑', '55926391811604480', 'AID:NATIONAL_SCHOLARSHIP_UPDATE', '', '', '', '', '', '0', '', '1', 1, 1);
+INSERT INTO `sys_menu` VALUES ('55926689447804928', '55924918046425088', '国家助学金', '50751117243449344', 'AID:NATIONAL_GRANTS', 'admin/dataGrid/', '', 'mdi mdi-hops', '100', '104', '0', '', '1', 40, 1);
+INSERT INTO `sys_menu` VALUES ('55926690005647360', '', '编辑', '55926689447804928', 'AID:NATIONAL_GRANTS_UPDATE', '', '', '', '', '', '0', '', '1', 1, 1);
 INSERT INTO `sys_menu` VALUES ('7', '2244279544053760', '验证管理', '1', 'SYSTEM:VALIDATE', 'admin/dataGrid/', NULL, 'mdi mdi-security', NULL, NULL, '0', NULL, '1', 3, 1);
 INSERT INTO `sys_menu` VALUES ('8', '1', '配置列表管理', '1', 'SYSTEM:CONFIGURE', 'admin/dataGrid/', NULL, 'mdi mdi-view-list', NULL, NULL, '0', NULL, '1', 4, 1);
 INSERT INTO `sys_menu` VALUES ('9', '3', '角色管理', '1', 'SYSTEM:ROLE', 'admin/dataGrid/', NULL, 'mdi mdi-account-settings-variant', NULL, NULL, '0', '', '1', 6, 1);
@@ -6283,6 +6719,20 @@ INSERT INTO `sys_menu_button` VALUES ('55424208494133248', '49027774555357184', 
 INSERT INTO `sys_menu_button` VALUES ('55424224298270720', '49028146267160576', '48286450940116992');
 INSERT INTO `sys_menu_button` VALUES ('55424253478043648', '50338340347576320', '48286450940116992');
 INSERT INTO `sys_menu_button` VALUES ('55424274776719360', '48892124845834240', '48286450940116992');
+INSERT INTO `sys_menu_button` VALUES ('55926392050679808', '55926391811604480', '1');
+INSERT INTO `sys_menu_button` VALUES ('55926392067457024', '55926391811604480', '48286237202579456');
+INSERT INTO `sys_menu_button` VALUES ('55926392084234240', '55926391811604480', '48286450940116992');
+INSERT INTO `sys_menu_button` VALUES ('55926392101011456', '55926391811604480', '52931029941354496');
+INSERT INTO `sys_menu_button` VALUES ('55926392491081728', '55926391811604480', '793562643955712');
+INSERT INTO `sys_menu_button` VALUES ('55926392507858944', '55926391811604480', '793777245519872');
+INSERT INTO `sys_menu_button` VALUES ('55926393082478592', '55926392772100096', '763206804963328');
+INSERT INTO `sys_menu_button` VALUES ('55926689514913792', '55926689447804928', '1');
+INSERT INTO `sys_menu_button` VALUES ('55926689590411264', '55926689447804928', '48286237202579456');
+INSERT INTO `sys_menu_button` VALUES ('55926689602994176', '55926689447804928', '48286450940116992');
+INSERT INTO `sys_menu_button` VALUES ('55926689615577088', '55926689447804928', '52931029941354496');
+INSERT INTO `sys_menu_button` VALUES ('55926689632354304', '55926689447804928', '793562643955712');
+INSERT INTO `sys_menu_button` VALUES ('55926689913372672', '55926689447804928', '793777245519872');
+INSERT INTO `sys_menu_button` VALUES ('55926690450243584', '55926690005647360', '763206804963328');
 
 -- ----------------------------
 -- Table structure for sys_operator
@@ -6417,6 +6867,8 @@ INSERT INTO `sys_process_definition` VALUES ('54464045612269568', '1', '', '100'
 INSERT INTO `sys_process_definition` VALUES ('54826591594741760', '1', '', '100', '107', '资助管理-减免学费', '1.0', 'V_AID_TUITION_WAIVER', 'BS_NAME', 'BDM_COLLEGE', 'BDM_ID', 'BC_ID', '', '2018-08-12 23:07:07', 1, 1);
 INSERT INTO `sys_process_definition` VALUES ('54826696930492416', '1', '', '100', '111', '资助管理-困难毕业生就业补助', '1.0', 'V_AID_JOBSEEKER_SUPPORT', 'BS_NAME', 'BDM_COLLEGE', 'BDM_ID', 'BC_ID', '', '2018-08-12 23:07:07', 1, 1);
 INSERT INTO `sys_process_definition` VALUES ('54826783379292160', '1', '', '100', '113', '资助管理-应急求助', '1.0', 'V_AID_EMERGENCY_HELP', 'BS_NAME', 'BDM_COLLEGE', 'BDM_ID', 'BC_ID', '', '2018-08-12 23:07:07', 1, 1);
+INSERT INTO `sys_process_definition` VALUES ('55926177663025152', '1', '', '100', '102', '资助管理-国家奖学金', '1.0', 'V_AID_NATIONAL_SCHOLARSHIP', 'BS_NAME', 'BDM_COLLEGE', 'BDM_ID', 'BC_ID', '', '2018-08-12 23:07:07', 1, 1);
+INSERT INTO `sys_process_definition` VALUES ('55926279777550336', '1', '', '100', '104', '资助管理-国家助学金', '1.0', 'V_AID_NATIONAL_GRANTS', 'BS_NAME', 'BDM_COLLEGE', 'BDM_ID', 'BC_ID', '', '2018-08-12 23:07:07', 1, 1);
 
 -- ----------------------------
 -- Table structure for sys_process_log
@@ -6599,6 +7051,9 @@ INSERT INTO `sys_process_schedule` VALUES ('54831883854282752', '486016518748897
 INSERT INTO `sys_process_schedule` VALUES ('54832017690329088', '48601651874889729', '51930103373889536', '54826591594741760', NULL, '54832017291870208', 'student_test2', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `sys_process_schedule` VALUES ('54832265850519552', '48601651874889729', '51930103373889536', '54826696930492416', NULL, '54832265422700544', 'student_test2', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `sys_process_schedule` VALUES ('54832741979521024', '48601651874889729', '51930103373889536', '54826783379292160', NULL, '54832741484593152', 'student_test2', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `sys_process_schedule` VALUES ('55930502435045376', '48601651874889729', '48944951878221825', '55926177663025152', NULL, '55930435980492800', 'student_test', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `sys_process_schedule` VALUES ('55931630077870080', '48601651874889729', '48944951878221825', '55926177663025152', NULL, '55931629410975744', 'student_test', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+INSERT INTO `sys_process_schedule` VALUES ('55932233017458688', '48601651874889729', '48944951878221825', '55926279777550336', NULL, '55932232270872576', 'student_test', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for sys_process_schedule_cancel
@@ -6656,6 +7111,8 @@ INSERT INTO `sys_process_start` VALUES ('54464046702788608', '54464045612269568'
 INSERT INTO `sys_process_start` VALUES ('54826592622346240', '54826591594741760', '48309528801837056');
 INSERT INTO `sys_process_start` VALUES ('54826697882599424', '54826696930492416', '48309528801837056');
 INSERT INTO `sys_process_start` VALUES ('54826784323010560', '54826783379292160', '48309528801837056');
+INSERT INTO `sys_process_start` VALUES ('55926178900344832', '55926177663025152', '48309528801837056');
+INSERT INTO `sys_process_start` VALUES ('55926281094561792', '55926279777550336', '48309528801837056');
 
 -- ----------------------------
 -- Table structure for sys_process_step
@@ -6715,6 +7172,14 @@ INSERT INTO `sys_process_step` VALUES ('54826783463178240', '54826783379292160',
 INSERT INTO `sys_process_step` VALUES ('54826783555452928', '54826783379292160', '48309996873580544', '系部管理员', 2, 1, 51, 0, '', '', 1, 0, 0, 0);
 INSERT INTO `sys_process_step` VALUES ('54826783568035840', '54826783379292160', '48307839919194112', '学生处', 3, 1, 99, 0, '', '学生处', 1, 0, 0, 0);
 INSERT INTO `sys_process_step` VALUES ('54826783907774464', '54826783379292160', '', '完成', 4, 1, 999, 0, '', '', 0, 0, 0, 0);
+INSERT INTO `sys_process_step` VALUES ('55926177939849216', '55926177663025152', '48309528801837056', '启动人员', 1, 1, 50, 0, '', '系部人员', 1, 0, 0, 0);
+INSERT INTO `sys_process_step` VALUES ('55926178090844160', '55926177663025152', '48309996873580544', '系部管理员', 2, 1, 51, 0, '', '', 1, 0, 0, 0);
+INSERT INTO `sys_process_step` VALUES ('55926178371862528', '55926177663025152', '48307839919194112', '学生处', 3, 1, 99, 0, '', '学生处', 1, 0, 0, 0);
+INSERT INTO `sys_process_step` VALUES ('55926178384445440', '55926177663025152', '', '完成', 4, 1, 999, 0, '', '', 0, 0, 0, 0);
+INSERT INTO `sys_process_step` VALUES ('55926279823687680', '55926279777550336', '48309528801837056', '启动人员', 1, 1, 50, 0, '', '系部人员', 1, 0, 0, 0);
+INSERT INTO `sys_process_step` VALUES ('55926279857242112', '55926279777550336', '48309996873580544', '系部管理员', 2, 1, 51, 0, '', '', 1, 0, 0, 0);
+INSERT INTO `sys_process_step` VALUES ('55926280473804800', '55926279777550336', '48307839919194112', '学生处', 3, 1, 99, 0, '', '学生处', 1, 0, 0, 0);
+INSERT INTO `sys_process_step` VALUES ('55926280490582016', '55926279777550336', '', '完成', 4, 1, 999, 0, '', '', 0, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -7027,6 +7492,28 @@ INSERT INTO `sys_role_button` VALUES ('55425007265775616', '52504276026523648', 
 INSERT INTO `sys_role_button` VALUES ('55425015247536128', '52504276089438208', '48286450940116992');
 INSERT INTO `sys_role_button` VALUES ('55425027125805056', '54828779419205632', '48286450940116992');
 INSERT INTO `sys_role_button` VALUES ('55425035434721280', '54828779444371456', '48286450940116992');
+INSERT INTO `sys_role_button` VALUES ('55927328810729472', '55927269138366464', '1');
+INSERT INTO `sys_role_button` VALUES ('55927328911392768', '55927269138366464', '48286450940116992');
+INSERT INTO `sys_role_button` VALUES ('55927328936558592', '55927269138366464', '793777245519872');
+INSERT INTO `sys_role_button` VALUES ('55927328944947200', '55927269138366464', '793562643955712');
+INSERT INTO `sys_role_button` VALUES ('55927339099357184', '55927269113200640', '763206804963328');
+INSERT INTO `sys_role_button` VALUES ('55927364890132480', '55927269121589248', '1');
+INSERT INTO `sys_role_button` VALUES ('55927364915298304', '55927269121589248', '48286450940116992');
+INSERT INTO `sys_role_button` VALUES ('55927364944658432', '55927269121589248', '793777245519872');
+INSERT INTO `sys_role_button` VALUES ('55927371055759360', '55927269121589248', '793562643955712');
+INSERT INTO `sys_role_button` VALUES ('55927378051858432', '55927269062868992', '763206804963328');
+INSERT INTO `sys_role_button` VALUES ('55927462328008704', '55927444615462912', '48286450940116992');
+INSERT INTO `sys_role_button` VALUES ('55927462361563136', '55927444615462912', '52931029941354496');
+INSERT INTO `sys_role_button` VALUES ('55927491038019584', '55927444632240128', '48286450940116992');
+INSERT INTO `sys_role_button` VALUES ('55927491092545536', '55927444632240128', '52931029941354496');
+INSERT INTO `sys_role_button` VALUES ('55927560030126080', '55927536504274944', '48286450940116992');
+INSERT INTO `sys_role_button` VALUES ('55927560055291904', '55927536504274944', '793777245519872');
+INSERT INTO `sys_role_button` VALUES ('55927560076263424', '55927536504274944', '52931029941354496');
+INSERT INTO `sys_role_button` VALUES ('55927560088846336', '55927536504274944', '48286237202579456');
+INSERT INTO `sys_role_button` VALUES ('55927575830069248', '55927536529440768', '48286450940116992');
+INSERT INTO `sys_role_button` VALUES ('55927575872012288', '55927536529440768', '793777245519872');
+INSERT INTO `sys_role_button` VALUES ('55927575884595200', '55927536529440768', '52931029941354496');
+INSERT INTO `sys_role_button` VALUES ('55927575892983808', '55927536529440768', '48286237202579456');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -7196,6 +7683,14 @@ INSERT INTO `sys_role_menu` VALUES ('55425087788023808', '48892526509162496', '4
 INSERT INTO `sys_role_menu` VALUES ('55425087800606720', '48892526509162496', '49028146267160576');
 INSERT INTO `sys_role_menu` VALUES ('55425087808995328', '48892526509162496', '49027774555357184');
 INSERT INTO `sys_role_menu` VALUES ('55425087825772544', '48892526509162496', '49027088874733568');
+INSERT INTO `sys_role_menu` VALUES ('55927269062868992', '1', '55926690005647360');
+INSERT INTO `sys_role_menu` VALUES ('55927269113200640', '1', '55926392772100096');
+INSERT INTO `sys_role_menu` VALUES ('55927269121589248', '1', '55926689447804928');
+INSERT INTO `sys_role_menu` VALUES ('55927269138366464', '1', '55926391811604480');
+INSERT INTO `sys_role_menu` VALUES ('55927444615462912', '48307839919194112', '55926391811604480');
+INSERT INTO `sys_role_menu` VALUES ('55927444632240128', '48307839919194112', '55926689447804928');
+INSERT INTO `sys_role_menu` VALUES ('55927536504274944', '48309528801837056', '55926391811604480');
+INSERT INTO `sys_role_menu` VALUES ('55927536529440768', '48309528801837056', '55926689447804928');
 
 -- ----------------------------
 -- Table structure for sys_validate
@@ -7244,6 +7739,8 @@ INSERT INTO `sys_validate` VALUES ('48886453991636992', 'BUS_STUDENT', 1);
 INSERT INTO `sys_validate` VALUES ('49382295680843776', 'BUS_STUDENT_ATTENDANCE', 1);
 INSERT INTO `sys_validate` VALUES ('50335819809947648', 'BUS_STUDENT_COMPREHENSIVE', 1);
 INSERT INTO `sys_validate` VALUES ('50842353690214400', 'BUS_AID_FINANCIALLY', 1);
+INSERT INTO `sys_validate` VALUES ('55919078191136768', 'BUS_AID_NATIONAL_SCHOLARSHIP', 1);
+INSERT INTO `sys_validate` VALUES ('55920842806132736', 'BUS_AID_NATIONAL_GRANTS', 1);
 
 -- ----------------------------
 -- Table structure for sys_validate_field
@@ -7447,6 +7944,20 @@ INSERT INTO `sys_validate_field` VALUES ('50842975307038720', '50842353690214400
 INSERT INTO `sys_validate_field` VALUES ('50843059478331392', '50842353690214400', '减免额度', 'BAF_REDUCTION_QUOTA', '1', '', '', '2521757806231552', 1);
 INSERT INTO `sys_validate_field` VALUES ('50843107717021696', '50842353690214400', '困难补助金额', 'BAF_DIFFICULTY_QUOTA', '1', '', '', '2521757806231552', 1);
 INSERT INTO `sys_validate_field` VALUES ('55012379414495232', '2529924065787904', '是否固定列', 'SCC_IS_FIXED', '1', '', '5', '', 1);
+INSERT INTO `sys_validate_field` VALUES ('55919211960074240', '55919078191136768', '成绩排名总人数', 'BANS_SCORE_RANK_TOTAL', '1', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55919273662480384', '55919078191136768', '成绩排名名次', 'BANS_SCORE_RANK', '1', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55919333846548480', '55919078191136768', '必修课及格门数', 'BANS_REQUIRED_COURSE_PASS_NUMBER', '1', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55919392805879808', '55919078191136768', '必修课门数', 'BANS_REQUIRED_COURSE_NUMBER', '1', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55919441765990400', '55919078191136768', '是否实行综合考评排名', 'BANS_IS_COMPREHENSIVE_RANK', '1', '', '', '', 1);
+INSERT INTO `sys_validate_field` VALUES ('55919499303452672', '55919078191136768', '综合考评排名名次', 'BANS_COMPREHENSIVE_RANK', '0', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55919556211769344', '55919078191136768', '综合考评排名总人数', 'BANS_COMPREHENSIVE_RANK_NUMBER', '0', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55919615615696896', '55919078191136768', '实发金额', 'BANS_ACTUAL_AMOUNT', '1', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55919668375846912', '55919078191136768', '发放日期', 'BANS_ISSUANCE_TIME', '1', '', '', '55916414480941056', 1);
+INSERT INTO `sys_validate_field` VALUES ('55920939270930432', '55920842806132736', '资助标准', 'BANG_FUNDING_STANDARDS', '1', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55920991968165888', '55920842806132736', '应发金额', 'BANG_AMOUNT_PAYABLE', '1', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55921043759431680', '55920842806132736', '实发金额', 'BANG_ACTUAL_AMOUNT', '1', '', '10', '2521757806231552', 1);
+INSERT INTO `sys_validate_field` VALUES ('55921212219457536', '55920842806132736', '申请理由', 'BANG_APPLY_REASONS', '1', '', '100', '', 1);
+INSERT INTO `sys_validate_field` VALUES ('55921263209611264', '55920842806132736', '发放日期', 'BANG_ISSUANCE_TIME', '1', '', '', '55916414480941056', 1);
 
 -- ----------------------------
 -- Table structure for sys_validate_group
@@ -7523,6 +8034,7 @@ INSERT INTO `sys_validate_regex` VALUES ('2521757806231552', '正浮点数', '^(
 INSERT INTO `sys_validate_regex` VALUES ('2522924040847360', '英文字母', '^[a-zA-Z]+$', '只能输入a-z的英文字母!', '1');
 INSERT INTO `sys_validate_regex` VALUES ('2523171857104896', '匹配中文，英文字母和数字及_', '^[\\u4e00-\\u9fa5_a-zA-Z0-9]+$', '只能输入中文、英文字母、数字、_', '1');
 INSERT INTO `sys_validate_regex` VALUES ('26504926733533184', '年份', '^(19\\d\\d|20\\d\\d|2100|20\\d\\d-20\\d\\d)$', '请输入正确的年份!', '1');
+INSERT INTO `sys_validate_regex` VALUES ('55916414480941056', '年月日日期(无下划线)', '\\d{4}(\\\\/|.)\\d{1,2}\\1\\d{1,2}', '请输入正确的日期(如19700101)!', '1');
 
 -- ----------------------------
 -- Table structure for sys_value_record
@@ -8669,6 +9181,80 @@ INSERT INTO `sys_value_record` VALUES ('55016335876292608', '1', 'SYS_BUTTON', '
 INSERT INTO `sys_value_record` VALUES ('55021019886256128', '1', 'SYS_CONFIGURE_COLUMN', '52235707783053312', '{\"SCC_NAME\":\"事件\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"SL_EVENT\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"52235707783053312\",\"SC_ID\":\"52235707715944448\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":5}', '{\"SCC_NAME\":\"事件\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"1\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"SL_EVENT\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"52235707783053312\",\"SC_ID\":\"52235707715944448\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"5\"}', '2018-08-24 12:07:42', 2);
 INSERT INTO `sys_value_record` VALUES ('55021414347964416', '1', 'SYS_CONFIGURE_COLUMN', '52235707783053312', '{\"SCC_NAME\":\"事件\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"1\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"SL_EVENT\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"52235707783053312\",\"SC_ID\":\"52235707715944448\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":5}', '{\"SCC_NAME\":\"事件\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"SL_EVENT\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"52235707783053312\",\"SC_ID\":\"52235707715944448\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"5\"}', '2018-08-24 12:09:16', 2);
 INSERT INTO `sys_value_record` VALUES ('55428139668471808', '1', 'SYS_CONFIGURE_COLUMN', '49383601019551744', '{\"SCC_NAME\":\"旷节数\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BSA_ABSENTEEISM\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"49383601019551744\",\"SC_ID\":\"49382988399509504\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":50}', '{\"SCC_NAME\":\"旷课节数\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BSA_ABSENTEEISM\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"49383601019551744\",\"SC_ID\":\"49382988399509504\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"50\"}', '2018-08-25 15:05:27', 2);
+INSERT INTO `sys_value_record` VALUES ('55916414585798656', '1', 'SYS_VALIDATE_REGEX', '55916414480941056', NULL, '{\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_VALIDATE_REGEX\",\"ID\":\"55916414480941056\",\"SVR_REGEX\":\"\\\\d{4}(\\\\\\\\/|.)\\\\d{1,2}\\\\1\\\\d{1,2}\",\"SVR_NAME\":\"年月日日期(无下划线)\",\"SVR_REGEX_MESSAGE\":\"1\"}', '2018-08-26 23:25:41', 1);
+INSERT INTO `sys_value_record` VALUES ('55916456440758272', '1', 'SYS_VALIDATE_REGEX', '55916414480941056', '{\"SVR_REGEX\":\"\\\\d{4}(\\\\\\\\/|.)\\\\d{1,2}\\\\1\\\\d{1,2}\",\"SVR_REGEX_MESSAGE\":\"1\",\"ID\":\"55916414480941056\",\"SVR_NAME\":\"年月日日期(无下划线)\"}', '{\"SVR_REGEX\":\"\\\\d{4}(\\\\\\\\/|.)\\\\d{1,2}\\\\1\\\\d{1,2}\",\"SVR_REGEX_MESSAGE\":\"请输入正确的日期(如19700101)!\",\"ID\":\"55916414480941056\",\"SVR_NAME\":\"年月日日期(无下划线)\"}', '2018-08-26 23:25:51', 2);
+INSERT INTO `sys_value_record` VALUES ('55919078241468416', '1', 'SYS_VALIDATE', '55919078191136768', NULL, '{\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_VALIDATE\",\"ID\":\"55919078191136768\",\"SV_TABLE\":\"BUS_AID_NATIONAL_SCHOLARSHIP\"}', '2018-08-26 23:36:16', 1);
+INSERT INTO `sys_value_record` VALUES ('55919212085903360', '1', 'sys_validate_field', '55919211960074240', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919211960074240\",\"SVF_NAME\":\"成绩排名总人数\",\"SVF_FIELD\":\"BANS_SCORE_RANK_TOTAL\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:36:48', 1);
+INSERT INTO `sys_value_record` VALUES ('55919273725394944', '1', 'sys_validate_field', '55919273662480384', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919273662480384\",\"SVF_NAME\":\"成绩排名名次\",\"SVF_FIELD\":\"BANS_SCORE_RANK\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:37:03', 1);
+INSERT INTO `sys_value_record` VALUES ('55919333943017472', '1', 'sys_validate_field', '55919333846548480', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919333846548480\",\"SVF_NAME\":\"必修课及格门数\",\"SVF_FIELD\":\"BANS_REQUIRED_COURSE_PASS_NUMBER\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:37:17', 1);
+INSERT INTO `sys_value_record` VALUES ('55919392885571584', '1', 'sys_validate_field', '55919392805879808', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919392805879808\",\"SVF_NAME\":\"必修课门数\",\"SVF_FIELD\":\"BANS_REQUIRED_COURSE_NUMBER\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:37:31', 1);
+INSERT INTO `sys_value_record` VALUES ('55919441879236608', '1', 'sys_validate_field', '55919441765990400', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919441765990400\",\"SVF_NAME\":\"是否实行综合考评排名\",\"SVF_FIELD\":\"BANS_IS_COMPREHENSIVE_RANK\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"\"}', '2018-08-26 23:37:43', 1);
+INSERT INTO `sys_value_record` VALUES ('55919499370561536', '1', 'sys_validate_field', '55919499303452672', NULL, '{\"SVF_IS_REQUIRED\":\"0\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919499303452672\",\"SVF_NAME\":\"综合考评排名名次\",\"SVF_FIELD\":\"BANS_COMPREHENSIVE_RANK\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:37:56', 1);
+INSERT INTO `sys_value_record` VALUES ('55919556291461120', '1', 'sys_validate_field', '55919556211769344', NULL, '{\"SVF_IS_REQUIRED\":\"0\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919556211769344\",\"SVF_NAME\":\"综合考评排名总人数\",\"SVF_FIELD\":\"BANS_COMPREHENSIVE_RANK_NUMBER\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:38:10', 1);
+INSERT INTO `sys_value_record` VALUES ('55919615687000064', '1', 'sys_validate_field', '55919615615696896', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919615615696896\",\"SVF_NAME\":\"实发金额\",\"SVF_FIELD\":\"BANS_ACTUAL_AMOUNT\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:38:24', 1);
+INSERT INTO `sys_value_record` VALUES ('55919669046935552', '1', 'sys_validate_field', '55919668375846912', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919668375846912\",\"SVF_NAME\":\"发放日期\",\"SVF_FIELD\":\"BANS_ISSUANCE_TIME\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"55916414480941056\"}', '2018-08-26 23:38:37', 1);
+INSERT INTO `sys_value_record` VALUES ('55920842881630208', '1', 'SYS_VALIDATE', '55920842806132736', NULL, '{\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_VALIDATE\",\"ID\":\"55920842806132736\",\"SV_TABLE\":\"BUS_AID_NATIONAL_GRANTS\"}', '2018-08-26 23:43:17', 1);
+INSERT INTO `sys_value_record` VALUES ('55920939308679168', '1', 'sys_validate_field', '55920939270930432', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"10\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55920939270930432\",\"SVF_NAME\":\"资助标准\",\"SVF_FIELD\":\"BANG_FUNDING_STANDARDS\",\"SV_ID\":\"55920842806132736\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:43:40', 1);
+INSERT INTO `sys_value_record` VALUES ('55920992039469056', '1', 'sys_validate_field', '55920991968165888', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"10\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55920991968165888\",\"SVF_NAME\":\"应发金额\",\"SVF_FIELD\":\"BANG_AMOUNT_PAYABLE\",\"SV_ID\":\"55920842806132736\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:43:52', 1);
+INSERT INTO `sys_value_record` VALUES ('55921043830734848', '1', 'sys_validate_field', '55921043759431680', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"10\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55921043759431680\",\"SVF_NAME\":\"实发金额\",\"SVF_FIELD\":\"BANG_ACTUAL_AMOUNT\",\"SV_ID\":\"55920842806132736\",\"SVR_ID\":\"2521757806231552\"}', '2018-08-26 23:44:05', 1);
+INSERT INTO `sys_value_record` VALUES ('55921212303343616', '1', 'sys_validate_field', '55921212219457536', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"100\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55921212219457536\",\"SVF_NAME\":\"申请理由\",\"SVF_FIELD\":\"BANG_APPLY_REASONS\",\"SV_ID\":\"55920842806132736\",\"SVR_ID\":\"\"}', '2018-08-26 23:44:45', 1);
+INSERT INTO `sys_value_record` VALUES ('55921263352217600', '1', 'sys_validate_field', '55921263209611264', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"sys_validate_field\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55921263209611264\",\"SVF_NAME\":\"发放日期\",\"SVF_FIELD\":\"BANG_ISSUANCE_TIME\",\"SV_ID\":\"55920842806132736\",\"SVR_ID\":\"55916414480941056\"}', '2018-08-26 23:44:57', 1);
+INSERT INTO `sys_value_record` VALUES ('55921299511312384', '1', 'sys_validate_field', '55919211960074240', '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919211960074240\",\"SVF_NAME\":\"成绩排名总人数\",\"SVF_FIELD\":\"BANS_SCORE_RANK_TOTAL\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '{\"SVF_MIN_LENGTH\":\"\",\"SVF_NAME\":\"成绩排名总人数\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\",\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"10\",\"ID\":\"55919211960074240\",\"SVF_FIELD\":\"BANS_SCORE_RANK_TOTAL\"}', '2018-08-26 23:45:06', 2);
+INSERT INTO `sys_value_record` VALUES ('55921309300817920', '1', 'sys_validate_field', '55919273662480384', '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919273662480384\",\"SVF_NAME\":\"成绩排名名次\",\"SVF_FIELD\":\"BANS_SCORE_RANK\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '{\"SVF_MIN_LENGTH\":\"\",\"SVF_NAME\":\"成绩排名名次\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\",\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"10\",\"ID\":\"55919273662480384\",\"SVF_FIELD\":\"BANS_SCORE_RANK\"}', '2018-08-26 23:45:08', 2);
+INSERT INTO `sys_value_record` VALUES ('55921318188548096', '1', 'sys_validate_field', '55919333846548480', '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919333846548480\",\"SVF_NAME\":\"必修课及格门数\",\"SVF_FIELD\":\"BANS_REQUIRED_COURSE_PASS_NUMBER\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '{\"SVF_MIN_LENGTH\":\"\",\"SVF_NAME\":\"必修课及格门数\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\",\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"10\",\"ID\":\"55919333846548480\",\"SVF_FIELD\":\"BANS_REQUIRED_COURSE_PASS_NUMBER\"}', '2018-08-26 23:45:10', 2);
+INSERT INTO `sys_value_record` VALUES ('55921328884023296', '1', 'sys_validate_field', '55919392805879808', '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919392805879808\",\"SVF_NAME\":\"必修课门数\",\"SVF_FIELD\":\"BANS_REQUIRED_COURSE_NUMBER\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '{\"SVF_MIN_LENGTH\":\"\",\"SVF_NAME\":\"必修课门数\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\",\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"10\",\"ID\":\"55919392805879808\",\"SVF_FIELD\":\"BANS_REQUIRED_COURSE_NUMBER\"}', '2018-08-26 23:45:13', 2);
+INSERT INTO `sys_value_record` VALUES ('55921355048091648', '1', 'sys_validate_field', '55919499303452672', '{\"SVF_IS_REQUIRED\":\"0\",\"SVF_MAX_LENGTH\":\"\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919499303452672\",\"SVF_NAME\":\"综合考评排名名次\",\"SVF_FIELD\":\"BANS_COMPREHENSIVE_RANK\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '{\"SVF_MIN_LENGTH\":\"\",\"SVF_NAME\":\"综合考评排名名次\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\",\"SVF_IS_REQUIRED\":\"0\",\"SVF_MAX_LENGTH\":\"10\",\"ID\":\"55919499303452672\",\"SVF_FIELD\":\"BANS_COMPREHENSIVE_RANK\"}', '2018-08-26 23:45:19', 2);
+INSERT INTO `sys_value_record` VALUES ('55921364686602240', '1', 'sys_validate_field', '55919556211769344', '{\"SVF_IS_REQUIRED\":\"0\",\"SVF_MAX_LENGTH\":\"\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919556211769344\",\"SVF_NAME\":\"综合考评排名总人数\",\"SVF_FIELD\":\"BANS_COMPREHENSIVE_RANK_NUMBER\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '{\"SVF_MIN_LENGTH\":\"\",\"SVF_NAME\":\"综合考评排名总人数\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\",\"SVF_IS_REQUIRED\":\"0\",\"SVF_MAX_LENGTH\":\"10\",\"ID\":\"55919556211769344\",\"SVF_FIELD\":\"BANS_COMPREHENSIVE_RANK_NUMBER\"}', '2018-08-26 23:45:21', 2);
+INSERT INTO `sys_value_record` VALUES ('55921380801118208', '1', 'sys_validate_field', '55919615615696896', '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"SVF_MIN_LENGTH\":\"\",\"ID\":\"55919615615696896\",\"SVF_NAME\":\"实发金额\",\"SVF_FIELD\":\"BANS_ACTUAL_AMOUNT\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\"}', '{\"SVF_MIN_LENGTH\":\"\",\"SVF_NAME\":\"实发金额\",\"SV_ID\":\"55919078191136768\",\"SVR_ID\":\"2521757806231552\",\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"10\",\"ID\":\"55919615615696896\",\"SVF_FIELD\":\"BANS_ACTUAL_AMOUNT\"}', '2018-08-26 23:45:25', 2);
+INSERT INTO `sys_value_record` VALUES ('55922993896882176', '1', 'SYS_DICT_INFO', '55922993825579008', NULL, '{\"SDI_CODE\":\"102\",\"SVR_TABLE_NAME\":\"SYS_DICT_INFO\",\"SDI_REQUIRED\":\"0\",\"SDI_ORDER\":\"2\",\"SDI_REMARK\":\"\",\"SDI_NAME\":\"国家奖学金\",\"SDI_PARENTID\":\"50802464470859776\",\"IS_STATUS\":1,\"SDT_CODE\":\"SYS_PROCESS_TYPE\",\"SDI_INNERCODE\":\"100.102\",\"ID\":\"55922993825579008\",\"SDT_ID\":\"9\"}', '2018-08-26 23:51:50', 1);
+INSERT INTO `sys_value_record` VALUES ('55923060317880320', '1', 'SYS_DICT_INFO', '55923060267548672', NULL, '{\"SDI_CODE\":\"104\",\"SVR_TABLE_NAME\":\"SYS_DICT_INFO\",\"SDI_REQUIRED\":\"0\",\"SDI_ORDER\":\"4\",\"SDI_REMARK\":\"\",\"SDI_NAME\":\"国家助学金\",\"SDI_PARENTID\":\"50802464470859776\",\"IS_STATUS\":1,\"SDT_CODE\":\"SYS_PROCESS_TYPE\",\"SDI_INNERCODE\":\"100.104\",\"ID\":\"55923060267548672\",\"SDT_ID\":\"9\"}', '2018-08-26 23:52:05', 1);
+INSERT INTO `sys_value_record` VALUES ('55923445921218560', '1', 'SYS_CONFIGURE_COLUMN', '55923272415444992', '{\"SCC_NAME\":\"学期\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BAF_SEMESTER\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55923272415444992\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"BUS_SEMESTER\",\"SCC_ORDER\":36}', NULL, '2018-08-26 23:53:37', 3);
+INSERT INTO `sys_value_record` VALUES ('55923474312462336', '1', 'SYS_CONFIGURE_COLUMN', '55923272960704512', '{\"SCC_NAME\":\"补助金额\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BAF_DIFFICULTY_QUOTA\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55923272960704512\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":45}', NULL, '2018-08-26 23:53:44', 3);
+INSERT INTO `sys_value_record` VALUES ('55923483296661504', '1', 'SYS_CONFIGURE_COLUMN', '55923273472409600', '{\"SCC_NAME\":\"备注\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"left\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"150px\",\"SCC_FIELD\":\"BUS_REMARKS\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55923273472409600\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":50}', NULL, '2018-08-26 23:53:46', 3);
+INSERT INTO `sys_value_record` VALUES ('55923530188980224', '1', 'SYS_CONFIGURE_COLUMN', '55923273497575424', '{\"SCC_NAME\":\"审核状态\",\"SCC_FUNC\":\"processLogFunc(targets, field);\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"PROCESS_STATUS_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55923273497575424\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":75}', '{\"SCC_NAME\":\"审核状态\",\"SCC_FUNC\":\"processLogFunc(targets, field);\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"PROCESS_STATUS_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55923273497575424\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"175\"}', '2018-08-26 23:53:58', 2);
+INSERT INTO `sys_value_record` VALUES ('55923553098268672', '1', 'SYS_CONFIGURE_COLUMN', '55923273946365952', '{\"SCC_NAME\":\"操作\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"200px\",\"SCC_FIELD\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"1\",\"ID\":\"55923273946365952\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":80}', '{\"SCC_NAME\":\"操作\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"200px\",\"SCC_FIELD\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"1\",\"ID\":\"55923273946365952\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"180\"}', '2018-08-26 23:54:03', 2);
+INSERT INTO `sys_value_record` VALUES ('55923584127729664', '1', 'SYS_CONFIGURE_COLUMN', '55923272432222208', '{\"SCC_NAME\":\"困难类型\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BAF_AID_TYPE\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55923272432222208\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"BUS_DIFFICULTY_TYPE\",\"SCC_ORDER\":40}', NULL, '2018-08-26 23:54:10', 3);
+INSERT INTO `sys_value_record` VALUES ('55923910889177088', '1', 'SYS_CONFIGURE_COLUMN', '55923910834651136', NULL, '{\"SCC_NAME\":\"BS_ID_CARD\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"150px\",\"SCC_FIELD\":\"身份证\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55923910834651136\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"40\"}', '2018-08-26 23:55:28', 1);
+INSERT INTO `sys_value_record` VALUES ('55923937455898624', '1', 'SYS_CONFIGURE_COLUMN', '55923910834651136', '{\"SCC_NAME\":\"BS_ID_CARD\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"150px\",\"SCC_FIELD\":\"身份证\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55923910834651136\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":40}', '{\"SCC_NAME\":\"身份证\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"150px\",\"SCC_FIELD\":\"BS_ID_CARD\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55923910834651136\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"40\"}', '2018-08-26 23:55:35', 2);
+INSERT INTO `sys_value_record` VALUES ('55924067705815040', '1', 'SYS_CONFIGURE_COLUMN', '55924067676454912', NULL, '{\"SCC_NAME\":\"成绩排名总人数\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_SCORE_RANK_TOTAL\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924067676454912\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"50\"}', '2018-08-26 23:56:06', 1);
+INSERT INTO `sys_value_record` VALUES ('55924110919729152', '1', 'SYS_CONFIGURE_COLUMN', '55924110890369024', NULL, '{\"SCC_NAME\":\"成绩排名名次\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_SCORE_RANK\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924110890369024\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"60\"}', '2018-08-26 23:56:16', 1);
+INSERT INTO `sys_value_record` VALUES ('55924190863163392', '1', 'SYS_CONFIGURE_COLUMN', '55924190829608960', NULL, '{\"SCC_NAME\":\"备注\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BUS_REMARKS\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924190829608960\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"70\"}', '2018-08-26 23:56:35', 1);
+INSERT INTO `sys_value_record` VALUES ('55924290654044160', '1', 'SYS_CONFIGURE_COLUMN', '55924290603712512', NULL, '{\"SCC_NAME\":\"必修课及格门数\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_REQUIRED_COURSE_PASS_NUMBER\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924290603712512\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"80\"}', '2018-08-26 23:56:59', 1);
+INSERT INTO `sys_value_record` VALUES ('55924333293338624', '1', 'SYS_CONFIGURE_COLUMN', '55924333251395584', NULL, '{\"SCC_NAME\":\"必修课门数\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_REQUIRED_COURSE_NUMBER\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924333251395584\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"90\"}', '2018-08-26 23:57:09', 1);
+INSERT INTO `sys_value_record` VALUES ('55924400066658304', '1', 'SYS_CONFIGURE_COLUMN', '55924400020520960', NULL, '{\"SCC_NAME\":\"是否实行综合考评排名\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_IS_COMPREHENSIVE_RANK\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924400020520960\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"SYS_YES_NO\",\"SCC_ORDER\":\"100\"}', '2018-08-26 23:57:25', 1);
+INSERT INTO `sys_value_record` VALUES ('55924475014676480', '1', 'SYS_CONFIGURE_COLUMN', '55924474972733440', NULL, '{\"SCC_NAME\":\"综合考评排名名次\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_COMPREHENSIVE_RANK\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924474972733440\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"110\"}', '2018-08-26 23:57:43', 1);
+INSERT INTO `sys_value_record` VALUES ('55924520598372352', '1', 'SYS_CONFIGURE_COLUMN', '55924520535457792', NULL, '{\"SCC_NAME\":\"综合考评排名总人数\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_COMPREHENSIVE_RANK_NUMBER\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924520535457792\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"120\"}', '2018-08-26 23:57:54', 1);
+INSERT INTO `sys_value_record` VALUES ('55924600919293952', '1', 'SYS_CONFIGURE_COLUMN', '55924600889933824', NULL, '{\"SCC_NAME\":\"实发金额\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_ACTUAL_AMOUNT\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924600889933824\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"130\"}', '2018-08-26 23:58:13', 1);
+INSERT INTO `sys_value_record` VALUES ('55924667185102848', '1', 'SYS_CONFIGURE_COLUMN', '55924667126382592', NULL, '{\"SCC_NAME\":\"发放日期\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_ISSUANCE_TIME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924667126382592\",\"SC_ID\":\"55923270922272768\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"140\"}', '2018-08-26 23:58:29', 1);
+INSERT INTO `sys_value_record` VALUES ('55924706745778176', '1', 'SYS_CONFIGURE_SEARCH', '55923275418566656', '{\"SCS_METHOD_TYPE\":\"1\",\"SCS_TYPE\":\"2\",\"SCS_FIELD\":\"BAF_AID_TYPE\",\"SCS_NAME\":\"困难类型\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"BUS_DIFFICULTY_TYPE\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"55923275418566656\",\"SC_ID\":\"55923270922272768\",\"SCS_REMARK\":\"\",\"SCS_ORDER\":50}', NULL, '2018-08-26 23:58:38', 3);
+INSERT INTO `sys_value_record` VALUES ('55924723824984064', '1', 'SYS_CONFIGURE_SEARCH', '55923274961387520', '{\"SCS_METHOD_TYPE\":\"1\",\"SCS_TYPE\":\"2\",\"SCS_FIELD\":\"BAF_SEMESTER\",\"SCS_NAME\":\"学期\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"BUS_SEMESTER\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"55923274961387520\",\"SC_ID\":\"55923270922272768\",\"SCS_REMARK\":\"\",\"SCS_ORDER\":25}', NULL, '2018-08-26 23:58:42', 3);
+INSERT INTO `sys_value_record` VALUES ('55924819878739968', '1', 'SYS_CONFIGURE_SEARCH', '55924819773882368', NULL, '{\"SCS_METHOD_TYPE\":\"4\",\"SCS_TYPE\":\"1\",\"SCS_FIELD\":\"BS_ID_CARD\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_SEARCH\",\"SCS_NAME\":\"身份证\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"55924819773882368\",\"SC_ID\":\"55923270922272768\",\"SCS_REMARK\":\"\",\"SCS_ORDER\":\"15\"}', '2018-08-26 23:59:05', 1);
+INSERT INTO `sys_value_record` VALUES ('55924968755560448', '1', 'SYS_CONFIGURE_COLUMN', '55924921754189824', '{\"SCC_NAME\":\"综合考评排名总人数\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_COMPREHENSIVE_RANK_NUMBER\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924921754189824\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":120}', NULL, '2018-08-26 23:59:41', 3);
+INSERT INTO `sys_value_record` VALUES ('55924977139974144', '1', 'SYS_CONFIGURE_COLUMN', '55924921192153088', '{\"SCC_NAME\":\"综合考评排名名次\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_COMPREHENSIVE_RANK\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924921192153088\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":110}', NULL, '2018-08-26 23:59:43', 3);
+INSERT INTO `sys_value_record` VALUES ('55924986170310656', '1', 'SYS_CONFIGURE_COLUMN', '55924920747556864', '{\"SCC_NAME\":\"是否实行综合考评排名\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_IS_COMPREHENSIVE_RANK\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924920747556864\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"SYS_YES_NO\",\"SCC_ORDER\":100}', NULL, '2018-08-26 23:59:45', 3);
+INSERT INTO `sys_value_record` VALUES ('55924996467326976', '1', 'SYS_CONFIGURE_COLUMN', '55924920701419520', '{\"SCC_NAME\":\"必修课门数\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_REQUIRED_COURSE_NUMBER\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924920701419520\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":90}', NULL, '2018-08-26 23:59:47', 3);
+INSERT INTO `sys_value_record` VALUES ('55925005711572992', '1', 'SYS_CONFIGURE_COLUMN', '55924920235851776', '{\"SCC_NAME\":\"备注\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BUS_REMARKS\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924920235851776\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":70}', NULL, '2018-08-26 23:59:49', 3);
+INSERT INTO `sys_value_record` VALUES ('55925019070431232', '1', 'SYS_CONFIGURE_COLUMN', '55924919241801728', '{\"SCC_NAME\":\"成绩排名总人数\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_SCORE_RANK_TOTAL\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924919241801728\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":50}', NULL, '2018-08-26 23:59:52', 3);
+INSERT INTO `sys_value_record` VALUES ('55925028587307008', '1', 'SYS_CONFIGURE_COLUMN', '55924919678009344', '{\"SCC_NAME\":\"成绩排名名次\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_SCORE_RANK\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924919678009344\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":60}', NULL, '2018-08-26 23:59:55', 3);
+INSERT INTO `sys_value_record` VALUES ('55925037596672000', '1', 'SYS_CONFIGURE_COLUMN', '55924920248434688', '{\"SCC_NAME\":\"必修课及格门数\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_REQUIRED_COURSE_PASS_NUMBER\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924920248434688\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":80}', NULL, '2018-08-26 23:59:57', 3);
+INSERT INTO `sys_value_record` VALUES ('55925212524314624', '1', 'SYS_CONFIGURE_COLUMN', '55925212448817152', NULL, '{\"SCC_NAME\":\"学期\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BAF_SEMESTER\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55925212448817152\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"BUS_SEMESTER\",\"SCC_ORDER\":\"36\"}', '2018-08-27 00:00:39', 1);
+INSERT INTO `sys_value_record` VALUES ('55925324948439040', '1', 'SYS_CONFIGURE_COLUMN', '55925324906496000', NULL, '{\"SCC_NAME\":\"资助标准\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANG_FUNDING_STANDARDS\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55925324906496000\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"50\"}', '2018-08-27 00:01:05', 1);
+INSERT INTO `sys_value_record` VALUES ('55925366371385344', '1', 'SYS_CONFIGURE_COLUMN', '55925366329442304', NULL, '{\"SCC_NAME\":\"应发金额\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANG_AMOUNT_PAYABLE\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55925366329442304\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"60\"}', '2018-08-27 00:01:15', 1);
+INSERT INTO `sys_value_record` VALUES ('55925419416748032', '1', 'SYS_CONFIGURE_COLUMN', '55925419366416384', NULL, '{\"SCC_NAME\":\"实发金额\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANG_ACTUAL_AMOUNT\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55925419366416384\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"70\"}', '2018-08-27 00:01:28', 1);
+INSERT INTO `sys_value_record` VALUES ('55925457794629632', '1', 'SYS_CONFIGURE_COLUMN', '55924922257506304', '{\"SCC_NAME\":\"发放日期\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_ISSUANCE_TIME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924922257506304\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":140}', NULL, '2018-08-27 00:01:37', 3);
+INSERT INTO `sys_value_record` VALUES ('55925466527170560', '1', 'SYS_CONFIGURE_COLUMN', '55924921766772736', '{\"SCC_NAME\":\"实发金额\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANS_ACTUAL_AMOUNT\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55924921766772736\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":130}', NULL, '2018-08-27 00:01:39', 3);
+INSERT INTO `sys_value_record` VALUES ('55925534223237120', '1', 'SYS_CONFIGURE_COLUMN', '55925534198071296', NULL, '{\"SCC_NAME\":\"申请理由\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANG_APPLY_REASONS\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55925534198071296\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"80\"}', '2018-08-27 00:01:55', 1);
+INSERT INTO `sys_value_record` VALUES ('55925633905065984', '1', 'SYS_CONFIGURE_COLUMN', '55925633825374208', NULL, '{\"SCC_NAME\":\"发放日期\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_COLUMN\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"BANG_ISSUANCE_TIME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"55925633825374208\",\"SC_ID\":\"55924918046425088\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"90\"}', '2018-08-27 00:02:19', 1);
+INSERT INTO `sys_value_record` VALUES ('55925733423316992', '1', 'SYS_CONFIGURE_SEARCH', '55925733385568256', NULL, '{\"SCS_METHOD_TYPE\":\"1\",\"SCS_TYPE\":\"2\",\"SCS_FIELD\":\"BAF_SEMESTER\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_SEARCH\",\"SCS_NAME\":\"学期\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"BUS_SEMESTER\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"55925733385568256\",\"SC_ID\":\"55924918046425088\",\"SCS_REMARK\":\"\",\"SCS_ORDER\":\"25\"}', '2018-08-27 00:02:43', 1);
+INSERT INTO `sys_value_record` VALUES ('55925922192162816', '1', 'SYS_CONFIGURE', '55924918046425088', '{\"SC_IS_PAGING\":\"1\",\"SC_NAME\":\"资助管理-国家助学金\",\"SC_JSP\":\"admin/aid/nationalGrants/home\",\"SC_VIEW\":\"v_aid_national_grants\",\"SC_IS_SEARCH\":\"1\",\"SC_IS_SELECT\":\"1\",\"ID\":\"55924918046425088\",\"SC_ORDER_BY\":\"BAF_YEAR DESC,CONVERT(ID,SIGNED) DESC\",\"SC_IS_SINGLE\":\"\",\"SC_IS_FILTER\":\"\"}', '{\"SC_NAME\":\"资助管理-国家助学金\",\"SC_JSP\":\"admin/aid/nationalGrants/home\",\"SC_VIEW\":\"v_aid_national_grants\",\"SC_ORDER_BY\":\"BAF_YEAR DESC,BAF_SEMESTER DESC,CONVERT(ID,SIGNED) DESC\",\"SC_IS_PAGING\":\"1\",\"SC_IS_SEARCH\":\"1\",\"SC_IS_SELECT\":\"1\",\"ID\":\"55924918046425088\",\"SC_IS_SINGLE\":\"\",\"SC_IS_FILTER\":\"\"}', '2018-08-27 00:03:28', 2);
+INSERT INTO `sys_value_record` VALUES ('55926639715942400', '1', 'SYS_MENU', '55926391811604480', '{\"BUS_PROCESS\":\"100\",\"SM_URL\":\"admin/dataGrid/\",\"SM_URL_PARAMS\":\"\",\"BUS_PROCESS2\":\"107\",\"SM_IS_LEAF\":\"0\",\"SM_TYPE\":\"1\",\"SM_ORDER\":70,\"SM_CODE\":\"AID:NATIONAL_SCHOLARSHIP\",\"SM_NAME\":\"国家奖学金\",\"SM_PARENTID\":\"50751117243449344\",\"ID\":\"55926391811604480\",\"SC_ID\":\"54825304677416960\",\"SM_CLASSICON\":\"mdi mdi-chart-gantt\",\"SM_IS_EXPAND\":\"\"}', '{\"BUS_PROCESS\":\"100\",\"SM_URL\":\"admin/dataGrid/\",\"SM_URL_PARAMS\":\"\",\"BUS_PROCESS2\":\"102\",\"SM_IS_LEAF\":\"0\",\"SM_TYPE\":\"1\",\"SM_ORDER\":\"20\",\"SM_CODE\":\"AID:NATIONAL_SCHOLARSHIP\",\"SM_NAME\":\"国家奖学金\",\"SM_PARENTID\":\"50751117243449344\",\"ID\":\"55926391811604480\",\"SC_ID\":\"55923270922272768\",\"SM_CLASSICON\":\"mdi mdi-azure\",\"SM_IS_EXPAND\":\"\"}', '2018-08-27 00:06:19', 2);
+INSERT INTO `sys_value_record` VALUES ('55927178054860800', '1', 'SYS_MENU', '55926689447804928', '{\"BUS_PROCESS\":\"100\",\"SM_URL\":\"admin/dataGrid/\",\"SM_URL_PARAMS\":\"\",\"BUS_PROCESS2\":\"102\",\"SM_IS_LEAF\":\"0\",\"SM_TYPE\":\"1\",\"SM_ORDER\":20,\"SM_CODE\":\"AID:NATIONAL_GRANTS\",\"SM_NAME\":\"国家助学金\",\"SM_PARENTID\":\"50751117243449344\",\"ID\":\"55926689447804928\",\"SC_ID\":\"55923270922272768\",\"SM_CLASSICON\":\"mdi mdi-azure\",\"SM_IS_EXPAND\":\"\"}', '{\"BUS_PROCESS\":\"100\",\"SM_URL\":\"admin/dataGrid/\",\"SM_URL_PARAMS\":\"\",\"BUS_PROCESS2\":\"104\",\"SM_IS_LEAF\":\"0\",\"SM_TYPE\":\"1\",\"SM_ORDER\":\"40\",\"SM_CODE\":\"AID:NATIONAL_GRANTS\",\"SM_NAME\":\"国家助学金\",\"SM_PARENTID\":\"50751117243449344\",\"ID\":\"55926689447804928\",\"SC_ID\":\"55924918046425088\",\"SM_CLASSICON\":\"mdi mdi-hops\",\"SM_IS_EXPAND\":\"\"}', '2018-08-27 00:08:27', 2);
+INSERT INTO `sys_value_record` VALUES ('55930436051795968', '48601651874889729', 'BUS_AID_FINANCIALLY', '55930435980492800', NULL, '{\"BS_ID\":\"48944951878221824\",\"BUS_PROCESS\":\"100\",\"SVR_TABLE_NAME\":\"BUS_AID_FINANCIALLY\",\"BUS_REMARKS\":\"A\",\"SO_ID\":\"48601651874889729\",\"BAF_TYPE\":\"2\",\"BAF_YEAR\":\"2017-2018\",\"BUS_PROCESS2\":\"102\",\"ID\":\"55930435980492800\",\"BAF_ENTRY_TIME\":\"2018-08-27 00:21:24\"}', '2018-08-27 00:21:24', 1);
+INSERT INTO `sys_value_record` VALUES ('55930502321799168', '48601651874889729', 'BUS_AID_NATIONAL_SCHOLARSHIP', '55930502204358656', NULL, '{\"SVR_TABLE_NAME\":\"BUS_AID_NATIONAL_SCHOLARSHIP\",\"BANS_SCORE_RANK_TOTAL\":\"2\",\"BAF_ID\":\"55930435980492800\",\"BANS_ACTUAL_AMOUNT\":\"1000\",\"BANS_ISSUANCE_TIME\":\"20180827\",\"BANS_SCORE_RANK\":\"1\",\"BANS_REQUIRED_COURSE_NUMBER\":\"3\",\"BANS_IS_COMPREHENSIVE_RANK\":\"3\",\"BANS_COMPREHENSIVE_RANK_NUMBER\":\"2\",\"ID\":\"55930502204358656\",\"BANS_COMPREHENSIVE_RANK\":\"2\",\"BANS_REQUIRED_COURSE_PASS_NUMBER\":\"2\"}', '2018-08-27 00:21:40', 1);
+INSERT INTO `sys_value_record` VALUES ('55931629482278912', '48601651874889729', 'BUS_AID_FINANCIALLY', '55931629410975744', NULL, '{\"BS_ID\":\"48944951878221824\",\"BUS_PROCESS\":\"100\",\"SVR_TABLE_NAME\":\"BUS_AID_FINANCIALLY\",\"BUS_REMARKS\":\"A\",\"SO_ID\":\"48601651874889729\",\"BAF_TYPE\":\"2\",\"BAF_YEAR\":\"2017-2018\",\"BUS_PROCESS2\":\"102\",\"ID\":\"55931629410975744\",\"BAF_ENTRY_TIME\":\"2018-08-27 00:26:09\"}', '2018-08-27 00:26:09', 1);
+INSERT INTO `sys_value_record` VALUES ('55931629582942208', '48601651874889729', 'BUS_AID_NATIONAL_SCHOLARSHIP', '55931629545193472', NULL, '{\"SVR_TABLE_NAME\":\"BUS_AID_NATIONAL_SCHOLARSHIP\",\"BANS_SCORE_RANK_TOTAL\":\"2\",\"BAF_ID\":\"55931629410975744\",\"BANS_ACTUAL_AMOUNT\":\"1000\",\"BANS_ISSUANCE_TIME\":\"20180827\",\"BANS_SCORE_RANK\":\"1\",\"BANS_REQUIRED_COURSE_NUMBER\":\"3\",\"BANS_IS_COMPREHENSIVE_RANK\":\"1\",\"BANS_COMPREHENSIVE_RANK_NUMBER\":\"2\",\"ID\":\"55931629545193472\",\"BANS_COMPREHENSIVE_RANK\":\"2\",\"BANS_REQUIRED_COURSE_PASS_NUMBER\":\"2\"}', '2018-08-27 00:26:09', 1);
+INSERT INTO `sys_value_record` VALUES ('55932232350564352', '48601651874889729', 'BUS_AID_FINANCIALLY', '55932232270872576', NULL, '{\"BS_ID\":\"48944951878221824\",\"BUS_PROCESS\":\"100\",\"SVR_TABLE_NAME\":\"BUS_AID_FINANCIALLY\",\"BUS_REMARKS\":\"A\",\"SO_ID\":\"48601651874889729\",\"BAF_TYPE\":\"4\",\"BAF_YEAR\":\"2017-2018\",\"BUS_PROCESS2\":\"104\",\"BAF_SEMESTER\":1,\"ID\":\"55932232270872576\",\"BAF_ENTRY_TIME\":\"2018-08-27 00:28:32\"}', '2018-08-27 00:28:32', 1);
+INSERT INTO `sys_value_record` VALUES ('55932232434450432', '48601651874889729', 'BUS_AID_NATIONAL_GRANTS', '55932232388313088', NULL, '{\"BANG_APPLY_REASONS\":\"A\",\"SVR_TABLE_NAME\":\"BUS_AID_NATIONAL_GRANTS\",\"BAF_ID\":\"55932232270872576\",\"BANG_AMOUNT_PAYABLE\":\"5000\",\"BANG_ISSUANCE_TIME\":\"20170102\",\"ID\":\"55932232388313088\",\"BANG_ACTUAL_AMOUNT\":\"5000\",\"BANG_FUNDING_STANDARDS\":\"5000\"}', '2018-08-27 00:28:32', 1);
 
 -- ----------------------------
 -- Table structure for test_process
@@ -8727,6 +9313,18 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_aid_green_channel` AS 
 -- ----------------------------
 DROP VIEW IF EXISTS `v_aid_jobseeker_support`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_aid_jobseeker_support` AS select `baf`.`ID` AS `ID`,`baf`.`SO_ID` AS `SO_ID`,`baf`.`BS_ID` AS `BS_ID`,`baf`.`BAF_YEAR` AS `BAF_YEAR`,`baf`.`BAF_SEMESTER` AS `BAF_SEMESTER`,`baf`.`BAF_AID_TYPE` AS `BAF_AID_TYPE`,`baf`.`BAF_DIFFICULTY_QUOTA` AS `BAF_DIFFICULTY_QUOTA`,`baf`.`BUS_REMARKS` AS `BUS_REMARKS`,`baf`.`BUS_PROCESS` AS `BUS_PROCESS`,`baf`.`BUS_PROCESS2` AS `BUS_PROCESS2`,`bs`.`BS_NAME` AS `BS_NAME`,`bs`.`BS_NUMBER` AS `BS_NUMBER`,`bs`.`SO_ID` AS `SHOW_SO_ID`,`bc`.`BC_NAME` AS `BC_NAME`,`bdm`.`BDM_NAME` AS `BDM_NAME`,`bdm`.`BDM_COLLEGE` AS `BDM_COLLEGE`,`bs`.`BDM_ID` AS `BDM_ID`,`bs`.`BC_ID` AS `BC_ID` from (((`bus_aid_financially` `baf` join `bus_student` `bs` on((`bs`.`ID` = `baf`.`BS_ID`))) join `bus_class` `bc` on((`bc`.`ID` = `bs`.`BC_ID`))) join `bus_department` `bdm` on((`bdm`.`ID` = `bs`.`BDM_ID`))) where (`baf`.`BAF_TYPE` = 11);
+
+-- ----------------------------
+-- View structure for v_aid_national_grants
+-- ----------------------------
+DROP VIEW IF EXISTS `v_aid_national_grants`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_aid_national_grants` AS select `baf`.`ID` AS `ID`,`baf`.`SO_ID` AS `SO_ID`,`baf`.`BS_ID` AS `BS_ID`,`baf`.`BAF_YEAR` AS `BAF_YEAR`,`baf`.`BAF_SEMESTER` AS `BAF_SEMESTER`,`baf`.`BUS_REMARKS` AS `BUS_REMARKS`,`baf`.`BUS_PROCESS` AS `BUS_PROCESS`,`baf`.`BUS_PROCESS2` AS `BUS_PROCESS2`,`bs`.`BS_NAME` AS `BS_NAME`,`bs`.`BS_NUMBER` AS `BS_NUMBER`,`bs`.`SO_ID` AS `SHOW_SO_ID`,`bc`.`BC_NAME` AS `BC_NAME`,`bdm`.`BDM_NAME` AS `BDM_NAME`,`bdm`.`BDM_COLLEGE` AS `BDM_COLLEGE`,`bs`.`BDM_ID` AS `BDM_ID`,`bs`.`BC_ID` AS `BC_ID`,`bs`.`BS_ID_CARD` AS `BS_ID_CARD`,`bang`.`BANG_FUNDING_STANDARDS` AS `BANG_FUNDING_STANDARDS`,`bang`.`BANG_AMOUNT_PAYABLE` AS `BANG_AMOUNT_PAYABLE`,`bang`.`BANG_ACTUAL_AMOUNT` AS `BANG_ACTUAL_AMOUNT`,`bang`.`BANG_APPLY_REASONS` AS `BANG_APPLY_REASONS`,`bang`.`BANG_ISSUANCE_TIME` AS `BANG_ISSUANCE_TIME` from ((((`bus_aid_financially` `baf` join `bus_aid_national_grants` `bang` on((`bang`.`BAF_ID` = `baf`.`ID`))) join `bus_student` `bs` on((`bs`.`ID` = `baf`.`BS_ID`))) join `bus_class` `bc` on((`bc`.`ID` = `bs`.`BC_ID`))) join `bus_department` `bdm` on((`bdm`.`ID` = `bs`.`BDM_ID`))) where (`baf`.`BAF_TYPE` = 4);
+
+-- ----------------------------
+-- View structure for v_aid_national_scholarship
+-- ----------------------------
+DROP VIEW IF EXISTS `v_aid_national_scholarship`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_aid_national_scholarship` AS select `baf`.`ID` AS `ID`,`baf`.`SO_ID` AS `SO_ID`,`baf`.`BS_ID` AS `BS_ID`,`baf`.`BAF_YEAR` AS `BAF_YEAR`,`baf`.`BAF_SEMESTER` AS `BAF_SEMESTER`,`baf`.`BUS_REMARKS` AS `BUS_REMARKS`,`baf`.`BUS_PROCESS` AS `BUS_PROCESS`,`baf`.`BUS_PROCESS2` AS `BUS_PROCESS2`,`bs`.`BS_NAME` AS `BS_NAME`,`bs`.`BS_NUMBER` AS `BS_NUMBER`,`bs`.`SO_ID` AS `SHOW_SO_ID`,`bc`.`BC_NAME` AS `BC_NAME`,`bdm`.`BDM_NAME` AS `BDM_NAME`,`bdm`.`BDM_COLLEGE` AS `BDM_COLLEGE`,`bs`.`BDM_ID` AS `BDM_ID`,`bs`.`BC_ID` AS `BC_ID`,`bs`.`BS_ID_CARD` AS `BS_ID_CARD`,`bans`.`BANS_SCORE_RANK_TOTAL` AS `BANS_SCORE_RANK_TOTAL`,`bans`.`BANS_SCORE_RANK` AS `BANS_SCORE_RANK`,`bans`.`BANS_REQUIRED_COURSE_PASS_NUMBER` AS `BANS_REQUIRED_COURSE_PASS_NUMBER`,`bans`.`BANS_REQUIRED_COURSE_NUMBER` AS `BANS_REQUIRED_COURSE_NUMBER`,`bans`.`BANS_IS_COMPREHENSIVE_RANK` AS `BANS_IS_COMPREHENSIVE_RANK`,`bans`.`BANS_COMPREHENSIVE_RANK` AS `BANS_COMPREHENSIVE_RANK`,`bans`.`BANS_COMPREHENSIVE_RANK_NUMBER` AS `BANS_COMPREHENSIVE_RANK_NUMBER`,`bans`.`BANS_ACTUAL_AMOUNT` AS `BANS_ACTUAL_AMOUNT`,`bans`.`BANS_ISSUANCE_TIME` AS `BANS_ISSUANCE_TIME` from ((((`bus_aid_financially` `baf` join `bus_aid_national_scholarship` `bans` on((`bans`.`BAF_ID` = `baf`.`ID`))) join `bus_student` `bs` on((`bs`.`ID` = `baf`.`BS_ID`))) join `bus_class` `bc` on((`bc`.`ID` = `bs`.`BC_ID`))) join `bus_department` `bdm` on((`bdm`.`ID` = `bs`.`BDM_ID`))) where (`baf`.`BAF_TYPE` = 2);
 
 -- ----------------------------
 -- View structure for v_aid_tuition_waiver

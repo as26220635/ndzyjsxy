@@ -15,6 +15,7 @@ import cn.kim.interceptor.TokenInterceptor;
 import cn.kim.listener.LockListener;
 import cn.kim.service.ManagerService;
 import cn.kim.util.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -156,7 +157,7 @@ public abstract class BaseController extends BaseData {
      * @return
      */
     protected List<Tree> toMenuTreeData(List<Map<String, Object>> list) {
-        List<Tree> resultTrees = new ArrayList<>();
+        List<Tree> resultTrees = Lists.newArrayList();
         for (Map<String, Object> menu : list) {
             Tree tree = new Tree();
             tree.setId(toString(menu.get("ID")));

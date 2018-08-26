@@ -14,6 +14,7 @@ import cn.kim.exception.RoleFrozenException;
 import cn.kim.service.ManagerService;
 import cn.kim.service.MenuService;
 import cn.kim.util.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -105,7 +106,7 @@ public class CustomRealm extends AuthorizingRealm {
         // TODO Auto-generated method stub
         ActiveUser activeUser = (ActiveUser) SessionUtil.get(Constants.SESSION_USERNAME);
 
-        List<String> permissions = new ArrayList<>();
+        List<String> permissions = Lists.newArrayList();
 
         //添加菜单权限
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);

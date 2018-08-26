@@ -11,6 +11,7 @@ import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.exception.ParameterException;
 import cn.kim.service.ButtonService;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -138,7 +139,7 @@ public class ButtonServiceImpl extends BaseServiceImpl implements ButtonService 
     }
 
     public List<Tree> getMenuButtonTree(List<Map<String, Object>> buttons, Map<String, String> menuButtons) {
-        List<Tree> menuButtonTree = new ArrayList<>();
+        List<Tree> menuButtonTree = Lists.newArrayList();
         if (!isEmpty(buttons)) {
             buttons.forEach(button -> {
                 String id = toString(button.get("ID"));

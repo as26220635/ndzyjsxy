@@ -27,7 +27,7 @@ public class Datebox extends BaseTagSupport {
     private String value = "";
     private String placeholder = "";
     /**
-     * 1 年 2年月日 3 年月日时分秒
+     * 1 年 2年月 3 年月日 33 年月日 无下划线
      */
     private int type = 1;
     /**
@@ -114,6 +114,8 @@ public class Datebox extends BaseTagSupport {
             return "datepick.model.YM";
         } else if (type == 3) {
             return "datepick.model.YMD";
+        } else if (type == 33) {
+            return "datepick.model.YMD_NONE";
         } else if (type == 4) {
             return "datepick.model.YMDHI";
         }

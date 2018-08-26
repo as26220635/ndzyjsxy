@@ -8,6 +8,7 @@ import cn.kim.entity.AnnotationParam;
 import cn.kim.service.ValidateService;
 import cn.kim.util.AnnotationUtil;
 import cn.kim.util.ValidateUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -98,7 +99,7 @@ public class ValidateAspect extends BaseData {
             //被验证参数
             Map<String, Object> map = (Map<String, Object>) value;
 
-            List<Map<String, Object>> fields = new ArrayList<>();
+            List<Map<String, Object>> fields = Lists.newArrayList();
 
             Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(5);
             //循环获取多个表的验证

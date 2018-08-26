@@ -15,6 +15,7 @@ import cn.kim.util.CommonUtil;
 import cn.kim.util.DictUtil;
 import cn.kim.util.PoiUtil;
 import cn.kim.util.ValidateUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
@@ -51,17 +52,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
-
-            //判断综合素质测评是否存在
-            paramMap.put("BS_ID", mapParam.get("BS_ID"));
-            paramMap.put("BSC_YEAR", mapParam.get("BSC_YEAR"));
-            paramMap.put("BSC_SEMESTER", mapParam.get("BSC_SEMESTER"));
-            int count = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentComprehensiveCount", paramMap);
-            if (count == 0) {
-                throw new CustomException("该学生" + mapParam.get("BS_NAME") + "学年" +
-                        DictUtil.getDictName("BUS_SEMESTER", mapParam.get("BAF_SEMESTER")) +
-                        "没有存在综合素质测评!");
-            }
+            int BAF_TYPE = toInt(mapParam.get("BAF_TYPE"));
 
             //记录日志
             paramMap.clear();
@@ -86,6 +77,41 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 paramMap.put("BAF_ENTRY_TIME", getDate());
 
                 baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidFinancially", paramMap);
+
+                if (BAF_TYPE == AidType.NATIONAL_SCHOLARSHIP.getType()) {
+                    //国家奖学金
+                    paramMap.clear();
+                    paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_NATIONAL_SCHOLARSHIP);
+
+                    paramMap.put("ID", getId());
+                    paramMap.put("BAF_ID", id);
+                    paramMap.put("BANS_SCORE_RANK_TOTAL", mapParam.get("BANS_SCORE_RANK_TOTAL"));
+                    paramMap.put("BANS_SCORE_RANK", mapParam.get("BANS_SCORE_RANK"));
+                    paramMap.put("BANS_REQUIRED_COURSE_PASS_NUMBER", mapParam.get("BANS_REQUIRED_COURSE_PASS_NUMBER"));
+                    paramMap.put("BANS_REQUIRED_COURSE_NUMBER", mapParam.get("BANS_REQUIRED_COURSE_NUMBER"));
+                    paramMap.put("BANS_IS_COMPREHENSIVE_RANK", mapParam.get("BANS_IS_COMPREHENSIVE_RANK"));
+                    paramMap.put("BANS_COMPREHENSIVE_RANK", toNull(mapParam.get("BANS_COMPREHENSIVE_RANK")));
+                    paramMap.put("BANS_COMPREHENSIVE_RANK_NUMBER", toNull(mapParam.get("BANS_COMPREHENSIVE_RANK_NUMBER")));
+                    paramMap.put("BANS_ACTUAL_AMOUNT", mapParam.get("BANS_ACTUAL_AMOUNT"));
+                    paramMap.put("BANS_ISSUANCE_TIME", mapParam.get("BANS_ISSUANCE_TIME"));
+
+                    baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidNationalScholarship", paramMap);
+                } else if (BAF_TYPE == AidType.NATIONAL_GRANTS.getType()) {
+                    //国家助学金
+                    paramMap.clear();
+                    paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_NATIONAL_GRANTS);
+
+                    paramMap.put("ID", getId());
+                    paramMap.put("BAF_ID", id);
+                    paramMap.put("BANG_FUNDING_STANDARDS", mapParam.get("BANG_FUNDING_STANDARDS"));
+                    paramMap.put("BANG_AMOUNT_PAYABLE", mapParam.get("BANG_AMOUNT_PAYABLE"));
+                    paramMap.put("BANG_ACTUAL_AMOUNT", mapParam.get("BANG_ACTUAL_AMOUNT"));
+                    paramMap.put("BANG_APPLY_REASONS", mapParam.get("BANG_APPLY_REASONS"));
+                    paramMap.put("BANG_ISSUANCE_TIME", mapParam.get("BANG_ISSUANCE_TIME"));
+
+                    baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidNationalGrants", paramMap);
+                }
+
                 resultMap.put(MagicValue.LOG, "添加资助:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
@@ -93,6 +119,46 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 oldMap = selectAidFinancially(oldMap);
 
                 baseDao.update(NameSpace.AidFinanciallyMapper, "updateAidFinancially", paramMap);
+
+                if (BAF_TYPE == AidType.NATIONAL_SCHOLARSHIP.getType()) {
+                    //国家奖学金
+                    paramMap.clear();
+                    paramMap.put("BAF_ID", id);
+                    Map<String, Object> nationalScholarship = this.selectNationalScholarship(paramMap);
+                    paramMap.clear();
+                    paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_NATIONAL_SCHOLARSHIP);
+
+                    paramMap.put("ID", nationalScholarship.get("ID"));
+                    paramMap.put("BANS_SCORE_RANK_TOTAL", mapParam.get("BANS_SCORE_RANK_TOTAL"));
+                    paramMap.put("BANS_SCORE_RANK", mapParam.get("BANS_SCORE_RANK"));
+                    paramMap.put("BANS_REQUIRED_COURSE_PASS_NUMBER", mapParam.get("BANS_REQUIRED_COURSE_PASS_NUMBER"));
+                    paramMap.put("BANS_REQUIRED_COURSE_NUMBER", mapParam.get("BANS_REQUIRED_COURSE_NUMBER"));
+                    paramMap.put("BANS_IS_COMPREHENSIVE_RANK", mapParam.get("BANS_IS_COMPREHENSIVE_RANK"));
+                    paramMap.put("BANS_COMPREHENSIVE_RANK", toNull(mapParam.get("BANS_COMPREHENSIVE_RANK")));
+                    paramMap.put("BANS_COMPREHENSIVE_RANK_NUMBER", toNull(mapParam.get("BANS_COMPREHENSIVE_RANK_NUMBER")));
+                    paramMap.put("BANS_ACTUAL_AMOUNT", mapParam.get("BANS_ACTUAL_AMOUNT"));
+                    paramMap.put("BANS_ISSUANCE_TIME", mapParam.get("BANS_ISSUANCE_TIME"));
+
+                    baseDao.update(NameSpace.AidFinanciallyMapper, "updateAidNationalScholarship", paramMap);
+                } else if (BAF_TYPE == AidType.NATIONAL_GRANTS.getType()) {
+                    //国家助学金
+                    paramMap.clear();
+                    paramMap.put("BAF_ID", id);
+                    Map<String, Object> nationalGrants = this.selectNationalGrants(paramMap);
+                    paramMap.clear();
+                    paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_NATIONAL_GRANTS);
+
+                    paramMap.put("ID", nationalGrants.get("ID"));
+                    paramMap.put("BANG_FUNDING_STANDARDS", mapParam.get("BANG_FUNDING_STANDARDS"));
+                    paramMap.put("BANG_AMOUNT_PAYABLE", mapParam.get("BANG_AMOUNT_PAYABLE"));
+                    paramMap.put("BANG_ACTUAL_AMOUNT", mapParam.get("BANG_ACTUAL_AMOUNT"));
+                    paramMap.put("BANG_APPLY_REASONS", mapParam.get("BANG_APPLY_REASONS"));
+                    paramMap.put("BANG_ISSUANCE_TIME", mapParam.get("BANG_ISSUANCE_TIME"));
+
+                    baseDao.insert(NameSpace.AidFinanciallyMapper, "updateAidNationalGrants", paramMap);
+                }
+
+
                 resultMap.put(MagicValue.LOG, "更新资助,更新前:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, paramMap));
             }
 
@@ -118,20 +184,43 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             if (isEmpty(mapParam.get("ID"))) {
                 throw new CustomException("ID不能为空!");
             }
-            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
             String id = toString(mapParam.get("ID"));
             paramMap.clear();
             paramMap.put("ID", id);
             Map<String, Object> oldMap = selectAidFinancially(paramMap);
+            //类型
+            int BAF_TYPE = toInt(oldMap.get("BAF_TYPE"));
 
-            //删除资助表
+            //查询资助是否正在进行流程
             Map<String, Object> schedule = getProcessSchedule(id, toString(oldMap.get("BUS_PROCESS")), toString(oldMap.get("BUS_PROCESS2")));
             if (!isEmpty(schedule) && !isEmpty(schedule.get("SPS_AUDIT_STATUS")) && !"0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
                 throw new CustomException("流程办理中不能删除!");
             }
-
+            //先删除子表
+            if (BAF_TYPE == AidType.NATIONAL_SCHOLARSHIP.getType()) {
+                //国家奖学金
+                paramMap.clear();
+                paramMap.put("BAF_ID", id);
+                Map<String, Object> nationalScholarship = this.selectNationalScholarship(paramMap);
+                paramMap.clear();
+                paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_NATIONAL_SCHOLARSHIP);
+                paramMap.put("ID", nationalScholarship.get("ID"));
+                baseDao.delete(NameSpace.AidFinanciallyMapper, "deleteAidNationalScholarship", paramMap);
+            } else if (BAF_TYPE == AidType.NATIONAL_GRANTS.getType()) {
+                //国家助学金
+                paramMap.clear();
+                paramMap.put("BAF_ID", id);
+                Map<String, Object> nationalGrants = this.selectNationalGrants(paramMap);
+                paramMap.clear();
+                paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_NATIONAL_GRANTS);
+                paramMap.put("ID", nationalGrants.get("ID"));
+                baseDao.delete(NameSpace.AidFinanciallyMapper, "deleteAidNationalGrants", paramMap);
+            }
+            //删除资助
+            paramMap.clear();
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_FINANCIALLY);
-
+            paramMap.put("ID", id);
             baseDao.delete(NameSpace.AidFinanciallyMapper, "deleteAidFinancially", paramMap);
 
             //删除流程
@@ -309,6 +398,75 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         return resultMap;
     }
 
+    @Override
+    public Map<String, Object> selectNationalScholarship(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("BAF_ID", mapParam.get("BAF_ID"));
+        return baseDao.selectOne(NameSpace.AidFinanciallyMapper, "selectAidNationalScholarship", paramMap);
+    }
+
+
+    /**
+     * 导入国家奖学金
+     *
+     * @param excelFile
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> importNationalScholarship(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = IMPORT_ERROR;
+        try {
+            //导入
+            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.NATIONAL_SCHOLARSHIP, Process.AID, Process.AID_NATIONAL_SCHOLARSHIP, null);
+
+            resultMap.put(MagicValue.LOG, "导入国家奖学金,数据:" + toString(dataList));
+            status = STATUS_SUCCESS;
+            desc = IMPORT_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> selectNationalGrants(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("BAF_ID", mapParam.get("BAF_ID"));
+        return baseDao.selectOne(NameSpace.AidFinanciallyMapper, "selectAidNationalGrants", paramMap);
+    }
+
+    /**
+     * 导入国家助学金
+     *
+     * @param excelFile
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> importNationalGrants(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = IMPORT_ERROR;
+        try {
+            //导入
+            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.NATIONAL_GRANTS, Process.AID, Process.AID_NATIONAL_GRANTS, null);
+
+            resultMap.put(MagicValue.LOG, "导入国家助学金,数据:" + toString(dataList));
+            status = STATUS_SUCCESS;
+            desc = IMPORT_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
     /**
      * 获取导入学号
      *
@@ -322,7 +480,8 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         if (aidType == AidType.COLLEGE_SCHOLARSHIP || aidType == AidType.COMMEND) {
             BS_NUMBER = data[1];
         } else if (aidType == AidType.GREEN_CHANNEL || aidType == AidType.TUITION_WAIVER ||
-                aidType == AidType.JOBSEEKER_SUPPORT || aidType == AidType.EMERGENCY_HELP) {
+                aidType == AidType.JOBSEEKER_SUPPORT || aidType == AidType.EMERGENCY_HELP ||
+                aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_GRANTS) {
             BS_NUMBER = data[2];
         }
         return BS_NUMBER;
@@ -366,11 +525,15 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             YEAR_FIELD_DATA = data[7];
         } else if (aidType == AidType.COMMEND || aidType == AidType.COLLEGE_SCHOLARSHIP) {
             YEAR_FIELD_DATA = data.length >= 9 ? data[8] : null;
+        } else if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+            YEAR_FIELD_DATA = data[13];
+        } else if (aidType == AidType.NATIONAL_GRANTS) {
+            YEAR_FIELD_DATA = data[8];
         }
 
         //解析学年和学期
         StudentYearSemester studentYearSemester = null;
-        if (aidType == AidType.COMMEND || aidType == AidType.GREEN_CHANNEL) {
+        if (aidType == AidType.COMMEND || aidType == AidType.GREEN_CHANNEL || aidType == AidType.NATIONAL_SCHOLARSHIP) {
             //只解析学年
             studentYearSemester = parseStudentYear(YEAR_FIELD_DATA);
         } else {
@@ -424,8 +587,10 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         String BUS_REMARKS = null;
         if (aidType == AidType.GREEN_CHANNEL) {
             BUS_REMARKS = data.length >= 6 ? data[5] : null;
-        } else if (aidType == AidType.EMERGENCY_HELP) {
+        } else if (aidType == AidType.EMERGENCY_HELP || aidType == AidType.NATIONAL_SCHOLARSHIP) {
             BUS_REMARKS = data[6];
+        } else if (aidType == AidType.NATIONAL_GRANTS) {
+            BUS_REMARKS = data[10];
         }
         return BUS_REMARKS;
     }
@@ -489,7 +654,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             paramMap.put("BS_ID", student.get("ID"));
             paramMap.put("BAF_YEAR", year);
             //学期
-            if (aidType == AidType.COLLEGE_SCHOLARSHIP) {
+            if (aidType == AidType.COLLEGE_SCHOLARSHIP || aidType == AidType.EMERGENCY_HELP || aidType == AidType.NATIONAL_GRANTS) {
                 paramMap.put("BAF_SEMESTER", semester);
             }
             //解析奖励类型
@@ -505,11 +670,35 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             paramMap.put("BAF_REDUCTION_QUOTA", BAF_REDUCTION_QUOTA);
             paramMap.put("BAF_DIFFICULTY_QUOTA", BAF_DIFFICULTY_QUOTA);
             paramMap.put("BUS_REMARKS", BUS_REMARKS);
+
+            //导入子类
+            if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+                //国家奖学金
+                paramMap.put("BANS_SCORE_RANK_TOTAL", data[4]);
+                paramMap.put("BANS_SCORE_RANK", data[5]);
+                paramMap.put("BANS_REQUIRED_COURSE_PASS_NUMBER", data[7]);
+                paramMap.put("BANS_REQUIRED_COURSE_NUMBER", data[8]);
+                paramMap.put("BANS_IS_COMPREHENSIVE_RANK", DictUtil.getDictCode("SYS_YES_NO", data[9]));
+                paramMap.put("BANS_COMPREHENSIVE_RANK", toNull(data[10]));
+                paramMap.put("BANS_COMPREHENSIVE_RANK_NUMBER", toNull(data[11]));
+                paramMap.put("BANS_ACTUAL_AMOUNT", data[12]);
+                paramMap.put("BANS_ISSUANCE_TIME", data[14]);
+            } else if (aidType == AidType.NATIONAL_GRANTS) {
+                //国家助学金
+                paramMap.put("BANG_FUNDING_STANDARDS", data[4]);
+                paramMap.put("BANG_AMOUNT_PAYABLE", data[5]);
+                paramMap.put("BANG_ACTUAL_AMOUNT", data[6]);
+                paramMap.put("BANG_APPLY_REASONS", data[7]);
+                paramMap.put("BANG_ISSUANCE_TIME", data[9]);
+            }
+
             Map<String, Object> insertMap = this.insertAndUpdateAidFinancially(paramMap);
             validateResultMap(insertMap);
 
+            String BAF_ID = toString(insertMap.get("ID"));
+
             //插入流程
-            createProcessSchedule(toString(insertMap.get("ID")), toString(student.get("BS_NAME")),
+            createProcessSchedule(BAF_ID, toString(student.get("BS_NAME")),
                     activeUser.getId(), toString(student.get("SO_ID")), busProcess.toString(), busProcess2.toString());
         }
 
@@ -525,7 +714,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
      * @return
      */
     public List<String[]> checkExcelData(List<String[]> dataList, AidType aidType, @Nullable String sdtCode) {
-        List<String[]> resultList = new ArrayList<>();
+        List<String[]> resultList = Lists.newArrayList();
         if (isEmpty(dataList)) {
             resultList.add(packErrorData("文件数据错误", "没有找到可以导入数据"));
             return resultList;
@@ -548,9 +737,42 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     resultList.add(packErrorData(row, "数据错误!"));
                     continue;
                 }
+            } else if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+                if (data.length <= 14) {
+                    resultList.add(packErrorData(row, "数据错误!"));
+                    continue;
+                }
+            } else if (aidType == AidType.NATIONAL_GRANTS) {
+                if (data.length <= 10) {
+                    resultList.add(packErrorData(row, "数据错误!"));
+                    continue;
+                }
             } else {
                 if (data.length <= 7) {
                     resultList.add(packErrorData(row, "数据错误!"));
+                    continue;
+                }
+            }
+
+            //检测数据是否正确
+            List<String[]> checkIsEmptyList = null;
+            if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+                checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5, 7, 8, 9, 12, 13, 14});
+            } else if (aidType == AidType.NATIONAL_GRANTS) {
+                checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5, 6, 7, 8, 9});
+            }
+            if (!isEmpty(checkIsEmptyList)) {
+                resultList.addAll(checkIsEmptyList);
+                continue;
+            } else {
+                //检测是否为数字
+                if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+                    checkIsEmptyList = checkIsNumber(row, data, new int[]{2, 4, 5, 7, 8, 12});
+                } else if (aidType == AidType.NATIONAL_GRANTS) {
+                    checkIsEmptyList = checkIsNumber(row, data, new int[]{4, 5, 6});
+                }
+                if (!isEmpty(checkIsEmptyList)) {
+                    resultList.addAll(checkIsEmptyList);
                     continue;
                 }
             }
@@ -580,6 +802,27 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 if (isEmpty(BAF_DIFFICULTY_QUOTA) || !isNumber(BAF_DIFFICULTY_QUOTA)) {
                     resultList.add(packErrorData(row, "补助金额错误"));
                 }
+            }
+
+            //检测参数
+            if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+                //是否实行综合考评排名
+                String BANS_IS_COMPREHENSIVE_RANK = DictUtil.getDictCode("SYS_YES_NO", data[9]);
+                String BANS_COMPREHENSIVE_RANK = data[10];
+                String BANS_COMPREHENSIVE_RANK_NUMBER = data[11];
+
+                if (isEmpty(BANS_IS_COMPREHENSIVE_RANK) || !isNumber(BANS_IS_COMPREHENSIVE_RANK) ||
+                        (toInt(BANS_IS_COMPREHENSIVE_RANK) != STATUS_SUCCESS && toInt(BANS_IS_COMPREHENSIVE_RANK) != STATUS_ERROR)) {
+                    resultList.add(packErrorData(row, "是否实行综合考评排名参数错误"));
+                } else if (toInt(BANS_IS_COMPREHENSIVE_RANK) == STATUS_SUCCESS) {
+                    if (isEmpty(BANS_COMPREHENSIVE_RANK) || !isNumber(BANS_COMPREHENSIVE_RANK)) {
+                        resultList.add(packErrorData(row, "综合考评排名名次参数错误"));
+                    }
+                    if (isEmpty(BANS_COMPREHENSIVE_RANK_NUMBER) || !isNumber(BANS_COMPREHENSIVE_RANK_NUMBER)) {
+                        resultList.add(packErrorData(row, "综合考评排名总人数参数错误"));
+                    }
+                }
+
             }
 
             //判断奖励类型
@@ -642,7 +885,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.put("BS_ID", student.get("ID"));
                     paramMap.put("BAF_TYPE", aidType.getType());
                     paramMap.put("BAF_YEAR", year);
-                    if (aidType == AidType.COLLEGE_SCHOLARSHIP || aidType == AidType.EMERGENCY_HELP) {
+                    if (aidType == AidType.COLLEGE_SCHOLARSHIP || aidType == AidType.EMERGENCY_HELP || aidType == AidType.NATIONAL_GRANTS) {
                         paramMap.put("BAF_SEMESTER", semester);
                     }
 
@@ -657,4 +900,42 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         return resultList;
     }
 
+    /**
+     * 检测是否为空
+     *
+     * @param row        行
+     * @param dataArray  数据
+     * @param indexArray 检测位
+     */
+    private List<String[]> checkIsEmpty(String row, String[] dataArray, int[] indexArray) {
+        List<String[]> checkIsEmptyList = Lists.newArrayList();
+        for (int index : indexArray) {
+            if (index > dataArray.length) {
+                checkIsEmptyList.add(packErrorData(row, "数据错误"));
+                break;
+            }
+            if (isEmpty(dataArray[index])) {
+                checkIsEmptyList.add(packErrorData(row, (index + 1) + "列数据为空"));
+            }
+        }
+        return checkIsEmptyList;
+    }
+
+    /**
+     * 检测参数是否是数字
+     *
+     * @param row
+     * @param dataArray
+     * @param indexArray
+     * @return
+     */
+    private List<String[]> checkIsNumber(String row, String[] dataArray, int[] indexArray) {
+        List<String[]> checkIsEmptyList = Lists.newArrayList();
+        for (int index : indexArray) {
+            if (!isNumber(dataArray[index])) {
+                checkIsEmptyList.add(packErrorData(row, (index + 1) + "列数据不是为数字类型"));
+            }
+        }
+        return checkIsEmptyList;
+    }
 }

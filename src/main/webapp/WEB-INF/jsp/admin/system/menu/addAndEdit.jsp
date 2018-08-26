@@ -30,25 +30,29 @@
                    value="${MENU.SC_ID}" nameValue="${MENU.SC_NAME}"
                    url="${CONFIGURE_TREE_DATA_URL}" title="选择配置列表"></s:treeBox>
     </div>
-    <div class="form-group has-feedback">
-    <label>流程大类:</label>
-        <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_MENU","BUS_PROCESS")}'
-                value="${MENU.BUS_PROCESS}"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>流程大类:</label>
+            <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_MENU","BUS_PROCESS")}'
+                        value="${MENU.BUS_PROCESS}"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>流程小类:</label>
+            <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_MENU","BUS_PROCESS2")}'
+                        value="${MENU.BUS_PROCESS2}" level="1"></s:combobox>
+        </div>
     </div>
-    <div class="form-group has-feedback">
-    <label>流程小类:</label>
-        <s:combobox sdtCode="SYS_PROCESS_TYPE" custom='${fns:validField("SYS_MENU","BUS_PROCESS2")}'
-                value="${MENU.BUS_PROCESS2}"  level="1"></s:combobox>
-    </div>
-    <div class="form-group has-feedback">
-        <label>是否叶节点:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_MENU","SM_IS_LEAF")}'
-                    value="${MENU.SM_IS_LEAF}" defaultValue="0"></s:combobox>
-    </div>
-    <div class="form-group has-feedback">
-        <label>是否默认展开所有节点:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_MENU","SM_IS_EXPAND")}'
-                    value="${MENU.SM_IS_EXPAND}"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否叶节点:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_MENU","SM_IS_LEAF")}'
+                        value="${MENU.SM_IS_LEAF}" defaultValue="0"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否默认展开所有节点:</label>
+            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_MENU","SM_IS_EXPAND")}'
+                        value="${MENU.SM_IS_EXPAND}"></s:combobox>
+        </div>
     </div>
     <div class="form-group has-feedback">
         <label>权限编码:</label>
@@ -74,7 +78,7 @@
 </form>
 
 <script>
-    initCombobxSelectDisabled('BUS_PROCESS','BUS_PROCESS2','${MENU.BUS_PROCESS2}');
+    initCombobxSelectDisabled('BUS_PROCESS', 'BUS_PROCESS2', '${MENU.BUS_PROCESS2}');
 
     validator.init({
         //验证表单

@@ -8,6 +8,7 @@ import cn.kim.entity.ResultState;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.service.ConfigureService;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -232,7 +233,7 @@ public class ConfigureController extends BaseController {
      * @return
      */
     private List<Tree> toConfigureTreeData(List<Map<String, Object>> configures, String id) {
-        List<Tree> results = new ArrayList<>();
+        List<Tree> results = Lists.newArrayList();
         configures.forEach(configure -> {
             String configureId = toString(configure.get("ID"));
 

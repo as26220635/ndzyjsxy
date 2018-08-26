@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -124,6 +125,10 @@ public class ExportExcelTool<T> extends BaseData {
                     if (value instanceof Date) {
                         Date date = (Date) value;
                         textValue = instance.format(date);
+                    } else if (value instanceof BigDecimal) {
+                        //去掉无用的小数位
+                        BigDecimal bigDecimal = (BigDecimal) value;
+                        textValue = bigDecimal.stripTrailingZeros().toPlainString();
                     } else if (value instanceof byte[]) {
                         // 有图片时，设置行高为60px;
                         row.setHeightInPoints(60);

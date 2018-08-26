@@ -11,6 +11,7 @@ import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.FormatService;
 import cn.kim.util.DateUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -305,7 +306,7 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
      * @return
      */
     private List<Tree> getFormatDetailTree(List<Map<String, Object>> formatDetail, String formatDetailParentId) {
-        List<Tree> formatDetailTrees = new ArrayList<>();
+        List<Tree> formatDetailTrees = Lists.newArrayList();
         if (!isEmpty(formatDetail)) {
             formatDetail.forEach(detail -> {
                 String id = toString(detail.get("ID"));

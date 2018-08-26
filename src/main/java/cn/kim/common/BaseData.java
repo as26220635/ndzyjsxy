@@ -11,6 +11,7 @@ import cn.kim.common.sequence.Sequence;
 import cn.kim.entity.ResultState;
 import cn.kim.entity.StudentYearSemester;
 import cn.kim.util.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.io.UnsupportedEncodingException;
@@ -188,7 +189,7 @@ public abstract class BaseData {
      * @return
      */
     protected List<String> getExistRoleList(String containsRole) {
-        List<String> existRoleList = new ArrayList<>();
+        List<String> existRoleList = Lists.newArrayList();
         String[] containsRoles = containsRole.split(SERVICE_SPLIT);
         String[] nowRoles = getActiveUser().getRoleIds().split(SERVICE_SPLIT);
         for (String role : containsRoles) {
@@ -283,6 +284,10 @@ public abstract class BaseData {
 
     protected boolean toBoolean(Object str) {
         return TextUtil.toBoolean(str);
+    }
+
+    protected String toNull(Object str) {
+        return isEmpty(str) ? null : toString(str);
     }
 
     protected <K> Set<K> toKeySet(Map<K, ?> map) {

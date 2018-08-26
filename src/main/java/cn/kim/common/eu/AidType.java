@@ -9,6 +9,10 @@ import cn.kim.util.TextUtil;
 public enum AidType {
     //绿色通道
     GREEN_CHANNEL(1),
+    //国家奖学金
+    NATIONAL_SCHOLARSHIP(2),
+    //国家助学金
+    NATIONAL_GRANTS(4),
     //减免学费
     TUITION_WAIVER(7),
     //学院奖学金

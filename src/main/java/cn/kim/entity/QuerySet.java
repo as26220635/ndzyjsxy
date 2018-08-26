@@ -5,6 +5,7 @@ import cn.kim.util.ValidateUtil;
 import cn.kim.util.DateUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Data;
 import org.springframework.util.StringUtils;
@@ -77,7 +78,7 @@ public class QuerySet implements Serializable {
     public QuerySet() {
         this.paramsMap = Maps.newHashMapWithExpectedSize(16);
         this.finalMap = Maps.newHashMapWithExpectedSize(16);
-        this.extendWhere = new ArrayList<>();
+        this.extendWhere = Lists.newArrayList();
     }
 
     /**

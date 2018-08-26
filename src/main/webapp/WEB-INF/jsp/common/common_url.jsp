@@ -273,3 +273,15 @@
 <c:set var="EMERGENCY_HELP_UPDATE_URL" value="${EMERGENCY_HELP_BASE_URL}update" scope="application"/>
 <c:set var="EMERGENCY_HELP_DELETE_URL" value="${EMERGENCY_HELP_BASE_URL}delete" scope="application"/>
 <c:set var="EMERGENCY_HELP_IMPORT_URL" value="${EMERGENCY_HELP_BASE_URL}import" scope="application"/>
+<%--国家奖学金--%>
+<c:set var="NATIONAL_SCHOLARSHIP_BASE_URL" value="${AID_BASE_URL}nationalScholarship/" scope="application"/>
+<c:set var="NATIONAL_SCHOLARSHIP_ADD_URL" value="${NATIONAL_SCHOLARSHIP_BASE_URL}add" scope="application"/>
+<c:set var="NATIONAL_SCHOLARSHIP_UPDATE_URL" value="${NATIONAL_SCHOLARSHIP_BASE_URL}update" scope="application"/>
+<c:set var="NATIONAL_SCHOLARSHIP_DELETE_URL" value="${NATIONAL_SCHOLARSHIP_BASE_URL}delete" scope="application"/>
+<c:set var="NATIONAL_SCHOLARSHIP_IMPORT_URL" value="${NATIONAL_SCHOLARSHIP_BASE_URL}import" scope="application"/>
+<%--国家助学金--%>
+<c:set var="NATIONAL_GRANTS_BASE_URL" value="${AID_BASE_URL}nationalGrants/" scope="application"/>
+<c:set var="NATIONAL_GRANTS_ADD_URL" value="${NATIONAL_GRANTS_BASE_URL}add" scope="application"/>
+<c:set var="NATIONAL_GRANTS_UPDATE_URL" value="${NATIONAL_GRANTS_BASE_URL}update" scope="application"/>
+<c:set var="NATIONAL_GRANTS_DELETE_URL" value="${NATIONAL_GRANTS_BASE_URL}delete" scope="application"/>
+<c:set var="NATIONAL_GRANTS_IMPORT_URL" value="${NATIONAL_GRANTS_BASE_URL}import" scope="application"/>
