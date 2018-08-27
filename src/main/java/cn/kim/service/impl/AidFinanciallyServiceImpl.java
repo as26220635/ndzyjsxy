@@ -17,6 +17,7 @@ import cn.kim.util.PoiUtil;
 import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.logging.log4j.util.Strings;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,11 +50,23 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
         int status = STATUS_ERROR;
         String desc = SAVE_ERROR;
+
+        ActiveUser activeUser = getActiveUser();
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+            //记录表名
+            String SVR_TABLE_NAME = TableName.BUS_AID_FINANCIALLY;
+
             String id = toString(mapParam.get("ID"));
             int BAF_TYPE = toInt(mapParam.get("BAF_TYPE"));
 
+
+            paramMap.clear();
+            paramMap.put("ID", mapParam.get("BS_ID"));
+            Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+            if (isEmpty(student)) {
+                throw new CustomException("学生数据查询出错!");
+            }
             //记录日志
             paramMap.clear();
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_FINANCIALLY);
@@ -96,6 +109,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.put("BANS_ISSUANCE_TIME", mapParam.get("BANS_ISSUANCE_TIME"));
 
                     baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidNationalScholarship", paramMap);
+
                 } else if (BAF_TYPE == AidType.NATIONAL_GRANTS.getType()) {
                     //国家助学金
                     paramMap.clear();
@@ -112,7 +126,11 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidNationalGrants", paramMap);
                 }
 
-                resultMap.put(MagicValue.LOG, "添加资助:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, paramMap));
+                //插入流程
+                createProcessSchedule(id, toString(student.get("BS_NAME")),
+                        activeUser.getId(), toString(student.get("SO_ID")), toString(mapParam.get("BUS_PROCESS")), toString(mapParam.get("BUS_PROCESS2")));
+
+                resultMap.put(MagicValue.LOG, "添加资助:" + formatColumnName(SVR_TABLE_NAME, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
@@ -159,7 +177,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 }
 
 
-                resultMap.put(MagicValue.LOG, "更新资助,更新前:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, paramMap));
+                resultMap.put(MagicValue.LOG, "更新资助,更新前:" + formatColumnName(SVR_TABLE_NAME, oldMap) + ",更新后:" + formatColumnName(SVR_TABLE_NAME, paramMap));
             }
 
             status = STATUS_SUCCESS;
@@ -694,12 +712,6 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
             Map<String, Object> insertMap = this.insertAndUpdateAidFinancially(paramMap);
             validateResultMap(insertMap);
-
-            String BAF_ID = toString(insertMap.get("ID"));
-
-            //插入流程
-            createProcessSchedule(BAF_ID, toString(student.get("BS_NAME")),
-                    activeUser.getId(), toString(student.get("SO_ID")), busProcess.toString(), busProcess2.toString());
         }
 
         return dataList;
@@ -756,7 +768,17 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
             //检测数据是否正确
             List<String[]> checkIsEmptyList = null;
-            if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+            if (aidType == AidType.GREEN_CHANNEL) {
+                checkIsEmptyList = checkIsEmpty(row, data, new int[]{2});
+            } else if (aidType == AidType.TUITION_WAIVER) {
+                checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5});
+            } else if (aidType == AidType.COMMEND) {
+                checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 7});
+            } else if (aidType == AidType.JOBSEEKER_SUPPORT) {
+                checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5});
+            } else if (aidType == AidType.EMERGENCY_HELP) {
+                checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5});
+            } else if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
                 checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5, 7, 8, 9, 12, 13, 14});
             } else if (aidType == AidType.NATIONAL_GRANTS) {
                 checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5, 6, 7, 8, 9});
@@ -766,7 +788,17 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 continue;
             } else {
                 //检测是否为数字
-                if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+                if (aidType == AidType.GREEN_CHANNEL) {
+                    checkIsEmptyList = checkIsNumber(row, data, new int[]{2});
+                } else if (aidType == AidType.TUITION_WAIVER) {
+                    checkIsEmptyList = checkIsNumber(row, data, new int[]{2, 5});
+                } else if (aidType == AidType.COMMEND) {
+                    checkIsEmptyList = checkIsNumber(row, data, new int[]{2});
+                } else if (aidType == AidType.JOBSEEKER_SUPPORT) {
+                    checkIsEmptyList = checkIsNumber(row, data, new int[]{2, 4});
+                } else if (aidType == AidType.EMERGENCY_HELP) {
+                    checkIsEmptyList = checkIsNumber(row, data, new int[]{2, 4});
+                } else if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
                     checkIsEmptyList = checkIsNumber(row, data, new int[]{2, 4, 5, 7, 8, 12});
                 } else if (aidType == AidType.NATIONAL_GRANTS) {
                     checkIsEmptyList = checkIsNumber(row, data, new int[]{4, 5, 6});

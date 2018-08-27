@@ -10,7 +10,7 @@
 
     <!--查询表字段信息-->
     <select id="selectColumnsComment" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA =#{TABLE_SCHEMA}  AND TABLE_NAME = #{TABLE_NAME};
+        SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA =#{TABLE_SCHEMA}  AND TABLE_NAME IN (${TABLE_NAME});
     </select>
 
     <!--查询关联表名称字段 SEARCH_COLUMN 没有默认为ID-->
