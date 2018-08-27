@@ -38,7 +38,7 @@
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_GRANTS, "BANG_FUNDING_STANDARDS")}
                    value="${ng.BANG_FUNDING_STANDARDS}">
         </div>
-        <div class="form-group has-feedback">
+        <div class="form-group has-feedback form-group-md-6">
             <label>应发金额:</label>
             <input type="text"
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_GRANTS, "BANG_AMOUNT_PAYABLE")}
@@ -52,7 +52,7 @@
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_GRANTS, "BANG_ACTUAL_AMOUNT")}
                    value="${ng.BANG_ACTUAL_AMOUNT}">
         </div>
-        <div class="form-group has-feedback">
+        <div class="form-group has-feedback form-group-md-6">
             <label>发放日期:</label>
             <s:datebox
                     type="33"

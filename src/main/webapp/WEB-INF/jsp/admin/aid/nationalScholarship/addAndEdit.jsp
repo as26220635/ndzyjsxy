@@ -32,7 +32,7 @@
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_SCHOLARSHIP, "BANS_SCORE_RANK_TOTAL")}
                    value="${ns.BANS_SCORE_RANK_TOTAL}">
         </div>
-        <div class="form-group has-feedback">
+        <div class="form-group has-feedback form-group-md-6">
             <label>成绩排名名次:</label>
             <input type="text"
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_SCHOLARSHIP, "BANS_SCORE_RANK")}
@@ -46,7 +46,7 @@
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_SCHOLARSHIP, "BANS_REQUIRED_COURSE_PASS_NUMBER")}
                    value="${ns.BANS_REQUIRED_COURSE_PASS_NUMBER}">
         </div>
-        <div class="form-group has-feedback">
+        <div class="form-group has-feedback form-group-md-6">
             <label>必修课门数:</label>
             <input type="text"
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_SCHOLARSHIP, "BANS_REQUIRED_COURSE_NUMBER")}
@@ -66,7 +66,7 @@
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_SCHOLARSHIP, "BANS_COMPREHENSIVE_RANK")}
                    value="${ns.BANS_COMPREHENSIVE_RANK}">
         </div>
-        <div class="form-group has-feedback">
+        <div class="form-group has-feedback form-group-md-6">
             <label>综合考评排名总人数:</label>
             <input type="text"
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_SCHOLARSHIP, "BANS_COMPREHENSIVE_RANK_NUMBER")}
@@ -80,7 +80,7 @@
                    class="form-control" ${fns:validField(TableName.BUS_AID_NATIONAL_SCHOLARSHIP, "BANS_ACTUAL_AMOUNT")}
                    value="${ns.BANS_ACTUAL_AMOUNT}">
         </div>
-        <div class="form-group has-feedback">
+        <div class="form-group has-feedback form-group-md-6">
             <label>发放日期:</label>
             <s:datebox
                     type="33"

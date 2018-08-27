@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 27/08/2018 17:14:00
+ Date: 27/08/2018 18:05:19
 */
 
 SET NAMES utf8mb4;
@@ -4028,6 +4028,14 @@ INSERT INTO `sys_log` VALUES ('56182751862194176', '1', NULL, '导出列表excel
 INSERT INTO `sys_log` VALUES ('56185122398928896', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 17:13:26', 0);
 INSERT INTO `sys_log` VALUES ('56185138010128384', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 17:13:30', 0);
 INSERT INTO `sys_log` VALUES ('56185196713607168', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 17:13:44', 0);
+INSERT INTO `sys_log` VALUES ('56186211399630848', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 17:17:46', 0);
+INSERT INTO `sys_log` VALUES ('56186245369298944', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 17:17:54', 0);
+INSERT INTO `sys_log` VALUES ('56186253791461376', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 17:17:56', 0);
+INSERT INTO `sys_log` VALUES ('56186732260884480', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 17:19:50', 0);
+INSERT INTO `sys_log` VALUES ('56186737919000576', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 17:19:51', 0);
+INSERT INTO `sys_log` VALUES ('56197990901088256', '1', NULL, '修改验证正则', '0:0:0:0:0:0:0:1', 1, '2018-08-27 18:04:34', 2);
+INSERT INTO `sys_log` VALUES ('56198032772825088', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 18:04:44', 0);
+INSERT INTO `sys_log` VALUES ('56198036866465792', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-08-27 18:04:45', 0);
 
 -- ----------------------------
 -- Table structure for sys_log_text
@@ -6604,6 +6612,14 @@ INSERT INTO `sys_log_text` VALUES ('56182751941885952', '56182751862194176', '�
 INSERT INTO `sys_log_text` VALUES ('56185122747056128', '56185122398928896', '查看流程定义');
 INSERT INTO `sys_log_text` VALUES ('56185138119180288', '56185138010128384', '查看菜单管理');
 INSERT INTO `sys_log_text` VALUES ('56185196914933760', '56185196713607168', '查看数据变动记录');
+INSERT INTO `sys_log_text` VALUES ('56186211793895424', '56186211399630848', '查看绿色通道');
+INSERT INTO `sys_log_text` VALUES ('56186245679677440', '56186245369298944', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('56186253925679104', '56186253791461376', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('56186732659343360', '56186732260884480', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('56186737973526528', '56186737919000576', '查看正则管理');
+INSERT INTO `sys_log_text` VALUES ('56197990951419904', '56197990901088256', '更新验证正则,更新前:{IS_STATUS=1, 正则表达式=\\d{4}(\\\\/|.)\\d{1,2}\\1\\d{1,2}, 正则错误提示=请输入正确的日期(如19700101)!, ID=55916414480941056, SVR_NAME=年月日日期(无下划线)},更新后:{ID=55916414480941056, 正则表达式=\\d{4}(\\\\/|.)\\d{1,2}\\d{1,2}, SVR_NAME=年月日日期(无下划线), 正则错误提示=请输入正确的日期(如19700101)!}');
+INSERT INTO `sys_log_text` VALUES ('56198033016094720', '56198032772825088', '查看绿色通道');
+INSERT INTO `sys_log_text` VALUES ('56198036988100608', '56198036866465792', '查看国家奖学金');
 
 -- ----------------------------
 -- Table structure for sys_long_text
@@ -8276,7 +8292,7 @@ INSERT INTO `sys_validate_regex` VALUES ('2521757806231552', '正浮点数', '^(
 INSERT INTO `sys_validate_regex` VALUES ('2522924040847360', '英文字母', '^[a-zA-Z]+$', '只能输入a-z的英文字母!', '1');
 INSERT INTO `sys_validate_regex` VALUES ('2523171857104896', '匹配中文，英文字母和数字及_', '^[\\u4e00-\\u9fa5_a-zA-Z0-9]+$', '只能输入中文、英文字母、数字、_', '1');
 INSERT INTO `sys_validate_regex` VALUES ('26504926733533184', '年份', '^(19\\d\\d|20\\d\\d|2100|20\\d\\d-20\\d\\d)$', '请输入正确的年份!', '1');
-INSERT INTO `sys_validate_regex` VALUES ('55916414480941056', '年月日日期(无下划线)', '\\d{4}(\\\\/|.)\\d{1,2}\\1\\d{1,2}', '请输入正确的日期(如19700101)!', '1');
+INSERT INTO `sys_validate_regex` VALUES ('55916414480941056', '年月日日期(无下划线)', '\\d{4}(\\\\/|.)\\d{1,2}\\d{1,2}', '请输入正确的日期(如19700101)!', '1');
 
 -- ----------------------------
 -- Table structure for sys_value_record
@@ -9504,6 +9520,7 @@ INSERT INTO `sys_value_record` VALUES ('56176799033327616', '1', 'SYS_CONFIGURE_
 INSERT INTO `sys_value_record` VALUES ('56176951445946368', '1', 'SYS_CONFIGURE_SEARCH', '56176798962024448', '{\"SCS_METHOD_TYPE\":\"3\",\"SCS_TYPE\":\"3\",\"SCS_FIELD\":\"SPS_AUDIT_STATUS\",\"SCS_NAME\":\"审核状态\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"56176798962024448\",\"SC_ID\":\"50831880232108032\",\"SCS_REMARK\":\"\",\"SCS_ORDER\":100}', '{\"SCS_FIELD\":\"SPS_AUDIT_STATUS\",\"SCS_NAME\":\"审核状态\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"SYS_PROCESS_TYPE\",\"SCS_ORDER\":\"100\",\"SCS_METHOD_TYPE\":\"3\",\"SCS_TYPE\":\"3\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"56176798962024448\",\"SC_ID\":\"50831880232108032\",\"SCS_REMARK\":\"\"}', '2018-08-27 16:40:58', 2);
 INSERT INTO `sys_value_record` VALUES ('56176997637816320', '1', 'SYS_CONFIGURE_SEARCH', '56176798962024448', '{\"SCS_METHOD_TYPE\":\"3\",\"SCS_TYPE\":\"3\",\"SCS_FIELD\":\"SPS_AUDIT_STATUS\",\"SCS_NAME\":\"审核状态\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"SYS_PROCESS_TYPE\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"56176798962024448\",\"SC_ID\":\"50831880232108032\",\"SCS_REMARK\":\"\",\"SCS_ORDER\":100}', '{\"SCS_FIELD\":\"SPS_AUDIT_STATUS\",\"SCS_NAME\":\"审核状态\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"SYS_PROCESS_TYPE\",\"SCS_ORDER\":\"100\",\"SCS_METHOD_TYPE\":\"3\",\"SCS_TYPE\":\"3\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"56176798962024448\",\"SC_ID\":\"50831880232108032\",\"SCS_REMARK\":\"\"}', '2018-08-27 16:41:09', 2);
 INSERT INTO `sys_value_record` VALUES ('56178603460657152', '1', 'SYS_CONFIGURE_SEARCH', '56176798962024448', '{\"SCS_METHOD_TYPE\":\"3\",\"SCS_TYPE\":\"3\",\"SCS_FIELD\":\"SPS_AUDIT_STATUS\",\"SCS_NAME\":\"审核状态\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"SYS_PROCESS_TYPE\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"56176798962024448\",\"SC_ID\":\"50831880232108032\",\"SCS_REMARK\":\"\",\"SCS_ORDER\":100}', '{\"SCS_FIELD\":\"SPS_AUDIT_STATUS\",\"SCS_NAME\":\"审核状态\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"SYS_PROCESS_STATUS\",\"SCS_ORDER\":\"100\",\"SCS_METHOD_TYPE\":\"3\",\"SCS_TYPE\":\"3\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"56176798962024448\",\"SC_ID\":\"50831880232108032\",\"SCS_REMARK\":\"\"}', '2018-08-27 16:47:32', 2);
+INSERT INTO `sys_value_record` VALUES ('56197990511017984', '1', 'SYS_VALIDATE_REGEX', '55916414480941056', '{\"SVR_REGEX\":\"\\\\d{4}(\\\\\\\\/|.)\\\\d{1,2}\\\\1\\\\d{1,2}\",\"SVR_REGEX_MESSAGE\":\"请输入正确的日期(如19700101)!\",\"ID\":\"55916414480941056\",\"SVR_NAME\":\"年月日日期(无下划线)\"}', '{\"SVR_REGEX\":\"\\\\d{4}(\\\\\\\\/|.)\\\\d{1,2}\\\\d{1,2}\",\"SVR_REGEX_MESSAGE\":\"请输入正确的日期(如19700101)!\",\"ID\":\"55916414480941056\",\"SVR_NAME\":\"年月日日期(无下划线)\"}', '2018-08-27 18:04:34', 2);
 
 -- ----------------------------
 -- Table structure for test_process
