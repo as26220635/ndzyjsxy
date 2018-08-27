@@ -7,6 +7,7 @@ import cn.kim.service.ProcessService;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Maps;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ import java.util.Set;
  * 流程工具
  */
 @Component
+@Log4j2
 public class ProcessTool {
-    private static Logger logger = LogManager.getLogger(ProcessTool.class.getName());
 
     @Autowired
     private ProcessService processService;
@@ -193,6 +194,7 @@ public class ProcessTool {
      * @return
      */
     public static Map<String, Object> submitProcess(Map<String, Object> mapParam) {
+        log.info("提交流程,参数:" + TextUtil.toString(mapParam));
         return processTool.processService.processSubmit(mapParam);
     }
 
@@ -203,6 +205,7 @@ public class ProcessTool {
      * @return
      */
     public static Map<String, Object> withdrawProcess(Map<String, Object> mapParam) {
+        log.info("撤回流程,参数:" + TextUtil.toString(mapParam));
         return processTool.processService.processWithdraw(mapParam);
     }
 
@@ -217,6 +220,8 @@ public class ProcessTool {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(2);
         mapParam.put("ID", scheduleId);
         mapParam.put("SPSC_REASON", scheduleId);
+
+        log.info("作废流程,参数:" + TextUtil.toString(mapParam));
         return processTool.processService.cancelProcessSchedule(mapParam);
     }
 

@@ -201,7 +201,7 @@ public class BaseDataController extends BaseController {
                         //序号
                         leftFixedLength += 1;
                         //是否有选择框
-                        if (isSuccess(configure.get("SC_IS_SELECT")) && !isSuccess(configure.get("SC_IS_SINGLE"))) {
+                        if (isSuccess(configure.get("SC_IS_SELECT"))) {
                             leftFixedLength += 1;
                         }
                     }

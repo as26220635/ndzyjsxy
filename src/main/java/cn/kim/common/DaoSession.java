@@ -15,8 +15,6 @@ import javax.annotation.PostConstruct;
 @Component
 public class DaoSession {
 
-    private static Logger logger = LogManager.getLogger(DaoSession.class.getName());
-
     @Autowired
     public BaseDao baseDao;
     public static DaoSession daoSession;

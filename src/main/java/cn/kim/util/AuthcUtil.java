@@ -4,6 +4,7 @@ import cn.kim.common.attr.Constants;
 import cn.kim.entity.ActiveUser;
 import cn.kim.common.attr.Constants;
 import cn.kim.entity.ActiveUser;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -14,9 +15,8 @@ import org.springframework.stereotype.Component;
  * Created by 余庚鑫 on 2017/3/8.
  */
 @Component
+@Log4j2
 public class AuthcUtil {
-
-    private static Logger logger = LogManager.getLogger(AuthcUtil.class.getName());
 
     /**
      * 当前登录角色

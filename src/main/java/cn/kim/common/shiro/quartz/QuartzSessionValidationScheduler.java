@@ -1,5 +1,6 @@
 package cn.kim.common.shiro.quartz;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.session.mgt.DefaultSessionManager;
@@ -11,11 +12,11 @@ import org.quartz.impl.StdSchedulerFactory;
 /**
  * 重写 基于Quartz 2.* 版本的实现
  */
+@Log4j2
 public class QuartzSessionValidationScheduler implements SessionValidationScheduler {
 
     public static final long DEFAULT_SESSION_VALIDATION_INTERVAL = DefaultSessionManager.DEFAULT_SESSION_VALIDATION_INTERVAL;
     private static final String JOB_NAME = "SessionValidationJob";
-    private static final Logger log = LogManager.getLogger(QuartzSessionValidationScheduler.class.getName());
     private static final String SESSION_MANAGER_KEY = QuartzSessionValidationJob.SESSION_MANAGER_KEY;
     private Scheduler scheduler;
     private boolean schedulerImplicitlyCreated = false;

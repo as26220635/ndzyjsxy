@@ -24,13 +24,8 @@
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">
             <label>是否开启选择:</label>
-            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_SELECT")}'
+            <s:combobox sdtCode="SYS_SELECT_TYPE" custom='${fns:validField("SYS_CONFIGURE","SC_IS_SELECT")}'
                         value="${CONFIGURE.SC_IS_SELECT}"></s:combobox>
-        </div>
-        <div class="form-group has-feedback form-group-md-6">
-            <label>是否单选:</label>
-            <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_CONFIGURE","SC_IS_SINGLE")}'
-                        value="${CONFIGURE.SC_IS_SINGLE}"></s:combobox>
         </div>
     </div>
     <div class="row">

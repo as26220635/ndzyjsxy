@@ -10,6 +10,7 @@ import cn.kim.util.AnnotationUtil;
 import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
@@ -36,8 +37,8 @@ import java.util.Map;
  */
 @Aspect
 @Component
+@Log4j2
 public class ValidateAspect extends BaseData {
-    private static Logger logger = LogManager.getLogger(ValidateAspect.class.getName());
 
     @Autowired
     private ValidateService validateService;
@@ -49,7 +50,7 @@ public class ValidateAspect extends BaseData {
 
     @Around("validateAspect()")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
-        logger.info("验证参数开始!");
+        log.info("验证参数开始!");
 
         Object[] objs = pjp.getArgs();
         MethodSignature signature = (MethodSignature) pjp.getSignature();

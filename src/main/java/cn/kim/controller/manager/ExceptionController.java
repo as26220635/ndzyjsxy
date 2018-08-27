@@ -13,6 +13,7 @@ import cn.kim.util.AuthcUtil;
 import cn.kim.util.LogUtil;
 import cn.kim.util.SessionUtil;
 import cn.kim.util.ValidateUtil;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -34,9 +35,8 @@ import java.sql.SQLException;
  * 全局异常控制器拦截器
  */
 @ControllerAdvice
+@Log4j2
 public class ExceptionController extends BaseController {
-
-    private static Logger logger = LogManager.getLogger(ExceptionController.class.getName());
 
     /**
      * 权限不足跳转页面
@@ -100,7 +100,7 @@ public class ExceptionController extends BaseController {
             //记录SQL错误日志
             LogUtil.recordLog("SQL运行错误", "SQL运行错误超过上限错误,已被退出系统!", UseType.SYSTEM.getType(), Attribute.STATUS_ERROR);
 
-            logger.error("SQL运行错误:" + ex.getMessage(), Tips.LOG_ERROR);
+            log.error("SQL运行错误:" + ex.getMessage(), Tips.LOG_ERROR);
             //SQL错误超出次数
             AuthcUtil.getCurrent().logout();
         } else {
@@ -114,7 +114,7 @@ public class ExceptionController extends BaseController {
             //记录SQL错误日志
             LogUtil.recordLog("SQL运行错误", "SQL运行错误:" + ex.getMessage(), UseType.SYSTEM.getType(), Attribute.STATUS_ERROR);
 
-            logger.error("SQL运行错误:" + ex.getMessage(), Tips.LOG_ERROR);
+            log.error("SQL运行错误:" + ex.getMessage(), Tips.LOG_ERROR);
         }
 
         return modelAndView;
@@ -138,7 +138,7 @@ public class ExceptionController extends BaseController {
         } else {
             modelAndView.setViewName(Attribute.RECEPTION_404);
         }
-        logger.error("参数传入错误:" + ex.getMessage(), Tips.LOG_ERROR);
+        log.error("参数传入错误:" + ex.getMessage(), Tips.LOG_ERROR);
         return modelAndView;
     }
 
@@ -160,7 +160,7 @@ public class ExceptionController extends BaseController {
         } else {
             modelAndView.setViewName(Attribute.RECEPTION_404);
         }
-        logger.error("没有找到页面:" + ex.getMessage(), Tips.LOG_ERROR);
+        log.error("没有找到页面:" + ex.getMessage(), Tips.LOG_ERROR);
         return modelAndView;
     }
 
@@ -179,7 +179,7 @@ public class ExceptionController extends BaseController {
             modelAndView.setViewName(Attribute.RECEPTION_ERROR);
         }
         modelAndView.addObject("message", "无效的key");
-        logger.error("解密错误:无效的key", Tips.LOG_ERROR);
+        log.error("解密错误:无效的key", Tips.LOG_ERROR);
         return modelAndView;
     }
 }

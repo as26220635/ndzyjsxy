@@ -65,7 +65,6 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
             paramMap.put("SC_VIEW", mapParam.get("SC_VIEW"));
             paramMap.put("SC_ORDER_BY", mapParam.get("SC_ORDER_BY"));
             paramMap.put("SC_JSP", mapParam.get("SC_JSP"));
-            paramMap.put("SC_IS_SINGLE", mapParam.get("SC_IS_SINGLE"));
             paramMap.put("SC_IS_SELECT", mapParam.get("SC_IS_SELECT"));
             paramMap.put("SC_IS_PAGING", mapParam.get("SC_IS_PAGING"));
             paramMap.put("SC_IS_SEARCH", mapParam.get("SC_IS_SEARCH"));

@@ -7,6 +7,7 @@ import cn.kim.common.attr.ParamTypeResolve;
 import cn.kim.entity.ActiveUser;
 import cn.kim.service.LogService;
 import com.google.common.collect.Maps;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,9 @@ import java.util.Map;
  * 日志操作类
  */
 @Component
+@Log4j2
 public class LogUtil {
 
-    private static Logger logger = LogManager.getLogger(LogUtil.class.getName());
     /**
      * 上一次日志记录到session中的key
      */
@@ -80,14 +81,14 @@ public class LogUtil {
             if (!toString(paramMap).equals(SessionUtil.get(PREV_LOG_SAVE_KEY))) {
                 SessionUtil.set(PREV_LOG_SAVE_KEY, toString(paramMap));
                 logUtil.logService.insertLog(paramMap);
-                logger.info("身份:" + (activeUser != null ? ParamTypeResolve.getOpeatorTypeName(activeUser.getType()) : "")
+                log.info("身份:" + (activeUser != null ? ParamTypeResolve.getOpeatorTypeName(activeUser.getType()) : "")
                         + ",用户:" + activeUser.getUsername()
                         + ",操作:" + logEvent
                         + ",内容:" + logTextContent
                         + ",结果:" + logResult);
             }
         } catch (Exception e) {
-            logger.error("日志操作错误:" + e + "-------------" + e.getMessage());
+            log.error("日志操作错误:" + e + "-------------" + e.getMessage());
         }
     }
 

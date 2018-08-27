@@ -79,7 +79,7 @@ public class DataInitialization implements ApplicationListener<ContextRefreshedE
             tableList.forEach(map -> {
                 paramMap.clear();
                 paramMap.put("TABLE_SCHEMA", ConfigProperties.DB_DBNAME);
-                paramMap.put("TABLE_NAME", map.get("TABLE_NAME"));
+                paramMap.put("TABLE_NAME", TextUtil.toSqlIn(map.get("TABLE_NAME")));
                 baseDao.selectList(NameSpace.DbMapper, "selectColumnsComment", paramMap);
             });
         }

@@ -16,6 +16,8 @@ import cn.kim.service.BaseService;
 import cn.kim.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -26,12 +28,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by 余庚鑫 on 2017/11/1.
  */
 
 @Service
+@Log4j2
 public abstract class BaseServiceImpl extends BaseData implements BaseService {
 
     /**
@@ -308,6 +312,18 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         return errors;
     }
 
+    /**
+     * 移除ID字段
+     *
+     * @param map
+     * @return
+     */
+    protected Map<String, ?> removeMapId(Map<String, ?> map) {
+        Objects.requireNonNull(map);
+        map.remove("ID");
+        return map;
+    }
+
     /*****************  流程使用    *******************/
 
     /**
@@ -430,6 +446,8 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         paramMap.put("SPS_IS_CANCEL", "0");
 
         baseDao.insert(NameSpace.ProcessMapper, "insertProcessSchedule", paramMap);
+
+        log.info("插入流程,参数:" + toString(paramMap));
     }
 
     /**
@@ -443,7 +461,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
         paramMap.put("SPS_TABLE_ID", tableId);
         paramMap.put("SPS_TABLE_NAME", tableName);
-        List<Map<String, Object> > scheduleList = baseDao.selectList(NameSpace.ProcessMapper, "selectProcessSchedule", paramMap);
+        List<Map<String, Object>> scheduleList = baseDao.selectList(NameSpace.ProcessMapper, "selectProcessSchedule", paramMap);
         if (!isEmpty(scheduleList)) {
             for (Map<String, Object> schedule : scheduleList) {
                 //删除日志
@@ -456,5 +474,6 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
                 baseDao.delete(NameSpace.ProcessMapper, "deleteProcessSchedule", paramMap);
             }
         }
+        log.info("删除流程,参数:" + toString(paramMap));
     }
 }

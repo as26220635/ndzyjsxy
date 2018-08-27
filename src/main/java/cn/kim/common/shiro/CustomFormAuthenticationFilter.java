@@ -5,6 +5,7 @@ import cn.kim.common.eu.SystemEnum;
 import cn.kim.exception.IncorrectCaptchaException;
 import cn.kim.util.AuthcUtil;
 import cn.kim.util.HttpUtil;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
@@ -20,9 +21,8 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by 余庚鑫 on 2017/2/21.
  */
+@Log4j2
 public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
-
-    private static final Logger LOG = LogManager.getLogger(CustomFormAuthenticationFilter.class.getName());
 
     public CustomFormAuthenticationFilter() {
     }
@@ -41,10 +41,10 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
             doCaptchaValidate((HttpServletRequest) request, token);
             Subject subject = getSubject(request, response);
             subject.login(token);//正常验证
-            LOG.info(token.getUsername() + "登录成功");
+            log.info(token.getUsername() + "登录成功");
             return onLoginSuccess(token, subject, request, response);
         } catch (AuthenticationException e) {
-            LOG.info(token.getUsername() + "登录失败--" + e);
+            log.info(token.getUsername() + "登录失败--" + e);
             return onLoginFailure(token, e, request, response);
         }
     }

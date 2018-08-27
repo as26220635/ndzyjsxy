@@ -27,7 +27,6 @@
             <if test="SC_VIEW != null">SC_VIEW,</if>
             <if test="SC_ORDER_BY != null">SC_ORDER_BY,</if>
             <if test="SC_JSP != null">SC_JSP,</if>
-            <if test="SC_IS_SINGLE != null">SC_IS_SINGLE,</if>
             <if test="SC_IS_SELECT != null">SC_IS_SELECT,</if>
             <if test="SC_IS_PAGING != null">SC_IS_PAGING,</if>
             <if test="SC_IS_SEARCH != null">SC_IS_SEARCH,</if>
@@ -39,7 +38,6 @@
             <if test="SC_VIEW != null">#{SC_VIEW},</if>
             <if test="SC_ORDER_BY != null">#{SC_ORDER_BY},</if>
             <if test="SC_JSP != null">#{SC_JSP},</if>
-            <if test="SC_IS_SINGLE != null">#{SC_IS_SINGLE},</if>
             <if test="SC_IS_SELECT != null">#{SC_IS_SELECT},</if>
             <if test="SC_IS_PAGING != null">#{SC_IS_PAGING},</if>
             <if test="SC_IS_SEARCH != null">#{SC_IS_SEARCH},</if>
@@ -56,7 +54,6 @@
             <if test="SC_VIEW != null">SC_VIEW=#{SC_VIEW},</if>
             <if test="SC_ORDER_BY != null">SC_ORDER_BY=#{SC_ORDER_BY},</if>
             <if test="SC_JSP != null">SC_JSP=#{SC_JSP},</if>
-            <if test="SC_IS_SINGLE != null">SC_IS_SINGLE=#{SC_IS_SINGLE},</if>
             <if test="SC_IS_SELECT != null">SC_IS_SELECT=#{SC_IS_SELECT},</if>
             <if test="SC_IS_PAGING != null">SC_IS_PAGING=#{SC_IS_PAGING},</if>
             <if test="SC_IS_SEARCH != null">SC_IS_SEARCH=#{SC_IS_SEARCH},</if>

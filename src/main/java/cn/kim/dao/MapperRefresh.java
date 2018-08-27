@@ -4,6 +4,7 @@ import cn.kim.common.attr.ConfigProperties;
 import cn.kim.common.attr.ConfigProperties;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
@@ -21,9 +22,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.*;
 
+@Log4j2
 public class MapperRefresh implements Runnable {
-
-    private static Logger log = LogManager.getLogger(MapperRefresh.class.getName());
 
     private static String filename = "mybatis-refresh.properties";
     private static Properties prop = new Properties();

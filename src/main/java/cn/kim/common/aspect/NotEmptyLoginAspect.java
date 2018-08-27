@@ -10,6 +10,7 @@ import cn.kim.service.ValidateService;
 import cn.kim.util.AnnotationUtil;
 import cn.kim.util.AuthcUtil;
 import cn.kim.util.ValidateUtil;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -33,8 +34,8 @@ import java.util.*;
  */
 @Aspect
 @Component
+@Log4j2
 public class NotEmptyLoginAspect extends BaseData {
-    private static Logger logger = LogManager.getLogger(NotEmptyLoginAspect.class.getName());
 
     @Autowired
     private ValidateService validateService;
@@ -47,6 +48,7 @@ public class NotEmptyLoginAspect extends BaseData {
     @Around("notEmptyLoginAspect()")
     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
         if (isEmpty(AuthcUtil.getCurrentUser())) {
+            log.error("没有登录!");
             throw new UnauthorizedException("没有登录!");
         }
         return pjp.proceed();

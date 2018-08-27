@@ -6,6 +6,7 @@ import cn.kim.common.eu.SystemEnum;
 import cn.kim.controller.ManagerController;
 import cn.kim.common.attr.Attribute;
 import cn.kim.util.LogUtil;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.session.UnknownSessionException;
@@ -19,9 +20,8 @@ import java.io.FileNotFoundException;
 /**
  * 自定义异常处理器
  */
+@Log4j2
 public class CustomExceptionResolver implements HandlerExceptionResolver {
-
-    private static Logger logger = LogManager.getLogger(CustomExceptionResolver.class.getName());
 
     //前端控制器DispatcherServlet在进行HandlerMapping、调用HandlerAdapter执行Handler过程中，如果遇到异常就会执行此方法
     //handler最终要执行的Handler，它的真实身份是HandlerMethod
@@ -70,7 +70,7 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
                         "，方法：" + stackTraceElement.getMethodName() + "，错误内容：" + message;
 
                 LogUtil.recordLog("系统发现异常", error, UseType.SYSTEM.getType(), Attribute.STATUS_ERROR);
-                logger.error(error);
+                log.error(error);
             } catch (Exception e) {
             }
         }

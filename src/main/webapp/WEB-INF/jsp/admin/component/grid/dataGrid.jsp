@@ -29,7 +29,7 @@
 </style>
 
 <%--设置字段偏移值--%>
-<c:set var="FIELD_OFFSET" value="${1 + (CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS ? 1 : 0 )}"
+<c:set var="FIELD_OFFSET" value="${1 + (!fns:isEmpty(CONFIGURE.SC_IS_SELECT) ? 1 : 0 )}"
        scope="request"></c:set>
 
 <section class="content">
@@ -178,7 +178,7 @@
 </section>
 <%--设置列表属性--%>
 <%--标题--%>
-<c:if test="${not empty EXTRA.TITLE}">
+<c:if test="${!fns:isEmpty(EXTRA.TITLE)}">
     <c:set scope="request" var="MENU_TITLE" value="${EXTRA.TITLE}-"></c:set>
 </c:if>
 <%@ include file="/WEB-INF/jsp/admin/component/setTitleParams.jsp" %>
@@ -216,17 +216,13 @@
         <c:if test="${CONFIGURE.SC_IS_PAGING != Attribute.STATUS_SUCCESS}">
         headLength: false,
         </c:if>
-        <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
-        <c:choose>
-        <%--单选--%>
-        <c:when test="${CONFIGURE.SC_IS_SINGLE ne null && CONFIGURE.SC_IS_SINGLE  eq Attribute.STATUS_SUCCESS}">
-        select: choiceBox.mode.SINGLE,
-        </c:when>
         <%--多选--%>
-        <c:otherwise>
+        <c:if test="${CONFIGURE.SC_IS_SELECT eq '1'}">
         select: choiceBox.mode.MULTIPLE,
-        </c:otherwise>
-        </c:choose>
+        </c:if>
+        <%--单选--%>
+        <c:if test="${CONFIGURE.SC_IS_SELECT eq '2'}">
+        select: choiceBox.mode.SINGLE,
         </c:if>
         //固定列
         <c:if test="${IS_FIXED}">
@@ -247,11 +243,11 @@
         <%--字段--%>
         columns: [
             <%--开启checkbox--%>
-            <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
+            <c:if test="${!fns:isEmpty(CONFIGURE.SC_IS_SELECT)}">
             {
                 data: null,
                 width: '20px',
-                <c:if test="${CONFIGURE.SC_IS_SINGLE  ne Attribute.STATUS_SUCCESS}">
+                <c:if test="${CONFIGURE.SC_IS_SELECT  eq '1'}">
                 className: 'select-checkbox text-center',
                 title: '<input type="checkbox" data-id="dataGridSelectAll" onclick="dataGridSwitchSelectAll(this.checked);">',
                 </c:if>
@@ -276,7 +272,7 @@
                 data: '${fns:trueOrFalse(COLUMN.SCC_IS_OPERATION, "ID" ,COLUMN.SCC_FIELD )}',
                 title:
                     '${COLUMN.SCC_NAME}',
-                <c:if test="${not empty COLUMN.SCC_WIDTH}">
+                <c:if test="${!fns:isEmpty(COLUMN.SCC_WIDTH)}">
                 width: '${COLUMN.SCC_WIDTH}',
                 </c:if>
                 className: 'dataTable-column text-${COLUMN.SCC_ALIGN} ' + '${fns:trueOrFalse(COLUMN.SCC_IS_OPERATION, "dataTable-column-min-width-operation" , "" )} ' + '${COLUMN.SCC_CLASS}',
@@ -284,7 +280,7 @@
                 <%--设置列初始化行--%>
                 createdCell: function (td, cellData, rowData, row, col) {
                     <%--设置最小宽度--%>
-                    <c:if test="${not empty COLUMN.SCC_WIDTH}">
+                    <c:if test="${!fns:isEmpty(COLUMN.SCC_WIDTH)}">
                     $(td).css('min-width', '${COLUMN.SCC_WIDTH}');
                     </c:if>
                     <c:if test="${COLUMN.SCC_IS_OPERATION eq Attribute.STATUS_SUCCESS }">
@@ -310,7 +306,7 @@
         //操作按钮
         columnDefs: [
             <%--开启checkbox--%>
-            <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
+            <c:if test="${!fns:isEmpty(CONFIGURE.SC_IS_SELECT)}">
             {
                 className: 'select-checkbox',
                 targets: 0,
@@ -383,12 +379,12 @@
         <%--列表刷新完回调--%>
         endCallback: function (api) {
             <%--选择框--%>
-            <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
+            <c:if test="${!fns:isEmpty(CONFIGURE.SC_IS_SELECT)}">
             tableView.choiceBox(api, 0);
             $('.select-checkbox').css('width', '20px');
             </c:if>
             <%--序号--%>
-            tableView.orderNumber(api, ${fns:trueOrFalse(CONFIGURE.SC_IS_SELECT, 1 ,0 )});
+            tableView.orderNumber(api, ${fns:trueOrFalse(!fns:isEmpty(CONFIGURE.SC_IS_SELECT), 1 ,0 )});
             $('.dataTable-column-min-width-sort').css('width', '35px');
             <%--切换按钮--%>
             $('[name="STATUS_SWITCH"]').bootstrapSwitch({
@@ -431,8 +427,7 @@
     });
 
     <%--开启checkbox--%>
-    <c:if test="${CONFIGURE.SC_IS_SELECT == Attribute.STATUS_SUCCESS}">
-    <c:if test="${CONFIGURE.SC_IS_SINGLE  ne Attribute.STATUS_SUCCESS}">
+    <c:if test="${CONFIGURE.SC_IS_SELECT eq '1'}">
 
     function dataGridSwitchSelectAll(checked) {
         if (checked) {
@@ -461,7 +456,6 @@
             }
         }
     });
-    </c:if>
     </c:if>
 
     <c:if test="${!fns:isEmpty(MENU.BUS_PROCESS)}">

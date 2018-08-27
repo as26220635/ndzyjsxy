@@ -257,7 +257,7 @@ public class TextUtil {
         }
     }
 
-    public static String toSqlIn(Object[] objects) {
+    public static String toSqlIn(Object... objects) {
         String params = "";
         for (int i = 0; i < objects.length; i++) {
             Object obj = objects[i];

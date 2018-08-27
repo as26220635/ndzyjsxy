@@ -35,7 +35,6 @@ import java.util.Map;
  */
 @Component
 public class DictUtil {
-    private static Logger logger = LogManager.getLogger(DictUtil.class.getName());
 
     @Autowired
     private DictService dictService;

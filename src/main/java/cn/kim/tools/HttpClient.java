@@ -4,6 +4,7 @@ import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Maps;
+import lombok.extern.log4j.Log4j2;
 import org.apache.http.Consts;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -29,9 +30,8 @@ import java.util.Set;
 /**
  * Created by 余庚鑫 on 2017/8/4.
  */
+@Log4j2
 public class HttpClient {
-
-    private static Logger logger = LogManager.getLogger(HttpClient.class.getName());
 
     /**
      * 处理get请求.
@@ -96,7 +96,7 @@ public class HttpClient {
             resultMap.put(MagicValue.DESC, e.getMessage());
         }
 
-        logger.info("GET请求，URL:" + url + str);
+        log.info("GET请求，URL:" + url + str);
         return resultMap;
     }
 
@@ -157,7 +157,7 @@ public class HttpClient {
         } catch (IOException e) {
             resultMap.put(MagicValue.DESC, e.getMessage());
         }
-        logger.info("POST请求，URL:" + url + "，参数:" + nvps.toString());
+        log.info("POST请求，URL:" + url + "，参数:" + nvps.toString());
         return resultMap;
     }
 }

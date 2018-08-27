@@ -6,6 +6,7 @@ import cn.kim.common.attr.CacheName;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.shiro.cache.SpringCacheManagerWrapper;
 import cn.kim.entity.DictType;
+import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.apache.logging.log4j.LogManager;
@@ -22,9 +23,8 @@ import java.util.List;
  * cache工具类
  */
 @Component
+@Log4j2
 public class CacheUtil {
-
-    private static Logger logger = LogManager.getLogger(CacheUtil.class.getName());
 
     @Autowired
     private SpringCacheManagerWrapper shiroCacheManager;
@@ -64,7 +64,7 @@ public class CacheUtil {
     }
 
     public static void clear(String cacheName) {
-        logger.info("移除缓存:" + cacheName + ",的全部缓存数据");
+        log.info("移除缓存:" + cacheName + ",的全部缓存数据");
         cacheUtil.shiroCacheManager.getCache(cacheName).clear();
     }
 

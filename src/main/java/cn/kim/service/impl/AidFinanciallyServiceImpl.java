@@ -1,31 +1,26 @@
 package cn.kim.service.impl;
 
-import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.eu.AidType;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.Process;
-import cn.kim.common.eu.SystemEnum;
 import cn.kim.dao.BaseDao;
-import cn.kim.entity.*;
+import cn.kim.entity.ActiveUser;
+import cn.kim.entity.DictInfo;
+import cn.kim.entity.StudentYearSemester;
 import cn.kim.exception.CustomException;
 import cn.kim.service.AidFinanciallyService;
-import cn.kim.util.CommonUtil;
 import cn.kim.util.DictUtil;
 import cn.kim.util.PoiUtil;
-import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.logging.log4j.util.Strings;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.Attr;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +50,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             //记录表名
-            String SVR_TABLE_NAME = TableName.BUS_AID_FINANCIALLY;
+            List<String> tableNameList = Lists.newArrayList(TableName.BUS_AID_FINANCIALLY);
 
             String id = toString(mapParam.get("ID"));
             int BAF_TYPE = toInt(mapParam.get("BAF_TYPE"));
@@ -110,6 +105,8 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
                     baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidNationalScholarship", paramMap);
 
+                    //子表
+                    tableNameList.add(TableName.BUS_AID_NATIONAL_SCHOLARSHIP);
                 } else if (BAF_TYPE == AidType.NATIONAL_GRANTS.getType()) {
                     //国家助学金
                     paramMap.clear();
@@ -124,13 +121,16 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.put("BANG_ISSUANCE_TIME", mapParam.get("BANG_ISSUANCE_TIME"));
 
                     baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidNationalGrants", paramMap);
+
+                    //子表
+                    tableNameList.add(TableName.BUS_AID_NATIONAL_GRANTS);
                 }
 
                 //插入流程
                 createProcessSchedule(id, toString(student.get("BS_NAME")),
                         activeUser.getId(), toString(student.get("SO_ID")), toString(mapParam.get("BUS_PROCESS")), toString(mapParam.get("BUS_PROCESS2")));
 
-                resultMap.put(MagicValue.LOG, "添加资助:" + formatColumnName(SVR_TABLE_NAME, paramMap));
+                resultMap.put(MagicValue.LOG, "添加资助:" + formatColumnName(String.join(SERVICE_SPLIT, tableNameList), paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
@@ -158,6 +158,10 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.put("BANS_ISSUANCE_TIME", mapParam.get("BANS_ISSUANCE_TIME"));
 
                     baseDao.update(NameSpace.AidFinanciallyMapper, "updateAidNationalScholarship", paramMap);
+
+                    //子表
+                    tableNameList.add(TableName.BUS_AID_NATIONAL_SCHOLARSHIP);
+                    oldMap.putAll(removeMapId(nationalScholarship));
                 } else if (BAF_TYPE == AidType.NATIONAL_GRANTS.getType()) {
                     //国家助学金
                     paramMap.clear();
@@ -174,10 +178,14 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     paramMap.put("BANG_ISSUANCE_TIME", mapParam.get("BANG_ISSUANCE_TIME"));
 
                     baseDao.insert(NameSpace.AidFinanciallyMapper, "updateAidNationalGrants", paramMap);
+
+                    //子表
+                    tableNameList.add(TableName.BUS_AID_NATIONAL_GRANTS);
+                    oldMap.putAll(removeMapId(nationalGrants));
                 }
 
-
-                resultMap.put(MagicValue.LOG, "更新资助,更新前:" + formatColumnName(SVR_TABLE_NAME, oldMap) + ",更新后:" + formatColumnName(SVR_TABLE_NAME, paramMap));
+                resultMap.put(MagicValue.LOG, "更新资助,更新前:" + formatColumnName(String.join(SERVICE_SPLIT, tableNameList), oldMap) +
+                        ",更新后:" + formatColumnName(String.join(SERVICE_SPLIT, tableNameList), paramMap));
             }
 
             status = STATUS_SUCCESS;
@@ -202,6 +210,9 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             if (isEmpty(mapParam.get("ID"))) {
                 throw new CustomException("ID不能为空!");
             }
+            //记录表名
+            List<String> tableNameList = Lists.newArrayList(TableName.BUS_AID_FINANCIALLY);
+
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
             String id = toString(mapParam.get("ID"));
             paramMap.clear();
@@ -225,6 +236,10 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_NATIONAL_SCHOLARSHIP);
                 paramMap.put("ID", nationalScholarship.get("ID"));
                 baseDao.delete(NameSpace.AidFinanciallyMapper, "deleteAidNationalScholarship", paramMap);
+
+                //子表
+                tableNameList.add(TableName.BUS_AID_NATIONAL_SCHOLARSHIP);
+                oldMap.putAll(removeMapId(nationalScholarship));
             } else if (BAF_TYPE == AidType.NATIONAL_GRANTS.getType()) {
                 //国家助学金
                 paramMap.clear();
@@ -234,6 +249,10 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_AID_NATIONAL_GRANTS);
                 paramMap.put("ID", nationalGrants.get("ID"));
                 baseDao.delete(NameSpace.AidFinanciallyMapper, "deleteAidNationalGrants", paramMap);
+
+                //子表
+                tableNameList.add(TableName.BUS_AID_NATIONAL_GRANTS);
+                oldMap.putAll(removeMapId(nationalGrants));
             }
             //删除资助
             paramMap.clear();
@@ -243,7 +262,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
             //删除流程
             deleteProcessSchedule(id, TableName.BUS_AID_FINANCIALLY);
-            resultMap.put(MagicValue.LOG, "删除资助,信息:" + formatColumnName(TableName.BUS_AID_FINANCIALLY, oldMap));
+            resultMap.put(MagicValue.LOG, "删除资助,信息:" + formatColumnName(String.join(SERVICE_SPLIT, tableNameList), oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

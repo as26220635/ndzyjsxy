@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.parser.Feature;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpOutputMessage;
@@ -23,12 +24,8 @@ import java.util.Map;
  * Created by 余庚鑫 on 2017/6/3.
  * 自定义json返回的解析，防止XSS攻击
  */
+@Log4j2
 public class CustomFastJsonConverter extends FastJsonHttpMessageConverter {
-    /**
-     * 日志记录器
-     **/
-    private static final Logger LOGGER = LogManager.getLogger(CustomFastJsonConverter.class);
-
 
     /**
      * 重写writeInternal方法，在返回内容前首先进行HTML字符转义
@@ -93,7 +90,7 @@ public class CustomFastJsonConverter extends FastJsonHttpMessageConverter {
                 return json;
             }
         } catch (JSONException e) {
-            LOGGER.error("Json数据解析处理失败！");
+            log.error("Json数据解析处理失败！");
             return "{}";
         }
     }

@@ -673,7 +673,7 @@ public abstract class BaseData {
 
         //查询对应表名
         paramMap.put("TABLE_SCHEMA", ConfigProperties.DB_DBNAME);
-        paramMap.put("TABLE_NAME", tableName);
+        paramMap.put("TABLE_NAME", TextUtil.toSqlIn(tableName));
         List<Map<String, Object>> columnsCommentList = DaoSession.daoSession.baseDao.selectList(NameSpace.DbMapper, "selectColumnsComment", paramMap);
         if (isEmpty(columnsCommentList)) {
             return formatMap;

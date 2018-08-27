@@ -15,6 +15,7 @@ import cn.kim.service.FileWS;
 import cn.kim.service.impl.FileWSImplService;
 import com.google.common.collect.Maps;
 import com.sun.istack.internal.ByteArrayDataSource;
+import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.logging.log4j.LogManager;
@@ -42,9 +43,8 @@ import java.util.UUID;
  * Created by 余庚鑫 on 2017/3/5.
  */
 @Component
+@Log4j2
 public class FileUtil {
-
-    private static Logger logger = LogManager.getLogger(FileUtil.class.getName());
 
     @Autowired
     private FileService fileService;

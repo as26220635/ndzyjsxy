@@ -12,6 +12,7 @@ import cn.kim.entity.ResultState;
 import cn.kim.service.MenuService;
 import cn.kim.util.*;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.cache.Cache;
@@ -37,9 +38,9 @@ import java.util.Map;
  */
 @Aspect
 @Component
+@Log4j2
 public class LogAspect extends BaseData {
-    private static Logger logger = LogManager.getLogger(LogAspect.class.getName());
-
+    
     @Autowired
     private MenuService menuService;
 
@@ -144,7 +145,7 @@ public class LogAspect extends BaseData {
                     code = toInt(jsonObject.get("code"));
 
                     if (isEmpty(code)) {
-                        logger.warn("没有找到code,请求方法:"
+                        log.warn("没有找到code,请求方法:"
                                 + (pjp.getTarget().getClass().getName() + "." + pjp.getSignature().getName() + "()")
                                 + ",方法描述:" + event);
                         return object;
