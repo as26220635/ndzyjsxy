@@ -737,6 +737,9 @@ public abstract class BaseData {
                         }
                     }
                     newKey = TextUtil.removeTableName(newKey);
+
+                    //原本的ID值
+                    resultMap.put(newKey + "(ID)", formatMap.get(key));
                 }
             }
 

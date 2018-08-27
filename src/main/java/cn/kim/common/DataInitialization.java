@@ -55,33 +55,6 @@ public class DataInitialization implements ApplicationListener<ContextRefreshedE
 
             //加载邮箱配置
             EmailUtil.init();
-
-            CacheUtil.clear(NameSpace.MenuMapper.getValue());
-            CacheUtil.clear(NameSpace.ConfigureMapper.getValue());
-            CacheUtil.clear(NameSpace.DbMapper.getValue());
-
-            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
-
-            //启动刷新全部菜单缓存
-            List<Map<String, Object>> menuList = menuService.selectMenuList(new HashMap<>());
-            menuList.forEach(menu -> {
-                menuService.queryMenuById(TextUtil.toString(menu.get("ID")));
-                if (!ValidateUtil.isEmpty(menu.get("SC_ID"))) {
-                    dataGridService.selectConfigureById(TextUtil.toString(menu.get("SC_ID")));
-                    System.out.println("缓存菜单:" + menu.get("SM_NAME"));
-                }
-            });
-
-            //缓存全库的表备注信息
-            paramMap.put("TABLE_SCHEMA", ConfigProperties.DB_DBNAME);
-            List<Map<String, Object>> tableList = baseDao.selectList(NameSpace.DbMapper, "selectDBTableName", paramMap);
-
-            tableList.forEach(map -> {
-                paramMap.clear();
-                paramMap.put("TABLE_SCHEMA", ConfigProperties.DB_DBNAME);
-                paramMap.put("TABLE_NAME", TextUtil.toSqlIn(map.get("TABLE_NAME")));
-                baseDao.selectList(NameSpace.DbMapper, "selectColumnsComment", paramMap);
-            });
         }
     }
 }

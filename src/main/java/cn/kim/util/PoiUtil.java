@@ -887,7 +887,7 @@ public class PoiUtil {
                 }
                 list.add(cells);
             }
-
+            workbook.close();
         }
         return list;
     }

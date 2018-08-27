@@ -940,8 +940,8 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                         paramMap.put("BAF_SEMESTER", semester);
                     }
 
-                    Map<String, Object> aid = baseDao.selectOne(NameSpace.AidFinanciallyMapper, "selectAidFinancially", paramMap);
-                    if (!isEmpty(aid)) {
+                    int count = baseDao.selectOne(NameSpace.AidFinanciallyMapper, "selectAidFinanciallyCount", paramMap);
+                    if (count > 0) {
                         resultList.add(packErrorData(row, "数据重复导入"));
                     }
                 }

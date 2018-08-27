@@ -29,7 +29,7 @@
     </div>
     <div class="form-group has-feedback">
         <label>年段:</label>
-        <s:datebox custom='${fns:validField("BUS_CLASS", "BC_YEAR")}' value="${cls.BC_YEAR}"></s:datebox>
+        <s:datebox custom='${fns:validField("BUS_CLASS", "BC_YEAR")}' value="${cls.BC_YEAR}" studentYear="false"></s:datebox>
     </div>
 </form>
 

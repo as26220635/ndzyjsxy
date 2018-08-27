@@ -261,10 +261,12 @@
                 width: '35px',
                 className: 'text-center dataTable-column-min-width-sort',
                 <%--设置列初始化行--%>
+                <c:if test="${!IS_FIXED}">
                 createdCell: function (td, cellData, rowData, row, col) {
                     <%--设置最小宽度--%>
                     $(td).css('min-width', '35px');
                 }
+                </c:if>
             },
             <c:forEach items="${COLUMN_LIST}" var="COLUMN">
             {
@@ -280,7 +282,7 @@
                 <%--设置列初始化行--%>
                 createdCell: function (td, cellData, rowData, row, col) {
                     <%--设置最小宽度--%>
-                    <c:if test="${!fns:isEmpty(COLUMN.SCC_WIDTH)}">
+                    <c:if test="${!IS_FIXED && !fns:isEmpty(COLUMN.SCC_WIDTH)}">
                     $(td).css('min-width', '${COLUMN.SCC_WIDTH}');
                     </c:if>
                     <c:if test="${COLUMN.SCC_IS_OPERATION eq Attribute.STATUS_SUCCESS }">
@@ -381,11 +383,9 @@
             <%--选择框--%>
             <c:if test="${!fns:isEmpty(CONFIGURE.SC_IS_SELECT)}">
             tableView.choiceBox(api, 0);
-            $('.select-checkbox').css('width', '20px');
             </c:if>
             <%--序号--%>
             tableView.orderNumber(api, ${fns:trueOrFalse(!fns:isEmpty(CONFIGURE.SC_IS_SELECT), 1 ,0 )});
-            $('.dataTable-column-min-width-sort').css('width', '35px');
             <%--切换按钮--%>
             $('[name="STATUS_SWITCH"]').bootstrapSwitch({
                 onText: "开启",
@@ -566,12 +566,12 @@
 
     </c:if>
     //按钮日志格式化
-    function processLogFunc(targets, field) {
+    function processLogFunc(targOutputBufferOutputBufferets, field) {
         return {
             targets: targets,
             data: field,
             render: function (data, type, full, meta) {
-                if (full.SPS_AUDIT_STATUS == undefined || full.SPS_AUDIT_STATUS == 0) {
+                if (full.SPS_AUDIT_STATUS == undefined) {
                     return '<button type="button" class="btn btn-link btn-xs" disabled>' + data + '</button>';
                 } else {
                     return '<button type="button" class="btn btn-link btn-xs" id="PROCESS_LOG">' + data + '</button>';

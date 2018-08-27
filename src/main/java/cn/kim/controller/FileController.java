@@ -302,7 +302,7 @@ public class FileController extends BaseController {
         String SF_PATH = TextUtil.toString(file.get("SF_PATH"));
 
         //判断权限
-        if (isEmpty(activeUser) || !activeUser.getId().equals(SO_ID) || !containsRole(SDT_ROLE_DEL)) {
+        if (isEmpty(activeUser) ? true : !activeUser.getId().equals(SO_ID) && !containsRole(SDT_ROLE_DEL)) {
             throw new UnauthorizedException("你没有删除这个文件的权限!");
         }
 

@@ -1147,7 +1147,7 @@ choiceBox = {
             },
             //点击回调
             confirm: function ($model) {
-                var data = $table.row({selected: true}).data();
+                var data = $table.rows({selected: true}).data();
                 if (settings.isCancel == true && data.length != 0) {
                     model.hide($model);
                 }
