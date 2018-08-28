@@ -230,9 +230,10 @@
         </c:choose>
     }, 50);
 
+    var $form = $('#addAndEditForm');
+
     //保存
     $('#save').click(function () {
-        var $form = $('#addAndEditForm');
         //验证
         if (!validator.formValidate($form)) {
             demo.showNotify(ALERT_WARNING, VALIDATE_FAIL);
@@ -260,6 +261,8 @@
         val -= Number($('#BSC_EDUCATION_DEDUCTION').val());
         $('#BSC_EDUCATION_TOTAL').val(val);
         $('#BSC_EDUCATION_SCORE').val(toFixed(floatObj.multiply(val, ${EDUCATION_PROPORTION/ 100}), 2)).change();
+        validator.fieldValidate($form, 'BSC_EDUCATION_TOTAL');
+        validator.fieldValidate($form, 'BSC_EDUCATION_SCORE');
     });
     //智育
     $('#intellectualDiv input').bind("input propertychange", function (event) {
@@ -268,6 +271,7 @@
             val += Number($(this).val());
         });
         $('#BSC_INTELLECTUAL_SCORE').val(toFixed(floatObj.multiply(val, ${INTELLECTUAL_PROPORTION/ 100}), 2)).change();
+        validator.fieldValidate($form, 'BSC_INTELLECTUAL_SCORE');
     });
     //自愿者
     $('#volunteerDiv input').bind("input propertychange", function (event) {
@@ -276,6 +280,7 @@
             val += Number($(this).val());
         });
         $('#BSC_VOLUNTEER_SCORE').val(toFixed(floatObj.multiply(val, ${VOLUNTEER_PROPORTION/ 100}), 2)).change();
+        validator.fieldValidate($form, 'BSC_VOLUNTEER_SCORE');
     });
     //总分
     $('#BSC_EDUCATION_SCORE,#BSC_INTELLECTUAL_SCORE,#BSC_VOLUNTEER_SCORE').on('change', function () {
@@ -284,6 +289,7 @@
             val += Number($(this).val());
         });
         $('#BSC_TOTAL').val(toFixed(val, 2));
+        validator.fieldValidate($form, 'BSC_TOTAL');
     });
 
     validator.init({

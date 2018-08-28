@@ -284,17 +284,29 @@ public class ValidateUtil {
         if (!isEmpty(mapParam)) {
             String fieldMinLength = TextUtil.toString(mapParam.get("SVF_MIN_LENGTH"));
             String fieldMaxLength = TextUtil.toString(mapParam.get("SVF_MAX_LENGTH"));
+            String fieldMin = TextUtil.toString(mapParam.get("SVF_MIN"));
+            String fieldMax = TextUtil.toString(mapParam.get("SVF_MAX"));
             String regex = TextUtil.toString(mapParam.get("SVR_REGEX"));
             int isRequired = TextUtil.toInt(mapParam.get("SVF_IS_REQUIRED"));
 
-            //最小值
+            //最小长度
             if (!isEmpty(fieldMinLength)) {
                 builder.append(" minlength='" + fieldMinLength + "' ");
             }
 
-            //最大值
+            //最大长度
             if (!isEmpty(fieldMaxLength)) {
                 builder.append(" maxlength='" + fieldMaxLength + "' ");
+            }
+
+            //最小值
+            if (!isEmpty(fieldMin)) {
+                builder.append(" min='" + fieldMin + "' ");
+            }
+
+            //最大值
+            if (!isEmpty(fieldMax)) {
+                builder.append(" max='" + fieldMax + "' ");
             }
 
             //正则验证

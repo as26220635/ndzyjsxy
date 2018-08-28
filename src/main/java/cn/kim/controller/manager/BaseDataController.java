@@ -212,7 +212,7 @@ public class BaseDataController extends BaseController {
             //URL额外参数
             model.addAttribute("EXTRA", extra);
 
-            log.info("菜单:" + menu.get("SM_NAME") + ",配置列表地址:" + configure.get("SC_JSP"));
+            log.info("菜单:" + menu.get("SM_NAME") + ",视图:" + configure.get("SC_VIEW") + ",配置列表地址:" + configure.get("SC_JSP"));
             return toString(configure.get("SC_JSP"));
         } catch (Exception e) {
             e.printStackTrace();

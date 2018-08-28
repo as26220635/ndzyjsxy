@@ -261,7 +261,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             baseDao.delete(NameSpace.AidFinanciallyMapper, "deleteAidFinancially", paramMap);
 
             //删除流程
-            deleteProcessSchedule(id, TableName.BUS_AID_FINANCIALLY);
+            deleteProcessSchedule(id);
             resultMap.put(MagicValue.LOG, "删除资助,信息:" + formatColumnName(String.join(SERVICE_SPLIT, tableNameList), oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;

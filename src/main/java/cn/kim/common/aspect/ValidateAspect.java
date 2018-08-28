@@ -11,9 +11,6 @@ import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -25,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -160,6 +157,8 @@ public class ValidateAspect extends BaseData {
 
                         String fieldMinLength = toString(field.get("SVF_MIN_LENGTH"));
                         String fieldMaxLength = toString(field.get("SVF_MAX_LENGTH"));
+                        String fieldMin = toString(field.get("SVF_MIN"));
+                        String fieldMax = toString(field.get("SVF_MAX"));
                         String regex = toString(field.get("SVR_REGEX"));
                         String regexMessage = toString(field.get("SVR_REGEX_MESSAGE"));
                         int isFieldRequired = toInt(field.get("SVF_IS_REQUIRED"));
@@ -186,6 +185,32 @@ public class ValidateAspect extends BaseData {
                             int length = toString(val).length();
                             if (toInt(fieldMaxLength) < toString(val).length()) {
                                 errorMap.put(toString(field.get("SVF_NAME")), "最大字数为:" + fieldMaxLength + ",当前字数为:" + length);
+                                continue;
+                            }
+                        }
+
+                        //最小值
+                        if (!isEmpty(fieldMin) && !isEmpty(val)) {
+                            if (isNumber(toString(val))) {
+                                if (new BigDecimal(fieldMin).compareTo(new BigDecimal(toString(val))) == 1) {
+                                    errorMap.put(toString(field.get("SVF_NAME")), "最小值为:" + fieldMin + ",当前值为:" + val);
+                                    continue;
+                                }
+                            } else {
+                                errorMap.put(toString(field.get("SVF_NAME")), "不是数字类型!");
+                                continue;
+                            }
+                        }
+
+                        //最大值
+                        if (!isEmpty(fieldMax) && !isEmpty(val)) {
+                            if (isNumber(toString(val))) {
+                                if (new BigDecimal(fieldMax).compareTo(new BigDecimal(toString(val))) == -1) {
+                                    errorMap.put(toString(field.get("SVF_NAME")), "最大值为:" + fieldMax + ",当前值为:" + val);
+                                    continue;
+                                }
+                            } else {
+                                errorMap.put(toString(field.get("SVF_NAME")), "不是数字类型!");
                                 continue;
                             }
                         }

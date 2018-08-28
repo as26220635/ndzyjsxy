@@ -3,9 +3,7 @@ package cn.kim.service.impl;
 import cn.kim.common.BaseData;
 import cn.kim.common.DaoSession;
 import cn.kim.common.attr.*;
-import cn.kim.common.eu.AuthorizationType;
-import cn.kim.common.eu.NameSpace;
-import cn.kim.common.eu.SystemEnum;
+import cn.kim.common.eu.*;
 import cn.kim.common.shiro.CustomRealm;
 import cn.kim.dao.BaseDao;
 import cn.kim.entity.ActiveUser;
@@ -13,6 +11,7 @@ import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.BaseService;
+import cn.kim.service.ProcessService;
 import cn.kim.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -102,6 +101,18 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         //输出异常
         e.printStackTrace();
         return desc;
+    }
+
+    /**
+     * 根据ID获取操作人
+     *
+     * @param operatorId
+     * @return
+     */
+    public Map<String, Object> getOperatorById(String operatorId) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", operatorId);
+        return baseDao.selectOne(NameSpace.OperatorMapper, "selectOperator", paramMap);
     }
 
     /**
@@ -420,13 +431,13 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      *
      * @param tableId
      * @param tableName
-     * @param soId
+     * @param operatorId
      * @param showSoId
      * @param busProcess
      * @param busProcess2
      * @throws Exception
      */
-    protected void createProcessSchedule(String tableId, String tableName, String soId, String showSoId, String busProcess, String busProcess2) throws Exception {
+    protected void createProcessSchedule(String tableId, String tableName, String operatorId, String showSoId, String busProcess, String busProcess2) throws Exception {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
         paramMap.put("BUS_PROCESS", busProcess);
         paramMap.put("BUS_PROCESS2", busProcess2);
@@ -434,10 +445,13 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         if (isEmpty(definition)) {
             throw new CustomException("没有找到流程实例!");
         }
+        Map<String, Object> createOperator = getOperatorById(operatorId);
+        String SPS_ID = getId();
+
         paramMap.clear();
-        paramMap.put("ID", getId());
+        paramMap.put("ID", SPS_ID);
         paramMap.put("SPD_ID", definition.get("ID"));
-        paramMap.put("SO_ID", soId);
+        paramMap.put("SO_ID", operatorId);
         paramMap.put("SHOW_SO_ID", showSoId);
         paramMap.put("SPS_TABLE_ID", tableId);
         paramMap.put("SPS_TABLE_NAME", tableName);
@@ -447,6 +461,20 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
 
         baseDao.insert(NameSpace.ProcessMapper, "insertProcessSchedule", paramMap);
 
+        //插入启动流程日志
+        paramMap.clear();
+        paramMap.put("ID", getId());
+        paramMap.put("SPS_ID", SPS_ID);
+        paramMap.put("SPL_TABLE_ID", tableId);
+        paramMap.put("SPL_SO_ID", operatorId);
+        paramMap.put("SPL_TRANSACTOR", createOperator.get("SAI_NAME"));
+        paramMap.put("SPL_OPINION", "创建流程(系统)");
+        paramMap.put("SPL_ENTRY_TIME", getSqlDate());
+        paramMap.put("SPL_TYPE", ProcessType.SUBMIT.toString());
+        paramMap.put("SPL_PROCESS_STATUS", ProcessStatus.START.toString());
+
+        baseDao.insert(NameSpace.ProcessMapper, "insertProcessLog", paramMap);
+
         log.info("插入流程,参数:" + toString(paramMap));
     }
 
@@ -454,13 +482,11 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * 删除流程
      *
      * @param tableId
-     * @param tableName
      * @throws Exception
      */
-    protected void deleteProcessSchedule(String tableId, String tableName) throws Exception {
-        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
+    protected void deleteProcessSchedule(String tableId) throws Exception {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
         paramMap.put("SPS_TABLE_ID", tableId);
-        paramMap.put("SPS_TABLE_NAME", tableName);
         List<Map<String, Object>> scheduleList = baseDao.selectList(NameSpace.ProcessMapper, "selectProcessSchedule", paramMap);
         if (!isEmpty(scheduleList)) {
             for (Map<String, Object> schedule : scheduleList) {

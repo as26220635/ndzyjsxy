@@ -159,8 +159,8 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                     //过滤授权
                     querySet.setWhere(authorizationBuilder.toString());
 
-                    //当没有授权流程过滤的时候开启普通流程过滤
-                    if (!isAuthorizationFilter) {
+                    //当没有授权流程过滤的时候开启普通流程过滤 或待审已审
+                    if (!isAuthorizationFilter || !ProcessShowStatus.ALL.toString().equals(processStatus)) {
                         String baseWhere = "SELECT SPS_TABLE_ID FROM SYS_PROCESS_SCHEDULE WHERE SPD_ID IN(" + processDefinitionIds + ") AND SPS_IS_CANCEL = 0 ";
                         //WHERE过滤语句
                         StringBuilder processWhereBuilder = new StringBuilder();
@@ -175,10 +175,26 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                             paramMap.clear();
                             paramMap.put("SPD_ID_IN", processDefinitionIds);
                             List<Map<String, Object>> stepList = baseDao.selectList(NameSpace.ProcessFixedMapper, "selectProcessStep", paramMap);
+                            //连接查询角色id
+                            String roleIdIn = String.join(SERVICE_SPLIT, getExistRoleList(TextUtil.joinValue(stepList, "SR_ID", SERVICE_SPLIT)));
                             //获取需要查询的角色
-                            stayBuilder.append(" UNION ALL " + baseWhere + " AND SPS_STEP_TYPE = 1 AND SPS_STEP_TRANSACTOR IN (" + TextUtil.toString(getExistRoleList(TextUtil.joinValue(stepList, "SR_ID", SERVICE_SPLIT))) + ") ");
+                            stayBuilder.append(" UNION ALL " + baseWhere + " AND SPS_STEP_TYPE = 1 AND SPS_STEP_TRANSACTOR IN (" + roleIdIn + ") ");
 
                             stayBuilder.append(" UNION ALL " + baseWhere + " AND SPS_STEP_TYPE = 2 AND SPS_STEP_TRANSACTOR = '" + activeUser.getId() + "' ");
+
+                            //开启授权的情况下多查询一次角色
+                            if (isAuthorizationFilter) {
+                                //启动角色
+                                stayBuilder.append(" UNION ALL SELECT SPS.SPS_TABLE_ID FROM SYS_PROCESS_SCHEDULE SPS" +
+                                        "   INNER JOIN SYS_PROCESS_START SPT ON SPS.SPD_ID = SPT.SPD_ID" +
+                                        "   WHERE SPS.SPD_ID IN(" + processDefinitionIds + ") AND SPS.SPS_IS_CANCEL = 0 " +
+                                        "   AND SPS.SPS_AUDIT_STATUS = 0 AND SPT.SR_ID IN(" + roleIdIn + ")");
+                                //审核角色
+                                stayBuilder.append(" UNION ALL SELECT SPS.SPS_TABLE_ID FROM SYS_PROCESS_SCHEDULE SPS" +
+                                        "   INNER JOIN SYS_PROCESS_STEP SPT ON SPT.ID = SPS.SPS_ID " +
+                                        "   WHERE SPS.SPD_ID IN(" + processDefinitionIds + ") AND SPS.SPS_IS_CANCEL = 0 " +
+                                        "   AND SPT.SPS_STEP_TYPE = 1 AND SPT.SR_ID IN(" + roleIdIn + ")");
+                            }
                         }
 
                         stayBuilder.append(" UNION ALL " + baseWhere + " AND SHOW_SO_ID = '" + activeUser.getId() + "' ");

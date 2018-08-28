@@ -4,7 +4,7 @@
 
     <!--查询账号-->
     <select id="selectOperator" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT SO.*,SAI.SAI_NAME,SAI.SAI_PHONE,SAI.SAI_EMAIL
+        SELECT SO.*,SAI.SAI_NAME,SAI.SAI_PHONE,SAI.SAI_EMAIL,SOR.SR_NAME,SOR.SR_ID
         FROM(
             SELECT SO.*
             FROM SYS_OPERATOR SO
@@ -15,6 +15,7 @@
             </where>
         )SO
         INNER JOIN SYS_ACCOUNT_INFO SAI ON SAI.SO_ID = SO.ID
+        LEFT JOIN(SELECT SO_ID,GROUP_CONCAT(SR.SR_NAME) AS SR_NAME,GROUP_CONCAT(SR.ID) AS SR_ID FROM SYS_OPERATOR_ROLE SOR INNER JOIN SYS_ROLE SR ON SR.ID = SOR.SR_ID GROUP BY SOR.SO_ID)SOR ON SOR.SO_ID = SO.ID
     </select>
 
     <!--查询角色关联账号-->
