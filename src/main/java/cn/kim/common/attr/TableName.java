@@ -104,7 +104,7 @@ public class TableName {
     /**
      * 验证字段
      */
-    public static final String SYS_VALIDATE_FIELD = "sys_validate_field";
+    public static final String SYS_VALIDATE_FIELD = "SYS_VALIDATE_FIELD";
     /**
      * 验证组
      */

@@ -133,6 +133,8 @@
             <if test="SVF_IS_REQUIRED != null">SVF_IS_REQUIRED,</if>
             <if test="SVF_MAX_LENGTH != null">SVF_MAX_LENGTH,</if>
             <if test="SVF_MIN_LENGTH != null">SVF_MIN_LENGTH,</if>
+            <if test="SVF_MAX != null">SVF_MAX,</if>
+            <if test="SVF_MIN != null">SVF_MIN,</if>
             <if test="SVR_ID != null">SVR_ID,</if>
             <if test="IS_STATUS != null">IS_STATUS,</if>
         </trim>
@@ -144,6 +146,8 @@
             <if test="SVF_IS_REQUIRED != null">#{SVF_IS_REQUIRED},</if>
             <if test="SVF_MAX_LENGTH != null">#{SVF_MAX_LENGTH},</if>
             <if test="SVF_MIN_LENGTH != null">#{SVF_MIN_LENGTH},</if>
+            <if test="SVF_MAX != null">#{SVF_MAX},</if>
+            <if test="SVF_MIN != null">#{SVF_MIN},</if>
             <if test="SVR_ID != null">#{SVR_ID},</if>
             <if test="IS_STATUS != null">#{IS_STATUS},</if>
         </trim>
@@ -160,6 +164,8 @@
             <if test="SVF_IS_REQUIRED != null">SVF_IS_REQUIRED=#{SVF_IS_REQUIRED},</if>
             <if test="SVF_MAX_LENGTH != null">SVF_MAX_LENGTH=#{SVF_MAX_LENGTH},</if>
             <if test="SVF_MIN_LENGTH != null">SVF_MIN_LENGTH=#{SVF_MIN_LENGTH},</if>
+            <if test="SVF_MAX != null">SVF_MAX=#{SVF_MAX},</if>
+            <if test="SVF_MIN != null">SVF_MIN=#{SVF_MIN},</if>
             <if test="SVR_ID != null">SVR_ID=#{SVR_ID},</if>
             <if test="IS_STATUS != null">IS_STATUS=#{IS_STATUS},</if>
         </set>

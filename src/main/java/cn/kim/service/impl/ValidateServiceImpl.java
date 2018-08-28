@@ -227,6 +227,8 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
             paramMap.put("SVF_IS_REQUIRED", mapParam.get("SVF_IS_REQUIRED"));
             paramMap.put("SVF_MAX_LENGTH", mapParam.get("SVF_MAX_LENGTH"));
             paramMap.put("SVF_MIN_LENGTH", mapParam.get("SVF_MIN_LENGTH"));
+            paramMap.put("SVF_MAX", mapParam.get("SVF_MAX"));
+            paramMap.put("SVF_MIN", mapParam.get("SVF_MIN"));
             paramMap.put("SVR_ID", mapParam.get("SVR_ID"));
             paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));
 

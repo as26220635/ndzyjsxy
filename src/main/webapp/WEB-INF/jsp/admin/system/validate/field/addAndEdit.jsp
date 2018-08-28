@@ -14,28 +14,42 @@
     <input type="hidden" name="SV_ID" value="${fns:trueOrFalse(FILED != null ,FILED.SV_ID,SV_ID)}">
     <div class="form-group has-feedback">
         <label>字段名称:</label>
-        <input type="text" class="form-control" ${fns:validField("SYS_VALIDATE_FIELD","SVF_NAME")}
+        <input type="text" class="form-control" ${fns:validField(TableName.SYS_VALIDATE_FIELD,"SVF_NAME")}
                value="${FILED.SVF_NAME}" required>
     </div>
     <div class="form-group has-feedback">
         <label>查询字段:</label>
-        <input type="text" class="form-control" ${fns:validField("SYS_VALIDATE_FIELD","SVF_FIELD")}
+        <input type="text" class="form-control" ${fns:validField(TableName.SYS_VALIDATE_FIELD,"SVF_FIELD")}
                value="${FILED.SVF_FIELD}">
     </div>
     <div class="form-group has-feedback">
         <label>是否必填:</label>
-        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField("SYS_VALIDATE_FIELD","SVF_IS_REQUIRED")}'
+        <s:combobox sdtCode="SYS_YES_NO" custom='${fns:validField(TableName.SYS_VALIDATE_FIELD,"SVF_IS_REQUIRED")}'
                     value="${FILED.SVF_IS_REQUIRED}" defaultValue="0"></s:combobox>
     </div>
-    <div class="form-group has-feedback">
-        <label>最小字数:</label>
-        <input type="text" class="form-control" ${fns:validField("SYS_VALIDATE_FIELD","SVF_MIN_LENGTH")}
-               value="${FILED.SVF_MIN_LENGTH}">
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>最小字数:</label>
+            <input type="number" class="form-control" ${fns:validField(TableName.SYS_VALIDATE_FIELD,"SVF_MIN_LENGTH")}
+                   value="${FILED.SVF_MIN_LENGTH}">
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>最大字数:</label>
+            <input type="number" class="form-control" ${fns:validField(TableName.SYS_VALIDATE_FIELD,"SVF_MAX_LENGTH")}
+                   value="${FILED.SVF_MAX_LENGTH}">
+        </div>
     </div>
-    <div class="form-group has-feedback">
-        <label>最大字数:</label>
-        <input type="text" class="form-control" ${fns:validField("SYS_VALIDATE_FIELD","SVF_MAX_LENGTH")}
-               value="${FILED.SVF_MAX_LENGTH}">
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>最小值:</label>
+            <input type="number" class="form-control" ${fns:validField(TableName.SYS_VALIDATE_FIELD,"SVF_MIN")}
+                   value="${FILED.SVF_MIN}">
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>最大值:</label>
+            <input type="number" class="form-control" ${fns:validField(TableName.SYS_VALIDATE_FIELD,"SVF_MAX")}
+                   value="${FILED.SVF_MAX}">
+        </div>
     </div>
     <div class="form-group has-feedback">
         <label>正则:</label>

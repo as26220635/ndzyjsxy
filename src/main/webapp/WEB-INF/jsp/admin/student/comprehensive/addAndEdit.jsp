@@ -75,25 +75,25 @@
                                                 <label>政治态度和表现10分:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_POLITICAL_ATTITUDE")}
-                                                       value="${comprehensive.BSC_POLITICAL_ATTITUDE}" max="10">
+                                                       value="${comprehensive.BSC_POLITICAL_ATTITUDE}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>劳动态度和表现20分:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_LABOR_ATTITUDE")}
-                                                       value="${comprehensive.BSC_LABOR_ATTITUDE}" max="20">
+                                                       value="${comprehensive.BSC_LABOR_ATTITUDE}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>遵纪守法10分:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_COMPLIANCE")}
-                                                       value="${comprehensive.BSC_COMPLIANCE}" max="10">
+                                                       value="${comprehensive.BSC_COMPLIANCE}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>集体观念10分:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_COLLECTIVE")}
-                                                       value="${comprehensive.BSC_COLLECTIVE}" max="10">
+                                                       value="${comprehensive.BSC_COLLECTIVE}">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -101,25 +101,25 @@
                                                 <label>文明礼貌15分:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_DECORUM")}
-                                                       value="${comprehensive.BSC_DECORUM}" max="15">
+                                                       value="${comprehensive.BSC_DECORUM}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>爱护公物15分:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_CARE")}
-                                                       value="${comprehensive.BSC_CARE}" max="15">
+                                                       value="${comprehensive.BSC_CARE}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>个人品质10分:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_PERSONAL_QUALITY")}
-                                                       value="${comprehensive.BSC_PERSONAL_QUALITY}" max="10">
+                                                       value="${comprehensive.BSC_PERSONAL_QUALITY}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>服务精神10分:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_SERVICE_SPIRIT")}
-                                                       value="${comprehensive.BSC_SERVICE_SPIRIT}" max="10">
+                                                       value="${comprehensive.BSC_SERVICE_SPIRIT}">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -166,7 +166,7 @@
                                                 <label>学习成绩:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_ACADEMIC_RECORD")}
-                                                       value="${comprehensive.BSC_ACADEMIC_RECORD}" max="100">
+                                                       value="${comprehensive.BSC_ACADEMIC_RECORD}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>奖励分:</label>
@@ -197,7 +197,7 @@
                                                 <label>总分:</label>
                                                 <input type="number"
                                                        class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_VOLUNTEER_TOTAL")}
-                                                       value="${comprehensive.BSC_VOLUNTEER_TOTAL}" max="100">
+                                                       value="${comprehensive.BSC_VOLUNTEER_TOTAL}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>得分:</label>
