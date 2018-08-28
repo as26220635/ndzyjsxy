@@ -5,7 +5,6 @@ import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.attr.Attribute;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.eu.ButtonType;
-import cn.kim.common.eu.Process;
 import cn.kim.common.eu.ProcessStatus;
 import cn.kim.common.eu.UseType;
 import cn.kim.common.tag.Button;
@@ -19,11 +18,10 @@ import cn.kim.util.CommonUtil;
 import cn.kim.util.FuncUtil;
 import cn.kim.util.HttpRequestDeviceUtils;
 import cn.kim.util.TextUtil;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import lombok.extern.log4j.Log4j2;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,10 +32,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by 余庚鑫 on 2018/3/21
@@ -45,6 +41,7 @@ import java.util.stream.Collectors;
  * 通用列表和通用UI
  */
 @Controller
+@Log4j2
 public class BaseDataController extends BaseController {
 
     @Autowired
@@ -215,6 +212,7 @@ public class BaseDataController extends BaseController {
             //URL额外参数
             model.addAttribute("EXTRA", extra);
 
+            log.info("菜单:" + menu.get("SM_NAME") + "配置列表地址:" + configure.get("SC_JSP"));
             return toString(configure.get("SC_JSP"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -332,6 +330,8 @@ public class BaseDataController extends BaseController {
         OutputStream out = getResponseOutputStream(response, getDate() + ":导出" + toString(menu.get("SM_NAME")) + Attribute.EXCEL_XLSX);
 
         exportExcel.exportExcelByColumn(toString(menu.get("SM_NAME")), titleArrays, columnArrays, list, out, null);
+
+        log.info("导出:" + menu.get("SM_NAME") + "字段:" + toString(columnArrays));
     }
 
     /**

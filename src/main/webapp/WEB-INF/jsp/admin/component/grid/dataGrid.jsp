@@ -566,7 +566,7 @@
 
     </c:if>
     //按钮日志格式化
-    function processLogFunc(targOutputBufferOutputBufferets, field) {
+    function processLogFunc(targets, field) {
         return {
             targets: targets,
             data: field,
