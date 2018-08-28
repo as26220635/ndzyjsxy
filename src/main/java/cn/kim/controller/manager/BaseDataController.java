@@ -212,7 +212,7 @@ public class BaseDataController extends BaseController {
             //URL额外参数
             model.addAttribute("EXTRA", extra);
 
-            log.info("菜单:" + menu.get("SM_NAME") + "配置列表地址:" + configure.get("SC_JSP"));
+            log.info("菜单:" + menu.get("SM_NAME") + ",配置列表地址:" + configure.get("SC_JSP"));
             return toString(configure.get("SC_JSP"));
         } catch (Exception e) {
             e.printStackTrace();
@@ -331,7 +331,7 @@ public class BaseDataController extends BaseController {
 
         exportExcel.exportExcelByColumn(toString(menu.get("SM_NAME")), titleArrays, columnArrays, list, out, null);
 
-        log.info("导出:" + menu.get("SM_NAME") + "字段:" + toString(columnArrays));
+        log.info("导出:" + menu.get("SM_NAME") + ",字段:" + toString(columnArrays));
     }
 
     /**
