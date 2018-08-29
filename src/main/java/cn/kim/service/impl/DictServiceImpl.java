@@ -201,6 +201,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
             paramMap.put("SDI_CODE", mapParam.get("SDI_CODE"));
             paramMap.put("SDI_INNERCODE", mapParam.get("SDI_INNERCODE"));
             paramMap.put("SDI_PARENTID", isEmpty(mapParam.get("SDI_PARENTID")) ? "0" : mapParam.get("SDI_PARENTID"));
+            paramMap.put("SDI_IS_LEAF", mapParam.get("SDI_IS_LEAF"));
             paramMap.put("SDI_REMARK", mapParam.get("SDI_REMARK"));
             paramMap.put("SDI_REQUIRED", mapParam.get("SDI_REQUIRED"));
             paramMap.put("SDI_ORDER", mapParam.get("SDI_ORDER"));
@@ -345,7 +346,10 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
                 mapParam.clear();
                 mapParam.put("SDI_PARENTID", info.getId());
                 mapParam.put("NOT_ID", notId);
-                info.setChildren(selectDictInfoList(mapParam));
+                //是叶节点才要查询子类
+                if (!isEmpty(info.getIsLeaf()) && toInt(info.getIsLeaf()) == STATUS_SUCCESS) {
+                    info.setChildren(selectDictInfoList(mapParam));
+                }
             });
             dictInfo.setChildren(childrenList);
         }
@@ -373,6 +377,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
                 dictInfo.setSdiInnercode(toString(map.get("SDI_INNERCODE")));
                 dictInfo.setSdiOrder(toInt(map.get("SDI_ORDER")));
                 dictInfo.setSdiParentid(toString(map.get("SDI_PARENTID")));
+                dictInfo.setIsLeaf(toString(map.get("SDI_IS_LEAF")));
                 dictInfo.setSdiRemark(toString(map.get("SDI_REMARK")));
                 dictInfo.setSdiRequired(toInt(map.get("SDI_REQUIRED")));
                 dictInfo.setIsStatus(toInt(map.get("IS_STATUS")));

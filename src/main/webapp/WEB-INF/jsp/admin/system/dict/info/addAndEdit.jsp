@@ -34,11 +34,19 @@
                    notId="${INFO.ID}"
                    url="${DICT_INFO_TREE_URL}" title="选择字典父信息节点"></s:treeBox>
     </div>
-    <div class="form-group has-feedback">
-        <label>是否必填:</label>
-        <s:combobox sdtCode="SYS_YES_NO"
-                    custom='${fns:validField("SYS_DICT_INFO","SDI_REQUIRED")}'
-                    value="${INFO.SDI_REQUIRED}" defaultValue="0"></s:combobox>
+    <div class="row">
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否必填:</label>
+            <s:combobox sdtCode="SYS_YES_NO"
+                        custom='${fns:validField("SYS_DICT_INFO","SDI_REQUIRED")}'
+                        value="${INFO.SDI_REQUIRED}" defaultValue="0"></s:combobox>
+        </div>
+        <div class="form-group has-feedback form-group-md-6">
+            <label>是否是叶节点:</label>
+            <s:combobox sdtCode="SYS_YES_NO"
+                        custom='${fns:validField("SYS_DICT_INFO","SDI_IS_LEAF")}'
+                        value="${INFO.SDI_IS_LEAF}"></s:combobox>
+        </div>
     </div>
     <div class="form-group has-feedback">
         <label>备注:</label>

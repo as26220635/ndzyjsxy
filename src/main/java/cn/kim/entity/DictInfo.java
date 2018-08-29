@@ -19,6 +19,10 @@ public class DictInfo implements Serializable {
     private String sdiInnercode;
     private Integer sdiOrder;
     private String sdiParentid;
+    /**
+     * 是否是叶节点
+     */
+    private String isLeaf;
     private String sdiRemark;
     private Integer sdiRequired;
     private Integer isStatus;

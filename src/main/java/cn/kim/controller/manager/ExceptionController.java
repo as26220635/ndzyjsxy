@@ -116,7 +116,7 @@ public class ExceptionController extends BaseController {
 
             log.error("SQL运行错误:" + ex.getMessage(), Tips.LOG_ERROR);
         }
-
+        ex.printStackTrace();
         return modelAndView;
     }
 
