@@ -190,7 +190,7 @@
             SRM_ID = #{SRM_ID}
         </if>
         <if test="SB_ID != NULL and SB_ID != ''">
-            SB_ID = #{SB_ID}
+            AND SB_ID = #{SB_ID}
         </if>
         <if test="SR_ID != NULL and SR_ID != ''">
             SRM_ID IN (SELECT ID FROM SYS_ROLE_MENU WHERE SR_ID = #{SR_ID})

@@ -102,6 +102,8 @@ public class BaseDataController extends BaseController {
             List<Map<String, Object>> columnList = (List<Map<String, Object>>) configureMap.get("columnList");
             //查询搜索字段
             List<Map<String, Object>> searchList = (List<Map<String, Object>>) configureMap.get("searchList");
+            //查询文件
+            List<Map<String, Object>> fileList = (List<Map<String, Object>>) configureMap.get("fileList");
             //移除不显示的搜索字段
             if (!isEmpty(searchList)) {
                 searchList.removeIf(map -> toInt(map.get("SCC_IS_VISIBLE")) == Attribute.STATUS_ERROR);
@@ -185,6 +187,7 @@ public class BaseDataController extends BaseController {
             model.addAttribute("SEARCH_LIST", searchList);
             model.addAttribute("COLUMN_LIST", columnList);
             model.addAttribute("EXPORT_LIST", TextUtil.toJSONString(exportList));
+            model.addAttribute("FILE_LIST", fileList);
             model.addAttribute("TOP_BUTTON", topButton);
             model.addAttribute("LIST_BUTTON", listButton);
             //拿到左右固定列个数
@@ -417,4 +420,6 @@ public class BaseDataController extends BaseController {
         model.addAttribute("newValue", newValue);
         return "admin/component/diff";
     }
+
+
 }

@@ -8,14 +8,17 @@ import cn.kim.entity.ResultState;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.service.ConfigureService;
+import cn.kim.util.CommonUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +42,7 @@ public class ConfigureController extends BaseController {
      * @throws Exception
      */
     @GetMapping("/getConfigureTreeData")
-    @RequiresPermissions("SYSTEM:CONFIGURE")
+    @RequiresPermissions(value = {"SYSTEM:CONFIGURE", "SYSTEM:CONFIGURE_SET_COLUMN", "SYSTEM:CONFIGURE_SET_SEARCH", "SYSTEM:CONFIGURE_SET_FILE"}, logical = Logical.OR)
     @ResponseBody
     public List<Tree> getConfigureTreeData(String ID) throws Exception {
         List<Map<String, Object>> configures = configureService.selectConfigureList(new HashMap<>(0));
@@ -87,7 +90,7 @@ public class ConfigureController extends BaseController {
         Map<String, Object> resultMap = configureService.insertAndUpdateConfigure(mapParam);
         return resultState(resultMap);
     }
-    
+
     @GetMapping("/copy/{ID}")
     @RequiresPermissions("SYSTEM:CONFIGURE_COPY")
     public String copyHtml(@PathVariable("ID") String ID, Model model) throws Exception {
@@ -106,7 +109,7 @@ public class ConfigureController extends BaseController {
         Map<String, Object> resultMap = configureService.copyConfigure(mapParam);
         return resultState(resultMap);
     }
-    
+
 
     @DeleteMapping("/delete/{ID}")
     @RequiresPermissions("SYSTEM:CONFIGURE_DELETE")
@@ -222,6 +225,70 @@ public class ConfigureController extends BaseController {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         mapParam.put("ID", ID);
         Map<String, Object> resultMap = configureService.deleteConfigureSearch(mapParam);
+        return resultState(resultMap);
+    }
+
+
+    /**********     文件     *******/
+    @GetMapping("/file/add")
+    @RequiresPermissions("SYSTEM:CONFIGURE_SET_FILE_INSERT")
+    @Token(save = true)
+    public String addHtmlFile(String SC_ID, Model model) throws Exception {
+        model.addAttribute("SC_ID", SC_ID);
+        return "admin/system/configure/file/addAndEdit";
+    }
+
+
+    @PostMapping("/file/add")
+    @RequiresPermissions("SYSTEM:CONFIGURE_SET_FILE_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加配置列表文件")
+    @Token(remove = true)
+    @Validate("SYS_CONFIGURE_FILE")
+    @ResponseBody
+    public ResultState addFile(@RequestParam Map<String, Object> mapParam, HttpServletRequest request) throws Exception {
+        Map<String, Object> resultMap = configureService.insertAndUpdateConfigureFile(mapParam, CommonUtil.getMultipartFile(request));
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/file/update/{ID}")
+    @RequiresPermissions("SYSTEM:CONFIGURE_SET_FILE_UPDATE")
+    public String updateHtmlFile(@PathVariable("ID") String ID, Model model) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("FILE", configureService.selectConfigureFile(mapParam));
+        return "admin/system/configure/file/addAndEdit";
+    }
+
+    @PostMapping("/file/update")
+    @RequiresPermissions("SYSTEM:CONFIGURE_SET_FILE_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改配置列表文件")
+    @Validate("SYS_CONFIGURE_FILE")
+    @ResponseBody
+    public ResultState updateFile(@RequestParam Map<String, Object> mapParam, HttpServletRequest request) throws Exception {
+        Map<String, Object> resultMap = configureService.insertAndUpdateConfigureFile(mapParam, CommonUtil.getMultipartFile(request));
+        return resultState(resultMap);
+    }
+
+    @PutMapping("/file/switchStatus")
+    @RequiresPermissions("SYSTEM:CONFIGURE_SET_FILE_UPDATE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改配置列表状态")
+    @ResponseBody
+    public ResultState switchStatus(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = configureService.changeConfigureFileStatus(mapParam);
+
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/file/delete/{ID}")
+    @RequiresPermissions("SYSTEM:CONFIGURE_SET_FILE_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除配置列表文件")
+    @ResponseBody
+    public ResultState deleteFile(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = configureService.deleteConfigureFile(mapParam);
         return resultState(resultMap);
     }
 

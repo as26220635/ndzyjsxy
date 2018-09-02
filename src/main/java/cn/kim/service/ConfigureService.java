@@ -1,6 +1,7 @@
 package cn.kim.service;
 
 import cn.kim.service.impl.BaseServiceImpl;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -41,4 +42,13 @@ public interface ConfigureService extends BaseService {
     Map<String, Object> insertAndUpdateConfigureSearch(Map<String, Object> mapParam);
 
     Map<String, Object> deleteConfigureSearch(Map<String, Object> mapParam);
+
+    /********   文件  *******/
+    Map<String, Object> selectConfigureFile(Map<String, Object> mapParam);
+
+    Map<String, Object> insertAndUpdateConfigureFile(Map<String, Object> mapParam, MultipartFile file);
+
+    Map<String, Object> changeConfigureFileStatus(Map<String, Object> mapParam);
+
+    Map<String, Object> deleteConfigureFile(Map<String, Object> mapParam);
 }

@@ -504,6 +504,40 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         return resultMap;
     }
 
+    @Override
+    public Map<String, Object> selectNationalEndeavor(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("BAF_ID", mapParam.get("BAF_ID"));
+        return baseDao.selectOne(NameSpace.AidFinanciallyMapper, "selectAidNationalScholarship", paramMap);
+    }
+
+    /**
+     * 导入国家助学金
+     *
+     * @param excelFile
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> importNationalEndeavor(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = IMPORT_ERROR;
+        try {
+            //导入
+            List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.NATIONAL_ENDEAVOR, Process.AID, Process.AID_NATIONAL_ENDEAVOR, null);
+
+            resultMap.put(MagicValue.LOG, "导入国家励志奖学金,数据:" + toString(dataList));
+            status = STATUS_SUCCESS;
+            desc = IMPORT_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
     /**
      * 获取导入学号
      *
@@ -518,7 +552,8 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             BS_NUMBER = data[1];
         } else if (aidType == AidType.GREEN_CHANNEL || aidType == AidType.TUITION_WAIVER ||
                 aidType == AidType.JOBSEEKER_SUPPORT || aidType == AidType.EMERGENCY_HELP ||
-                aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_GRANTS) {
+                aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_GRANTS ||
+                aidType == AidType.NATIONAL_ENDEAVOR) {
             BS_NUMBER = data[2];
         }
         return BS_NUMBER;
@@ -562,7 +597,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             YEAR_FIELD_DATA = data[7];
         } else if (aidType == AidType.COMMEND || aidType == AidType.COLLEGE_SCHOLARSHIP) {
             YEAR_FIELD_DATA = data.length >= 9 ? data[8] : null;
-        } else if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+        } else if (aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_ENDEAVOR) {
             YEAR_FIELD_DATA = data[13];
         } else if (aidType == AidType.NATIONAL_GRANTS) {
             YEAR_FIELD_DATA = data[8];
@@ -570,7 +605,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
         //解析学年和学期
         StudentYearSemester studentYearSemester = null;
-        if (aidType == AidType.COMMEND || aidType == AidType.GREEN_CHANNEL || aidType == AidType.NATIONAL_SCHOLARSHIP) {
+        if (aidType == AidType.COMMEND || aidType == AidType.GREEN_CHANNEL || aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_ENDEAVOR) {
             //只解析学年
             studentYearSemester = parseStudentYear(YEAR_FIELD_DATA);
         } else {
@@ -624,7 +659,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
         String BUS_REMARKS = null;
         if (aidType == AidType.GREEN_CHANNEL) {
             BUS_REMARKS = data.length >= 6 ? data[5] : null;
-        } else if (aidType == AidType.EMERGENCY_HELP || aidType == AidType.NATIONAL_SCHOLARSHIP) {
+        } else if (aidType == AidType.EMERGENCY_HELP || aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_ENDEAVOR) {
             BUS_REMARKS = data[6];
         } else if (aidType == AidType.NATIONAL_GRANTS) {
             BUS_REMARKS = data[10];
@@ -709,8 +744,8 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             paramMap.put("BUS_REMARKS", BUS_REMARKS);
 
             //导入子类
-            if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
-                //国家奖学金
+            if (aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_ENDEAVOR) {
+                //国家奖学金 国家励志奖学金
                 paramMap.put("BANS_SCORE_RANK_TOTAL", data[4]);
                 paramMap.put("BANS_SCORE_RANK", data[5]);
                 paramMap.put("BANS_REQUIRED_COURSE_PASS_NUMBER", data[7]);
@@ -768,7 +803,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     resultList.add(packErrorData(row, "数据错误!"));
                     continue;
                 }
-            } else if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+            } else if (aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_ENDEAVOR) {
                 if (data.length <= 14) {
                     resultList.add(packErrorData(row, "数据错误!"));
                     continue;
@@ -797,7 +832,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5});
             } else if (aidType == AidType.EMERGENCY_HELP) {
                 checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5});
-            } else if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+            } else if (aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_ENDEAVOR) {
                 checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5, 7, 8, 9, 12, 13, 14});
             } else if (aidType == AidType.NATIONAL_GRANTS) {
                 checkIsEmptyList = checkIsEmpty(row, data, new int[]{2, 4, 5, 6, 7, 8, 9});
@@ -817,7 +852,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                     checkIsEmptyList = checkIsNumber(row, data, new int[]{2, 4});
                 } else if (aidType == AidType.EMERGENCY_HELP) {
                     checkIsEmptyList = checkIsNumber(row, data, new int[]{2, 4});
-                } else if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+                } else if (aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_ENDEAVOR) {
                     checkIsEmptyList = checkIsNumber(row, data, new int[]{2, 4, 5, 7, 8, 12});
                 } else if (aidType == AidType.NATIONAL_GRANTS) {
                     checkIsEmptyList = checkIsNumber(row, data, new int[]{4, 5, 6});
@@ -856,7 +891,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             }
 
             //检测参数
-            if (aidType == AidType.NATIONAL_SCHOLARSHIP) {
+            if (aidType == AidType.NATIONAL_SCHOLARSHIP || aidType == AidType.NATIONAL_ENDEAVOR) {
                 //是否实行综合考评排名
                 String BANS_IS_COMPREHENSIVE_RANK = DictUtil.getDictCode("SYS_YES_NO", data[9]);
                 String BANS_COMPREHENSIVE_RANK = data[10];

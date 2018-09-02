@@ -1,13 +1,17 @@
 package cn.kim.service.impl;
 
 import cn.kim.common.attr.MagicValue;
+import cn.kim.common.attr.ParamTypeResolve;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.exception.CustomException;
 import cn.kim.service.ConfigureService;
+import cn.kim.util.CommonUtil;
+import cn.kim.util.FileUtil;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -378,6 +382,162 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
             baseDao.delete(NameSpace.ConfigureMapper, "deleteConfigureSearch", paramMap);
 
             resultMap.put(MagicValue.LOG, "删除配置列表搜索:" + formatColumnName(TableName.SYS_CONFIGURE_SEARCH, oldMap));
+            status = STATUS_SUCCESS;
+            desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    public Map<String, Object> selectConfigureFile(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", mapParam.get("ID"));
+        return baseDao.selectOne(NameSpace.ConfigureMapper, "selectConfigureFile", paramMap);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insertAndUpdateConfigureFile(Map<String, Object> mapParam, MultipartFile file) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            if (isEmpty(file)) {
+                throw new CustomException("文件为空!");
+            }
+
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
+            String id = toString(mapParam.get("ID"));
+
+            paramMap.clear();
+            //记录日志
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_CONFIGURE_FILE);
+            paramMap.put("ID", id);
+            paramMap.put("SC_ID", mapParam.get("SC_ID"));
+            paramMap.put("SCF_NAME", mapParam.get("SCF_NAME"));
+            paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));
+
+            if (isEmpty(id)) {
+                id = getId();
+                paramMap.put("ID", id);
+                paramMap.put("SCF_ENTRY_TIME", getSqlDate());
+
+                baseDao.insert(NameSpace.ConfigureMapper, "insertConfigureFile", paramMap);
+                resultMap.put(MagicValue.LOG, "添加配置列表文件:" + formatColumnName(TableName.SYS_CONFIGURE_FILE, paramMap));
+            } else {
+                Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+                oldMap.put("ID", id);
+                oldMap = selectConfigureFile(oldMap);
+
+                baseDao.update(NameSpace.ConfigureMapper, "updateConfigureFile", paramMap);
+
+                //删除文件
+                paramMap.clear();
+                paramMap.put("SF_TABLE_ID", id);
+                paramMap.put("SF_TABLE_NAME", TableName.SYS_CONFIGURE_FILE);
+                Map<String, Object> oldFile = baseDao.selectOne(NameSpace.FileMapper, "selectFile", paramMap);
+                if (!isEmpty(oldFile)) {
+                    FileUtil.delServiceFile(toString(oldFile.get("ID")));
+                }
+
+                resultMap.put(MagicValue.LOG, "更新配置列表文件,更新前:" + formatColumnName(TableName.SYS_CONFIGURE_FILE, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_CONFIGURE_FILE, paramMap));
+            }
+
+            //上传文件
+            paramMap.clear();
+            paramMap.put("SF_TABLE_ID", id);
+            paramMap.put("SF_TABLE_NAME", TableName.SYS_CONFIGURE_FILE);
+            paramMap.put("SF_TYPE_CODE", TableName.SYS_CONFIGURE_FILE);
+            paramMap.put("SF_SEE_TYPE", STATUS_SUCCESS);
+            paramMap.put("SF_SDT_CODE", "BUS_FILE_DEFAULT");
+            paramMap.put("SF_SDI_CODE", "DEFAULT");
+
+            Map<String, Object> result = FileUtil.saveFile(file, paramMap);
+            if (!result.get("code").equals(STATUS_SUCCESS)) {
+                throw new CustomException(toString(result.get("message")));
+            }
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> changeConfigureFileStatus(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
+            String id = toString(mapParam.get("ID"));
+
+            paramMap.put("ID", id);
+            paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));
+
+            Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+            oldMap.put("ID", id);
+            oldMap = selectConfigureFile(oldMap);
+            //记录日志
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_CONFIGURE_FILE);
+            baseDao.update(NameSpace.ConfigureMapper, "updateConfigureFile", paramMap);
+            resultMap.put(MagicValue.LOG, "更新配置列表文件状态,配置列表:" + toString(oldMap.get("SC_NAME")) + ",状态更新为:" + ParamTypeResolve.statusExplain(mapParam.get("IS_STATUS")));
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteConfigureFile(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = DELETE_ERROR;
+        try {
+            if (isEmpty(mapParam.get("ID"))) {
+                throw new CustomException("ID不能为空!");
+            }
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            String id = toString(mapParam.get("ID"));
+
+            //删除配置列表表
+            paramMap.put("ID", id);
+            Map<String, Object> oldMap = selectConfigureFile(paramMap);
+            //记录日志
+            paramMap.clear();
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_CONFIGURE_FILE);
+            paramMap.put("ID", id);
+            baseDao.delete(NameSpace.ConfigureMapper, "deleteConfigureFile", paramMap);
+
+            //删除文件
+            paramMap.clear();
+            paramMap.put("SF_TABLE_ID", id);
+            paramMap.put("SF_TABLE_NAME", TableName.SYS_CONFIGURE_FILE);
+            Map<String, Object> file = baseDao.selectOne(NameSpace.FileMapper, "selectFile", paramMap);
+            if (!isEmpty(file)) {
+                FileUtil.delServiceFile(toString(file.get("ID")));
+            }
+
+            resultMap.put(MagicValue.LOG, "删除配置列表文件:" + formatColumnName(TableName.SYS_CONFIGURE_FILE, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {

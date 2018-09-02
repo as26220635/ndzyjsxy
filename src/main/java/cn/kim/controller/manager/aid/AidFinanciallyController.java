@@ -617,4 +617,82 @@ public class AidFinanciallyController extends BaseController {
             return resultState(resultMap);
         });
     }
+
+    /******************     国家励志奖学金   *****************/
+
+    @GetMapping("/nationalEndeavor/add")
+    @RequiresPermissions("AID:NATIONAL_ENDEAVOR_INSERT")
+    @Token(save = true)
+    public String addHtmlNationalEndeavor(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("aid", setStudentYearSemester(aid, "BAF_YEAR", "BAF_SEMESTER"));
+        return "admin/aid/nationalEndeavor/addAndEdit";
+    }
+
+
+    @PostMapping("/nationalEndeavor/add")
+    @RequiresPermissions("AID:NATIONAL_ENDEAVOR_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加国家助学金")
+    @Token(remove = true)
+    @Validate({"BUS_AID_FINANCIALLY", "BUS_AID_NATIONAL_ENDEAVOR"})
+    @ResponseBody
+    public ResultState addNationalEndeavor(@RequestParam Map<String, Object> mapParam) throws Exception {
+        //流程
+        mapParam.put("BUS_PROCESS", Process.AID.toString());
+        mapParam.put("BUS_PROCESS2", Process.AID_NATIONAL_ENDEAVOR.toString());
+        //类型
+        mapParam.put("BAF_TYPE", AidType.NATIONAL_ENDEAVOR.toString());
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/nationalEndeavor/update/{ID}")
+    @RequiresPermissions("AID:NATIONAL_ENDEAVOR_UPDATE")
+    public String updateHtmlNationalEndeavor(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> aid = aidFinanciallyService.selectAidFinancially(mapParam);
+        mapParam.clear();
+        mapParam.put("BAF_ID", aid.get("ID"));
+        Map<String, Object> ng = aidFinanciallyService.selectNationalEndeavor(mapParam);
+
+        model.addAttribute("aid", aid);
+        model.addAttribute("ng", ng);
+        return "admin/aid/nationalEndeavor/addAndEdit";
+    }
+
+    @PutMapping("/nationalEndeavor/update")
+    @RequiresPermissions("AID:NATIONAL_ENDEAVOR_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改国家助学金")
+    @Validate({"BUS_AID_FINANCIALLY", "BUS_AID_NATIONAL_ENDEAVOR"})
+    @ResponseBody
+    public ResultState updateNationalEndeavor(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/nationalEndeavor/delete/{ID}")
+    @RequiresPermissions("AID:NATIONAL_ENDEAVOR_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除国家助学金")
+    @ResponseBody
+    public ResultState deleteNationalEndeavor(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = aidFinanciallyService.deleteAidFinancially(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/nationalEndeavor/import")
+    @RequiresPermissions("AID:NATIONAL_ENDEAVOR_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入国家助学金")
+    @ResponseBody
+    public ResultState importNationalEndeavor(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importNationalEndeavor", 600, 600, () -> {
+            Map<String, Object> resultMap = aidFinanciallyService.importNationalEndeavor(excelFile);
+            return resultState(resultMap);
+        });
+    }
 }

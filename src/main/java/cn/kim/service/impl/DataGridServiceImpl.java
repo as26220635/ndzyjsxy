@@ -42,10 +42,16 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
         paramMap.clear();
         paramMap.put("SC_ID", configureId);
         List<Map<String, Object>> searchList = baseDao.selectList(NameSpace.ConfigureMapper, "selectConfigureSearch", paramMap);
+        //查询文件
+        paramMap.clear();
+        paramMap.put("SC_ID", configureId);
+        paramMap.put("IS_STATUS", STATUS_SUCCESS);
+        List<Map<String, Object>> fileList = baseDao.selectList(NameSpace.ConfigureMapper, "selectConfigureFile", paramMap);
 
         resultMap.put("configure", configure);
         resultMap.put("columnList", columnList);
         resultMap.put("searchList", searchList);
+        resultMap.put("fileList", fileList);
         return resultMap;
     }
 

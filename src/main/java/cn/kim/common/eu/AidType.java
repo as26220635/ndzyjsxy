@@ -11,6 +11,8 @@ public enum AidType {
     GREEN_CHANNEL(1),
     //国家奖学金
     NATIONAL_SCHOLARSHIP(2),
+    //国家励志奖学金
+    NATIONAL_ENDEAVOR(3),
     //国家助学金
     NATIONAL_GRANTS(4),
     //减免学费

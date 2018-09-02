@@ -138,7 +138,8 @@ public class FileController extends BaseController {
         JSONObject json = new JSONObject();
         try {
             if (isEmpty(activeUser())) {
-                throw new CustomException("未登录不允许上传文件!");
+                json.put("error", "未登录不允许上传文件!");
+                return json;
             }
             MultipartFile imgUpload = CommonUtil.getMultipartFile(request);
 
@@ -175,11 +176,12 @@ public class FileController extends BaseController {
      */
     @PostMapping("/uploadTextarea")
     @ResponseBody
-    public String uploadTextarea(String SF_TABLE_ID, String SF_TABLE_NAME, String SF_TYPE_CODE, String SF_SEE_TYPE, HttpServletRequest request) throws Exception {
+    public JSONObject uploadTextarea(String SF_TABLE_ID, String SF_TABLE_NAME, String SF_TYPE_CODE, String SF_SEE_TYPE, HttpServletRequest request) throws Exception {
         JSONObject json = new JSONObject();
         try {
             if (isEmpty(activeUser())) {
-                throw new CustomException("未登录不允许上传文件!");
+                json.put("error", "未登录不允许上传文件!");
+                return json;
             }
 
             MultipartFile imgUpload = CommonUtil.getMultipartFile(request);
@@ -204,7 +206,7 @@ public class FileController extends BaseController {
             json.put("code", STATUS_ERROR);
             json.put("message", "上传文件失败,请重试!");
         }
-        return json.toString();
+        return json;
     }
 
     /**
@@ -303,7 +305,8 @@ public class FileController extends BaseController {
 
         //判断权限
         if (isEmpty(activeUser) ? true : !activeUser.getId().equals(SO_ID) && !containsRole(SDT_ROLE_DEL)) {
-            throw new UnauthorizedException("你没有删除这个文件的权限!");
+            resultJson.put("error", "你没有删除这个文件的权限!");
+            return resultJson;
         }
 
         try {

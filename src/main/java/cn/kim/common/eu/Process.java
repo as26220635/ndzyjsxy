@@ -13,6 +13,8 @@ public enum Process {
     AID_GREEN_CHANNEL(101),
     //国家奖学金
     AID_NATIONAL_SCHOLARSHIP(102),
+    //国家励志奖学金
+    AID_NATIONAL_ENDEAVOR(103),
     //国家助学金
     AID_NATIONAL_GRANTS(104),
     //减免学费

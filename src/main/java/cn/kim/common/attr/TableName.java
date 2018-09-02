@@ -82,6 +82,10 @@ public class TableName {
      */
     public static final String SYS_CONFIGURE_SEARCH = "SYS_CONFIGURE_SEARCH";
     /**
+     * 配置列表搜索
+     */
+    public static final String SYS_CONFIGURE_FILE = "SYS_CONFIGURE_FILE";
+    /**
      * 流程定义
      */
     public static final String SYS_PROCESS_DEFINITION = "SYS_PROCESS_DEFINITION";

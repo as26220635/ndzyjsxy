@@ -77,6 +77,14 @@
         loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_SEARCH")}&SC_ID=' + id + '&SC_NAME=' + encodeURIComponent(data.SC_NAME));
     });
 
+    //设置文件
+    $dataGridTable.find('tbody').on('click', '#setFile', function () {
+        var data = getRowData(this);
+        var id = data.ID;
+        //切换主界面
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_FILE")}&SC_ID=' + id + '&SC_NAME=' + encodeURIComponent(data.SC_NAME));
+    });
+
     //拷贝
     $dataGridTable.find('tbody').on('click', '#copy', function () {
         var data = getRowData(this);

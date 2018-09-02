@@ -629,6 +629,35 @@ public class FileUtil {
     /**
      * 删除服务器文件
      *
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    public static boolean delServiceFile(String key) throws Exception {
+        Map<String, Object> file = fileUtil.fileService.selectFile(key);
+        if (ValidateUtil.isEmpty(file)) {
+            return false;
+        }
+        CxfState cxfState = FileUtil.isCxfOnline();
+        //服务器是否在线
+        if (!cxfState.isOnline()) {
+            return false;
+        }
+
+        String SF_NAME = TextUtil.toString(file.get("SF_NAME"));
+        String SF_TABLE_NAME = TextUtil.toString(file.get("SF_TABLE_NAME"));
+        String SF_PATH = TextUtil.toString(file.get("SF_PATH"));
+
+        boolean isSuccess = delServerFile(cxfState.getUrl(), TokenUtil.baseKey(key, SF_TABLE_NAME), SF_NAME, SF_PATH);
+        if(isSuccess){
+            fileUtil.fileService.deleteFile(key);
+        }
+        return isSuccess;
+    }
+
+    /**
+     * 删除服务器文件
+     *
      * @param url
      * @param token
      * @param name

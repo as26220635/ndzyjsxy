@@ -12,6 +12,7 @@ import cn.kim.common.attr.ConfigProperties;
 import cn.kim.entity.DictType;
 import cn.kim.service.FileService;
 import cn.kim.util.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
@@ -106,13 +107,16 @@ public class FileInput extends BaseTagSupport {
      * 上传类型 默认只能上传图片 为true可以上传文件
      */
     private boolean allowFile = false;
+    /**
+     * 是否单上传模式
+     */
+    private String nonModel = "";
 
     @Override
     protected int doStartTagInternal() throws Exception {
-        if (isEmpty(tableId)) {
-            return SKIP_BODY;
+        if (!isEmpty(tableId)) {
+            tableId = toString(CommonUtil.idDecrypt(tableId));
         }
-        tableId = toString(CommonUtil.idDecrypt(tableId));
 
         //获取bean
         this.fileService = this.getRequestContext().getWebApplicationContext().getBean(FileService.class);
@@ -146,12 +150,16 @@ public class FileInput extends BaseTagSupport {
             String collapseClass = index == 0 ? " in " : "";
 
             //查询改SDI_CODE下面拥有的文件
-            mapParam.clear();
-            mapParam.put("SF_TABLE_ID", tableId);
-            mapParam.put("SF_TABLE_NAME", tableName);
-            mapParam.put("SF_SDT_CODE", sdtCode);
-            mapParam.put("SF_SDI_CODE", info.getSdiCode());
-            List<Map<String, Object>> files = fileService.selectFileList(mapParam);
+            List<Map<String, Object>> files = Lists.newArrayList();
+            if (!isEmpty(tableId)) {
+                mapParam.clear();
+                mapParam.put("SF_TABLE_ID", tableId);
+                mapParam.put("SF_TABLE_NAME", tableName);
+                mapParam.put("SF_SDT_CODE", sdtCode);
+                mapParam.put("SF_SDI_CODE", info.getSdiCode());
+                files = fileService.selectFileList(mapParam);
+            }
+
 
             builder.append("<div class='panel box " + boxClass + "'>");
 
@@ -167,7 +175,7 @@ public class FileInput extends BaseTagSupport {
 
             //内容DIV
             builder.append("<div id='" + collapseId + "' class='panel-collapse collapse " + collapseClass + "' aria-expanded='true' style='" + collapseStyle + "'>");
-            builder.append("<input id='" + inputId + "' type='file' class='file' " + (!allowFile ? " accept='image/*' " : " ") + (multiple ? "multiple" : "") + " >");
+            builder.append("<input id='" + inputId + "' name='" + inputId + "' type='file' class='file' " + (!allowFile ? " accept='image/*' " : " ") + (multiple ? "multiple" : "") + " >");
             //插入格式化文件上传的JS
             builder.append("<script>");
 
@@ -211,6 +219,7 @@ public class FileInput extends BaseTagSupport {
                     "uploadExtraData:{SF_TABLE_ID:'" + idEncrypt(tableId) + "',SF_TABLE_NAME:'" + idEncrypt(tableName) + "',SF_TYPE_CODE:'" + idEncrypt(typeCode) + "',SF_SEE_TYPE:'" + idEncrypt(seeType) + "',SF_SDT_CODE:'" + idEncrypt(sdtCode) + "',SF_SDI_CODE:'" + idEncrypt(info.getSdiCode()) + "'}," +
                     "showUpload:" + toString(showUpload) + "," +
                     "showRemove:" + toString(showRemove) + "," +
+                    "nonModel:" + toString(nonModel) + "," +
                     "allowedFileExtensions:" + TextUtil.toString(!allowFile ? ConfigProperties.ALLOW_SUFFIX_IMG : ConfigProperties.ALLOW_SUFFIX_FILE) + "," +
                     "maxFileSize:" + maxFileSize + "," +
                     "maxFilesNum:" + maxFilesNum + "," +

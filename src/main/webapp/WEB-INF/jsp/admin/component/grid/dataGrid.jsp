@@ -44,6 +44,12 @@
                                     ${BUTTON.SB_NAME}
                             </button>
                         </c:forEach>
+                        <c:if test="${!fns:isEmpty(FILE_LIST)}">
+                            <button id="dataGridFileBtn" type="button" class="btn btn-info">
+                                <i class="mdi mdi-file"></i>
+                                下载文件
+                            </button>
+                        </c:if>
                     </div>
                     <%--流程查询状态 0 查看全部 1待审 2已审--%>
                     <input type="hidden" id="processStatus" name="processStatus"
@@ -186,6 +192,10 @@
 <%@ include file="/WEB-INF/jsp/admin/component/execlImport.jsp" %>
 <%--excel导出模块--%>
 <%@ include file="/WEB-INF/jsp/admin/component/execlExport.jsp" %>
+<%--文件下载模块--%>
+<c:if test="${!fns:isEmpty(FILE_LIST)}">
+    <%@ include file="/WEB-INF/jsp/admin/component/downFile.jsp" %>
+</c:if>
 <script>
     $(".select2").select2({language: "zh-CN"});
 

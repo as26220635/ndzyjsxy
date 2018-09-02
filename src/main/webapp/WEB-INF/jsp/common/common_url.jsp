@@ -59,6 +59,12 @@
 <c:set var="CONFIGURE_SEARCH_ADD_URL" value="${CONFIGURE_SEARCH_BASE_URL}add" scope="application"/>
 <c:set var="CONFIGURE_SEARCH_UPDATE_URL" value="${CONFIGURE_SEARCH_BASE_URL}update" scope="application"/>
 <c:set var="CONFIGURE_SEARCH_DELETE_URL" value="${CONFIGURE_SEARCH_BASE_URL}delete" scope="application"/>
+<%--配置列表文件--%>
+<c:set var="CONFIGURE_FILE_BASE_URL" value="${CONFIGURE_BASE_URL}file/" scope="application"/>
+<c:set var="CONFIGURE_FILE_ADD_URL" value="${CONFIGURE_FILE_BASE_URL}add" scope="application"/>
+<c:set var="CONFIGURE_FILE_UPDATE_URL" value="${CONFIGURE_FILE_BASE_URL}update" scope="application"/>
+<c:set var="CONFIGURE_FILE_SWITCH_STATUS_URL" value="${CONFIGURE_FILE_BASE_URL}switchStatus" scope="application"/>
+<c:set var="CONFIGURE_FILE_DELETE_URL" value="${CONFIGURE_FILE_BASE_URL}delete" scope="application"/>
 <%--按钮列表--%>
 <c:set var="BUTTON_BASE_URL" value="${MANAGER_URL}button/" scope="application"/>
 <c:set var="BUTTON_ADD_URL" value="${BUTTON_BASE_URL}add" scope="application"/>
@@ -285,3 +291,9 @@
 <c:set var="NATIONAL_GRANTS_UPDATE_URL" value="${NATIONAL_GRANTS_BASE_URL}update" scope="application"/>
 <c:set var="NATIONAL_GRANTS_DELETE_URL" value="${NATIONAL_GRANTS_BASE_URL}delete" scope="application"/>
 <c:set var="NATIONAL_GRANTS_IMPORT_URL" value="${NATIONAL_GRANTS_BASE_URL}import" scope="application"/>
+<%--国家励志奖学金--%>
+<c:set var="NATIONAL_ENDEAVOR_BASE_URL" value="${AID_BASE_URL}nationalEndeavor/" scope="application"/>
+<c:set var="NATIONAL_ENDEAVOR_ADD_URL" value="${NATIONAL_ENDEAVOR_BASE_URL}add" scope="application"/>
+<c:set var="NATIONAL_ENDEAVOR_UPDATE_URL" value="${NATIONAL_ENDEAVOR_BASE_URL}update" scope="application"/>
+<c:set var="NATIONAL_ENDEAVOR_DELETE_URL" value="${NATIONAL_ENDEAVOR_BASE_URL}delete" scope="application"/>
+<c:set var="NATIONAL_ENDEAVOR_IMPORT_URL" value="${NATIONAL_ENDEAVOR_BASE_URL}import" scope="application"/>

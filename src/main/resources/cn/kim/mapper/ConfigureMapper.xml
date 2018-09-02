@@ -241,4 +241,64 @@
             </if>
         </where>
     </delete>
+
+    <!--查询配置列表文件-->
+    <select id="selectConfigureFile" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT SCF.*,SC.SC_NAME,SF.ID AS SF_ID
+        FROM(
+            SELECT * FROM sys_configure_file
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+                <if test ="SC_ID != NULL and SC_ID != ''">
+                    AND SC_ID = #{SC_ID}
+                </if>
+                <if test ="IS_STATUS != NULL and IS_STATUS != ''">
+                    AND IS_STATUS = #{IS_STATUS}
+                </if>
+            </where>
+        )SCF
+        INNER JOIN SYS_CONFIGURE SC ON SC.ID = SCF.SC_ID
+        LEFT JOIN SYS_FILE SF ON SF.SF_TABLE_ID = SCF.ID AND SF_TABLE_NAME = 'SYS_CONFIGURE_FILE'
+    </select>
+
+    <!--插入配置列表文件-->
+    <insert id="insertConfigureFile" parameterType="java.util.Map">
+        INSERT INTO sys_configure_file
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SC_ID != null">SC_ID,</if>
+            <if test="SCF_NAME != null">SCF_NAME,</if>
+            <if test="IS_STATUS != null">IS_STATUS,</if>
+            <if test="SCF_ENTRY_TIME != null">SCF_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SC_ID != null">#{SC_ID},</if>
+            <if test="SCF_NAME != null">#{SCF_NAME},</if>
+            <if test="IS_STATUS != null">#{IS_STATUS},</if>
+            <if test="SCF_ENTRY_TIME != null">#{SCF_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑配置列表文件-->
+    <update id="updateConfigureFile" parameterType="java.util.Map">
+        UPDATE sys_configure_file
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SC_ID != null">SC_ID=#{SC_ID},</if>
+            <if test="SCF_NAME != null">SCF_NAME=#{SCF_NAME},</if>
+            <if test="IS_STATUS != null">IS_STATUS=#{IS_STATUS},</if>
+            <if test="SCF_ENTRY_TIME != null">SCF_ENTRY_TIME=#{SCF_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除配置列表文件-->
+    <delete id="deleteConfigureFile" parameterType="java.util.Map">
+		DELETE FROM sys_configure_file WHERE ID = #{ID}
+	</delete>
 </mapper>

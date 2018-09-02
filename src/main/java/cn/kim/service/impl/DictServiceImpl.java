@@ -381,7 +381,10 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
                 dictInfo.setSdiRemark(toString(map.get("SDI_REMARK")));
                 dictInfo.setSdiRequired(toInt(map.get("SDI_REQUIRED")));
                 dictInfo.setIsStatus(toInt(map.get("IS_STATUS")));
-                results.add(setDictInfoChildren(baseDao, dictInfo, notId));
+                if (!isEmpty(dictInfo.getIsLeaf()) && toInt(dictInfo.getIsLeaf()) == STATUS_SUCCESS) {
+                    setDictInfoChildren(baseDao, dictInfo, notId);
+                }
+                results.add(dictInfo);
             });
         }
         return results;
