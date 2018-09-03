@@ -45,6 +45,8 @@
                 <!--验证码-->
                 /check.jpg = anon
                 /check = anon
+                <!--文件-->
+                /file/** = anon
                 <!-- 请求 logout地址，shiro去清除session-->
                 /logout = logout
                 /admin/logout = adminlogout
