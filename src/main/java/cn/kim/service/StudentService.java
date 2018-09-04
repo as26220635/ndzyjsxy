@@ -4,6 +4,7 @@ import cn.kim.entity.DataTablesView;
 import cn.kim.entity.Tree;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,14 @@ public interface StudentService extends BaseService {
      * @return
      */
     Map<String, Object> deleteStudent(Map<String, Object> mapParam);
+
+    /**
+     * 根据导入的excel导出excel
+     *
+     * @param excelFile
+     * @return
+     */
+    List<Map<String, Object>> importQueryStudent(MultipartFile excelFile) throws IOException, Exception;
 
     /**
      * 查询学生考勤

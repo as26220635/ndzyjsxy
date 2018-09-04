@@ -24,7 +24,7 @@ public interface DocumentService extends BaseService {
      * @param mapParam
      * @return
      */
-    Map<String, Object> insertAndUpdateDocument(Map<String, Object> mapParam, MultipartFile file);
+    Map<String, Object> insertAndUpdateDocument(Map<String, Object> mapParam);
 
     /**
      * 删除文件

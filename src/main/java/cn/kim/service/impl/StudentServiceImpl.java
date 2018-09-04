@@ -11,13 +11,17 @@ import cn.kim.dao.BaseDao;
 import cn.kim.entity.*;
 import cn.kim.exception.CustomException;
 import cn.kim.service.StudentService;
+import cn.kim.tools.ExportExcelTool;
 import cn.kim.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -192,6 +196,98 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         return resultMap;
     }
 
+    @Override
+    public List<Map<String, Object>> importQueryStudent(MultipartFile excelFile) throws Exception {
+        List<Map<String, Object>> resultList = Lists.newArrayList();
+        //读取ecel
+        List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 2);
+
+        if (!isEmpty(dataList)) {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+
+            for (String[] datas : dataList) {
+                if (datas.length > 0) {
+                    //导入查询信息（可为学号、姓名或身份证之一）
+                    String condition = datas[0];
+                    if (!isEmpty(condition) && condition.length() <= 18) {
+                        //查询学生
+                        paramMap.clear();
+                        paramMap.put("IMPORT_QUERY_CONDITION", condition);
+                        List<Map<String, Object>> studentList = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                        //没有找到记录插入一条查询失败记录
+                        if (isEmpty(studentList)) {
+                            studentList = Lists.newArrayList();
+                            Map<String, Object> errorMap = Maps.newHashMapWithExpectedSize(6);
+                            errorMap.put("BDM_NAME", "???");
+                            errorMap.put("BC_MAJOR_NAME", "???");
+                            errorMap.put("BC_NAME", "???");
+                            errorMap.put("BS_NUMBER", "???");
+                            errorMap.put("BS_NAME", "???");
+                            errorMap.put("BS_ID_CARD", "???");
+                            studentList.add(errorMap);
+                        }
+                        //转换成excel导出格式
+                        studentList.forEach(student -> {
+                            Map<String, Object> excelMap = Maps.newHashMapWithExpectedSize(9);
+
+                            String BDM_NAME = toString(student.get("BDM_NAME"));
+                            String BC_MAJOR_NAME = toString(student.get("BC_MAJOR_NAME"));
+                            String BC_NAME = toString(student.get("BC_NAME"));
+                            String BS_NUMBER = toString(student.get("BS_NUMBER"));
+                            String BS_NAME = toString(student.get("BS_NAME"));
+                            String BS_ID_CARD = toString(student.get("BS_ID_CARD"));
+                            String CONTRAST_RESULTS = "";
+                            //背景颜色
+                            short backGroundIndex = IndexedColors.YELLOW.getIndex();
+                            if (condition.equals(BS_NUMBER)) {
+                                CONTRAST_RESULTS = "同学号";
+                                excelMap.put("BS_NUMBER" + ExportExcelTool.BACKGROUND, IndexedColors.YELLOW.getIndex());
+                            } else if (condition.equals(BS_NAME)) {
+                                CONTRAST_RESULTS = "同名";
+                                excelMap.put("BS_NAME" + ExportExcelTool.BACKGROUND, IndexedColors.YELLOW.getIndex());
+                            } else if (condition.equals(BS_ID_CARD)) {
+                                CONTRAST_RESULTS = "同身份证";
+                                excelMap.put("BS_ID_CARD" + ExportExcelTool.BACKGROUND, IndexedColors.YELLOW.getIndex());
+                            } else {
+                                CONTRAST_RESULTS = "查询失败";
+                                backGroundIndex = IndexedColors.BLUE.getIndex();
+                            }
+
+                            //条件
+                            excelMap.put("CONDITION", condition);
+                            //系
+                            excelMap.put("BDM_NAME", BDM_NAME);
+                            //专业
+                            excelMap.put("BC_MAJOR_NAME", BC_MAJOR_NAME);
+                            //班级
+                            excelMap.put("BC_NAME", BC_NAME);
+                            //学号
+                            excelMap.put("BS_NUMBER", BS_NUMBER);
+                            //姓名
+                            excelMap.put("BS_NAME", BS_NAME);
+                            //身份证
+                            excelMap.put("BS_ID_CARD", BS_ID_CARD);
+                            //对比结果
+                            excelMap.put("CONTRAST_RESULTS", CONTRAST_RESULTS);
+                            excelMap.put("CONTRAST_RESULTS" + ExportExcelTool.BACKGROUND, backGroundIndex);
+                            //查询失败全部变成蓝色
+                            if (backGroundIndex == IndexedColors.BLUE.getIndex()) {
+                                Set<String> keySet = Sets.newHashSet(excelMap.keySet());
+                                keySet.forEach(key -> {
+                                    if (!"CONDITION".equals(key)) {
+                                        excelMap.put(key + ExportExcelTool.BACKGROUND, IndexedColors.BLUE.getIndex());
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+        return resultList;
+    }
+
     /***********    学生考勤    *********/
 
     @Override
@@ -271,7 +367,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
 
             baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentAttendance", paramMap);
 
-            resultMap.put(MagicValue.LOG, "删除学生考勤,信息:" + formatColumnName(TableName.BUS_STUDENT_ATTENDANCE, oldMap) );
+            resultMap.put(MagicValue.LOG, "删除学生考勤,信息:" + formatColumnName(TableName.BUS_STUDENT_ATTENDANCE, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
         } catch (Exception e) {
@@ -322,14 +418,14 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 paramMap.put("BSP_ENTRY_TIME", getDate());
 
                 baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentPunishment", paramMap);
-                resultMap.put(MagicValue.LOG, "添加学生处分:" + formatColumnName(TableName.BUS_STUDENT_PUNISHMENT, paramMap) );
+                resultMap.put(MagicValue.LOG, "添加学生处分:" + formatColumnName(TableName.BUS_STUDENT_PUNISHMENT, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);
                 oldMap = selectStudentPunishment(oldMap);
 
                 baseDao.update(NameSpace.StudentExtendMapper, "updateStudentPunishment", paramMap);
-                resultMap.put(MagicValue.LOG, "更新学生处分,更新前:" + formatColumnName(TableName.BUS_STUDENT_ATTENDANCE, oldMap)  + ",更新后:" + formatColumnName(TableName.BUS_STUDENT_PUNISHMENT, paramMap));
+                resultMap.put(MagicValue.LOG, "更新学生处分,更新前:" + formatColumnName(TableName.BUS_STUDENT_ATTENDANCE, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_STUDENT_PUNISHMENT, paramMap));
             }
             status = STATUS_SUCCESS;
             desc = SAVE_SUCCESS;
@@ -496,7 +592,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 paramMap.put("ID", id);
 
                 baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentComprehensive", paramMap);
-                resultMap.put(MagicValue.LOG, "添加学生综合素质测评:" +  formatColumnName(TableName.BUS_STUDENT_COMPREHENSIVE, paramMap));
+                resultMap.put(MagicValue.LOG, "添加学生综合素质测评:" + formatColumnName(TableName.BUS_STUDENT_COMPREHENSIVE, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);

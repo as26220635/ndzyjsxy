@@ -15,7 +15,7 @@
     <div class="form-group has-feedback">
         <label>文件名称:</label>
         <input type="text" class="form-control" ${fns:validField(TableName.SYS_CONFIGURE_FILE,"SCF_NAME")}
-               value="${FILE.SCF_NAME}" required>
+               value="${FILE.SCF_NAME}">
     </div>
     <%--附件--%>
     <div class="row">

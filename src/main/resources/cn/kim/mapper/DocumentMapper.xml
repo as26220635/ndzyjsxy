@@ -29,6 +29,7 @@
             <if test="BD_IS_NEED_REPLY != null">BD_IS_NEED_REPLY,</if>
             <if test="BD_REPLY_TIME != null">BD_REPLY_TIME,</if>
             <if test="BD_IS_REPLY != null">BD_IS_REPLY,</if>
+            <if test="BD_REPLY_CONTENT != null">BD_REPLY_CONTENT,</if>
             <if test="BD_REMARKS != null">BD_REMARKS,</if>
             <if test="BD_ENTRY_TIME != null">BD_ENTRY_TIME,</if>
         </trim>
@@ -43,6 +44,7 @@
             <if test="BD_IS_NEED_REPLY != null">#{BD_IS_NEED_REPLY},</if>
             <if test="BD_REPLY_TIME != null">#{BD_REPLY_TIME},</if>
             <if test="BD_IS_REPLY != null">#{BD_IS_REPLY},</if>
+            <if test="BD_REPLY_CONTENT != null">#{BD_REPLY_CONTENT},</if>
             <if test="BD_REMARKS != null">#{BD_REMARKS},</if>
             <if test="BD_ENTRY_TIME != null">#{BD_ENTRY_TIME},</if>
         </trim>
@@ -62,6 +64,7 @@
             <if test="BD_IS_NEED_REPLY != null">BD_IS_NEED_REPLY=#{BD_IS_NEED_REPLY},</if>
             <if test="BD_REPLY_TIME != null">BD_REPLY_TIME=#{BD_REPLY_TIME},</if>
             <if test="BD_IS_REPLY != null">BD_IS_REPLY=#{BD_IS_REPLY},</if>
+            <if test="BD_REPLY_CONTENT != null">BD_REPLY_CONTENT=#{BD_REPLY_CONTENT},</if>
             <if test="BD_REMARKS != null">BD_REMARKS=#{BD_REMARKS},</if>
             <if test="BD_ENTRY_TIME != null">BD_ENTRY_TIME=#{BD_ENTRY_TIME},</if>
         </set>

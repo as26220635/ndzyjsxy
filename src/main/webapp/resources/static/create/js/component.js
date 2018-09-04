@@ -1587,7 +1587,7 @@ ajax = {
                 callback(data);
             }
         });
-    }
+    },
 }
 
 /**

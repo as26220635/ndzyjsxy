@@ -28,13 +28,14 @@ public class DocumentServiceImpl extends BaseServiceImpl implements DocumentServ
 
     @Override
     @Transactional
-    public Map<String, Object> insertAndUpdateDocument(Map<String, Object> mapParam, MultipartFile file) {
+    public Map<String, Object> insertAndUpdateDocument(Map<String, Object> mapParam) {
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
         int status = STATUS_ERROR;
         String desc = SAVE_ERROR;
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
+            String insertId = toString(mapParam.get("insertId"));
             //记录日志
             paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DOCUMENT);
 
@@ -46,10 +47,11 @@ public class DocumentServiceImpl extends BaseServiceImpl implements DocumentServ
             paramMap.put("BD_IS_NEED_REPLY", toNull(mapParam.get("BD_IS_NEED_REPLY")));
             paramMap.put("BD_REPLY_TIME", mapParam.get("BD_REPLY_TIME"));
             paramMap.put("BD_IS_REPLY", toNull(mapParam.get("BD_IS_REPLY")));
+            paramMap.put("BD_REPLY_CONTENT", mapParam.get("BD_REPLY_CONTENT"));
             paramMap.put("BD_REMARKS", mapParam.get("BD_REMARKS"));
 
             if (isEmpty(id)) {
-                id = getId();
+                id = insertId;
                 paramMap.put("ID", id);
                 paramMap.put("SO_ID", getActiveUser().getId());
                 paramMap.put("BD_TYPE", mapParam.get("BD_TYPE"));
@@ -64,18 +66,7 @@ public class DocumentServiceImpl extends BaseServiceImpl implements DocumentServ
 
                 baseDao.update(NameSpace.DocumentMapper, "updateDocument", paramMap);
 
-                //删除文件
-                if (!deleteFile(id, TableName.BUS_DOCUMENT)) {
-                    throw new CustomException("文件删除失败！");
-                }
-
                 resultMap.put(MagicValue.LOG, "更新文件,更新前:" + formatColumnName(TableName.BUS_DOCUMENT, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_DOCUMENT, paramMap));
-            }
-
-            //上传文件
-            Map<String, Object> result = insertFile(file, id, TableName.BUS_DOCUMENT, STATUS_ERROR);
-            if (!result.get("code").equals(STATUS_SUCCESS)) {
-                throw new CustomException(toString(result.get("message")));
             }
 
             status = STATUS_SUCCESS;

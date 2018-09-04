@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -371,11 +372,11 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
         paramMap.put("SF_TABLE_ID", tableId);
         paramMap.put("SF_TABLE_NAME", TableName.SYS_CONFIGURE_FILE);
-        Map<String, Object> oldFile = baseDao.selectOne(NameSpace.FileMapper, "selectFile", paramMap);
-        if (!isEmpty(oldFile)) {
-            return FileUtil.delServiceFile(toString(oldFile.get("ID")));
+        List<Map<String, Object>> oldFileList = baseDao.selectList(NameSpace.FileMapper, "selectFile", paramMap);
+        for (Map<String, Object> oldFile : oldFileList) {
+            FileUtil.delServiceFile(toString(oldFile.get("ID")));
         }
-        return false;
+        return true;
     }
     /*****************  流程使用    *******************/
 

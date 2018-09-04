@@ -217,9 +217,16 @@
 <c:set var="TEACHER_ADDOUNT_INFO_URL" value="${TEACHER_BASE_URL}accountInfo" scope="application"/>
 <c:set var="TEACHER_RESET_PWD_URL" value="${TEACHER_BASE_URL}resetPwd" scope="application"/>
 <c:set var="TEACHER_DELETE_URL" value="${TEACHER_BASE_URL}delete" scope="application"/>
+<%--文件管理--%>
+<c:set var="DOCUMENT_BASE_URL" value="${MANAGER_URL}document/" scope="application"/>
+<c:set var="DOCUMENT_ADD_URL" value="${DOCUMENT_BASE_URL}add" scope="application"/>
+<c:set var="DOCUMENT_UPDATE_URL" value="${DOCUMENT_BASE_URL}update" scope="application"/>
+<c:set var="DOCUMENT_REPLY_URL" value="${DOCUMENT_BASE_URL}reply" scope="application"/>
+<c:set var="DOCUMENT_DELETE_URL" value="${DOCUMENT_BASE_URL}delete" scope="application"/>
 <%--学生--%>
 <c:set var="STUDENT_BASE_URL" value="${MANAGER_URL}student/" scope="application"/>
 <c:set var="STUDENT_LIST_URL" value="${STUDENT_BASE_URL}list" scope="application"/>
+<c:set var="STUDENT_IMPORT_QUERY_URL" value="${STUDENT_BASE_URL}importQuery" scope="application"/>
 <c:set var="STUDENT_ADD_URL" value="${STUDENT_BASE_URL}add" scope="application"/>
 <c:set var="STUDENT_UPDATE_URL" value="${STUDENT_BASE_URL}update" scope="application"/>
 <c:set var="STUDENT_ADDOUNT_INFO_URL" value="${STUDENT_BASE_URL}accountInfo" scope="application"/>

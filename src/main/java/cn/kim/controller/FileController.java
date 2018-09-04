@@ -1,6 +1,8 @@
 package cn.kim.controller;
 
 import cn.kim.common.annotation.SystemControllerLog;
+import cn.kim.common.attr.Attribute;
+import cn.kim.common.attr.AttributePath;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.eu.UseType;
 import cn.kim.controller.manager.BaseController;
@@ -257,6 +259,52 @@ public class FileController extends BaseController {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentDispositionFormData(SF_TABLE_NAME, new String(SF_ORIGINAL_NAME.getBytes("UTF-8"), "ISO8859-1"));
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            return new ResponseEntity<byte[]>(FileUtil.toByteArray(inputStream), headers, HttpStatus.CREATED);
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                throw e;
+            }
+            return null;
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        }
+    }
+
+    /**
+     * 下载缓存文件下载后就删除
+     *
+     * @param ID
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/download/cache/{ID}")
+    public ResponseEntity<byte[]> downloadCache(@PathVariable("ID") String ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        InputStream inputStream = null;
+        try {
+            CxfState cxfState = FileUtil.isCxfOnline();
+            //服务器是否在线
+            if (!cxfState.isOnline()) {
+                throw new CustomException("服务器连接失败");
+            }
+            CxfFileWrapper downloadFile = FileUtil.getCxfFileWrapper(cxfState.getUrl(), TokenUtil.baseKey(ID, ID), ID, AttributePath.FILE_SERVICE_CACHE_PATH);
+            //判断是否成功
+            if (downloadFile == null || downloadFile.getFileToken() == null || MagicValue.FALSE.equals(downloadFile.getFileToken())) {
+                throw new CustomException("没有找到文件");
+            }
+            //获取缓存文件
+            inputStream = downloadFile.getFile().getInputStream();
+            //删除服务器文件
+            FileUtil.delServerFile(cxfState.getUrl(), TokenUtil.baseKey(ID, ID), ID, AttributePath.FILE_SERVICE_CACHE_PATH);
+
+            String fileName = getDate() + ":下载文件";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentDispositionFormData(fileName, new String(fileName.getBytes("UTF-8"), "ISO8859-1"));
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             return new ResponseEntity<byte[]>(FileUtil.toByteArray(inputStream), headers, HttpStatus.CREATED);
         } catch (Exception e) {

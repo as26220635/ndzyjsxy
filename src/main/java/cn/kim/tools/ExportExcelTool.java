@@ -28,19 +28,23 @@ public class ExportExcelTool<T> extends BaseData {
      * 是否数字
      */
     private static final Pattern NUMBER_PATTERN = Pattern.compile("^//d+(//.//d+)?$");
+    /**
+     * 背景颜色后缀
+     */
+    public static final String BACKGROUND = "_BACKGROUND";
 
     /**
-     * 导出excel xlsx
+     * 导出excel
      *
      * @param title
      * @param headers
      * @param columns
      * @param dataSet
-     * @param out
      * @param pattern
+     * @return
      */
-    public void exportExcelByColumn(String title, String[] headers, String[] columns,
-                                    Collection<Map<String, Object>> dataSet, OutputStream out, @Nullable String pattern) {
+    public Workbook exportExcelByColumn(String title, String[] headers, String[] columns,
+                                        Collection<Map<String, Object>> dataSet, @Nullable String pattern) {
         Workbook workbook = new SXSSFWorkbook();
         // 生成一个表格
         Sheet sheet = workbook.createSheet(title);
@@ -116,10 +120,21 @@ public class ExportExcelTool<T> extends BaseData {
             Map<String, Object> map = it.next();
             count = headers.length < columns.length ? headers.length : columns.length;
             for (int i = 0; i < count; i++) {
+                //设置背景颜色
+                String key = columns[i];
+                //是否拥有背景颜色
+                String backGroundIndex = toString(map.get(key + BACKGROUND));
+                style2.setFillBackgroundColor(IndexedColors.WHITE.getIndex());
+                //设置颜色
+                if (!isEmpty(backGroundIndex)) {
+                    style2.setFillBackgroundColor(Short.valueOf(backGroundIndex));
+                }
+
                 Cell cell = row.createCell(i);
                 cell.setCellStyle(style2);
                 try {
-                    Object value = map.get(columns[i]);
+                    Object value = map.get(key);
+
                     // 判断值的类型后进行强制类型转换
                     String textValue = null;
                     if (value instanceof Date) {
@@ -172,6 +187,22 @@ public class ExportExcelTool<T> extends BaseData {
                 }
             }
         }
+        return workbook;
+    }
+
+    /**
+     * 导出excel xlsx
+     *
+     * @param title
+     * @param headers
+     * @param columns
+     * @param dataSet
+     * @param out
+     * @param pattern
+     */
+    public void exportExcelByColumn(String title, String[] headers, String[] columns,
+                                    Collection<Map<String, Object>> dataSet, OutputStream out, @Nullable String pattern) {
+        Workbook workbook = this.exportExcelByColumn(title, headers, columns, dataSet, pattern);
         try {
             workbook.write(out);
         } catch (IOException e) {

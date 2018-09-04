@@ -37,6 +37,10 @@ public class AttributePath {
      */
     public static final String SERVICE_PATH_DEFAULT = System.getProperty("user.dir") + SERVICE_PATH_SEPARATOR + "cache" + SERVICE_PATH_SEPARATOR;
 
+    /**
+     * 文件服务器缓存文件夹
+     */
+    public static final String FILE_SERVICE_CACHE_PATH = "cache/";
     /***************    MYSQL备份文件夹     **************/
     public static final String SERVICE_MYSQL_BACKUP_PATH = SERVICE_PATH_DEFAULT + "mysqlBackup";
 

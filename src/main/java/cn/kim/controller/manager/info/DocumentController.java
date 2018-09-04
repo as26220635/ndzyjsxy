@@ -34,6 +34,8 @@ public class DocumentController extends BaseController {
     @RequiresPermissions("INFO:DOCUMENT_INSERT")
     @Token(save = true)
     public String addHtml(Model model) throws Exception {
+        //设置初始化ID
+        setInsertId(model);
         return "admin/info/document/addAndEdit";
     }
 
@@ -41,10 +43,10 @@ public class DocumentController extends BaseController {
     @RequiresPermissions("INFO:DOCUMENT_INSERT")
     @SystemControllerLog(useType = UseType.USE, event = "添加文件")
     @Token(remove = true)
-    @Validate(value = "BUS_DOCUMENT", required = true)
+    @Validate("BUS_DOCUMENT")
     @ResponseBody
-    public ResultState add(@RequestParam Map<String, Object> mapParam, HttpServletRequest request) throws Exception {
-        Map<String, Object> resultMap = documentService.insertAndUpdateDocument(mapParam, CommonUtil.getMultipartFile(request));
+    public ResultState add(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = documentService.insertAndUpdateDocument(mapParam);
 
         return resultState(resultMap);
     }
@@ -62,10 +64,29 @@ public class DocumentController extends BaseController {
     @PutMapping("/update")
     @RequiresPermissions("INFO:DOCUMENT_UPDATE_SAVE")
     @SystemControllerLog(useType = UseType.USE, event = "修改文件")
-    @Validate(value = "BUS_DOCUMENT", required = true)
+    @Validate("BUS_DOCUMENT")
     @ResponseBody
-    public ResultState update(@RequestParam Map<String, Object> mapParam, HttpServletRequest request) throws Exception {
-        Map<String, Object> resultMap = documentService.insertAndUpdateDocument(mapParam, CommonUtil.getMultipartFile(request));
+    public ResultState update(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = documentService.insertAndUpdateDocument(mapParam);
+        return resultState(resultMap);
+    }
+
+    @GetMapping("/reply/{ID}")
+    @RequiresPermissions("INFO:DOCUMENT_REPLY")
+    public String replyHtml(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("document", documentService.selectDocument(mapParam));
+        return "admin/info/document/reply";
+    }
+
+    @PutMapping("/reply")
+    @RequiresPermissions("INFO:DOCUMENT_REPLY")
+    @SystemControllerLog(useType = UseType.USE, event = "修改文件回复")
+    @Validate("BUS_DOCUMENT")
+    @ResponseBody
+    public ResultState reply(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = documentService.insertAndUpdateDocument(mapParam);
         return resultState(resultMap);
     }
 

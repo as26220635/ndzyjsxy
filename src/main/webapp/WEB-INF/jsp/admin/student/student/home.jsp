@@ -147,7 +147,7 @@
             }
         });
     });
-    
+
     //删除
     $dataGridTable.find('tbody').on('click', '#del', function () {
         var data = getRowData(this);
@@ -167,4 +167,17 @@
             }
         });
     });
+
+    /**
+     * 导入excel
+     */
+    function excelImport($form, $model, importBtnId) {
+        //导入查询
+        if (importBtnId == 'importQuery') {
+            ajax.file('${STUDENT_IMPORT_QUERY_URL}', $form, function (data) {
+                //重置上传框
+                importFileClear();
+            });
+        }
+    }
 </script>

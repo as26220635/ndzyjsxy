@@ -59,7 +59,8 @@
 
 <script>
     //是否初始化导入
-    var isImport = $('#import').length > 0 ? true : false;
+    var isImport = $('.btn-import').length > 0 ? true : false;
+    var importBtnId;
     if (isImport) {
         file.init({
             id: '#excelFile',
@@ -70,7 +71,9 @@
             nonModel: true,
         });
         //打开模态框
-        $('#import').on('click', function () {
+        $('.btn-import').on('click', function () {
+            //拿到按钮id
+            importBtnId = $(this).attr('id');
             importFileClear();
             $('#excelImportModal').modal('show');
         });
@@ -83,7 +86,7 @@
             }
             //导入excel
             if (typeof excelImport == 'function') {
-                excelImport($('#importForm'), $('#excelImportModal'));
+                excelImport($('#importForm'), $('#excelImportModal'), importBtnId);
             }
         });
     }

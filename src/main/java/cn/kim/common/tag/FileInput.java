@@ -219,7 +219,7 @@ public class FileInput extends BaseTagSupport {
                     "uploadExtraData:{SF_TABLE_ID:'" + idEncrypt(tableId) + "',SF_TABLE_NAME:'" + idEncrypt(tableName) + "',SF_TYPE_CODE:'" + idEncrypt(typeCode) + "',SF_SEE_TYPE:'" + idEncrypt(seeType) + "',SF_SDT_CODE:'" + idEncrypt(sdtCode) + "',SF_SDI_CODE:'" + idEncrypt(info.getSdiCode()) + "'}," +
                     "showUpload:" + toString(showUpload) + "," +
                     "showRemove:" + toString(showRemove) + "," +
-                    "nonModel:" + toString(nonModel) + "," +
+                    (isEmpty(nonModel) ? "" : "nonModel:" + toString(nonModel) + ",") +
                     "allowedFileExtensions:" + TextUtil.toString(!allowFile ? ConfigProperties.ALLOW_SUFFIX_IMG : ConfigProperties.ALLOW_SUFFIX_FILE) + "," +
                     "maxFileSize:" + maxFileSize + "," +
                     "maxFilesNum:" + maxFilesNum + "," +
@@ -275,6 +275,7 @@ public class FileInput extends BaseTagSupport {
         maxFileCount = 99;
         maxFileSize = 8000;
         allowFile = false;
+        nonModel = "";
         return super.doEndTag();
     }
 

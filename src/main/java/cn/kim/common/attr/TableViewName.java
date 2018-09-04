@@ -42,4 +42,9 @@ public class TableViewName {
      * 查看日志
      */
     public static final String V_LOG_SEE = "v_log_see";
+    /**
+     * 文件管理
+     */
+    public static final String V_DOCUMENT = "v_document";
+
 }

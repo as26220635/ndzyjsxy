@@ -80,6 +80,9 @@ public class GridDataFilter extends BaseServiceImpl {
             if (!SystemEnum.MANAGER.toString().equals(operatorType)) {
                 resultBuilder.append(" AND SO_ID =" + operatorId);
             }
+        } else if (TableViewName.V_DOCUMENT.equals(configureView)) {
+            //文件管理
+            resultBuilder.append(" AND SO_ID =" + operatorId);
         }
 
 

@@ -3,6 +3,9 @@ package cn.kim.controller.manager.student;
 import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.annotation.Token;
 import cn.kim.common.annotation.Validate;
+import cn.kim.common.attr.Attribute;
+import cn.kim.common.attr.AttributePath;
+import cn.kim.common.attr.MagicValue;
 import cn.kim.common.eu.UseType;
 import cn.kim.controller.manager.BaseController;
 import cn.kim.entity.DataTablesView;
@@ -11,8 +14,14 @@ import cn.kim.service.DepartmentService;
 import cn.kim.service.MenuService;
 import cn.kim.service.OperatorService;
 import cn.kim.service.StudentService;
+import cn.kim.tools.ExportExcelTool;
 import cn.kim.util.AllocationUtil;
+import cn.kim.util.DateUtil;
+import cn.kim.util.FileUtil;
+import cn.kim.util.TokenUtil;
 import com.google.common.collect.Maps;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.util.IOUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.checkerframework.checker.units.qual.A;
@@ -22,7 +31,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by 余庚鑫 on 2018/8/6
@@ -137,6 +153,39 @@ public class StudentController extends BaseController {
         mapParam.put("ID", ID);
         Map<String, Object> resultMap = studentService.deleteStudent(mapParam);
         return resultState(resultMap);
+    }
+
+    @PostMapping("/importQuery")
+    @RequiresPermissions("STUDENT:BASE_IMPORT_QUERY")
+    @SystemControllerLog(useType = UseType.USE, event = "导入学生信息查询")
+    @ResponseBody
+    public ResultState importQuery(MultipartFile excelFile) throws Exception {
+        String[] titleArrays = {"导入查询信息", "", "系", "专业", "班级", "学号", "姓名", "身份证", "结果"};
+        String[] columnArrays = {"CONDITION", "", "BDM_NAME", "BC_MAJOR_NAME", "BC_NAME", "BS_NUMBER", "BS_NAME", "BS_ID_CARD", "CONTRAST_RESULTS"};
+
+        List<Map<String, Object>> list = studentService.importQueryStudent(excelFile);
+
+        ExportExcelTool<List<Map<String, Object>>> exportExcel = new ExportExcelTool<>();
+
+        Workbook workbook = null;
+        //文件ID
+        String id = UUID.randomUUID().toString();
+        try {
+            //上传文件到文件服务器 提供下载
+            workbook = exportExcel.exportExcelByColumn("查询结果", titleArrays, columnArrays, list, null);
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            workbook.write(os);
+            FileUtil.uploadCxfFile(TokenUtil.baseKey(UUID.randomUUID(), id), id, AttributePath.FILE_SERVICE_CACHE_PATH,
+                    FileUtil.toByteArray(new ByteArrayInputStream(os.toByteArray())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(workbook);
+        }
+
+        ResultState resultState = resultState(STATUS_SUCCESS, "", "");
+        resultState.setId(id);
+        return resultState;
     }
 
     /**********     学生考勤    ********/
