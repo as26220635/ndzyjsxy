@@ -436,27 +436,15 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
                 baseDao.update(NameSpace.ConfigureMapper, "updateConfigureFile", paramMap);
 
                 //删除文件
-                paramMap.clear();
-                paramMap.put("SF_TABLE_ID", id);
-                paramMap.put("SF_TABLE_NAME", TableName.SYS_CONFIGURE_FILE);
-                Map<String, Object> oldFile = baseDao.selectOne(NameSpace.FileMapper, "selectFile", paramMap);
-                if (!isEmpty(oldFile)) {
-                    FileUtil.delServiceFile(toString(oldFile.get("ID")));
+                if (!deleteFile(id, TableName.SYS_CONFIGURE_FILE)) {
+                    throw new CustomException("文件删除失败！");
                 }
 
                 resultMap.put(MagicValue.LOG, "更新配置列表文件,更新前:" + formatColumnName(TableName.SYS_CONFIGURE_FILE, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_CONFIGURE_FILE, paramMap));
             }
 
             //上传文件
-            paramMap.clear();
-            paramMap.put("SF_TABLE_ID", id);
-            paramMap.put("SF_TABLE_NAME", TableName.SYS_CONFIGURE_FILE);
-            paramMap.put("SF_TYPE_CODE", TableName.SYS_CONFIGURE_FILE);
-            paramMap.put("SF_SEE_TYPE", STATUS_SUCCESS);
-            paramMap.put("SF_SDT_CODE", "BUS_FILE_DEFAULT");
-            paramMap.put("SF_SDI_CODE", "DEFAULT");
-
-            Map<String, Object> result = FileUtil.saveFile(file, paramMap);
+            Map<String, Object> result = insertFile(file, id, TableName.SYS_CONFIGURE_FILE, STATUS_SUCCESS);
             if (!result.get("code").equals(STATUS_SUCCESS)) {
                 throw new CustomException(toString(result.get("message")));
             }

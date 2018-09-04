@@ -22,7 +22,9 @@ import org.jetbrains.annotations.Nullable;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -335,6 +337,46 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         return map;
     }
 
+    /**
+     * 上传文件
+     *
+     * @param file
+     * @param tableId
+     * @param tableName
+     * @param isSee
+     * @return
+     * @throws IOException
+     */
+    protected Map<String, Object> insertFile(MultipartFile file, String tableId, String tableName, int isSee) throws IOException {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
+        paramMap.put("SF_TABLE_ID", tableId);
+        paramMap.put("SF_TABLE_NAME", tableName);
+        paramMap.put("SF_TYPE_CODE", tableName);
+        paramMap.put("SF_SEE_TYPE", isSee);
+        paramMap.put("SF_SDT_CODE", "BUS_FILE_DEFAULT");
+        paramMap.put("SF_SDI_CODE", "DEFAULT");
+
+        return FileUtil.saveFile(file, paramMap);
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param tableId
+     * @param tableName
+     * @return
+     * @throws Exception
+     */
+    protected boolean deleteFile(String tableId, String tableName) throws Exception {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
+        paramMap.put("SF_TABLE_ID", tableId);
+        paramMap.put("SF_TABLE_NAME", TableName.SYS_CONFIGURE_FILE);
+        Map<String, Object> oldFile = baseDao.selectOne(NameSpace.FileMapper, "selectFile", paramMap);
+        if (!isEmpty(oldFile)) {
+            return FileUtil.delServiceFile(toString(oldFile.get("ID")));
+        }
+        return false;
+    }
     /*****************  流程使用    *******************/
 
     /**

@@ -186,4 +186,9 @@ public class TableName {
      * 国家助学金
      */
     public static final String BUS_AID_NATIONAL_GRANTS = "BUS_AID_NATIONAL_GRANTS";
+
+    /**
+     * 文件
+     */
+    public static final String BUS_DOCUMENT = "BUS_DOCUMENT";
 }

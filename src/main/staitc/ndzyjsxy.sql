@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : db
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80011
+ Source Server Version : 80012
  Source Host           : localhost:3306
  Source Schema         : ndzyjsxy
 
  Target Server Type    : MySQL
- Target Server Version : 80011
+ Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 02/09/2018 22:53:38
+ Date: 04/09/2018 18:08:12
 */
 
 SET NAMES utf8mb4;
@@ -238,6 +238,28 @@ CREATE TABLE `bus_division_personnel`  (
 -- Records of bus_division_personnel
 -- ----------------------------
 INSERT INTO `bus_division_personnel` VALUES ('48303136200196096', '48303136200196097', '48308661151334400', 'division_test');
+
+-- ----------------------------
+-- Table structure for bus_document
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_document`;
+CREATE TABLE `bus_document`  (
+  `ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+  `SO_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '操作员 @SYS_ACCOUNT_INFO,SO_ID,SAI_NAME@',
+  `BD_YEAR` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '发文年度',
+  `BD_TYPE` int(5) NULL DEFAULT NULL COMMENT '发文类型 $BUS_DOCUMENT_TYPE$',
+  `BD_NUMBER` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件号',
+  `BD_TITLE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '标题',
+  `BD_DATE` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '发文日期',
+  `BD_IS_NEED_REPLY` int(1) NULL DEFAULT NULL COMMENT '是否需要回复',
+  `BD_REPLY_TIME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '回复期限',
+  `BD_IS_REPLY` int(1) NULL DEFAULT 0 COMMENT '是否已回复',
+  `BD_REMARKS` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+  `BD_ENTRY_TIME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '录入时间',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `BD_TYPE`(`BD_TYPE`) USING BTREE,
+  INDEX `BD_YEAR`(`BD_YEAR`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for bus_student
