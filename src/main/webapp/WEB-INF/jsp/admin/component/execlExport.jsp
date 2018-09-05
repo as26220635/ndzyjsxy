@@ -38,7 +38,7 @@
                 params['processStatus'] = $('#processStatus').val();
 
                 //导出
-                window.open('${EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(params));
+                window.location.href = '${EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(params);
                 model.hide($model);
             }
         });

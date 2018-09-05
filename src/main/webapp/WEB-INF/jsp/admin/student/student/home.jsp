@@ -180,10 +180,11 @@
                 //下载缓存文件
                 ajaxReturn.data(data, $model, null, null, {
                     success: function () {
-                        window.open('${DOWN_CACHE_URL}' + data.id);
+                        window.location.href='${DOWN_CACHE_URL}' + data.id;
+                        <%--window.open('${DOWN_CACHE_URL}' + data.id);--%>
                     }
                 });
-            }, false);
+            });
         }
     }
 </script>

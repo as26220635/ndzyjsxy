@@ -51,41 +51,16 @@ public class ExportExcelTool<T> extends BaseData {
         // 设置表格默认列宽度为20个字节
         sheet.setDefaultColumnWidth(20);
         sheet.setDefaultRowHeightInPoints(24);
+
+        //标题文字大小
+        short fontTitleSize = (short) 12;
+        //文字大小
+        short fontSize = (short) 12;
         // 生成一个 表格标题行样式
-        CellStyle style = workbook.createCellStyle();
-        // 设置这些样式
-        style.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setBorderBottom(BorderStyle.THIN);
-        style.setBorderLeft(BorderStyle.THIN);
-        style.setBorderRight(BorderStyle.THIN);
-        style.setBorderTop(BorderStyle.THIN);
-        style.setAlignment(HorizontalAlignment.CENTER);
-        // 生成一个字体
-        Font font = workbook.createFont();
-        font.setColor(IndexedColors.BLACK.getIndex());
-        font.setFontHeightInPoints((short) 12);
-        font.setBold(true);
-        // font.setBoldweight((short)700));
-        // 把字体应用到当前的样式
-        style.setFont(font);
+        CellStyle style = createContentStyle(workbook, true, fontTitleSize, IndexedColors.YELLOW.getIndex(), IndexedColors.BLACK.getIndex());
 
         // 生成并设置另一个样式 内容的背景
-        CellStyle style2 = workbook.createCellStyle();
-        style2.setFillForegroundColor(IndexedColors.WHITE.getIndex());
-        style2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style2.setBorderBottom(BorderStyle.THIN);
-        style2.setBorderLeft(BorderStyle.THIN);
-        style2.setBorderRight(BorderStyle.THIN);
-        style2.setBorderTop(BorderStyle.THIN);
-        style2.setAlignment(HorizontalAlignment.CENTER);
-        style2.setVerticalAlignment(VerticalAlignment.CENTER);
-        // 生成另一个字体
-        Font font2 = workbook.createFont();
-        font.setBold(true);
-        // font2.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
-        // 把字体应用到当前的样式
-        style2.setFont(font2);
+        CellStyle style2 = createContentStyle(workbook, false, fontSize, IndexedColors.WHITE.getIndex(), IndexedColors.BLACK.getIndex());
 
         // 声明一个画图的顶级管理器
         Drawing patriarch = sheet.createDrawingPatriarch();
@@ -93,9 +68,9 @@ public class ExportExcelTool<T> extends BaseData {
         Comment comment = patriarch.createCellComment(new XSSFClientAnchor(0, 0, 0,
                 0, (short) 4, 2, (short) 6, 5));
         //设置注释内容
-        comment.setString(new XSSFRichTextString("Created By ndzyjsxy"));
+        comment.setString(new XSSFRichTextString("创建者:宁德职业技术学院"));
         // 设置注释作者，当鼠标移动到单元格上是可以在状态栏中看到该内容.
-        comment.setAuthor("ndzyjsxy");
+        comment.setAuthor("宁德职业技术学院");
 
         // 产生表格标题行
         Row row = sheet.createRow(0);
@@ -120,18 +95,18 @@ public class ExportExcelTool<T> extends BaseData {
             Map<String, Object> map = it.next();
             count = headers.length < columns.length ? headers.length : columns.length;
             for (int i = 0; i < count; i++) {
+                //单元格
+                Cell cell = row.createCell(i);
                 //设置背景颜色
                 String key = columns[i];
                 //是否拥有背景颜色
                 String backGroundIndex = toString(map.get(key + BACKGROUND));
-                style2.setFillForegroundColor(IndexedColors.WHITE.getIndex());
                 //设置颜色
                 if (!isEmpty(backGroundIndex)) {
-                    style2.setFillForegroundColor(Short.valueOf(backGroundIndex));
+                    cell.setCellStyle(createContentStyle(workbook, false, fontSize, Short.valueOf(backGroundIndex), IndexedColors.BLACK.getIndex()));
+                } else {
+                    cell.setCellStyle(style2);
                 }
-
-                Cell cell = row.createCell(i);
-                cell.setCellStyle(style2);
                 try {
                     Object value = map.get(key);
 
@@ -211,6 +186,34 @@ public class ExportExcelTool<T> extends BaseData {
             IOUtils.closeQuietly(workbook);
             IOUtils.closeQuietly(out);
         }
+    }
+
+    /**
+     * 创建样式
+     *
+     * @param workbook
+     * @param isBold
+     * @param fontPoints
+     * @param foregroundColor
+     * @return
+     */
+    public CellStyle createContentStyle(Workbook workbook, boolean isBold, Short fontPoints, Short foregroundColor, Short fontColor) {
+        CellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(isEmpty(foregroundColor) ? IndexedColors.WHITE.getIndex() : foregroundColor);
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        // 生成另一个字体
+        Font font = workbook.createFont();
+        font.setFontHeightInPoints(isEmpty(fontPoints) ? (short) 12 : fontPoints);
+        font.setBold(isBold);
+        font.setColor(isEmpty(fontColor) ? IndexedColors.BLACK.getIndex() : fontColor);
+        style.setFont(font);
+        return style;
     }
 
 }

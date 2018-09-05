@@ -198,7 +198,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
 
     @Override
     public List<Map<String, Object>> importQueryStudent(MultipartFile excelFile) throws Exception {
-        List<Map<String, Object>> resultList = Lists.newArrayList();
+        List<Map<String, Object>> resultList = Lists.newLinkedList();
         //读取ecel
         List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 2);
 
@@ -213,7 +213,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                         //查询学生
                         paramMap.clear();
                         paramMap.put("IMPORT_QUERY_CONDITION", condition);
-                        List<Map<String, Object>> studentList = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                        List<Map<String, Object>> studentList = baseDao.selectList(NameSpace.StudentMapper, "selectStudent", paramMap);
                         //没有找到记录插入一条查询失败记录
                         if (isEmpty(studentList)) {
                             studentList = Lists.newArrayList();
@@ -227,7 +227,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                             studentList.add(errorMap);
                         }
                         //转换成excel导出格式
-                        studentList.forEach(student -> {
+                        FuncUtil.forEach(studentList, (index, student) -> {
                             Map<String, Object> excelMap = Maps.newHashMapWithExpectedSize(9);
 
                             String BDM_NAME = toString(student.get("BDM_NAME"));
@@ -254,7 +254,9 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                             }
 
                             //条件
-                            excelMap.put("CONDITION", condition);
+                            if(index == 0){
+                                excelMap.put("CONDITION", condition);
+                            }
                             //系
                             excelMap.put("BDM_NAME", BDM_NAME);
                             //专业
