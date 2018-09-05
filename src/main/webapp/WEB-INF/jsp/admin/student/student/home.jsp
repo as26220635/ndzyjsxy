@@ -177,7 +177,13 @@
             ajax.file('${STUDENT_IMPORT_QUERY_URL}', $form, function (data) {
                 //重置上传框
                 importFileClear();
-            });
+                //下载缓存文件
+                ajaxReturn.data(data, $model, null, null, {
+                    success: function () {
+                        window.open('${DOWN_CACHE_URL}' + data.id);
+                    }
+                });
+            }, false);
         }
     }
 </script>

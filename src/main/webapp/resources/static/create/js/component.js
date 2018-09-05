@@ -1575,11 +1575,12 @@ ajax = {
      * @param form form表单
      * @param callback
      */
-    file: function (url, form, callback) {
+    file: function (url, form, callback, isAsync) {
         return form.ajaxSubmit({
             type: 'POST',
             url: url,
             dataType: "json",
+            async: isAsync == undefined ? true : isAsync,
             success: function (data) {
                 if (typeof data === "string") {
                     data = $.parseJSON(data);
@@ -2654,3 +2655,12 @@ function throttle(func, duration) {
 //     return (end - start) + "ms";//返回函数执行需要时间
 // }
 
+/**
+ * 打开新页面
+ * @param url
+ */
+function openWin(url) {
+    $('body').append($('<a href="' + url + '" target="_blank" id="openWin"></a>'))
+    document.getElementById("openWin").click();//点击事件
+    $('#openWin').remove();
+}

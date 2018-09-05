@@ -7,6 +7,7 @@
 <%--图片地址url--%>
 <c:set var="IMG_URL" value="${BASE_URL}${AttributePath.FILE_PREVIEW_URL}" scope="application"/>
 <c:set var="DOWN_URL" value="${BASE_URL}${AttributePath.FILE_DOWNLOAD_URL}" scope="application"/>
+<c:set var="DOWN_CACHE_URL" value="${BASE_URL}${AttributePath.FILE_DOWNLOAD_URL}${AttributePath.FILE_SERVICE_CACHE_PATH}" scope="application"/>
 <%--excel导出地址--%>
 <c:set var="EXPORT_URL" value="${BASE_URL}file/export/" scope="application"/>
 <%--列表地址--%>

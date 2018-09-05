@@ -124,10 +124,10 @@ public class ExportExcelTool<T> extends BaseData {
                 String key = columns[i];
                 //是否拥有背景颜色
                 String backGroundIndex = toString(map.get(key + BACKGROUND));
-                style2.setFillBackgroundColor(IndexedColors.WHITE.getIndex());
+                style2.setFillForegroundColor(IndexedColors.WHITE.getIndex());
                 //设置颜色
                 if (!isEmpty(backGroundIndex)) {
-                    style2.setFillBackgroundColor(Short.valueOf(backGroundIndex));
+                    style2.setFillForegroundColor(Short.valueOf(backGroundIndex));
                 }
 
                 Cell cell = row.createCell(i);

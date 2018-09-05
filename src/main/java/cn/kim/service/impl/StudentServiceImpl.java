@@ -250,7 +250,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                                 excelMap.put("BS_ID_CARD" + ExportExcelTool.BACKGROUND, IndexedColors.YELLOW.getIndex());
                             } else {
                                 CONTRAST_RESULTS = "查询失败";
-                                backGroundIndex = IndexedColors.BLUE.getIndex();
+                                backGroundIndex = IndexedColors.CORNFLOWER_BLUE.getIndex();
                             }
 
                             //条件
@@ -271,14 +271,16 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                             excelMap.put("CONTRAST_RESULTS", CONTRAST_RESULTS);
                             excelMap.put("CONTRAST_RESULTS" + ExportExcelTool.BACKGROUND, backGroundIndex);
                             //查询失败全部变成蓝色
-                            if (backGroundIndex == IndexedColors.BLUE.getIndex()) {
+                            if (backGroundIndex == IndexedColors.CORNFLOWER_BLUE.getIndex()) {
                                 Set<String> keySet = Sets.newHashSet(excelMap.keySet());
                                 keySet.forEach(key -> {
                                     if (!"CONDITION".equals(key)) {
-                                        excelMap.put(key + ExportExcelTool.BACKGROUND, IndexedColors.BLUE.getIndex());
+                                        excelMap.put(key + ExportExcelTool.BACKGROUND, IndexedColors.CORNFLOWER_BLUE.getIndex());
                                     }
                                 });
                             }
+
+                            resultList.add(excelMap);
                         });
                     }
                 }

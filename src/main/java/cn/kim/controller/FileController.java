@@ -14,6 +14,7 @@ import cn.kim.service.FileService;
 import cn.kim.util.*;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import org.apache.poi.util.IOUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -108,18 +109,9 @@ public class FileController extends BaseController {
                 throw e;
             }
         } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-                if (is != null) {
-                    is.close();
-                }
-                if (os != null) {
-                    os.close();
-                }
-            } catch (IOException e1) {
-            }
+            IOUtils.closeQuietly(inputStream);
+            IOUtils.closeQuietly(is);
+            IOUtils.closeQuietly(os);
         }
     }
 
@@ -215,13 +207,11 @@ public class FileController extends BaseController {
      * 下载文件
      *
      * @param ID
-     * @param request
-     * @param response
      * @return
      * @throws Exception
      */
     @GetMapping("/download/{ID}")
-    public ResponseEntity<byte[]> download(@PathVariable("ID") String ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseEntity<byte[]> download(@PathVariable("ID") String ID) throws Exception {
         InputStream inputStream = null;
         try {
             Map<String, Object> file = fileService.selectFile(ID);
@@ -267,9 +257,7 @@ public class FileController extends BaseController {
             }
             return null;
         } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
+            IOUtils.closeQuietly(inputStream);
         }
     }
 
@@ -277,13 +265,11 @@ public class FileController extends BaseController {
      * 下载缓存文件下载后就删除
      *
      * @param ID
-     * @param request
-     * @param response
      * @return
      * @throws Exception
      */
     @GetMapping("/download/cache/{ID}")
-    public ResponseEntity<byte[]> downloadCache(@PathVariable("ID") String ID, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseEntity<byte[]> downloadCache(@PathVariable("ID") String ID) throws Exception {
         InputStream inputStream = null;
         try {
             CxfState cxfState = FileUtil.isCxfOnline();
@@ -301,10 +287,8 @@ public class FileController extends BaseController {
             //删除服务器文件
             FileUtil.delServerFile(cxfState.getUrl(), TokenUtil.baseKey(ID, ID), ID, AttributePath.FILE_SERVICE_CACHE_PATH);
 
-            String fileName = getDate() + ":下载文件";
-
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentDispositionFormData(fileName, new String(fileName.getBytes("UTF-8"), "ISO8859-1"));
+            headers.setContentDispositionFormData(ID, new String(ID.getBytes("UTF-8"), "ISO8859-1"));
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             return new ResponseEntity<byte[]>(FileUtil.toByteArray(inputStream), headers, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -313,9 +297,7 @@ public class FileController extends BaseController {
             }
             return null;
         } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
+            IOUtils.closeQuietly(inputStream);
         }
     }
 
@@ -449,9 +431,7 @@ public class FileController extends BaseController {
         } catch (Exception e) {
             model.addAttribute("OFFICE_CONTENT", "OFFICE文件预览失败!");
         } finally {
-            if (inputStream != null) {
-                inputStream.close();
-            }
+            IOUtils.closeQuietly(inputStream);
         }
         return "admin/component/officePreview";
     }

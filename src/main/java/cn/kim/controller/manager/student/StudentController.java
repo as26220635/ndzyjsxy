@@ -10,15 +10,13 @@ import cn.kim.common.eu.UseType;
 import cn.kim.controller.manager.BaseController;
 import cn.kim.entity.DataTablesView;
 import cn.kim.entity.ResultState;
+import cn.kim.exception.CustomException;
 import cn.kim.service.DepartmentService;
 import cn.kim.service.MenuService;
 import cn.kim.service.OperatorService;
 import cn.kim.service.StudentService;
 import cn.kim.tools.ExportExcelTool;
-import cn.kim.util.AllocationUtil;
-import cn.kim.util.DateUtil;
-import cn.kim.util.FileUtil;
-import cn.kim.util.TokenUtil;
+import cn.kim.util.*;
 import com.google.common.collect.Maps;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.util.IOUtils;
@@ -168,24 +166,28 @@ public class StudentController extends BaseController {
         ExportExcelTool<List<Map<String, Object>>> exportExcel = new ExportExcelTool<>();
 
         Workbook workbook = null;
+        ByteArrayOutputStream os = null;
         //文件ID
-        String id = UUID.randomUUID().toString();
+        String id = DateUtil.getDate(DateUtil.FORMAT5) + ":学生信息导入查询结果(" + TextUtil.toUUID() + ")" + Attribute.EXCEL_XLSX;
         try {
-            //上传文件到文件服务器 提供下载
+            //上传文件到文件服务器提供下载
             workbook = exportExcel.exportExcelByColumn("查询结果", titleArrays, columnArrays, list, null);
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            os = new ByteArrayOutputStream();
             workbook.write(os);
-            FileUtil.uploadCxfFile(TokenUtil.baseKey(UUID.randomUUID(), id), id, AttributePath.FILE_SERVICE_CACHE_PATH,
-                    FileUtil.toByteArray(new ByteArrayInputStream(os.toByteArray())));
+            boolean isSuccess = FileUtil.uploadCxfFile(TokenUtil.baseKey(id, id), id, AttributePath.FILE_SERVICE_CACHE_PATH, os.toByteArray());
+            if (!isSuccess) {
+                throw new CustomException("文件服务器连接失败！");
+            }
+
+            ResultState resultState = resultState(STATUS_SUCCESS, null, "根据导入excel查询学生信息");
+            resultState.setId(id);
+            return resultState;
         } catch (Exception e) {
-            e.printStackTrace();
+            return resultError("查询失败!", e.getMessage());
         } finally {
             IOUtils.closeQuietly(workbook);
+            IOUtils.closeQuietly(os);
         }
-
-        ResultState resultState = resultState(STATUS_SUCCESS, "", "");
-        resultState.setId(id);
-        return resultState;
     }
 
     /**********     学生考勤    ********/
