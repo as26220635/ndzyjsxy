@@ -78,7 +78,7 @@ public class AidProcessCheck extends BaseData {
 
 
         } catch (Exception e) {
-            error = e.getMessage();
+            error = catchExceptionMessage(e);
         }
 
 
@@ -131,7 +131,7 @@ public class AidProcessCheck extends BaseData {
 
 
         } catch (Exception e) {
-            error = e.getMessage();
+            error = catchExceptionMessage(e);
         }
         return error;
     }

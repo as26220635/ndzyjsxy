@@ -962,12 +962,28 @@ model = {
         $footer.find('.pull-left').removeClass('pull-left');
     },
     //提示框
-    tips: function (options) {
+    alert: function (options) {
+        var settings = $.extend({
+            icon: '',
+            closeIcon: false,
+            title: '提示',
+            message: '',
+            onClose: function () {
+            }
+        }, options);
         $.alert({
-            title: options.title,
-            content: options.message,
+            icon: settings.icon,
+            closeIcon: settings.closeIcon,
+            title: settings.title,
+            content: settings.message,
             theme: 'bootstrap',
             animation: 'scale',
+            onClose: settings.onClose,
+            buttons: {
+                confirm: {
+                    text: '确定',
+                },
+            }
         });
     },
     //确认框
@@ -975,13 +991,13 @@ model = {
         var settings = $.extend({
             icon: 'mdi mdi-comment-question-outline',
             title: '操作提示',
-            message: "是否确定?",
+            message: '是否确定?',
             isConfirm: true,
         }, options);
         $.confirm({
             icon: settings.icon,
-            theme: 'bootstrap',
             closeIcon: true,
+            theme: 'bootstrap',
             animation: 'scale',
             title: settings.title,
             content: settings.message,
@@ -989,7 +1005,8 @@ model = {
                 confirm: {
                     isHidden: !settings.isConfirm,
                     text: '确定',
-                    action :function () {
+                    btnClass: 'btn-blue',
+                    action: function () {
                         if (!isEmpty(options.callback)) {
                             options.callback(true);
                         }
@@ -998,7 +1015,7 @@ model = {
                 cancel: {
                     text: '取消',
                     keys: ['Esc'],
-                    action :function () {
+                    action: function () {
                         if (!isEmpty(options.callback)) {
                             options.callback(false);
                         }

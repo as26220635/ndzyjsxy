@@ -64,13 +64,9 @@
                                     ajax.put('${PROCESS_SUBMIT}', params, function (data) {
                                         ajaxReturn.data(data, $model, option.dataGrid, false, {
                                             error: function () {
-                                                model.hide($model);
-                                                model.tips({
+                                                model.alert({
                                                     title: '流程异常',
                                                     message: data.message,
-                                                    callback: function () {
-                                                        $('body').css('padding-right', '0px');
-                                                    }
                                                 });
                                             }
                                         });

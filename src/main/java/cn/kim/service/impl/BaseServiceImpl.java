@@ -81,6 +81,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         return resultMap;
     }
 
+
     /**
      * 捕获异常处理
      *
@@ -90,12 +91,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @return 异常提示
      */
     protected String catchException(@NotNull Exception e, @NotNull BaseDao baseDao, @NotNull Map<String, Object> resultMap) {
-        String desc = "";
-        if (e instanceof CustomException) {
-            desc = e.getMessage();
-        } else {
-            desc = "网络异常,请联系管理员!";
-        }
+        String desc = catchExceptionMessage(e);
         resultMap.put(MagicValue.DESC, desc);
         resultMap.put(MagicValue.STATUS, STATUS_ERROR);
         resultMap.put(MagicValue.LOG, e.getMessage());

@@ -10,9 +10,11 @@ import cn.kim.entity.ResultState;
 import cn.kim.common.sequence.Sequence;
 import cn.kim.entity.ResultState;
 import cn.kim.entity.StudentYearSemester;
+import cn.kim.exception.CustomException;
 import cn.kim.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -598,6 +600,21 @@ public abstract class BaseData {
         }
 
         return studentYearSemester;
+    }
+
+    /**
+     * 返回异常提示
+     * @param e
+     * @return
+     */
+    protected String catchExceptionMessage(@NotNull Exception e) {
+        String desc = "";
+        if (e instanceof CustomException) {
+            desc = e.getMessage();
+        } else {
+            desc = "网络异常,请联系管理员!";
+        }
+        return desc;
     }
 
     /**

@@ -18,7 +18,7 @@
 
     <!--查询学生BSA_ABSENTEEISM考勤数量-->
     <select id="selectStudentAttendanceGroupBySum" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT MAX(BSA_ABSENTEEISM) AS
+        SELECT MAX(BSA_ABSENTEEISM) AS BSA_ABSENTEEISM
         FROM(
             SELECT BS_ID,BSA_YEAR,BSA_SEMESTER,(SUM(BSA_LATE) / ${LATE_PROPORTION}) + SUM(BSA_ABSENTEEISM) AS BSA_ABSENTEEISM
             FROM BUS_STUDENT_ATTENDANCE
