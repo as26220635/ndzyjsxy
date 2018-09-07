@@ -53,6 +53,8 @@ folder instead of downloading all of them to reduce the load. --%>
 <link rel="stylesheet" href="${BASE_URL}resources/static/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css?ver=${VERSION}">
 <%--动画--%>
 <link rel="stylesheet" href="${BASE_URL}resources/reception/plugins/animate/animate.min.css?ver=${VERSION}"/>
+<%--jquery-confirm--%>
+<link rel="stylesheet" href="${BASE_URL}resources/static/plugins/jquery-confirm/jquery-confirm.min.css?ver=${VERSION}"/>
 <%--首页--%>
 <link rel="stylesheet" href="${BASE_URL}resources/static/create/css/first.css?ver=${VERSION}">
 <%--通用--%>

@@ -963,37 +963,47 @@ model = {
     },
     //提示框
     tips: function (options) {
-        options.isConfirm = false;
-        model.confirm(options);
+        $.alert({
+            title: options.title,
+            content: options.message,
+            theme: 'bootstrap',
+            animation: 'scale',
+        });
     },
     //确认框
     confirm: function (options) {
         var settings = $.extend({
+            icon: 'mdi mdi-comment-question-outline',
             title: '操作提示',
             message: "是否确定?",
             isConfirm: true,
         }, options);
-        var isClick = false;
-        model.noDelay({
+        $.confirm({
+            icon: settings.icon,
+            theme: 'bootstrap',
+            closeIcon: true,
+            animation: 'scale',
             title: settings.title,
             content: settings.message,
-            size: model.size.SM,
-            //垂直居中
-            vertical: true,
-            okBtnName: model.btnName.OK,
-            isConfirm: settings.isConfirm,
-            footerModel: window.location.href.indexOf(MANAGER_URL) != -1 ? model.footerModel.ADMIN : model.footerModel.MY_HOME,
-            confirm: function ($model) {
-                if (!isEmpty(options.callback)) {
-                    options.callback(true);
-                }
-                isClick = true;
-                model.hide($model);
-            },
-            cancel: function () {
-                if (!isClick && !isEmpty(options.callback)) {
-                    options.callback(false);
-                }
+            buttons: {
+                confirm: {
+                    isHidden: !settings.isConfirm,
+                    text: '确定',
+                    action :function () {
+                        if (!isEmpty(options.callback)) {
+                            options.callback(true);
+                        }
+                    }
+                },
+                cancel: {
+                    text: '取消',
+                    keys: ['Esc'],
+                    action :function () {
+                        if (!isEmpty(options.callback)) {
+                            options.callback(false);
+                        }
+                    }
+                },
             }
         });
     }

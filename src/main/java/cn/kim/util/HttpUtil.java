@@ -110,6 +110,9 @@ public class HttpUtil {
         Map<String, Object> getMap = httpClient.get(ConfigProperties.IP_SEARCH_URL, params);
 
         JSONObject jsonObject = JSONObject.parseObject(TextUtil.getSubBetween(TextUtil.toString(getMap.get(MagicValue.DESC)), "/\\*\\*/ip\\(", "\\);"));
+        if(ValidateUtil.isEmpty(jsonObject)){
+            return result;
+        }
         JSONArray dataArray = JSONArray.parseArray(jsonObject.getString("data"));
 
         if (ValidateUtil.isEmpty(dataArray) || ValidateUtil.isEmpty(dataArray) || dataArray.size() == 0) {

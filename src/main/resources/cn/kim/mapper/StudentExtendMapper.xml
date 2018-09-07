@@ -16,9 +16,9 @@
         INNER JOIN BUS_STUDENT BS ON BS.ID = BSA.BS_ID
     </select>
 
-    <!--查询学生考勤数量-->
+    <!--查询学生BSA_ABSENTEEISM考勤数量-->
     <select id="selectStudentAttendanceGroupBySum" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT MAX(BSA_ABSENTEEISM)
+        SELECT MAX(BSA_ABSENTEEISM) AS
         FROM(
             SELECT BS_ID,BSA_YEAR,BSA_SEMESTER,(SUM(BSA_LATE) / ${LATE_PROPORTION}) + SUM(BSA_ABSENTEEISM) AS BSA_ABSENTEEISM
             FROM BUS_STUDENT_ATTENDANCE

@@ -58,8 +58,10 @@ public class AidProcessCheck extends BaseData {
             paramMap.put("BS_ID", aid.get("BS_ID"));
             paramMap.put("BSA_YEAR", aid.get("BAF_YEAR"));
             paramMap.put("LATE_PROPORTION", lateProportion);
-            //学院年度表彰 查询一年数据 查出最大的旷课节数
-            if (Process.AID_COMMEND.toString().equals(busProcess2)) {
+            //查询一年数据 查出最大的旷课节数
+            if (Process.AID_COLLEGE_SCHOLARSHIP.toString().equals(busProcess2) ||
+                    Process.AID_EMERGENCY_HELP.toString().equals(busProcess2) ||
+                    Process.AID_NATIONAL_GRANTS.toString().equals(busProcess2)) {
                 paramMap.put("BSA_SEMESTER", aid.get("BAF_SEMESTER"));
             }
             Map<String, Object> attendance = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentAttendanceGroupBySum", paramMap);
@@ -67,9 +69,9 @@ public class AidProcessCheck extends BaseData {
 //                throw new CustomException("学生:" + BS_NAME + ",没有考勤数据,请检查!");
 
                 //旷课节数
-                int absenteeism = toInt(attendance.get("BSA_ABSENTEEISM"));
+                BigDecimal absenteeism = toBigDecimal(attendance.get("BSA_ABSENTEEISM"));
                 //是否算处分
-                if (absenteeism >= absenteeismProportion) {
+                if (absenteeism.compareTo(BigDecimal.valueOf(absenteeismProportion)) != -1) {
                     throw new CustomException("学生:" + BS_NAME + ",迟到旷课节数达到处分不能提交流程!");
                 }
             }

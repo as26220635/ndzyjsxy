@@ -74,6 +74,8 @@
 <%--通知--%>
 <script src="${BASE_URL}resources/reception/myHome/js/bootstrap-notify.js?ver=${VERSION}"></script>
 <script src="${BASE_URL}resources/reception/myHome/js/main.js?ver=${VERSION}"></script>
+<%--jquery-confirm--%>
+<script src="${BASE_URL}resources/static/plugins/jquery-confirm/jquery-confirm.min.js?ver=${VERSION}"></script>
 <%--主页js--%>
 <script src="${BASE_URL}resources/static/create/js/first.js?ver=${VERSION}"></script>
 <%--通用组件--%>
