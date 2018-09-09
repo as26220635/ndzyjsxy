@@ -57,6 +57,7 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
             //父类id默认为0
             paramMap.put("BD_PARENT_ID", isEmpty(mapParam.get("BD_PARENT_ID")) ? MagicValue.ZERO : mapParam.get("BD_PARENT_ID"));
             paramMap.put("BD_NAME", mapParam.get("BD_NAME"));
+            paramMap.put("BD_NUMBER", mapParam.get("BD_NUMBER"));
             paramMap.put("BD_CONTACTS", mapParam.get("BD_CONTACTS"));
             paramMap.put("BD_PHONE", mapParam.get("BD_PHONE"));
             paramMap.put("BD_FIXED_PHONE", mapParam.get("BD_FIXED_PHONE"));

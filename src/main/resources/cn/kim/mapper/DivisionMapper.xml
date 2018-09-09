@@ -33,6 +33,7 @@
             <if test="ID != null">ID,</if>
             <if test="BD_PARENT_ID != null">BD_PARENT_ID,</if>
             <if test="BD_NAME != null">BD_NAME,</if>
+            <if test="BD_NUMBER != null">BD_NUMBER,</if>
             <if test="BD_CONTACTS != null">BD_CONTACTS,</if>
             <if test="BD_PHONE != null">BD_PHONE,</if>
             <if test="BD_FIXED_PHONE != null">BD_FIXED_PHONE,</if>
@@ -46,6 +47,7 @@
             <if test="ID != null">#{ID},</if>
             <if test="BD_PARENT_ID != null">#{BD_PARENT_ID},</if>
             <if test="BD_NAME != null">#{BD_NAME},</if>
+            <if test="BD_NUMBER != null">#{BD_NUMBER},</if>
             <if test="BD_CONTACTS != null">#{BD_CONTACTS},</if>
             <if test="BD_PHONE != null">#{BD_PHONE},</if>
             <if test="BD_FIXED_PHONE != null">#{BD_FIXED_PHONE},</if>
@@ -64,6 +66,7 @@
             <if test="ID != null">ID=#{ID},</if>
             <if test="BD_PARENT_ID != null">BD_PARENT_ID=#{BD_PARENT_ID},</if>
             <if test="BD_NAME != null">BD_NAME=#{BD_NAME},</if>
+            <if test="BD_NUMBER != null">BD_NUMBER=#{BD_NUMBER},</if>
             <if test="BD_CONTACTS != null">BD_CONTACTS=#{BD_CONTACTS},</if>
             <if test="BD_PHONE != null">BD_PHONE=#{BD_PHONE},</if>
             <if test="BD_FIXED_PHONE != null">BD_FIXED_PHONE=#{BD_FIXED_PHONE},</if>
