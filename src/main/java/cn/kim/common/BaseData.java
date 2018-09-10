@@ -424,11 +424,21 @@ public abstract class BaseData {
      * 格式化前台HTML颜色
      *
      * @param val
+     * @return
+     */
+    protected String toHtmlBColor(Object val) {
+        return toHtmlBColor(val, "yellow");
+    }
+
+    /**
+     * 格式化前台HTML颜色
+     *
+     * @param val
      * @param color
      * @return
      */
     protected String toHtmlBColor(Object val, String color) {
-        return "<b style='color:" + color + "'>" + toString(val) + "</b>";
+        return "<b style='color:" + color + "'>" + val + "</b>";
     }
 
     /**
@@ -472,7 +482,7 @@ public abstract class BaseData {
         //拿到当前月份
         int nowMonth = DateUtil.getMonth();
 
-        if (nowMonth >= 9) {
+        if (nowMonth >= 8 && nowMonth < 2) {
             return 1;
         } else {
             return 2;
@@ -604,6 +614,7 @@ public abstract class BaseData {
 
     /**
      * 返回异常提示
+     *
      * @param e
      * @return
      */

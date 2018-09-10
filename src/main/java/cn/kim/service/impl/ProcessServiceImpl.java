@@ -1259,8 +1259,8 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                 tree.setId(id);
                 tree.setText(toString(definition.get("SPD_NAME")));
                 tree.setTags(new String[]{
-                        "更新表名称字段:" + toHtmlBColor(toString(definition.get("SPD_UPDATE_NAME")), "yellow"),
-                        "更新表名:" + toHtmlBColor(toString(definition.get("SPD_UPDATE_TABLE")), "yellow")
+                        "更新表名称字段:" + toHtmlBColor(toString(definition.get("SPD_UPDATE_NAME"))),
+                        "更新表名:" + toHtmlBColor(toString(definition.get("SPD_UPDATE_TABLE")))
                 });
 
                 TreeState state = new TreeState();

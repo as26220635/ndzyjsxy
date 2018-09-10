@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : db
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80011
+ Source Server Version : 80012
  Source Host           : localhost:3306
  Source Schema         : ndzyjsxy
 
  Target Server Type    : MySQL
- Target Server Version : 80011
+ Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 09/09/2018 23:01:41
+ Date: 10/09/2018 17:01:31
 */
 
 SET NAMES utf8mb4;
@@ -191,6 +191,70 @@ CREATE TABLE `bus_department_personnel`  (
 -- ----------------------------
 INSERT INTO `bus_department_personnel` VALUES ('48601651874889728', '48601651874889729', '48601265252335616', 'department_test');
 INSERT INTO `bus_department_personnel` VALUES ('52504512421691392', '52504512421691393', '48601265252335616', 'department_manager');
+
+-- ----------------------------
+-- Table structure for bus_diligent_study
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_diligent_study`;
+CREATE TABLE `bus_diligent_study`  (
+  `ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+  `BDS_TABLE_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '关联主键',
+  `BDS_TABLE_NAME` int(2) NOT NULL COMMENT '关联类型 $SYS_OPERATOR_TYPE$',
+  `BDS_YEAR` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学年',
+  `BDS_SEMESTER` int(1) NOT NULL COMMENT '学期',
+  `BDS_ENTRY_TIME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '录入时间',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `BDS_TABLE_ID`(`BDS_TABLE_ID`, `BDS_TABLE_NAME`) USING BTREE,
+  INDEX `BDS_YEAR`(`BDS_YEAR`) USING BTREE,
+  INDEX `BDS_SEMESTER`(`BDS_SEMESTER`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for bus_diligent_study_month_wages
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_diligent_study_month_wages`;
+CREATE TABLE `bus_diligent_study_month_wages`  (
+  `ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+  `BDSS_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '岗位学生主键',
+  `BDSMW_HOUR` int(3) NOT NULL COMMENT '工作时长',
+  `BDSMW_WAGES` decimal(20, 6) NOT NULL COMMENT '工资总额',
+  `BDSMW_MONTH` int(2) NOT NULL COMMENT '月份',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `BDSS_ID`(`BDSS_ID`) USING BTREE,
+  CONSTRAINT `BDSMW_BDSS_ID` FOREIGN KEY (`BDSS_ID`) REFERENCES `bus_diligent_study_student` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for bus_diligent_study_post
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_diligent_study_post`;
+CREATE TABLE `bus_diligent_study_post`  (
+  `ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+  `BDS_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT ' 勤工助学主键',
+  `BDSP_NUMBER` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '岗位编号',
+  `BDSP_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '岗位名称',
+  `BDSP_HOURLY_WAGE` decimal(20, 6) NULL DEFAULT NULL COMMENT '岗位每小时工资',
+  `BDSP_ORDER` int(5) NULL DEFAULT NULL COMMENT '排序',
+  `BDSP_ENTRY_TIME` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '录入时间',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `BDS_ID`(`BDS_ID`) USING BTREE,
+  INDEX `BDSP_NUMBER`(`BDSP_NUMBER`) USING BTREE,
+  CONSTRAINT `BDSP_BDS_ID` FOREIGN KEY (`BDS_ID`) REFERENCES `bus_diligent_study` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for bus_diligent_study_student
+-- ----------------------------
+DROP TABLE IF EXISTS `bus_diligent_study_student`;
+CREATE TABLE `bus_diligent_study_student`  (
+  `ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '主键',
+  `BS_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '学生 @BUS_STUDENT,BS_NAME@',
+  `BDSP_ID` char(59) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '岗位 @BUS_DILIGENT_STUDY_POST,BDSP_NAME@',
+  PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `BS_ID`(`BS_ID`) USING BTREE,
+  INDEX `BDSP_ID`(`BDSP_ID`) USING BTREE,
+  CONSTRAINT `BDSS_BDSP_ID` FOREIGN KEY (`BDSP_ID`) REFERENCES `bus_diligent_study_post` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for bus_division

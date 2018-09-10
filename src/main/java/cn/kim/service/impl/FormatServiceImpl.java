@@ -314,7 +314,7 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
                 Tree tree = new Tree();
                 tree.setId(id);
                 tree.setText(toString(detail.get("SFD_NAME")));
-                tree.setTags(new String[]{"菜单:" + toHtmlBColor(detail.get("SM_NAME"), "yellow")});
+                tree.setTags(new String[]{"菜单:" + toHtmlBColor(detail.get("SM_NAME"))});
 
                 TreeState state = new TreeState();
                 //是否选中

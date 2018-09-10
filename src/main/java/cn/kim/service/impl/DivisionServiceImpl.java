@@ -238,8 +238,8 @@ public class DivisionServiceImpl extends BaseServiceImpl implements DivisionServ
                 tree.setId(id);
                 tree.setText(toString(button.get("BD_NAME")));
                 tree.setTags(new String[]{
-//                        "电话:" + toHtmlBColor(button.get("BD_PHONE"), "yellow"),
-                        !isEmpty(button.get("BD_CONTACTS")) ? "联系人:" + toHtmlBColor(button.get("BD_CONTACTS"), "yellow") : null
+                        "编号:" + toHtmlBColor(button.get("BD_NUMBER")),
+                        !isEmpty(button.get("BD_CONTACTS")) ? "联系人:" + toHtmlBColor(button.get("BD_CONTACTS")) : null
                 });
 
                 TreeState state = new TreeState();

@@ -405,7 +405,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
             Tree tree = new Tree();
             tree.setId(id);
             tree.setText(toString(info.getSdiName()));
-            tree.setTags(new String[]{"编码:" + toHtmlBColor(info.getSdiCode(), "yellow")});
+            tree.setTags(new String[]{"编码:" + toHtmlBColor(info.getSdiCode())});
 
             TreeState state = new TreeState();
             //是否选中
@@ -446,7 +446,7 @@ public class DictServiceImpl extends BaseServiceImpl implements DictService {
             tree.setId(id);
             tree.setSdiCode(sdiCode);
             tree.setText(toString(info.getSdiName()));
-            tree.setTags(new String[]{"编码:" + toHtmlBColor(info.getSdiCode(), "yellow")});
+            tree.setTags(new String[]{"编码:" + toHtmlBColor(info.getSdiCode())});
 
             TreeState state = new TreeState();
             //是否选中

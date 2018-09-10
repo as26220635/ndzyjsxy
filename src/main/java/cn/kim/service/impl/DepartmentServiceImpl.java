@@ -235,8 +235,8 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
                 tree.setId(id);
                 tree.setText(toString(button.get("BDM_NAME")));
                 tree.setTags(new String[]{
-//                        "电话:" + toHtmlBColor(button.get("BD_PHONE"), "yellow"),
-                        !isEmpty(button.get("BDM_COLLEGE_NAME")) ? "院系:" + toHtmlBColor(button.get("BDM_COLLEGE_NAME"), "yellow") : null
+//                        "电话:" + toHtmlBColor(button.get("BD_PHONE")),
+                        "院系:" + toHtmlBColor(button.get("BDM_COLLEGE_NAME"))
                 });
 
                 TreeState state = new TreeState();

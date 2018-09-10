@@ -307,7 +307,7 @@ public class ConfigureController extends BaseController {
             Tree tree = new Tree();
             tree.setId(configureId);
             tree.setText(toString(configure.get("SC_NAME")));
-            tree.setTags(new String[]{"视图:" + toHtmlBColor(configure.get("SC_VIEW"), "yellow")});
+            tree.setTags(new String[]{"视图:" + toHtmlBColor(configure.get("SC_VIEW"))});
 
             TreeState state = new TreeState();
             if (!isEmpty(id) && configureId.equals(id)) {

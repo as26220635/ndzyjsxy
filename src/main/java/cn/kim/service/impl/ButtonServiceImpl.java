@@ -147,7 +147,10 @@ public class ButtonServiceImpl extends BaseServiceImpl implements ButtonService 
                 Tree tree = new Tree();
                 tree.setId(id);
                 tree.setText(toString(button.get("SB_NAME")));
-                tree.setTags(new String[]{"编码:" + toHtmlBColor(button.get("SB_CODE"), "yellow"), "ID:" + toHtmlBColor(button.get("SB_BUTTONID"), "yellow"), "类型:" + toHtmlBColor(button.get("SB_TYPE_NAME"), "yellow")});
+                tree.setTags(new String[]{
+                        "编码:" + toHtmlBColor(button.get("SB_CODE")),
+                        "ID:" + toHtmlBColor(button.get("SB_BUTTONID")),
+                        "类型:" + toHtmlBColor(button.get("SB_TYPE_NAME"))});
 
                 TreeState state = new TreeState();
                 //是否选中

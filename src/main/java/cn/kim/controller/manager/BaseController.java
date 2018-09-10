@@ -162,7 +162,7 @@ public abstract class BaseController extends BaseData {
             Tree tree = new Tree();
             tree.setId(toString(menu.get("ID")));
             tree.setText(toString(menu.get("SM_NAME")));
-            tree.setTags(new String[]{toHtmlBColor(menu.get("SM_CODE"), "yellow")});
+            tree.setTags(new String[]{toHtmlBColor(menu.get("SM_CODE"))});
 
             TreeState state = new TreeState();
             //是否选中
