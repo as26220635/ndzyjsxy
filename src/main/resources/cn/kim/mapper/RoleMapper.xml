@@ -15,6 +15,9 @@
             <if test="SR_TYPE != NULL and SR_TYPE != ''">
                 AND SR_TYPE = #{SR_TYPE}
             </if>
+            <if test="SR_TYPE_OR != NULL and SR_TYPE_OR != ''">
+                AND (SR_TYPE = #{SR_TYPE_OR} OR SR_TYPE = 0)
+            </if>
         </where>
     </select>
 

@@ -455,7 +455,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
     @Override
     public List<Tree> selectOperatorRole(Map<String, Object> mapParam) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
-        paramMap.put("SR_TYPE", mapParam.get("SR_TYPE"));
+        paramMap.put("SR_TYPE_OR", mapParam.get("SR_TYPE"));
         List<Map<String, Object>> roles = baseDao.selectList(NameSpace.RoleMapper, "selectRole", paramMap);
 
         paramMap.clear();

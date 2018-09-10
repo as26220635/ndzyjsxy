@@ -442,19 +442,23 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
                 }
             } else {
                 //不查询出数据
-                builder.append(" AND SO_ID = -1 ");
+                if (isProcess) {
+                    builder.append(" AND (DG.SO_ID = " + operatorId + " OR SPS.SO_ID = " + operatorId + " OR SPS.SHOW_SO_ID = " + operatorId + ")");
+                } else {
+                    builder.append(" AND SO_ID = " + operatorId);
+                }
             }
         } else if (type == SystemEnum.STUDENT.getType()) {
             //学生
             if (isProcess) {
-                builder.append(" AND (SO_ID = " + operatorId + " OR SHOW_SO_ID = " + operatorId + ")");
+                builder.append(" AND (DG.SO_ID = " + operatorId + " OR SPS.SO_ID = " + operatorId + " OR SPS.SHOW_SO_ID = " + operatorId + ")");
             } else {
                 builder.append(" AND SO_ID = " + operatorId);
             }
         } else if (type == SystemEnum.TEACHER.getType()) {
             //教师
             if (isProcess) {
-                builder.append(" AND (SO_ID = " + operatorId + " OR SHOW_SO_ID = " + operatorId + ")");
+                builder.append(" AND (DG.SO_ID = " + operatorId + " OR SPS.SO_ID = " + operatorId + " OR SPS.SHOW_SO_ID = " + operatorId + ")");
             } else {
                 builder.append(" AND SO_ID = " + operatorId);
             }
@@ -476,7 +480,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @param busProcess2
      * @throws Exception
      */
-    protected void createProcessSchedule(String tableId, String tableName, String operatorId, String showSoId, String busProcess, String busProcess2) throws Exception {
+    protected void createProcessSchedule(String tableId, String tableName, String operatorId, @Nullable String showSoId, String busProcess, String busProcess2) throws Exception {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
         paramMap.put("BUS_PROCESS", busProcess);
         paramMap.put("BUS_PROCESS2", busProcess2);

@@ -7,6 +7,7 @@ import cn.kim.util.TextUtil;
  * 流程大类小类
  */
 public enum Process {
+    /****************   资助    ************/
     //资助大类
     AID(100),
     //绿色通道
@@ -27,6 +28,13 @@ public enum Process {
     AID_JOBSEEKER_SUPPORT(111),
     //应急求助
     AID_EMERGENCY_HELP(113),
+    /****************   勤工助学    ************/
+    //勤工助学大类
+    DILIGENT(200),
+    //勤工助学
+    DILIGENT_STUDY(201),
+    //勤工助学月工资
+    DILIGENT_STUDY_MONTH_WAGES(202),
     ;
 
     private int type;

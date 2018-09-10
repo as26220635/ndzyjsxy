@@ -1,6 +1,9 @@
 package cn.kim.common.attr;
 
+import cn.kim.entity.DictInfo;
+import cn.kim.util.DictUtil;
 import cn.kim.util.TextUtil;
+import cn.kim.util.ValidateUtil;
 
 /**
  * Created by 余庚鑫 on 2018/3/21
@@ -14,10 +17,9 @@ public class ParamTypeResolve {
      * @return
      */
     public static String getOpeatorTypeName(String tyep) {
-        if ("1".equals(tyep)) {
-            return "管理员";
-        } else if ("2".equals(tyep)) {
-            return "会员";
+        DictInfo dictInfo = DictUtil.getDictInfo("SYS_ROLE_TYPE", tyep);
+        if (!ValidateUtil.isEmpty(dictInfo)) {
+            return dictInfo.getSdiName();
         } else {
             return "未知!";
         }

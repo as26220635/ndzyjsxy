@@ -9,13 +9,14 @@ public class initSqlMapper {
 
     public static void main(String[] args) throws IOException {
         //字段
-        String str = "ID\tSO_ID\tBD_YEAR\tBD_TYPE\tBD_NUMBER\tBD_TITLE\tBD_DATE\tBD_IS_NEED_REPLY\tBD_REPLY_TIME\tBD_IS_REPLY\tBD_REMARKS";
+        String str = "ID\tSO_ID\tBDS_TABLE_ID\tBDS_TABLE_NAME\tBDS_YEAR\tBDS_SEMESTER\tBDS_ENTRY_TIME\tBUS_PROCESS\tBUS_PROCESS2";
         //表名
-        String tablename = "bus_document";
+        String tablename = "BUS_DILIGENT_STUDY_STUDENT";
         creatsql(str, tablename);
     }
 
     public static void creatsql(String str, String tablename) {
+        tablename = tablename.toUpperCase();
         String[] array1 = tablename.split("_");
         String[] array2 = new String[array1.length - 1];
 

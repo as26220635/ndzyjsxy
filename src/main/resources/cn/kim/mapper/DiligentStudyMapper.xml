@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kim.mapper.DiligentStudyMapper">
+
+    <!--查询勤工助学-->
+    <select id="selectDiligentStudy" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DILIGENT_STUDY
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test ="BDS_TABLE_ID != NULL and BDS_TABLE_ID != ''">
+                AND BDS_TABLE_ID = #{BDS_TABLE_ID}
+            </if>
+            <if test ="BDS_TABLE_NAME != NULL and BDS_TABLE_NAME != ''">
+                AND BDS_TABLE_NAME = #{BDS_TABLE_NAME}
+            </if>
+            <if test ="BDS_YEAR != NULL and BDS_YEAR != ''">
+                AND BDS_YEAR = #{BDS_YEAR
+            </if>
+            <if test ="BDS_SEMESTER != NULL and BDS_SEMESTER != ''">
+                AND BDS_SEMESTER = #{BDS_SEMESTER}
+            </if>
+        </where>
+    </select>
+
+    <!--查询勤工助学数量-->
+    <select id="selectDiligentStudyCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BUS_DILIGENT_STUDY
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test ="BDS_TABLE_ID != NULL and BDS_TABLE_ID != ''">
+                AND BDS_TABLE_ID = #{BDS_TABLE_ID}
+            </if>
+            <if test ="BDS_TABLE_NAME != NULL and BDS_TABLE_NAME != ''">
+                AND BDS_TABLE_NAME = #{BDS_TABLE_NAME}
+            </if>
+            <if test ="BDS_YEAR != NULL and BDS_YEAR != ''">
+                AND BDS_YEAR = #{BDS_YEAR
+            </if>
+            <if test ="BDS_SEMESTER != NULL and BDS_SEMESTER != ''">
+                AND BDS_SEMESTER = #{BDS_SEMESTER}
+            </if>
+        </where>
+    </select>
+
+    <!--插入勤工助学-->
+    <insert id="insertDiligentStudy" parameterType="java.util.Map">
+        INSERT INTO BUS_DILIGENT_STUDY
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BDS_TABLE_ID != null">BDS_TABLE_ID,</if>
+            <if test="BDS_TABLE_NAME != null">BDS_TABLE_NAME,</if>
+            <if test="BDS_YEAR != null">BDS_YEAR,</if>
+            <if test="BDS_SEMESTER != null">BDS_SEMESTER,</if>
+            <if test="BDS_ENTRY_TIME != null">BDS_ENTRY_TIME,</if>
+            <if test="BUS_PROCESS != null">BUS_PROCESS,</if>
+            <if test="BUS_PROCESS2 != null">BUS_PROCESS2,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BDS_TABLE_ID != null">#{BDS_TABLE_ID},</if>
+            <if test="BDS_TABLE_NAME != null">#{BDS_TABLE_NAME},</if>
+            <if test="BDS_YEAR != null">#{BDS_YEAR},</if>
+            <if test="BDS_SEMESTER != null">#{BDS_SEMESTER},</if>
+            <if test="BDS_ENTRY_TIME != null">#{BDS_ENTRY_TIME},</if>
+            <if test="BUS_PROCESS != null">#{BUS_PROCESS},</if>
+            <if test="BUS_PROCESS2 != null">#{BUS_PROCESS2},</if>
+        </trim>
+    </insert>
+
+    <!--编辑勤工助学-->
+    <update id="updateDiligentStudy" parameterType="java.util.Map">
+        UPDATE BUS_DILIGENT_STUDY
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BDS_TABLE_ID != null">BDS_TABLE_ID=#{BDS_TABLE_ID},</if>
+            <if test="BDS_TABLE_NAME != null">BDS_TABLE_NAME=#{BDS_TABLE_NAME},</if>
+            <if test="BDS_YEAR != null">BDS_YEAR=#{BDS_YEAR},</if>
+            <if test="BDS_SEMESTER != null">BDS_SEMESTER=#{BDS_SEMESTER},</if>
+            <if test="BDS_ENTRY_TIME != null">BDS_ENTRY_TIME=#{BDS_ENTRY_TIME},</if>
+            <if test="BUS_PROCESS != null">BUS_PROCESS=#{BUS_PROCESS},</if>
+            <if test="BUS_PROCESS2 != null">BUS_PROCESS2=#{BUS_PROCESS2},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除勤工助学-->
+    <delete id="deleteDiligentStudy" parameterType="java.util.Map">
+		DELETE FROM BUS_DILIGENT_STUDY WHERE ID = #{ID}
+	</delete>
+
+    <!--查询勤工助学岗位-->
+    <select id="selectDiligentStudyPost" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DILIGENT_STUDY_POST
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入勤工助学岗位-->
+    <insert id="insertDiligentStudyPost" parameterType="java.util.Map">
+        INSERT INTO BUS_DILIGENT_STUDY_POST
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BDS_ID != null">BDS_ID,</if>
+            <if test="BDSP_NUMBER != null">BDSP_NUMBER,</if>
+            <if test="BDSP_NAME != null">BDSP_NAME,</if>
+            <if test="BDSP_HOURLY_WAGE != null">BDSP_HOURLY_WAGE,</if>
+            <if test="BDSP_ORDER != null">BDSP_ORDER,</if>
+            <if test="BDSP_ENTRY_TIME != null">BDSP_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BDS_ID != null">#{BDS_ID},</if>
+            <if test="BDSP_NUMBER != null">#{BDSP_NUMBER},</if>
+            <if test="BDSP_NAME != null">#{BDSP_NAME},</if>
+            <if test="BDSP_HOURLY_WAGE != null">#{BDSP_HOURLY_WAGE},</if>
+            <if test="BDSP_ORDER != null">#{BDSP_ORDER},</if>
+            <if test="BDSP_ENTRY_TIME != null">#{BDSP_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑勤工助学岗位-->
+    <update id="updateDiligentStudyPost" parameterType="java.util.Map">
+        UPDATE BUS_DILIGENT_STUDY_POST
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BDS_ID != null">BDS_ID=#{BDS_ID},</if>
+            <if test="BDSP_NUMBER != null">BDSP_NUMBER=#{BDSP_NUMBER},</if>
+            <if test="BDSP_NAME != null">BDSP_NAME=#{BDSP_NAME},</if>
+            <if test="BDSP_HOURLY_WAGE != null">BDSP_HOURLY_WAGE=#{BDSP_HOURLY_WAGE},</if>
+            <if test="BDSP_ORDER != null">BDSP_ORDER=#{BDSP_ORDER},</if>
+            <if test="BDSP_ENTRY_TIME != null">BDSP_ENTRY_TIME=#{BDSP_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除勤工助学岗位-->
+    <delete id="deleteDiligentStudyPost" parameterType="java.util.Map">
+		DELETE FROM bus_diligent_study_post WHERE ID = #{ID}
+	</delete>
+
+    <!--查询勤工助学学生-->
+    <select id="selectDiligentStudyStudent" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DILIGENT_STUDY_STUDENT
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入勤工助学学生-->
+    <insert id="insertDiligentStudyStudent" parameterType="java.util.Map">
+        INSERT INTO BUS_DILIGENT_STUDY_STUDENT
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BDS_ID != null">BDS_ID,</if>
+            <if test="BDSP_NUMBER != null">BDSP_NUMBER,</if>
+            <if test="BDSP_NAME != null">BDSP_NAME,</if>
+            <if test="BDSP_HOURLY_WAGE != null">BDSP_HOURLY_WAGE,</if>
+            <if test="BDSP_ORDER != null">BDSP_ORDER,</if>
+            <if test="BDSS_ENTRY_TIME != null">BDSS_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BDS_ID != null">#{BDS_ID},</if>
+            <if test="BDSP_NUMBER != null">#{BDSP_NUMBER},</if>
+            <if test="BDSP_NAME != null">#{BDSP_NAME},</if>
+            <if test="BDSP_HOURLY_WAGE != null">#{BDSP_HOURLY_WAGE},</if>
+            <if test="BDSP_ORDER != null">#{BDSP_ORDER},</if>
+            <if test="BDSS_ENTRY_TIME != null">#{BDSS_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑勤工助学学生-->
+    <update id="updateDiligentStudyStudent" parameterType="java.util.Map">
+        UPDATE BUS_DILIGENT_STUDY_STUDENT
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BDS_ID != null">BDS_ID=#{BDS_ID},</if>
+            <if test="BDSP_NUMBER != null">BDSP_NUMBER=#{BDSP_NUMBER},</if>
+            <if test="BDSP_NAME != null">BDSP_NAME=#{BDSP_NAME},</if>
+            <if test="BDSP_HOURLY_WAGE != null">BDSP_HOURLY_WAGE=#{BDSP_HOURLY_WAGE},</if>
+            <if test="BDSP_ORDER != null">BDSP_ORDER=#{BDSP_ORDER},</if>
+            <if test="BDSS_ENTRY_TIME != null">BDSS_ENTRY_TIME=#{BDSS_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除勤工助学学生-->
+    <delete id="deleteDiligentStudyStudent" parameterType="java.util.Map">
+		DELETE FROM BUS_DILIGENT_STUDY_STUDENT WHERE ID = #{ID}
+	</delete>
+
+    <!--查询勤工助学月工资-->
+    <select id="selectDiligentStudyMonthWages" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DILIGENT_STUDY_MONTH_WAGES
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入勤工助学月工资-->
+    <insert id="insertDiligentStudyMonthWages" parameterType="java.util.Map">
+        INSERT INTO BUS_DILIGENT_STUDY_MONTH_WAGES
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BDSS_ID != null">BDSS_ID,</if>
+            <if test="BDSMW_HOUR != null">BDSMW_HOUR,</if>
+            <if test="BDSMW_WAGES != null">BDSMW_WAGES,</if>
+            <if test="BDSMW_MONTH != null">BDSMW_MONTH,</if>
+            <if test="BDSMW_ENRTY_TIME != null">BDSMW_ENRTY_TIME,</if>
+            <if test="BUS_PROCESS != null">BUS_PROCESS,</if>
+            <if test="BUS_PROCESS2 != null">BUS_PROCESS2,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BDSS_ID != null">#{BDSS_ID},</if>
+            <if test="BDSMW_HOUR != null">#{BDSMW_HOUR},</if>
+            <if test="BDSMW_WAGES != null">#{BDSMW_WAGES},</if>
+            <if test="BDSMW_MONTH != null">#{BDSMW_MONTH},</if>
+            <if test="BDSMW_ENRTY_TIME != null">#{BDSMW_ENRTY_TIME},</if>
+            <if test="BUS_PROCESS != null">#{BUS_PROCESS},</if>
+            <if test="BUS_PROCESS2 != null">#{BUS_PROCESS2},</if>
+        </trim>
+    </insert>
+
+    <!--编辑勤工助学月工资-->
+    <update id="updateDiligentStudyMonthWages" parameterType="java.util.Map">
+        UPDATE BUS_DILIGENT_STUDY_MONTH_WAGES
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BDSS_ID != null">BDSS_ID=#{BDSS_ID},</if>
+            <if test="BDSMW_HOUR != null">BDSMW_HOUR=#{BDSMW_HOUR},</if>
+            <if test="BDSMW_WAGES != null">BDSMW_WAGES=#{BDSMW_WAGES},</if>
+            <if test="BDSMW_MONTH != null">BDSMW_MONTH=#{BDSMW_MONTH},</if>
+            <if test="BDSMW_ENRTY_TIME != null">BDSMW_ENRTY_TIME=#{BDSMW_ENRTY_TIME},</if>
+            <if test="BUS_PROCESS != null">BUS_PROCESS=#{BUS_PROCESS},</if>
+            <if test="BUS_PROCESS2 != null">BUS_PROCESS2=#{BUS_PROCESS2},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除勤工助学月工资-->
+    <delete id="deleteDiligentStudyMonthWages" parameterType="java.util.Map">
+		DELETE FROM BUS_DILIGENT_STUDY_MONTH_WAGES WHERE ID = #{ID}
+	</delete>
+</mapper>

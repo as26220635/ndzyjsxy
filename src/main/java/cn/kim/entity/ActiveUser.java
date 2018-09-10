@@ -25,9 +25,17 @@ public class ActiveUser implements java.io.Serializable {
      */
     private String username;
     /**
+     * 用户关联ID
+     */
+    private String tableId;
+    /**
      * 用户elixir
      */
     private String type;
+    /**
+     * 用户类型String
+     */
+    private String typeName;
     /**
      * 角色名
      */

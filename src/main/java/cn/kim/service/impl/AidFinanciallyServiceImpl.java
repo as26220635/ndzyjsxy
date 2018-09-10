@@ -5,6 +5,7 @@ import cn.kim.common.attr.TableName;
 import cn.kim.common.eu.AidType;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.Process;
+import cn.kim.common.eu.ProcessStatus;
 import cn.kim.dao.BaseDao;
 import cn.kim.entity.ActiveUser;
 import cn.kim.entity.DictInfo;
@@ -223,8 +224,12 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
             //查询资助是否正在进行流程
             Map<String, Object> schedule = getProcessSchedule(id, toString(oldMap.get("BUS_PROCESS")), toString(oldMap.get("BUS_PROCESS2")));
-            if (!isEmpty(schedule) && !isEmpty(schedule.get("SPS_AUDIT_STATUS")) && !"0".equals(toString(schedule.get("SPS_AUDIT_STATUS")))) {
-                throw new CustomException("流程办理中不能删除!");
+            if (!isEmpty(schedule)) {
+                String SPS_AUDIT_STATUS = toString(schedule.get("SPS_AUDIT_STATUS"));
+                if (!isEmpty(SPS_AUDIT_STATUS) &&
+                        !ProcessStatus.START.equals(SPS_AUDIT_STATUS)) {
+                    throw new CustomException("流程办理中不能删除!");
+                }
             }
             //先删除子表
             if (BAF_TYPE == AidType.NATIONAL_SCHOLARSHIP.getType()) {

@@ -191,4 +191,24 @@ public class TableName {
      * 文件
      */
     public static final String BUS_DOCUMENT = "BUS_DOCUMENT";
+
+    /**
+     * 勤工助学
+     */
+    public static final String BUS_DILIGENT_STUDY = "BUS_DILIGENT_STUDY";
+
+    /**
+     * 勤工助学岗位
+     */
+    public static final String BUS_DILIGENT_STUDY_POST = "BUS_DILIGENT_STUDY_POST";
+
+    /**
+     * 勤工助学学生
+     */
+    public static final String BUS_DILIGENT_STUDY_STUDENT = "BUS_DILIGENT_STUDY_STUDENT";
+
+    /**
+     * 勤工助学月工资
+     */
+    public static final String BUS_DILIGENT_STUDY_MONTH_WAGES = "BUS_DILIGENT_STUDY_MONTH_WAGES";
 }

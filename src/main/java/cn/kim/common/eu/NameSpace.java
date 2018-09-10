@@ -59,6 +59,8 @@ public enum NameSpace {
     AidFinanciallyMapper("cn.kim.mapper.AidFinanciallyMapper"),
     //文件
     DocumentMapper("cn.kim.mapper.DocumentMapper"),
+    //勤工助学
+    DiligentStudyMapper("cn.kim.mapper.DiligentStudyMapper"),
     ;
 
     private final String value;

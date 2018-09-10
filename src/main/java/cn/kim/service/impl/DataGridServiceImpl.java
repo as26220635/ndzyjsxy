@@ -152,18 +152,22 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                         String authorizationWhere = getAuthorizationWhere(true, paramMap);
                         authorizationBuilder.append(isEmpty(authorizationWhere) ? "" : "(" + TextUtil.interceptSymbol(authorizationWhere, " AND ") + ") OR ");
                     }
-                    //添加or条件
-//                (BDM_ID IN(48601265252335616)  AND BC_ID IN(48656602449838080) ) OR
-                    String authorizationWhere = authorizationBuilder.toString();
-                    if (!isEmpty(authorizationWhere)) {
-                        //清空
-                        authorizationBuilder.delete(0, authorizationBuilder.length());
-                        authorizationBuilder.append(" AND (");
-                        authorizationBuilder.append(TextUtil.interceptSymbol(authorizationWhere, " OR "));
-                        authorizationBuilder.append(")");
+
+                    if (isAuthorizationFilter) {
+                        //添加or条件
+                        //(BDM_ID IN(48601265252335616)  AND BC_ID IN(48656602449838080) ) OR
+                        String authorizationWhere = authorizationBuilder.toString();
+                        if (!isEmpty(authorizationWhere)) {
+                            //清空
+                            authorizationBuilder.delete(0, authorizationBuilder.length());
+                            authorizationBuilder.append(" AND (");
+                            authorizationBuilder.append(TextUtil.interceptSymbol(authorizationWhere, " OR "));
+                            authorizationBuilder.append(")");
+                        }
+                        //过滤授权
+                        querySet.setWhere(authorizationBuilder.toString());
                     }
-                    //过滤授权
-                    querySet.setWhere(authorizationBuilder.toString());
+
 
                     //当没有授权流程过滤的时候开启普通流程过滤 或待审已审
                     if (!isAuthorizationFilter || !ProcessShowStatus.ALL.toString().equals(processStatus)) {
@@ -254,7 +258,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
         }
         querySet.setOrderByClause(toString(configure.get("SC_ORDER_BY")));
 
-        System.out.println( querySet.getWhereMap());
+        System.out.println(querySet.getWhereMap());
         long count = baseDao.selectOne(NameSpace.DataGridMapper, "countByMap", querySet.getWhereMap());
         dataTablesView.setRecordsTotal(count);
         if (limit != -1) {

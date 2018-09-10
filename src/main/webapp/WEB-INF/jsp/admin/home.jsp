@@ -124,7 +124,7 @@
                 <%--</div>--%>
                 <div class="pull-left info" style="left: 0px;">
                     <p>用户:${activeUser.username}</p>
-                    <p style="width:200px;text-overflow: ellipsis;white-space: nowrap;" title="${activeUser.role}">角色:${activeUser.role}</p>
+                    <p style="width:200px;text-overflow: ellipsis;white-space: nowrap;" title="${activeUser.role}">类型:${activeUser.typeName}</p>
                     <input type="hidden" id="IS_DEFAULT_PWD" value="${activeUser.isDefaultPwd}">
                 </div>
             </div>

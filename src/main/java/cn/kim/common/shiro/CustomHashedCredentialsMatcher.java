@@ -1,13 +1,10 @@
 package cn.kim.common.shiro;
 
-import cn.kim.common.attr.Attribute;
-import cn.kim.common.attr.Tips;
+import cn.kim.common.attr.*;
 import cn.kim.common.eu.UseType;
 import cn.kim.entity.ActiveUser;
 import cn.kim.service.ManagerService;
 import cn.kim.service.MenuService;
-import cn.kim.common.attr.CacheName;
-import cn.kim.common.attr.Constants;
 import cn.kim.util.*;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -62,9 +59,11 @@ public class CustomHashedCredentialsMatcher extends HashedCredentialsMatcher {
             activeUser.setId(TextUtil.toString(user.get("ID")));
             activeUser.setUsername(TextUtil.toString(user.get("SOS_USERNAME")));
             activeUser.setUsercode(TextUtil.toString(user.get("SAI_NAME")));
+            activeUser.setTableId(TextUtil.toString(user.get("SAI_TABLE_ID")));
             activeUser.setRole(TextUtil.toString(user.get("SR_NAME")));
             activeUser.setRoleIds(TextUtil.toString(user.get("SR_ID")));
             activeUser.setIsDefaultPwd(TextUtil.toInt(user.get("IS_DEFAULT_PWD")));
+            activeUser.setTypeName(ParamTypeResolve.getOpeatorTypeName(activeUser.getType()));
 
             //获得登录地址
             String loginAddress = HttpUtil.getIpAddressName(HttpUtil.getIpAddr(HttpUtil.getRequest()));

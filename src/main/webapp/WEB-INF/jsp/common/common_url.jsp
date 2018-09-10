@@ -7,7 +7,9 @@
 <%--图片地址url--%>
 <c:set var="IMG_URL" value="${BASE_URL}${AttributePath.FILE_PREVIEW_URL}" scope="application"/>
 <c:set var="DOWN_URL" value="${BASE_URL}${AttributePath.FILE_DOWNLOAD_URL}" scope="application"/>
-<c:set var="DOWN_CACHE_URL" value="${BASE_URL}${AttributePath.FILE_DOWNLOAD_URL}${AttributePath.FILE_SERVICE_CACHE_PATH}" scope="application"/>
+<c:set var="DOWN_CACHE_URL"
+       value="${BASE_URL}${AttributePath.FILE_DOWNLOAD_URL}${AttributePath.FILE_SERVICE_CACHE_PATH}"
+       scope="application"/>
 <%--excel导出地址--%>
 <c:set var="EXPORT_URL" value="${BASE_URL}file/export/" scope="application"/>
 <%--列表地址--%>
@@ -164,7 +166,8 @@
 <c:set var="PROCESS_DEFINITION_TREE_DATA" value="${PROCESS_DEFINITION_BASE_URL}tree" scope="application"/>
 <c:set var="PROCESS_DEFINITION_ADD_URL" value="${PROCESS_DEFINITION_BASE_URL}add" scope="application"/>
 <c:set var="PROCESS_DEFINITION_UPDATE_URL" value="${PROCESS_DEFINITION_BASE_URL}update" scope="application"/>
-<c:set var="PROCESS_DEFINITION_SWITCH_STATUS_URL" value="${PROCESS_DEFINITION_BASE_URL}switchStatus" scope="application"/>
+<c:set var="PROCESS_DEFINITION_SWITCH_STATUS_URL" value="${PROCESS_DEFINITION_BASE_URL}switchStatus"
+       scope="application"/>
 <c:set var="PROCESS_DEFINITION_COPY_URL" value="${PROCESS_DEFINITION_BASE_URL}copy" scope="application"/>
 <%--流程定义列表--%>
 <c:set var="PROCESS_STEP_BASE_URL" value="${PROCESS_BASE_URL}step/" scope="application"/>
@@ -202,7 +205,8 @@
 <c:set var="DEPARTMENT_PERSONNEL_BASE_URL" value="${DEPARTMENT_BASE_URL}personnel/" scope="application"/>
 <c:set var="DEPARTMENT_PERSONNEL_ADD_URL" value="${DEPARTMENT_PERSONNEL_BASE_URL}add" scope="application"/>
 <c:set var="DEPARTMENT_PERSONNEL_UPDATE_URL" value="${DEPARTMENT_PERSONNEL_BASE_URL}update" scope="application"/>
-<c:set var="DEPARTMENT_PERSONNEL_ADDOUNT_INFO_URL" value="${DEPARTMENT_PERSONNEL_BASE_URL}accountInfo" scope="application"/>
+<c:set var="DEPARTMENT_PERSONNEL_ADDOUNT_INFO_URL" value="${DEPARTMENT_PERSONNEL_BASE_URL}accountInfo"
+       scope="application"/>
 <c:set var="DEPARTMENT_PERSONNEL_RESET_PWD_URL" value="${DEPARTMENT_PERSONNEL_BASE_URL}resetPwd" scope="application"/>
 <c:set var="DEPARTMENT_PERSONNEL_DELETE_URL" value="${DEPARTMENT_PERSONNEL_BASE_URL}delete" scope="application"/>
 <%--班级--%>
@@ -246,7 +250,8 @@
 <c:set var="STUDENT_PUNISHMENT_DELETE_URL" value="${STUDENT_PUNISHMENT_BASE_URL}delete" scope="application"/>
 <%--学生综合素质评测--%>
 <c:set var="STUDENT_COMPREHENSIVE_BASE_URL" value="${STUDENT_BASE_URL}comprehensive/" scope="application"/>
-<c:set var="STUDENT_COMPREHENSIVE_INSERT_AND_UPDATE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}insertAndUpdate" scope="application"/>
+<c:set var="STUDENT_COMPREHENSIVE_INSERT_AND_UPDATE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}insertAndUpdate"
+       scope="application"/>
 <c:set var="STUDENT_COMPREHENSIVE_DELETE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}delete" scope="application"/>
 <c:set var="STUDENT_COMPREHENSIVE_IMPORT_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}import" scope="application"/>
 <%--资助管理--%>
@@ -305,3 +310,10 @@
 <c:set var="NATIONAL_ENDEAVOR_UPDATE_URL" value="${NATIONAL_ENDEAVOR_BASE_URL}update" scope="application"/>
 <c:set var="NATIONAL_ENDEAVOR_DELETE_URL" value="${NATIONAL_ENDEAVOR_BASE_URL}delete" scope="application"/>
 <c:set var="NATIONAL_ENDEAVOR_IMPORT_URL" value="${NATIONAL_ENDEAVOR_BASE_URL}import" scope="application"/>
+<%--勤工助学--%>
+<c:set var="DILIGENT_BASE_URL" value="${MANAGER_URL}diligent/" scope="application"/>
+<c:set var="DILIGENT_STUDY_BASE_URL" value="${DILIGENT_BASE_URL}study/" scope="application"/>
+<c:set var="DILIGENT_STUDY_ADD_URL" value="${DILIGENT_STUDY_BASE_URL}add" scope="application"/>
+<c:set var="DILIGENT_STUDY_UPDATE_URL" value="${DILIGENT_STUDY_BASE_URL}update" scope="application"/>
+<c:set var="DILIGENT_STUDY_DELETE_URL" value="${DILIGENT_STUDY_BASE_URL}delete" scope="application"/>
+<c:set var="DILIGENT_STUDY_IMPORT_URL" value="${DILIGENT_STUDY_BASE_URL}import" scope="application"/>
