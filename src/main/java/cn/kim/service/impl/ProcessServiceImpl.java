@@ -812,6 +812,17 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         return baseDao.selectList(NameSpace.ProcessFixedMapper, "selectProcessStep", paramMap);
     }
 
+    @Override
+    public boolean selectProcessStepIsEdit(String roleId, String busProcess, String busProcess2) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(4);
+        paramMap.put("SR_ID", roleId);
+        paramMap.put("BUS_PROCESS", busProcess);
+        paramMap.put("BUS_PROCESS2", busProcess2);
+        int count = baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessStepIsEdit", paramMap);
+
+        return count == 0 ? false : true;
+    }
+
 
     @Override
     @Transactional
@@ -850,6 +861,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("SPS_IS_OVER_TIME", mapParam.get("SPS_IS_OVER_TIME"));
             paramMap.put("SPS_OVER_TIME", mapParam.get("SPS_OVER_TIME"));
             paramMap.put("SPS_STEP_TYPE", mapParam.get("SPS_STEP_TYPE"));
+            paramMap.put("SPS_IS_EDIT", mapParam.get("SPS_IS_EDIT"));
             paramMap.put("SPS_TAB", mapParam.get("SPS_TAB"));
             paramMap.put("SPS_IS_ADVANCE_CHECK", mapParam.get("SPS_IS_ADVANCE_CHECK"));
             paramMap.put("SPS_IS_RETREAT_CHECK", mapParam.get("SPS_IS_RETREAT_CHECK"));

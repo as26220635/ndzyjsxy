@@ -79,9 +79,12 @@
     //设置字段
     $dataGridTable.find('tbody').on('click', '#list', function () {
         var data = getRowData(this);
-        var id = data.ID;
+        var param = {
+            SDT_ID: data.ID,
+            SDT_NAME: data.SDT_NAME,
+        };
         //切换主界面
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:DICTINFO")}&SDT_ID=' + id + '&SDT_NAME=' + encodeURIComponent(data.SDT_NAME));
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:DICTINFO")}' + urlEncode(param));
     });
 
     //删除

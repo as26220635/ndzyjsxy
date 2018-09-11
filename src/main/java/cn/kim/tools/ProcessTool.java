@@ -4,9 +4,11 @@ import cn.kim.common.attr.Attribute;
 import cn.kim.common.eu.ProcessType;
 import cn.kim.exception.CustomException;
 import cn.kim.service.ProcessService;
+import cn.kim.util.AuthcUtil;
 import cn.kim.util.TextUtil;
 import cn.kim.util.ValidateUtil;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +41,18 @@ public class ProcessTool {
     public void init() {
         processTool = this;
         processTool.processService = this.processService;
+    }
+
+    /**
+     * -1 无 0 提交按钮 1 撤回按钮
+     *
+     * @param id
+     * @param process
+     * @param process2
+     * @return
+     */
+    public static Set<String> showDataGridProcessBtn(String id, String process, String process2) throws Exception {
+        return Sets.newHashSet(processTool.processService.showDataGridProcessBtn(id, process, process2).split(Attribute.SERVICE_SPLIT));
     }
 
     /**
@@ -173,6 +187,29 @@ public class ProcessTool {
         }
 
         return isCheck;
+    }
+
+    /**
+     * 当前登录角色是否拥有随时编辑
+     *
+     * @param busProcess
+     * @param busProcess2
+     * @return
+     */
+    public static boolean selectNowActiveProcessStepIsEdit(String busProcess, String busProcess2) {
+        return processTool.processService.selectProcessStepIsEdit(AuthcUtil.getCurrentUser().getRoleIds(), busProcess, busProcess2);
+    }
+
+    /**
+     * 是否拥有随时编辑
+     *
+     * @param roleId
+     * @param busProcess
+     * @param busProcess2
+     * @return
+     */
+    public static boolean selectProcessStepIsEdit(String roleId, String busProcess, String busProcess2) {
+        return processTool.processService.selectProcessStepIsEdit(roleId, busProcess, busProcess2);
     }
 
     /**

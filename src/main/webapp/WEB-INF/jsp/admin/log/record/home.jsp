@@ -8,12 +8,12 @@
     //详细记录
     $dataGridTable.find('tbody').on('click', '#detailLog', function () {
         var data = getRowData(this);
-        var id = data.ID;
-        var SVR_TABLE = data.SVR_TABLE;
-        var SVR_TABLE_NAME = data.SVR_TABLE_NAME;
-
+        var param = {
+            TITLE: "ID:" + data.SVR_TABLE + ",表名:" + data.SVR_TABLE_NAME,
+            SVR_TABLE_ID: data.ID,
+        };
         //切换主界面
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("LOG:VALUE_RECORD_DETAIL")}&SVR_TABLE_ID=' + id + '&TITLE=' + encodeURIComponent("ID:" + SVR_TABLE + ",表名:" + SVR_TABLE_NAME));
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("LOG:VALUE_RECORD_DETAIL")}' + urlEncode(param));
     });
 
 </script>

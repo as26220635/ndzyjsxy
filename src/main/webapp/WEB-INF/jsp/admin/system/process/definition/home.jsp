@@ -33,8 +33,11 @@
     //修改
     $dataGridTable.find('tbody').on('click', '#edit', function () {
         var data = getRowData(this);
-        var id = data.ID;
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:PROCESS_DEFINITION_TABS")}&TITLE=' + encodeURIComponent(data.SPD_NAME) + '&SPD_ID=' + id);
+        var param = {
+            SPD_ID: data.ID,
+            TITLE: data.SPD_NAME,
+        };
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:PROCESS_DEFINITION_TABS")}' + urlEncode(param));
     });
 
     //切换状态

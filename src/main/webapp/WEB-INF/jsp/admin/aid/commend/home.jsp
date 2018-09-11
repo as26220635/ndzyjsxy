@@ -32,7 +32,6 @@
 
     //修改
     $dataGridTable.find('tbody').on('click', '#edit', function () {
-        var row = this;
         var data = getRowData(this);
         var id = data.ID;
 
@@ -42,7 +41,7 @@
                     content: html,
                     footerModel: model.footerModel.ADMIN,
                     <shiro:hasPermission name="AID:COMMEND_UPDATE_SAVE">
-                    isConfirm: isProcessSubmit(row),
+                    isConfirm: isProcessSubmit(data),
                     confirm: function ($model) {
                         var $form = $('#addAndEditForm');
                         //验证

@@ -64,9 +64,12 @@
     //设置详细
     $dataGridTable.find('tbody').on('click', '#list', function () {
         var data = getRowData(this);
-        var id = data.ID;
+        var param = {
+            SF_ID: data.ID,
+            SF_NAME: data.SF_NAME,
+        };
         //切换主界面
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:FORMAT_DETAIL")}&SF_ID=' + id + '&SF_NAME=' + encodeURIComponent(data.SF_NAME));
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:FORMAT_DETAIL")}' + urlEncode(param));
     });
 
     //删除

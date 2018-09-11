@@ -95,5 +95,57 @@ public class DiligentStudyController extends BaseController {
         return resultState(resultMap);
     }
 
+    /******************************     勤工助学岗位   *******************************/
 
+    @GetMapping("/post/add")
+    @RequiresPermissions("DILIGENT:STUDY_POST_INSERT")
+    @Token(save = true)
+    public String addHtmlPost(String BDS_ID, Model model) throws Exception {
+        model.addAttribute("BDS_ID", BDS_ID);
+        return "admin/diligent/post/addAndEdit";
+    }
+
+
+    @PostMapping("/post/add")
+    @RequiresPermissions("DILIGENT:STUDY_POST_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加勤工助学岗位")
+    @Token(remove = true)
+    @Validate("BUS_DILIGENT_STUDY_POST")
+    @ResponseBody
+    public ResultState addPost(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = diligentStudyService.insertAndUpdateDiligentStudyPost(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/post/update/{ID}")
+    @RequiresPermissions("DILIGENT:STUDY_POST_UPDATE")
+    public String updateHtmlPost(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("post", diligentStudyService.selectDiligentStudyPost(mapParam));
+        return "admin/diligent/post/addAndEdit";
+    }
+
+    @PutMapping("/post/update")
+    @RequiresPermissions("DILIGENT:STUDY_POST_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改勤工助学岗位")
+    @Validate("BUS_DILIGENT_STUDY_POST")
+    @ResponseBody
+    public ResultState updatePost(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = diligentStudyService.insertAndUpdateDiligentStudyPost(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/post/delete/{ID}")
+    @RequiresPermissions("DILIGENT:STUDY_POST_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除勤工助学岗位")
+    @ResponseBody
+    public ResultState deletePost(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = diligentStudyService.deleteDiligentStudyPost(mapParam);
+        return resultState(resultMap);
+    }
 }

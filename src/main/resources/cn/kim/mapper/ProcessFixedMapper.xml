@@ -17,12 +17,12 @@
         FROM SYS_PROCESS_STEP
         WHERE SPS_ORDER &lt;
         (
-            SELECT SPS_ORDER
-            FROM SYS_PROCESS_STEP
-            WHERE SPD_ID = #{SPD_ID}
-            <if test="SPS_PROCESS_STATUS != null and SPS_PROCESS_STATUS != ''">
-                AND SPS_PROCESS_STATUS = #{SPS_PROCESS_STATUS}
-            </if>
+        SELECT SPS_ORDER
+        FROM SYS_PROCESS_STEP
+        WHERE SPD_ID = #{SPD_ID}
+        <if test="SPS_PROCESS_STATUS != null and SPS_PROCESS_STATUS != ''">
+            AND SPS_PROCESS_STATUS = #{SPS_PROCESS_STATUS}
+        </if>
         )
         AND SPD_ID = #{SPD_ID}
         <if test="SR_ID != null and SR_ID != ''">
@@ -46,7 +46,7 @@
 
     <!--查询流程定义拼接-->
     <select id="selectProcessDefinitionJoin" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT CONCAT(ID) AS ID ,CONCAT(SR_ID) AS SR_ID  FROM SYS_PROCESS_DEFINITION
+        SELECT CONCAT(ID) AS ID ,CONCAT(SR_ID) AS SR_ID FROM SYS_PROCESS_DEFINITION
         <where>
             <if test="IS_STATUS != NULL and IS_STATUS != ''">
                 AND IS_STATUS = #{IS_STATUS}
@@ -65,21 +65,21 @@
     <select id="selectProcessDefinition" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT SPD.*,SR.SR_NAME,SAI.SAI_NAME
         FROM(
-            SELECT * FROM SYS_PROCESS_DEFINITION
-            <where>
-                <if test="ID != NULL and ID != ''">
-                    AND ID = #{ID}
-                </if>
-                <if test="IS_STATUS != NULL and IS_STATUS != ''">
-                    AND IS_STATUS = #{IS_STATUS}
-                </if>
-                <if test="BUS_PROCESS != NULL and BUS_PROCESS != ''">
-                    AND BUS_PROCESS = #{BUS_PROCESS}
-                </if>
-                <if test="BUS_PROCESS2 != NULL and BUS_PROCESS2 != ''">
-                    AND BUS_PROCESS2 = #{BUS_PROCESS2}
-                </if>
-            </where>
+        SELECT * FROM SYS_PROCESS_DEFINITION
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="IS_STATUS != NULL and IS_STATUS != ''">
+                AND IS_STATUS = #{IS_STATUS}
+            </if>
+            <if test="BUS_PROCESS != NULL and BUS_PROCESS != ''">
+                AND BUS_PROCESS = #{BUS_PROCESS}
+            </if>
+            <if test="BUS_PROCESS2 != NULL and BUS_PROCESS2 != ''">
+                AND BUS_PROCESS2 = #{BUS_PROCESS2}
+            </if>
+        </where>
         )SPD
         LEFT JOIN SYS_ROLE SR ON SR.ID = SPD.SR_ID
         LEFT JOIN SYS_ACCOUNT_INFO SAI ON SAI.SO_ID = SPD.SO_ID
@@ -104,7 +104,7 @@
     <!--插入流程定义-->
     <insert id="insertProcessDefinition" parameterType="java.util.Map">
         INSERT INTO SYS_PROCESS_DEFINITION
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="SO_ID != null">SO_ID,</if>
             <if test="SR_ID != null">SR_ID,</if>
@@ -122,7 +122,7 @@
             <if test="IS_STATUS != null">IS_STATUS,</if>
             <if test="IS_MULTISTAGE_BACK != null">IS_MULTISTAGE_BACK,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="SO_ID != null">#{SO_ID},</if>
             <if test="SR_ID != null">#{SR_ID},</if>
@@ -177,24 +177,24 @@
     <select id="selectProcessStep" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT SPS.*,SR.SR_NAME
         FROM(
-            SELECT * FROM SYS_PROCESS_STEP
-            <where>
-                <if test="ID != NULL and ID != ''">
-                    AND ID = #{ID}
-                </if>
-                <if test="SPD_ID != NULL and SPD_ID != ''">
-                    AND SPD_ID = #{SPD_ID}
-                </if>
-                <if test="SPD_ID_IN != NULL and SPD_ID_IN != ''">
-                    AND SPD_ID IN (${SPD_ID_IN})
-                </if>
-                <if test="SR_ID != NULL and SR_ID != ''">
-                    AND SR_ID = #{SR_ID}
-                </if>
-                <if test="SPS_PROCESS_STATUS != NULL and SPS_PROCESS_STATUS != ''">
-                    AND SPS_PROCESS_STATUS = #{SPS_PROCESS_STATUS}
-                </if>
-            </where>
+        SELECT * FROM SYS_PROCESS_STEP
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="SPD_ID != NULL and SPD_ID != ''">
+                AND SPD_ID = #{SPD_ID}
+            </if>
+            <if test="SPD_ID_IN != NULL and SPD_ID_IN != ''">
+                AND SPD_ID IN (${SPD_ID_IN})
+            </if>
+            <if test="SR_ID != NULL and SR_ID != ''">
+                AND SR_ID = #{SR_ID}
+            </if>
+            <if test="SPS_PROCESS_STATUS != NULL and SPS_PROCESS_STATUS != ''">
+                AND SPS_PROCESS_STATUS = #{SPS_PROCESS_STATUS}
+            </if>
+        </where>
         )SPS
         LEFT JOIN SYS_ROLE SR ON SR.ID = SPS.SR_ID
         ORDER BY SPS.SPS_ORDER ASC
@@ -219,10 +219,18 @@
         </where>
     </select>
 
+    <!--查询流程步骤是否拥有随时编辑-->
+    <select id="selectProcessStepIsEdit" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM SYS_PROCESS_DEFINITION SPD
+        INNER JOIN SYS_PROCESS_STEP SPS ON SPS.SPD_ID = SPD.ID
+        WHERE SPD.BUS_PROCESS = #{BUS_PROCESS} AND SPD.BUS_PROCESS2 = #{BUS_PROCESS2} AND SPS.SR_ID IN(${SR_ID}) AND SPS.SPS_IS_EDIT = 1
+    </select>
+
     <!--插入流程步骤-->
     <insert id="insertProcessStep" parameterType="java.util.Map">
         INSERT INTO SYS_PROCESS_STEP
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="SPD_ID != null">SPD_ID,</if>
             <if test="SR_ID != null">SR_ID,</if>
@@ -232,13 +240,14 @@
             <if test="SPS_IS_OVER_TIME != null">SPS_IS_OVER_TIME,</if>
             <if test="SPS_OVER_TIME != null">SPS_OVER_TIME,</if>
             <if test="SPS_STEP_TYPE != null">SPS_STEP_TYPE,</if>
+            <if test="SPS_IS_EDIT != null">SPS_IS_EDIT,</if>
             <if test="SPS_TAB != null">SPS_TAB,</if>
             <if test="SPS_IS_ADVANCE_CHECK != null">SPS_IS_ADVANCE_CHECK,</if>
             <if test="SPS_IS_RETREAT_CHECK != null">SPS_IS_RETREAT_CHECK,</if>
             <if test="SPS_IS_ADVANCE_EXECUTE != null">SPS_IS_ADVANCE_EXECUTE,</if>
             <if test="SPS_IS_RETREAT_EXECUTE != null">SPS_IS_RETREAT_EXECUTE,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="SPD_ID != null">#{SPD_ID},</if>
             <if test="SR_ID != null">#{SR_ID},</if>
@@ -248,6 +257,7 @@
             <if test="SPS_IS_OVER_TIME != null">#{SPS_IS_OVER_TIME},</if>
             <if test="SPS_OVER_TIME != null">#{SPS_OVER_TIME},</if>
             <if test="SPS_STEP_TYPE != null">#{SPS_STEP_TYPE},</if>
+            <if test="SPS_IS_EDIT != null">#{SPS_IS_EDIT},</if>
             <if test="SPS_TAB != null">#{SPS_TAB},</if>
             <if test="SPS_IS_ADVANCE_CHECK != null">#{SPS_IS_ADVANCE_CHECK},</if>
             <if test="SPS_IS_RETREAT_CHECK != null">#{SPS_IS_RETREAT_CHECK},</if>
@@ -269,6 +279,7 @@
             <if test="SPS_IS_OVER_TIME != null">SPS_IS_OVER_TIME=#{SPS_IS_OVER_TIME},</if>
             <if test="SPS_OVER_TIME != null">SPS_OVER_TIME=#{SPS_OVER_TIME},</if>
             <if test="SPS_STEP_TYPE != null">SPS_STEP_TYPE=#{SPS_STEP_TYPE},</if>
+            <if test="SPS_IS_EDIT != null">SPS_IS_EDIT=#{SPS_IS_EDIT},</if>
             <if test="SPS_TAB != null">SPS_TAB=#{SPS_TAB},</if>
             <if test="SPS_IS_ADVANCE_CHECK != null">SPS_IS_ADVANCE_CHECK=#{SPS_IS_ADVANCE_CHECK},</if>
             <if test="SPS_IS_RETREAT_CHECK != null">SPS_IS_RETREAT_CHECK=#{SPS_IS_RETREAT_CHECK},</if>
@@ -289,15 +300,15 @@
     <select id="selectProcessStart" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT SPS.*,SR.SR_NAME
         FROM(
-            SELECT * FROM SYS_PROCESS_START
-            <where>
-                <if test ="ID != NULL and ID != ''">
-                    AND ID = #{ID}
-                </if>
-                <if test ="SPD_ID != NULL and SPD_ID != ''">
-                    AND SPD_ID = #{SPD_ID}
-                </if>
-            </where>
+        SELECT * FROM SYS_PROCESS_START
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test="SPD_ID != NULL and SPD_ID != ''">
+                AND SPD_ID = #{SPD_ID}
+            </if>
+        </where>
         )SPS
         LEFT JOIN SYS_ROLE SR ON SR.ID = SPS.SR_ID
     </select>
@@ -305,12 +316,12 @@
     <!--插入流程开始角色-->
     <insert id="insertProcessStart" parameterType="java.util.Map">
         INSERT INTO SYS_PROCESS_START
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
             <if test="SPD_ID != null">SPD_ID,</if>
             <if test="SR_ID != null">SR_ID,</if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="SPD_ID != null">#{SPD_ID},</if>
             <if test="SR_ID != null">#{SR_ID},</if>

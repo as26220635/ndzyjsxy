@@ -64,25 +64,34 @@
     //设置字段
     $dataGridTable.find('tbody').on('click', '#setColumn', function () {
         var data = getRowData(this);
-        var id = data.ID;
+        var param = {
+            SC_ID: data.ID,
+            SC_NAME: data.SC_NAME,
+        };
         //切换主界面
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_COLUMN")}&SC_ID=' + id + '&SC_NAME=' + encodeURIComponent(data.SC_NAME));
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_COLUMN")}' + urlEncode(param));
     });
 
     //设置搜索
     $dataGridTable.find('tbody').on('click', '#setSearch', function () {
         var data = getRowData(this);
-        var id = data.ID;
+        var param = {
+            SC_ID: data.ID,
+            SC_NAME: data.SC_NAME,
+        };
         //切换主界面
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_SEARCH")}&SC_ID=' + id + '&SC_NAME=' + encodeURIComponent(data.SC_NAME));
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_SEARCH")}' + urlEncode(param));
     });
 
     //设置文件
     $dataGridTable.find('tbody').on('click', '#setFile', function () {
         var data = getRowData(this);
-        var id = data.ID;
+        var param = {
+            SC_ID: data.ID,
+            SC_NAME: data.SC_NAME,
+        };
         //切换主界面
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_FILE")}&SC_ID=' + id + '&SC_NAME=' + encodeURIComponent(data.SC_NAME));
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_FILE")}' + urlEncode(param));
     });
 
     //拷贝

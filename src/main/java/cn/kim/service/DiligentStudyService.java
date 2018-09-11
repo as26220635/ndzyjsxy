@@ -33,4 +33,29 @@ public interface DiligentStudyService extends BaseService {
      * @return
      */
     Map<String, Object> deleteDiligentStudy(Map<String, Object> mapParam);
+    
+    /******************     岗位     *****************/
+    /**
+     * 查询勤工助学岗位
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> selectDiligentStudyPost(Map<String, Object> mapParam);
+
+    /**
+     * 插入或更新勤工助学岗位
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> insertAndUpdateDiligentStudyPost(Map<String, Object> mapParam);
+
+    /**
+     * 删除勤工助学岗位
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> deleteDiligentStudyPost(Map<String, Object> mapParam);
 }

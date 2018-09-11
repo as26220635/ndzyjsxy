@@ -32,7 +32,6 @@
 
     //修改
     $dataGridTable.find('tbody').on('click', '#edit', function () {
-        var row = this;
         var data = getRowData(this);
         var id = data.ID;
 
@@ -42,7 +41,7 @@
                     content: html,
                     footerModel: model.footerModel.ADMIN,
                     <shiro:hasPermission name="DILIGENT:STUDY_UPDATE_SAVE">
-                    isConfirm: isProcessSubmit(row),
+                    isConfirm: isProcessSubmit(data),
                     confirm: function ($model) {
                         var $form = $('#addAndEditForm');
                         //验证
@@ -60,6 +59,18 @@
                 });
             }
         );
+    });
+
+    //设置岗位
+    $dataGridTable.find('tbody').on('click', '#setPost', function () {
+        var data = getRowData(this);
+        var param = {
+            BDS_ID: data.ID,
+            BUS_PROCESS: data.BUS_PROCESS,
+            BUS_PROCESS2: data.BUS_PROCESS2,
+        };
+        //切换主界面
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("DILIGENT:STUDY_POST")}' + urlEncode(param));
     });
 
     //删除
@@ -81,20 +92,4 @@
             }
         });
     });
-
-    /**
-     * 导入excel
-     */
-    function excelImport($form, $model) {
-        ajax.file('${DILIGENT_STUDY_IMPORT_URL}', $form, function (data) {
-            //重置上传框
-            importFileClear();
-            ajaxReturn.data(data, $model, $dataGrid, true, {
-                error: function () {
-                    //显示错误列表
-                    showImportError(data.data)
-                }
-            });
-        });
-    }
 </script>

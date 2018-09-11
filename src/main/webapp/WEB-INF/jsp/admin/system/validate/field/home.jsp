@@ -39,7 +39,11 @@
 
     //验证组
     $('#group').on('click', function () {
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:VALIDATE_GROUP")}&SV_ID=${EXTRA.SV_ID}&SV_TABLE=' + encodeURIComponent('${EXTRA.SV_TABLE}'));
+        var param = {
+            SV_ID: '${EXTRA.SV_ID}',
+            SV_TABLE: '${EXTRA.SV_TABLE}',
+        };
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:VALIDATE_GROUP")}' + urlEncode(param));
     });
 
     //添加

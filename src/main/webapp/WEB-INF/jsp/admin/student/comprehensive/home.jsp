@@ -13,9 +13,11 @@
     //修改
     $dataGridTable.find('tbody').on('click', '#edit', function () {
         var data = getRowData(this);
-        var id = data.ID;
-        var BS_NAME = data.BS_NAME;
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("STUDENT:COMPREHENSIVE_INSERT_AND_UPDATE")}&ID=' + id + '&BS_NAME=' + encodeURIComponent(BS_NAME));
+        var param = {
+            ID: data.ID,
+            BS_NAME: data.BS_NAME,
+        };
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("STUDENT:COMPREHENSIVE_INSERT_AND_UPDATE")}' + urlEncode(param));
     });
 
     //删除

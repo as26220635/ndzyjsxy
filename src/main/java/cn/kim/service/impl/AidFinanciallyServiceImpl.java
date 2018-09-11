@@ -2,6 +2,7 @@ package cn.kim.service.impl;
 
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
+import cn.kim.common.attr.Tips;
 import cn.kim.common.eu.AidType;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.Process;
@@ -227,8 +228,8 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             if (!isEmpty(schedule)) {
                 String SPS_AUDIT_STATUS = toString(schedule.get("SPS_AUDIT_STATUS"));
                 if (!isEmpty(SPS_AUDIT_STATUS) &&
-                        !ProcessStatus.START.equals(SPS_AUDIT_STATUS)) {
-                    throw new CustomException("流程办理中不能删除!");
+                        !ProcessStatus.START.toString().equals(SPS_AUDIT_STATUS)) {
+                    throw new CustomException(Tips.PROCESS_DELETE_ERROR);
                 }
             }
             //先删除子表

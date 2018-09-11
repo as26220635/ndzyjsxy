@@ -16,7 +16,7 @@
                 AND BDS_TABLE_NAME = #{BDS_TABLE_NAME}
             </if>
             <if test ="BDS_YEAR != NULL and BDS_YEAR != ''">
-                AND BDS_YEAR = #{BDS_YEAR
+                AND BDS_YEAR = #{BDS_YEAR}
             </if>
             <if test ="BDS_SEMESTER != NULL and BDS_SEMESTER != ''">
                 AND BDS_SEMESTER = #{BDS_SEMESTER}
@@ -31,6 +31,9 @@
             <if test ="ID != NULL and ID != ''">
                 AND ID = #{ID}
             </if>
+            <if test ="NOT_ID != NULL and NOT_ID != ''">
+                AND ID != #{NOT_ID}
+            </if>
             <if test ="BDS_TABLE_ID != NULL and BDS_TABLE_ID != ''">
                 AND BDS_TABLE_ID = #{BDS_TABLE_ID}
             </if>
@@ -38,7 +41,7 @@
                 AND BDS_TABLE_NAME = #{BDS_TABLE_NAME}
             </if>
             <if test ="BDS_YEAR != NULL and BDS_YEAR != ''">
-                AND BDS_YEAR = #{BDS_YEAR
+                AND BDS_YEAR = #{BDS_YEAR}
             </if>
             <if test ="BDS_SEMESTER != NULL and BDS_SEMESTER != ''">
                 AND BDS_SEMESTER = #{BDS_SEMESTER}
@@ -99,10 +102,45 @@
 
     <!--查询勤工助学岗位-->
     <select id="selectDiligentStudyPost" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM BUS_DILIGENT_STUDY_POST
+        SELECT BDSP.*,BDS.BUS_PROCESS,BDS.BUS_PROCESS2
+        FROM(
+            SELECT * FROM BUS_DILIGENT_STUDY_POST
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+                <if test ="BDS_ID != NULL and BDS_ID != ''">
+                    AND BDS_ID = #{BDS_ID}
+                </if>
+                <if test ="BDSP_NUMBER != NULL and BDSP_NUMBER != ''">
+                    AND BDSP_NUMBER = #{BDSP_NUMBER}
+                </if>
+                <if test ="BDSP_NAME != NULL and BDSP_NAME != ''">
+                    AND BDSP_NAME = #{BDSP_NAME}
+                </if>
+            </where>
+        )BDSP
+        INNER JOIN BUS_DILIGENT_STUDY BDS ON BDS.ID = BDSP.BDS_ID
+    </select>
+
+    <!--查询勤工助学岗位-->
+    <select id="selectDiligentStudyPostCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BUS_DILIGENT_STUDY_POST
         <where>
             <if test ="ID != NULL and ID != ''">
                 AND ID = #{ID}
+            </if>
+            <if test ="NOT_ID != NULL and NOT_ID != ''">
+                AND ID != #{NOT_ID}
+            </if>
+            <if test ="BDS_ID != NULL and BDS_ID != ''">
+                AND BDS_ID = #{BDS_ID}
+            </if>
+            <if test ="BDSP_NUMBER != NULL and BDSP_NUMBER != ''">
+                AND BDSP_NUMBER = #{BDSP_NUMBER}
+            </if>
+            <if test ="BDSP_NAME != NULL and BDSP_NAME != ''">
+                AND BDSP_NAME = #{BDSP_NAME}
             </if>
         </where>
     </select>

@@ -93,9 +93,12 @@
     //设置账号
     $dataGridTable.find('tbody').on('click', '#setSub', function () {
         var data = getRowData(this);
-        var SO_ID = data.SO_ID;
+        var param = {
+            SO_ID: data.SO_ID,
+            SAI_NAME: data.BDP_NAME,
+        };
         //切换主界面
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:OPERATOR_SUB")}&SO_ID=' + SO_ID + '&SAI_NAME=' + encodeURIComponent(data.BDP_NAME));
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:OPERATOR_SUB")}' + urlEncode(param));
     });
 
 

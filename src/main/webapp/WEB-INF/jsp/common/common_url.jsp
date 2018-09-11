@@ -156,6 +156,7 @@
 <%--流程列表--%>
 <c:set var="PROCESS_BASE_URL" value="${MANAGER_URL}process/" scope="application"/>
 <c:set var="PROCESS_DATAGRID_BTN" value="${PROCESS_BASE_URL}showDataGridBtn" scope="application"/>
+<c:set var="PROCESS_DATAGRID_IS_EDIT" value="${PROCESS_BASE_URL}showDataGridIsEdit" scope="application"/>
 <c:set var="PROCESS_SHOW_HOME" value="${PROCESS_BASE_URL}showDataGridProcess" scope="application"/>
 <c:set var="PROCESS_SUBMIT" value="${PROCESS_BASE_URL}submit" scope="application"/>
 <c:set var="PROCESS_WITHDRAW" value="${PROCESS_BASE_URL}withdraw" scope="application"/>
@@ -317,3 +318,9 @@
 <c:set var="DILIGENT_STUDY_UPDATE_URL" value="${DILIGENT_STUDY_BASE_URL}update" scope="application"/>
 <c:set var="DILIGENT_STUDY_DELETE_URL" value="${DILIGENT_STUDY_BASE_URL}delete" scope="application"/>
 <c:set var="DILIGENT_STUDY_IMPORT_URL" value="${DILIGENT_STUDY_BASE_URL}import" scope="application"/>
+<%--勤工助学岗位--%>
+<c:set var="DILIGENT_STUDY_POST_BASE_URL" value="${DILIGENT_BASE_URL}post/" scope="application"/>
+<c:set var="DILIGENT_STUDY_POST_ADD_URL" value="${DILIGENT_STUDY_POST_BASE_URL}add" scope="application"/>
+<c:set var="DILIGENT_STUDY_POST_UPDATE_URL" value="${DILIGENT_STUDY_POST_BASE_URL}update" scope="application"/>
+<c:set var="DILIGENT_STUDY_POST_DELETE_URL" value="${DILIGENT_STUDY_POST_BASE_URL}delete" scope="application"/>
+<c:set var="DILIGENT_STUDY_POST_IMPORT_URL" value="${DILIGENT_STUDY_POST_BASE_URL}import" scope="application"/>

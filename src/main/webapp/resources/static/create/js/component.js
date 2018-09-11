@@ -1536,12 +1536,13 @@ ajax = {
             }
         });
     },
-    get: function (url, params, callback) {
+    get: function (url, params, callback, isAsync) {
         return $.ajax({
             type: "GET",
             url: url,
             data: params,
             dataType: "json",
+            async: isAsync == undefined ? true : isAsync,
             success: function (data) {
                 //成功
                 if (typeof data === "string") {

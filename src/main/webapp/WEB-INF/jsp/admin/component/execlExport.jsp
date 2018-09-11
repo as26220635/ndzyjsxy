@@ -32,13 +32,9 @@
                     }
                     columnIds += column.id;
                 }
-                //格式化参数
-                var params = packFormParams($('#queryForm${MENU.ID}'));
-                params['SM_ID'] = '${MENU.ID}';
-                params['processStatus'] = $('#processStatus').val();
 
                 //导出
-                window.location.href = '${EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(params);
+                window.location.href = '${EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(dataGridAjaxParams);
                 model.hide($model);
             }
         });

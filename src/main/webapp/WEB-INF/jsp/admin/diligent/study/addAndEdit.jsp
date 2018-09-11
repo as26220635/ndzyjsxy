@@ -34,11 +34,4 @@
         //验证表单
         form: $('#addAndEditForm'),
     });
-
-    //选择学生
-    choiceBox.student({
-        id: 'BS_ID',
-        name: 'BS_NAME',
-        url: '${STUDENT_LIST_URL}'
-    });
 </script>

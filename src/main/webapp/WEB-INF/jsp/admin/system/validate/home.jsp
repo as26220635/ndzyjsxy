@@ -70,9 +70,12 @@
     //设置字段
     $dataGridTable.find('tbody').on('click', '#setField', function () {
         var data = getRowData(this);
-        var id = data.ID;
+        var param = {
+            SV_ID: data.ID,
+            SV_TABLE: data.SV_TABLE,
+        };
         //切换主界面
-        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:VALIDATE_SET_FIELD")}&SV_ID=' + id + '&SV_TABLE=' + encodeURIComponent(data.SV_TABLE));
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:VALIDATE_SET_FIELD")}' + urlEncode(param));
     });
 
     //删除

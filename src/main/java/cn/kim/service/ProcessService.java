@@ -114,6 +114,15 @@ public interface ProcessService extends BaseService {
 
     List<Map<String, Object>> selectProcessStepList(Map<String, Object> mapParam);
 
+    /**
+     * 是否拥有随时编辑
+     * @param roleId
+     * @param busProcess
+     * @param busProcess2
+     * @return
+     */
+    boolean selectProcessStepIsEdit(String roleId, String busProcess, String busProcess2);
+
     Map<String, Object> insertAndUpdateProcessStep(Map<String, Object> mapParam);
 
     Map<String, Object> deleteProcessStep(Map<String, Object> mapParam);

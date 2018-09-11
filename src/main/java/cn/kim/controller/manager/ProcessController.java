@@ -77,6 +77,21 @@ public class ProcessController extends BaseController {
     }
 
     /**
+     * 当前登录角色是否拥有随时编辑
+     *
+     * @param BUS_PROCESS
+     * @param BUS_PROCESS2
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/showDataGridIsEdit")
+    @NotEmptyLogin
+    @ResponseBody
+    public boolean showDataGridIsEdit(String BUS_PROCESS, String BUS_PROCESS2) throws Exception {
+        return ProcessTool.selectNowActiveProcessStepIsEdit(BUS_PROCESS, BUS_PROCESS2);
+    }
+
+    /**
      * 获取流程提交退回界面
      *
      * @param ID

@@ -199,6 +199,9 @@
 <script>
     $(".select2").select2({language: "zh-CN"});
 
+    //上次ajax请求数据
+    var dataGridAjaxParams;
+
     var isOpenStatus = false;
 
     var $dataGridTable = $("#dataGrid${MENU.ID}");
@@ -249,6 +252,8 @@
             //添加按钮ID
             params['SM_ID'] = '${MENU.ID}';
             params['processStatus'] = $('#processStatus').val();
+
+            dataGridAjaxParams = params;
         },
         <%--字段--%>
         columns: [
@@ -600,8 +605,26 @@
     /**
      * 是否到自己审核了
      * */
-    function isProcessSubmit(row) {
-        return $(row).siblings('#PROCESS_SUBMIT').length > 0;
+    function isProcessSubmit(rowData) {
+        var isSubmit = false;
+        //请求后台是否拥有提交按钮
+        ajax.get('${PROCESS_DATAGRID_BTN}', {
+            ID: rowData.ID,
+            BUS_PROCESS: rowData.BUS_PROCESS,
+            BUS_PROCESS2: rowData.BUS_PROCESS2
+        }, function (data) {
+            isSubmit = data.html.indexOf('PROCESS_SUBMIT') != -1 ? true : false;
+        }, false);
+        //判断是否拥有审核通过也可以修改的权限
+        if (!isSubmit) {
+            ajax.get('${PROCESS_DATAGRID_IS_EDIT}', {
+                BUS_PROCESS: rowData.BUS_PROCESS,
+                BUS_PROCESS2: rowData.BUS_PROCESS2
+            }, function (data) {
+                isSubmit = data;
+            }, false);
+        }
+        return isSubmit;
     }
 
     /**
