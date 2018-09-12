@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -147,5 +148,71 @@ public class DiligentStudyController extends BaseController {
         mapParam.put("ID", ID);
         Map<String, Object> resultMap = diligentStudyService.deleteDiligentStudyPost(mapParam);
         return resultState(resultMap);
+    }
+
+    /******************************     勤工助学学生   *******************************/
+
+    @GetMapping("/student/add")
+    @RequiresPermissions("DILIGENT:STUDY_STUDENT_INSERT")
+    @Token(save = true)
+    public String addHtmlStudent(String BDSP_ID, Model model) throws Exception {
+        model.addAttribute("BDSP_ID", BDSP_ID);
+        return "admin/diligent/student/addAndEdit";
+    }
+
+
+    @PostMapping("/student/add")
+    @RequiresPermissions("DILIGENT:STUDY_STUDENT_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加勤工助学学生")
+    @Token(remove = true)
+    @Validate("BUS_DILIGENT_STUDY_STUDENT")
+    @ResponseBody
+    public ResultState addStudent(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = diligentStudyService.insertAndUpdateDiligentStudyStudent(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/student/update/{ID}")
+    @RequiresPermissions("DILIGENT:STUDY_STUDENT_UPDATE")
+    public String updateHtmlStudent(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("student", diligentStudyService.selectDiligentStudyStudent(mapParam));
+        return "admin/diligent/student/addAndEdit";
+    }
+
+    @PutMapping("/student/update")
+    @RequiresPermissions("DILIGENT:STUDY_STUDENT_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改勤工助学学生")
+    @Validate("BUS_DILIGENT_STUDY_STUDENT")
+    @ResponseBody
+    public ResultState updateStudent(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = diligentStudyService.insertAndUpdateDiligentStudyStudent(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/student/delete/{ID}")
+    @RequiresPermissions("DILIGENT:STUDY_STUDENT_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除勤工助学学生")
+    @ResponseBody
+    public ResultState deleteStudent(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = diligentStudyService.deleteDiligentStudyStudent(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/student/import")
+    @RequiresPermissions("DILIGENT:STUDY_STUDENT_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入勤工助学学生")
+    @ResponseBody
+    public ResultState importStudent(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importDiligentStudyStudent", 600, 600, () -> {
+            Map<String, Object> resultMap = diligentStudyService.importDiligentStudyStudent(excelFile);
+            return resultState(resultMap);
+        });
     }
 }

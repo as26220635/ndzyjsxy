@@ -22,7 +22,9 @@ public class Tips {
     public static final String NO_OTHERS_EDU = "不能修改他人的教育信息!";
     public static final String MAX_UPLOAD_SIZE = "上传文件超过限制的100MB！";
 
-    public static final String PROCESS_DELETE_ERROR="流程办理中或办理完成不能删除!";
+    public static final String PROCESS_DELETE_ERROR = "流程办理中或办理完成不能删除!";
+
+    public static final String ID_NULL_ERROR = "ID不能为空!";
     /**
      * 日志
      */

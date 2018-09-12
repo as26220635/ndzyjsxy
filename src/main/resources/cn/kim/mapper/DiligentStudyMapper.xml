@@ -195,10 +195,44 @@
 
     <!--查询勤工助学学生-->
     <select id="selectDiligentStudyStudent" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT * FROM BUS_DILIGENT_STUDY_STUDENT
+        SELECT BDSS.*,BS.BS_NAME,BDSP.BDS_ID,BDS.BUS_PROCESS,BDS.BUS_PROCESS2
+        FROM(
+            SELECT * FROM BUS_DILIGENT_STUDY_STUDENT
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+                <if test ="NOT_ID != NULL and NOT_ID != ''">
+                    AND ID != #{NOT_ID}
+                </if>
+                <if test ="BS_ID != NULL and BS_ID != ''">
+                    AND BS_ID = #{BS_ID}
+                </if>
+                <if test ="BDSP_ID != NULL and BDSP_ID != ''">
+                    AND BDSP_ID = #{BDSP_ID}
+                </if>
+            </where>
+        )BDSS
+        INNER JOIN BUS_DILIGENT_STUDY_POST BDSP ON BDSP.ID = BDSS.BDSP_ID
+        INNER JOIN BUS_DILIGENT_STUDY BDS ON BDS.ID = BDSP.BDS_ID
+        LEFT JOIN BUS_STUDENT BS ON BS.ID = BDSS.BS_ID
+    </select>
+
+    <!--查询勤工助学学生-->
+    <select id="selectDiligentStudyStudentCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BUS_DILIGENT_STUDY_STUDENT
         <where>
             <if test ="ID != NULL and ID != ''">
                 AND ID = #{ID}
+            </if>
+            <if test ="NOT_ID != NULL and NOT_ID != ''">
+                AND ID != #{NOT_ID}
+            </if>
+            <if test ="BS_ID != NULL and BS_ID != ''">
+                AND BS_ID = #{BS_ID}
+            </if>
+            <if test ="BDSP_ID != NULL and BDSP_ID != ''">
+                AND BDSP_ID = #{BDSP_ID}
             </if>
         </where>
     </select>
@@ -209,21 +243,15 @@
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="ID != null">ID,</if>
             <if test="SO_ID != null">SO_ID,</if>
-            <if test="BDS_ID != null">BDS_ID,</if>
-            <if test="BDSP_NUMBER != null">BDSP_NUMBER,</if>
-            <if test="BDSP_NAME != null">BDSP_NAME,</if>
-            <if test="BDSP_HOURLY_WAGE != null">BDSP_HOURLY_WAGE,</if>
-            <if test="BDSP_ORDER != null">BDSP_ORDER,</if>
+            <if test="BS_ID != null">BS_ID,</if>
+            <if test="BDSP_ID != null">BDSP_ID,</if>
             <if test="BDSS_ENTRY_TIME != null">BDSS_ENTRY_TIME,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="ID != null">#{ID},</if>
             <if test="SO_ID != null">#{SO_ID},</if>
-            <if test="BDS_ID != null">#{BDS_ID},</if>
-            <if test="BDSP_NUMBER != null">#{BDSP_NUMBER},</if>
-            <if test="BDSP_NAME != null">#{BDSP_NAME},</if>
-            <if test="BDSP_HOURLY_WAGE != null">#{BDSP_HOURLY_WAGE},</if>
-            <if test="BDSP_ORDER != null">#{BDSP_ORDER},</if>
+            <if test="BS_ID != null">#{BS_ID},</if>
+            <if test="BDSP_ID != null">#{BDSP_ID},</if>
             <if test="BDSS_ENTRY_TIME != null">#{BDSS_ENTRY_TIME},</if>
         </trim>
     </insert>
@@ -234,11 +262,8 @@
         <set>
             <if test="ID != null">ID=#{ID},</if>
             <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
-            <if test="BDS_ID != null">BDS_ID=#{BDS_ID},</if>
-            <if test="BDSP_NUMBER != null">BDSP_NUMBER=#{BDSP_NUMBER},</if>
-            <if test="BDSP_NAME != null">BDSP_NAME=#{BDSP_NAME},</if>
-            <if test="BDSP_HOURLY_WAGE != null">BDSP_HOURLY_WAGE=#{BDSP_HOURLY_WAGE},</if>
-            <if test="BDSP_ORDER != null">BDSP_ORDER=#{BDSP_ORDER},</if>
+            <if test="BS_ID != null">BS_ID=#{BS_ID},</if>
+            <if test="BDSP_ID != null">BDSP_ID=#{BDSP_ID},</if>
             <if test="BDSS_ENTRY_TIME != null">BDSS_ENTRY_TIME=#{BDSS_ENTRY_TIME},</if>
         </set>
         <where>

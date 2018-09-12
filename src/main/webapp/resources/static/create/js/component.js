@@ -591,6 +591,10 @@ tableView = {
             optionData.scrollCollapse = true;
             optionData.fixedColumns = options.fixedColumns;
         }
+        if (!isEmpty(options.scrollX)) {
+            optionData.scrollX = options.scrollX;
+        }
+
         //启用ajax模式
         if (!isEmpty(options.url)) {
             optionData.ajax = {
@@ -1069,8 +1073,8 @@ choiceBox = {
             tableDatas.push({data: map.data});
         }
 
-        var tableClass = tableDatas.length > 2 ? 'table-overflow-x' : '';
-        var tableContent = '<table id="' + tableId + '" class="table table-bordered table-striped table-overflow-x ' + tableClass + '" style="width: 100%"><thead><tr>' + tableFields + '</tr></thead></table>';
+        var tableClass = '';
+        var tableContent = '<table id="' + tableId + '" class="table table-bordered table-striped ' + tableClass + '"><thead><tr>' + tableFields + '</tr></thead></table>';
 
         //初始化搜索框
         var searchInputs = '';
@@ -1126,6 +1130,8 @@ choiceBox = {
                     queryForm: $('#' + formId),
                     //查询URL链接
                     url: settings.url,
+                    //左右滚动
+                    scrollX: true,
                     //对应上面thead里面的序列
                     columns: tableDatas,
                     columnDefs: [
@@ -1200,6 +1206,7 @@ choiceBox = {
                 modelSize: model.size.LG,
                 url: options.url,
                 title: '选择学生',
+
                 searchLabel: '学生姓名',
                 searchFields: [
                     {
@@ -1225,6 +1232,16 @@ choiceBox = {
                         min_width: 150,
                         name: '学号',
                         data: 'BS_NUMBER',
+                    },
+                    {
+                        min_width: 170,
+                        name: '系部',
+                        data: 'BDM_NAME',
+                    },
+                    {
+                        min_width: 170,
+                        name: '专业',
+                        data: 'BC_MAJOR_NAME',
                     },
                     {
                         min_width: 170,

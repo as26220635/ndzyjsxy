@@ -902,7 +902,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));
@@ -992,7 +992,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));
@@ -1132,7 +1132,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));
@@ -1231,7 +1231,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));

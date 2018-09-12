@@ -1,10 +1,7 @@
 package cn.kim.service.impl;
 
-import cn.kim.common.attr.MagicValue;
-import cn.kim.common.attr.ParamTypeResolve;
-import cn.kim.common.attr.TableName;
+import cn.kim.common.attr.*;
 import cn.kim.exception.CustomException;
-import cn.kim.common.attr.Attribute;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
@@ -133,7 +130,7 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));
@@ -306,7 +303,7 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));
@@ -432,7 +429,7 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));
@@ -553,7 +550,7 @@ public class ValidateServiceImpl extends BaseServiceImpl implements ValidateServ
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             String id = toString(mapParam.get("ID"));

@@ -323,6 +323,45 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
     }
 
     /**
+     * 检测是否为空
+     *
+     * @param row        行
+     * @param dataArray  数据
+     * @param indexArray 检测位
+     */
+    protected List<String[]> checkIsEmpty(String row, String[] dataArray, int[] indexArray) {
+        List<String[]> checkIsEmptyList = Lists.newArrayList();
+        for (int index : indexArray) {
+            if (index > dataArray.length) {
+                checkIsEmptyList.add(packErrorData(row, "数据错误"));
+                break;
+            }
+            if (isEmpty(dataArray[index])) {
+                checkIsEmptyList.add(packErrorData(row, (index + 1) + "列数据为空"));
+            }
+        }
+        return checkIsEmptyList;
+    }
+
+    /**
+     * 检测参数是否是数字
+     *
+     * @param row
+     * @param dataArray
+     * @param indexArray
+     * @return
+     */
+    protected List<String[]> checkIsNumber(String row, String[] dataArray, int[] indexArray) {
+        List<String[]> checkIsEmptyList = Lists.newArrayList();
+        for (int index : indexArray) {
+            if (!isNumber(dataArray[index])) {
+                checkIsEmptyList.add(packErrorData(row, (index + 1) + "列数据不是为数字类型"));
+            }
+        }
+        return checkIsEmptyList;
+    }
+
+    /**
      * 移除ID字段
      *
      * @param map

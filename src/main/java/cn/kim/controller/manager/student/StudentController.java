@@ -62,7 +62,11 @@ public class StudentController extends BaseController {
      * @return
      */
     @GetMapping("/list")
-    @RequiresPermissions(value = {"STUDENT:ATTENDANCE", "STUDENT:PUNISHMENT", "STUDENT:COMPREHENSIVE", "AID:COLLEGE_SCHOLARSHIP"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"STUDENT:ATTENDANCE", "STUDENT:PUNISHMENT", "STUDENT:COMPREHENSIVE",
+            "AID:GREEN_CHANNEL", "AID:NATIONAL_SCHOLARSHIP", "AID:NATIONAL_ENDEAVOR",
+            "AID:NATIONAL_GRANTS", "AID:TUITION_WAIVER", "AID:COLLEGE_SCHOLARSHIP",
+            "AID:COMMEND", "AID:JOBSEEKER_SUPPORT", "AID:EMERGENCY_HELP",
+            "DILIGENT:STUDY_STUDENT"}, logical = Logical.OR)
     @ResponseBody
     public DataTablesView<?> list(@RequestParam Map<String, Object> mapParam) {
         DataTablesView<?> view = studentService.selectStudentDataTablesView(mapParam);

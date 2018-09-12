@@ -264,7 +264,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             String id = toString(mapParam.get("ID"));
 
             if (isEmpty(id)) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             if (MagicValue.ONE.equals(id)) {
                 throw new CustomException("不能删除超级管理员!");
@@ -420,7 +420,7 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
             String id = toString(mapParam.get("ID"));
 
             if (isEmpty(id)) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
 
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);

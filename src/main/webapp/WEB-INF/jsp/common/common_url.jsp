@@ -317,10 +317,14 @@
 <c:set var="DILIGENT_STUDY_ADD_URL" value="${DILIGENT_STUDY_BASE_URL}add" scope="application"/>
 <c:set var="DILIGENT_STUDY_UPDATE_URL" value="${DILIGENT_STUDY_BASE_URL}update" scope="application"/>
 <c:set var="DILIGENT_STUDY_DELETE_URL" value="${DILIGENT_STUDY_BASE_URL}delete" scope="application"/>
-<c:set var="DILIGENT_STUDY_IMPORT_URL" value="${DILIGENT_STUDY_BASE_URL}import" scope="application"/>
 <%--勤工助学岗位--%>
 <c:set var="DILIGENT_STUDY_POST_BASE_URL" value="${DILIGENT_BASE_URL}post/" scope="application"/>
 <c:set var="DILIGENT_STUDY_POST_ADD_URL" value="${DILIGENT_STUDY_POST_BASE_URL}add" scope="application"/>
 <c:set var="DILIGENT_STUDY_POST_UPDATE_URL" value="${DILIGENT_STUDY_POST_BASE_URL}update" scope="application"/>
 <c:set var="DILIGENT_STUDY_POST_DELETE_URL" value="${DILIGENT_STUDY_POST_BASE_URL}delete" scope="application"/>
-<c:set var="DILIGENT_STUDY_POST_IMPORT_URL" value="${DILIGENT_STUDY_POST_BASE_URL}import" scope="application"/>
+<%--勤工助学学生--%>
+<c:set var="DILIGENT_STUDY_STUDENT_BASE_URL" value="${DILIGENT_BASE_URL}student/" scope="application"/>
+<c:set var="DILIGENT_STUDY_STUDENT_ADD_URL" value="${DILIGENT_STUDY_STUDENT_BASE_URL}add" scope="application"/>
+<c:set var="DILIGENT_STUDY_STUDENT_UPDATE_URL" value="${DILIGENT_STUDY_STUDENT_BASE_URL}update" scope="application"/>
+<c:set var="DILIGENT_STUDY_STUDENT_DELETE_URL" value="${DILIGENT_STUDY_STUDENT_BASE_URL}delete" scope="application"/>
+<c:set var="DILIGENT_STUDY_STUDENT_IMPORT_URL" value="${DILIGENT_STUDY_STUDENT_BASE_URL}import" scope="application"/>

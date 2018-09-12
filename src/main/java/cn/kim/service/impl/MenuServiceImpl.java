@@ -1,9 +1,6 @@
 package cn.kim.service.impl;
 
-import cn.kim.common.attr.Attribute;
-import cn.kim.common.attr.MagicValue;
-import cn.kim.common.attr.ParamTypeResolve;
-import cn.kim.common.attr.TableName;
+import cn.kim.common.attr.*;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.dao.BaseDao;
 import cn.kim.exception.CustomException;
@@ -275,7 +272,7 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> oldMap = queryMenuById(toString(mapParam.get("ID")));
 

@@ -2,6 +2,7 @@ package cn.kim.service.impl;
 
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
+import cn.kim.common.attr.Tips;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.exception.CustomException;
 import cn.kim.service.AllocationService;
@@ -105,7 +106,7 @@ public class AllocationServiceImpl extends BaseServiceImpl implements Allocation
         String desc = DELETE_ERROR;
         try {
             if (isEmpty(mapParam.get("ID"))) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
             //记录日志

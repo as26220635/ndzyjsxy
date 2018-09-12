@@ -3,6 +3,7 @@ package cn.kim.service.impl;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.ParamTypeResolve;
 import cn.kim.common.attr.TableName;
+import cn.kim.common.attr.Tips;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.dao.BaseDao;
 import cn.kim.entity.DictInfo;
@@ -111,7 +112,7 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
         try {
             String id = toString(mapParam.get("ID"));
             if (isEmpty(id)) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
             //删除格式详细
@@ -249,7 +250,7 @@ public class FormatServiceImpl extends BaseServiceImpl implements FormatService 
         try {
             String id = toString(mapParam.get("ID"));
             if (isEmpty(id)) {
-                throw new CustomException("ID不能为空!");
+                throw new CustomException(Tips.ID_NULL_ERROR);
             }
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
 

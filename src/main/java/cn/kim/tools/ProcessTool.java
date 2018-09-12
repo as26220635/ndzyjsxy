@@ -47,12 +47,12 @@ public class ProcessTool {
      * -1 无 0 提交按钮 1 撤回按钮
      *
      * @param id
-     * @param process
-     * @param process2
+     * @param busProcess
+     * @param busProcess2
      * @return
      */
-    public static Set<String> showDataGridProcessBtn(String id, String process, String process2) throws Exception {
-        return Sets.newHashSet(processTool.processService.showDataGridProcessBtn(id, process, process2).split(Attribute.SERVICE_SPLIT));
+    public static Set<String> showDataGridProcessBtn(String id, String busProcess, String busProcess2) throws Exception {
+        return Sets.newHashSet(processTool.processService.showDataGridProcessBtn(id, busProcess, busProcess2).split(Attribute.SERVICE_SPLIT));
     }
 
     /**
