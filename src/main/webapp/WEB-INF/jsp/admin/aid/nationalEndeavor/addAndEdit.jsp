@@ -83,7 +83,7 @@
         <div class="form-group has-feedback form-group-md-6">
             <label>发放日期:</label>
             <s:datebox
-                    type="33"
+                    type="5"
                     custom='${fns:validField(TableName.BUS_AID_NATIONAL_SCHOLARSHIP, "BANS_ISSUANCE_TIME")}'
                     value="${ns.BANS_ISSUANCE_TIME}"></s:datebox>
         </div>

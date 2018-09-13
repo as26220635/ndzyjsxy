@@ -12,6 +12,7 @@ import cn.kim.entity.StudentYearSemester;
 import cn.kim.exception.CustomException;
 import cn.kim.service.DiligentStudyService;
 import cn.kim.tools.ProcessTool;
+import cn.kim.util.BigDecimalUtil;
 import cn.kim.util.DictUtil;
 import cn.kim.util.PoiUtil;
 import com.google.common.collect.Lists;
@@ -253,7 +254,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
             Map<String, Object> oldMap = selectDiligentStudyPost(paramMap);
 
             //验证勤工助学状态
-            validateDiligentStudyStatus(toString(oldMap.get("BDS_ID")), toString(oldMap.get("BUS_PROCESS")), toString(oldMap.get("BUS_PROCESS2")));
+            validateProcessStatus(toString(oldMap.get("BDS_ID")), toString(oldMap.get("BUS_PROCESS")), toString(oldMap.get("BUS_PROCESS2")));
 
             //删除勤工助学岗位
             paramMap.clear();
@@ -359,10 +360,10 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
             String id = toString(mapParam.get("ID"));
             paramMap.clear();
             paramMap.put("ID", id);
-            Map<String, Object> oldMap = selectDiligentStudyStudent(paramMap);
+            Map<String, Object> oldMap = this.selectDiligentStudyStudent(paramMap);
 
             //验证勤工助学状态
-            validateDiligentStudyStatus(toString(oldMap.get("BDS_ID")), toString(oldMap.get("BUS_PROCESS")), toString(oldMap.get("BUS_PROCESS2")));
+            validateProcessStatus(toString(oldMap.get("BDS_ID")), Process.DILIGENT.toString(), Process.DILIGENT_STUDY.toString());
 
             //删除勤工助学学生
             paramMap.clear();
@@ -422,7 +423,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
                 paramMap.clear();
                 paramMap.put("BS_ID", student.get("ID"));
                 paramMap.put("BDSP_ID", post.get("ID"));
-                Map<String, Object> diligentStudyStudent = insertAndUpdateDiligentStudyStudent(paramMap);
+                Map<String, Object> diligentStudyStudent = this.insertAndUpdateDiligentStudyStudent(paramMap);
                 validateResultMap(diligentStudyStudent);
             }
 
@@ -437,36 +438,210 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
         return resultMap;
     }
 
-    /**
-     * 验证勤工助学状态
-     *
-     * @param diligentStudyId
-     * @param busProcess
-     * @param busProcess2
-     * @throws Exception
-     */
-    public void validateDiligentStudyStatus(String diligentStudyId, String busProcess, String busProcess2) throws Exception {
-        //查询勤工助学是否正在进行流程
-        Map<String, Object> schedule = getProcessSchedule(diligentStudyId, busProcess, busProcess2);
-        if (!isEmpty(schedule)) {
-            String SPS_AUDIT_STATUS = toString(schedule.get("SPS_AUDIT_STATUS"));
-            boolean isEdit = true;
-            //审核通过
-            if (isEdit && ProcessStatus.COMPLETE.toString().equals(SPS_AUDIT_STATUS)) {
-                isEdit = false;
+    @Override
+    public Map<String, Object> selectStudentByDiligentStudyStudentId(String id) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", id);
+        return baseDao.selectOne(NameSpace.StudentMapper, "selectStudentByDiligentStudyStudentId", paramMap);
+    }
+
+    @Override
+    public Map<String, Object> selectDiligentStudyMonthWages(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+        paramMap.put("ID", mapParam.get("ID"));
+        paramMap.put("BDSS_ID", mapParam.get("BDSS_ID"));
+        return baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectDiligentStudyMonthWages", paramMap);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insertAndUpdateDiligentStudyMonthWages(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+
+        ActiveUser activeUser = getActiveUser();
+
+        String operatorId = activeUser.getId();
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+
+            String id = toString(mapParam.get("ID"));
+
+            paramMap.clear();
+            paramMap.put("NOT_ID", id);
+            paramMap.put("BDSS_ID", mapParam.get("BDSS_ID"));
+            paramMap.put("BDSMW_MONTH", mapParam.get("BDSMW_MONTH"));
+            int count = baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectDiligentStudyMonthWagesCount", paramMap);
+            if (count > 0) {
+                throw new CustomException("学生月工资重复添加!");
             }
-            //是否流程到达自身
-            if (isEdit && !ProcessTool.showDataGridProcessBtn(diligentStudyId, busProcess, busProcess2).contains(ProcessType.SUBMIT.toString())) {
-                isEdit = false;
+            //查询岗位每小时工资
+            paramMap.clear();
+            paramMap.put("ID", mapParam.get("BDSS_ID"));
+            Map<String, Object> post = baseDao.selectOne(NameSpace.StudentMapper, "selectPostByDiligentStudyStudentId", paramMap);
+
+            //记录日志
+            paramMap.clear();
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DILIGENT_STUDY_MONTH_WAGES);
+
+            paramMap.put("ID", id);
+            paramMap.put("SO_ID", mapParam.get("SO_ID"));
+            paramMap.put("BDSS_ID", mapParam.get("BDSS_ID"));
+            paramMap.put("BDSMW_HOUR", mapParam.get("BDSMW_HOUR"));
+            //计算工资
+            paramMap.put("BDSMW_WAGES", BigDecimalUtil.multiply(mapParam.get("BDSMW_HOUR"), post.get("BDSP_HOURLY_WAGE")));
+            paramMap.put("BDSMW_MONTH", mapParam.get("BDSMW_MONTH"));
+
+            if (isEmpty(id)) {
+                id = getId();
+                paramMap.put("ID", id);
+                paramMap.put("SO_ID", operatorId);
+                paramMap.put("BDSMW_ENRTY_TIME", getDate());
+                paramMap.put("BUS_PROCESS", Process.DILIGENT.toString());
+                paramMap.put("BUS_PROCESS2", Process.DILIGENT_STUDY_MONTH_WAGES.toString());
+
+                baseDao.insert(NameSpace.DiligentStudyMapper, "insertDiligentStudyMonthWages", paramMap);
+
+                //查询学生
+                paramMap.clear();
+                paramMap.put("ID", mapParam.get("BDSS_ID"));
+                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentByDiligentStudyStudentId", paramMap);
+
+                //插入流程
+                createProcessSchedule(id, toString(student.get("BS_NAME")),
+                        operatorId, toString(student.get("SO_ID")), Process.DILIGENT.toString(), Process.DILIGENT_STUDY_MONTH_WAGES.toString());
+
+                resultMap.put(MagicValue.LOG, "添加勤工助学月工资:" + formatColumnName(String.join(SERVICE_SPLIT, TableName.BUS_DILIGENT_STUDY_MONTH_WAGES), paramMap));
+            } else {
+                Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+                oldMap.put("ID", id);
+                oldMap = this.selectDiligentStudyMonthWages(oldMap);
+
+                baseDao.update(NameSpace.DiligentStudyMapper, "updateDiligentStudyMonthWages", paramMap);
+
+                resultMap.put(MagicValue.LOG, "更新勤工助学月工资,更新前:" + formatColumnName(String.join(SERVICE_SPLIT, TableName.BUS_DILIGENT_STUDY_MONTH_WAGES), oldMap) +
+                        ",更新后:" + formatColumnName(String.join(SERVICE_SPLIT, TableName.BUS_DILIGENT_STUDY_MONTH_WAGES), paramMap));
             }
-            //是否流程到达自身
-            if (!isEdit && ProcessTool.selectNowActiveProcessStepIsEdit(busProcess, busProcess2)) {
-                isEdit = true;
-            }
-            if (!isEdit) {
-                throw new CustomException(Tips.PROCESS_DELETE_ERROR);
-            }
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
         }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteDiligentStudyMonthWages(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = DELETE_ERROR;
+        try {
+            if (isEmpty(mapParam.get("ID"))) {
+                throw new CustomException(Tips.ID_NULL_ERROR);
+            }
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
+            String id = toString(mapParam.get("ID"));
+            paramMap.clear();
+            paramMap.put("ID", id);
+            Map<String, Object> oldMap = this.selectDiligentStudyMonthWages(paramMap);
+
+            //验证勤工助学状态
+            validateProcessStatus(toString(oldMap.get("BDS_ID")), Process.DILIGENT.toString(), Process.DILIGENT_STUDY.toString());
+            //验证自身流程
+            validateProcessStatus(id, Process.DILIGENT.toString(), Process.DILIGENT_STUDY_MONTH_WAGES.toString());
+
+            //删除勤工助学月工资
+            paramMap.clear();
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DILIGENT_STUDY_MONTH_WAGES);
+            paramMap.put("ID", id);
+            baseDao.delete(NameSpace.DiligentStudyMapper, "deleteDiligentStudyMonthWages", paramMap);
+
+            //删除流程
+            deleteProcessSchedule(id);
+            resultMap.put(MagicValue.LOG, "删除勤工助学月工资,信息:" + formatColumnName(String.join(SERVICE_SPLIT, TableName.BUS_DILIGENT_STUDY_MONTH_WAGES), oldMap));
+            status = STATUS_SUCCESS;
+            desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 导入勤工助学月工资
+     *
+     * @param excelFile
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> importDiligentStudyMonthWages(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = IMPORT_ERROR;
+        try {
+            List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 1);
+            //校验数据
+            List<String[]> errorList = checkDiligentStudyMonthWagesExcelData(dataList);
+            if (!isEmpty(errorList)) {
+                resultMap.put(MagicValue.DATA, errorList);
+                throw new CustomException("检测数据异常!");
+            }
+
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(6);
+
+            //导入数据
+            for (String[] data : dataList) {
+                //岗位编号
+                String BDSP_NUMBER = data[0];
+                //学号
+                String BS_NUMBER = data[1];
+                //工作时长
+                String BDSMW_HOUR = data[3];
+                //月份
+                String BDSMW_MONTH = data[6];
+
+                //查询学生
+                paramMap.clear();
+                paramMap.put("BS_NUMBER", BS_NUMBER);
+                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                //查询岗位
+                paramMap.clear();
+                paramMap.put("BDSP_NUMBER", BDSP_NUMBER);
+                Map<String, Object> post = baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectDiligentStudyPost", paramMap);
+                //根据岗位和学生信息找到勤工助学学生信息
+                paramMap.clear();
+                paramMap.put("BS_ID", student.get("ID"));
+                paramMap.put("BDSP_ID", post.get("ID"));
+                Map<String, Object> diligentStudent = this.selectDiligentStudyStudent(paramMap);
+
+                paramMap.clear();
+                paramMap.put("BDSS_ID", diligentStudent.get("ID"));
+                paramMap.put("BDSMW_HOUR", BDSMW_HOUR);
+                paramMap.put("BDSMW_MONTH", BDSMW_MONTH);
+
+                Map<String, Object> diligentStudyMonthWages = this.insertAndUpdateDiligentStudyMonthWages(paramMap);
+                validateResultMap(diligentStudyMonthWages);
+            }
+
+            resultMap.put(MagicValue.LOG, "导入勤工助学月工资数据,数据:" + toString(dataList));
+            status = STATUS_SUCCESS;
+            desc = IMPORT_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
     }
 
     /**
@@ -520,6 +695,85 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
                     int count = baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectDiligentStudyStudentCount", paramMap);
                     if (count > 0) {
                         resultList.add(packErrorData(row, "该岗位已经存在相同的学生记录"));
+                    }
+                }
+
+            }
+        }
+
+        return resultList;
+    }
+
+    /**
+     * 校验勤工助学月工资导入数据
+     *
+     * @param dataList
+     * @return
+     */
+    public List<String[]> checkDiligentStudyMonthWagesExcelData(List<String[]> dataList) {
+        List<String[]> resultList = Lists.newArrayList();
+        if (isEmpty(dataList)) {
+            resultList.add(packErrorData("文件数据错误", "没有找到可以导入数据"));
+            return resultList;
+        }
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+
+        for (int i = 0; i < dataList.size(); i++) {
+            //行
+            String row = joinRowStr(i + 2);
+
+            String[] data = dataList.get(i);
+            //岗位编号
+            String BDSP_NUMBER = data[0];
+            //学号
+            String BS_NUMBER = data[1];
+            //工作时长
+            String BDSMW_HOUR = data[3];
+            //月份
+            String BDSMW_MONTH = data[6];
+
+            List<String[]> checkIsEmptyList = checkIsEmpty(row, data, new int[]{0, 1, 3, 6});
+            if (!isEmpty(checkIsEmptyList)) {
+                resultList.addAll(checkIsEmptyList);
+                continue;
+            }
+            checkIsEmptyList = checkIsNumber(row, data, new int[]{3, 6});
+            if (!isEmpty(checkIsEmptyList)) {
+                resultList.addAll(checkIsEmptyList);
+                continue;
+            }
+
+            //查询数据库检查学号是否为空
+            paramMap.clear();
+            paramMap.put("BS_NUMBER", BS_NUMBER);
+            Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+            if (isEmpty(student)) {
+                resultList.add(packErrorData(row, "学号错误,没有找到对应的学生"));
+            } else {
+                //检测岗位
+                paramMap.clear();
+                paramMap.put("BDSP_NUMBER", BDSP_NUMBER);
+                Map<String, Object> post = baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectDiligentStudyPost", paramMap);
+
+                if (isEmpty(post)) {
+                    resultList.add(packErrorData(row, "岗位编号错误,没有找到对应的岗位"));
+                } else {
+                    //根据岗位和学生信息找到勤工助学学生信息
+                    paramMap.clear();
+                    paramMap.put("BS_ID", student.get("ID"));
+                    paramMap.put("BDSP_ID", post.get("ID"));
+                    Map<String, Object> diligentStudent = this.selectDiligentStudyStudent(paramMap);
+                    if (isEmpty(diligentStudent)) {
+                        resultList.add(packErrorData(row, "根据岗位和学号没有查询到该岗位下面的勤工助学学生信息"));
+                    } else {
+                        //检测月工资是否重复添加
+                        paramMap.clear();
+                        paramMap.put("BDSS_ID", diligentStudent.get("ID"));
+                        paramMap.put("BDSMW_MONTH", BDSMW_MONTH);
+                        int count = baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectDiligentStudyMonthWagesCount", paramMap);
+                        if (count > 0) {
+                            resultList.add(packErrorData(row, "该岗位学生已经拥有相同月份工资记录"));
+                        }
                     }
                 }
 

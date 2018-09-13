@@ -88,7 +88,7 @@
                                         </div>
                                     </c:when>
                                     <%--时间选择--%>
-                                    <c:when test="${SEARCH.SCS_TYPE eq 4 || SEARCH.SCS_TYPE eq 5|| SEARCH.SCS_TYPE eq 6|| SEARCH.SCS_TYPE eq 7}">
+                                    <c:when test="${SEARCH.SCS_TYPE >= 4 and SEARCH.SCS_TYPE <= 9  }">
                                         <div class="form-group form-group-search">
                                             <label for="SEARCH_${SEARCH.SCS_FIELD}"
                                                    class="col-sm-4 control-label">${SEARCH.SCS_NAME}</label>

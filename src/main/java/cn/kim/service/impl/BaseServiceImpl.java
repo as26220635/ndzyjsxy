@@ -12,6 +12,7 @@ import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.BaseService;
 import cn.kim.service.ProcessService;
+import cn.kim.tools.ProcessTool;
 import cn.kim.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -583,5 +584,37 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
             }
         }
         log.info("删除流程,参数:" + toString(paramMap));
+    }
+
+    /**
+     * 验证流程学状态
+     *
+     * @param id
+     * @param busProcess
+     * @param busProcess2
+     * @throws Exception
+     */
+    public void validateProcessStatus(String id, String busProcess, String busProcess2) throws Exception {
+        //查询是否正在进行流程
+        Map<String, Object> schedule = getProcessSchedule(id, busProcess, busProcess2);
+        if (!isEmpty(schedule)) {
+            String SPS_AUDIT_STATUS = toString(schedule.get("SPS_AUDIT_STATUS"));
+            boolean isEdit = true;
+            //审核通过
+            if (isEdit && ProcessStatus.COMPLETE.toString().equals(SPS_AUDIT_STATUS)) {
+                isEdit = false;
+            }
+            //是否流程到达自身
+            if (isEdit && !ProcessTool.showDataGridProcessBtn(id, busProcess, busProcess2).contains(ProcessType.SUBMIT.toString())) {
+                isEdit = false;
+            }
+            //是否流程到达自身
+            if (!isEdit && ProcessTool.selectNowActiveProcessStepIsEdit(busProcess, busProcess2)) {
+                isEdit = true;
+            }
+            if (!isEdit) {
+                throw new CustomException(Tips.PROCESS_DELETE_ERROR);
+            }
+        }
     }
 }

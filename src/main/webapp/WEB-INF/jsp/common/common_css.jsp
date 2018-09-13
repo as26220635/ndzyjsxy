@@ -23,6 +23,7 @@ folder instead of downloading all of them to reduce the load. --%>
 <%-- jvectormap --%>
 <%--<link rel="stylesheet" href="${BASE_URL}resources/static/plugins/jvectormap/jquery-jvectormap-1.2.2.css">--%>
 <%-- Date Picker --%>
+<link rel="stylesheet" href="${BASE_URL}resources/static/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css?ver=${VERSION}">
 <link rel="stylesheet" href="${BASE_URL}resources/static/plugins/datepicker/datepicker3.css?ver=${VERSION}">
 <%-- Daterange picker --%>
 <%--<link rel="stylesheet" href="${BASE_URL}resources/static/plugins/daterangepicker/daterangepicker.css">--%>

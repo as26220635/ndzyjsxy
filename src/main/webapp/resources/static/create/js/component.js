@@ -1721,13 +1721,14 @@ ajaxReturn = {
  * @type {{model: {YMDHI: string, YMD: string, YMD_NONE: string, YM: string, Y: string}, format: {YYYYMMDDHHII: string, YYYYMMDD: string, YYYYMMDD_NONE: string, YYYYMM: string, YYYY: string}, init: (function(*=): *)}}
  */
 datepick = {
-    model: {YMDHI: 'yyyy-MM-dd HH:ii', YMD: 'yyyy-mm-dd', YMD_NONE: 'yyyymmdd', YM: 'yyyy-mm', Y: 'yyyy'},
+    model: {year: '1', yearMonth: '2', yearMonthDay: '3', month: '4', yearMonthDayNone: '5', datetimepicker: '6'},
     format: {
-        YYYYMMDDHHII: 'yyyy-MM-dd HH:ii',
-        YYYYMMDD: 'yyyy-mm-dd',
-        YYYYMMDD_NONE: 'yyyymmdd',
-        YYYYMM: 'yyyy-mm',
-        YYYY: 'yyyy'
+        datetimepicker: 'yyyy-mm-dd hh:ii:ss',
+        yearMonthDay: 'yyyy-mm-dd',
+        yearMonthDayNone: 'yyyymmdd',
+        yearMonth: 'yyyy-mm',
+        month: 'mm',
+        year: 'yyyy'
     },
     init: function (options) {
         var settings = $.extend({
@@ -1735,58 +1736,79 @@ datepick = {
             format: datepick.format.YYYYMMDD,
             startView: 4,
             minView: 4,
-            maxViewMode: 4,
-            minViewMode: 4,
             weekStart: 1,
             todayBtn: 'linked',
         }, options);
 
         if (!isEmpty(options.model)) {
-            if (options.model == datepick.model.Y) {
-                settings.startView = 2;
-                settings.minView = 2;
+            if (options.model == datepick.model.year) {
+                settings.startView = 4;
+                settings.minView = 4;
+                settings.maxView = 4;
                 settings.maxViewMode = 2;
                 settings.minViewMode = 2;
-                settings.format = datepick.format.YYYY;
-            } else if (options.model == datepick.model.YM) {
-                settings.startView = 1;
-                settings.minView = 1;
+                settings.format = datepick.format.year;
+            } else if (options.model == datepick.model.month) {
+                settings.startView = 3;
+                settings.maxView = 3;
+                settings.minView = 3;
                 settings.maxViewMode = 1;
                 settings.minViewMode = 1;
-                settings.format = datepick.format.YYYYMM;
-            } else if (options.model == datepick.model.YMD) {
+                settings.format = datepick.format.month;
+            } else if (options.model == datepick.model.yearMonth) {
                 settings.startView = 4;
-                settings.minView = 4;
-                settings.maxViewMode = 4;
-                settings.minViewMode = 4;
-                settings.format = datepick.format.YYYYMMDD;
-            } else if (options.model == datepick.model.YMD_NONE) {
+                settings.minView = 3;
+                settings.maxView = 4;
+                settings.maxViewMode = 2;
+                settings.minViewMode = 1;
+                settings.format = datepick.format.yearMonth;
+            } else if (options.model == datepick.model.yearMonthDay) {
                 settings.startView = 4;
-                settings.minView = 4;
-                settings.maxViewMode = 4;
-                settings.minViewMode = 4;
-                settings.format = datepick.format.YYYYMMDD_NONE;
-            } else if (options.model == datepick.model.YMDHI) {
-                settings.startView = 5;
-                settings.minView = 5;
-                settings.maxViewMode = 5;
-                settings.minViewMode = 5;
-                settings.format = datepick.format.YYYYMMDDHHII;
+                settings.minView = 2;
+                settings.maxView = 4;
+                settings.maxViewMode = 2;
+                settings.minViewMode = 0;
+                settings.format = datepick.format.yearMonthDay;
+            } else if (options.model == datepick.model.yearMonthDayNone) {
+                settings.startView = 4;
+                settings.minView = 2;
+                settings.maxView = 4;
+                settings.maxViewMode = 2;
+                settings.minViewMode = 0;
+                settings.format = datepick.format.yearMonthDayNone;
+            } else if (options.model == datepick.model.datetimepicker) {
+                settings.startView = 2;
+                settings.minView = 0;
+                settings.maxView = 4;
+                settings.format = datepick.format.datetimepicker;
             }
         }
 
-        var date = options.obj.datepicker({
-            format: settings.format,
-            weekStart: settings.weekStart,
-            autoclose: true,
-            startView: settings.startView,
-            minView: settings.minView,
-            forceParse: false,
-            todayBtn: settings.todayBtn,
-            maxViewMode: settings.maxViewMode,
-            minViewMode: settings.minViewMode,
-            language: 'zh-CN'
-        })
+        if(options.model == datepick.model.datetimepicker){
+            var date = options.obj.datetimepicker({
+                format: settings.format,
+                weekStart: settings.weekStart,
+                autoclose: true,
+                startView: settings.startView,
+                minView: settings.minView,
+                forceParse: false,
+                todayBtn: settings.todayBtn,
+                language: 'zh-CN'
+            })
+        }else{
+            var date = options.obj.datepicker({
+                format: settings.format,
+                weekStart: settings.weekStart,
+                autoclose: true,
+                startView: settings.startView,
+                minView: settings.minView,
+                maxViewMode: settings.maxViewMode,
+                minViewMode: settings.minViewMode,
+                forceParse: false,
+                todayBtn: settings.todayBtn,
+                language: 'zh-CN'
+            })
+        }
         //日期清除
         if (!isEmpty(options.clear) && options.clear == true) {
             options.obj.dateClear();

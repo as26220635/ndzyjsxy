@@ -91,4 +91,48 @@ public interface DiligentStudyService extends BaseService {
      * @return
      */
     Map<String, Object> importDiligentStudyStudent(MultipartFile excelFile);
+
+    /******************     学生月工资     *****************/
+
+
+
+    /**
+     * 根据勤工助学学生id查询学生信息
+     *
+     * @param id
+     * @return
+     */
+    Map<String, Object> selectStudentByDiligentStudyStudentId(String id);
+
+    /**
+     * 查询勤工助学月工资
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> selectDiligentStudyMonthWages(Map<String, Object> mapParam);
+
+    /**
+     * 插入或更新勤工助学月工资
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> insertAndUpdateDiligentStudyMonthWages(Map<String, Object> mapParam);
+
+    /**
+     * 删除勤工助学月工资
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> deleteDiligentStudyMonthWages(Map<String, Object> mapParam);
+
+    /**
+     * 导入勤工助学月工资
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importDiligentStudyMonthWages(MultipartFile excelFile);
 }

@@ -215,4 +215,75 @@ public class DiligentStudyController extends BaseController {
             return resultState(resultMap);
         });
     }
+
+    /******************************     勤工助学月工资   *******************************/
+
+    @GetMapping("/monthWages/add")
+    @RequiresPermissions("DILIGENT:STUDY_MONTH_WAGES_INSERT")
+    @Token(save = true)
+    public String addHtmlMonthWages(String BDSS_ID, Model model) throws Exception {
+        Map<String, Object> student = diligentStudyService.selectStudentByDiligentStudyStudentId(BDSS_ID);
+        Map<String, Object> wages = Maps.newHashMapWithExpectedSize(2);
+        wages.put("BDSS_ID", BDSS_ID);
+        wages.put("BS_NAME", student.get("BS_NAME"));
+
+        model.addAttribute("wages", wages);
+        return "admin/diligent/monthWages/addAndEdit";
+    }
+
+
+    @PostMapping("/monthWages/add")
+    @RequiresPermissions("DILIGENT:STUDY_MONTH_WAGES_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加勤工助学月工资")
+    @Token(remove = true)
+    @Validate("BUS_DILIGENT_STUDY_MONTH_WAGES")
+    @ResponseBody
+    public ResultState addMonthWages(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = diligentStudyService.insertAndUpdateDiligentStudyMonthWages(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/monthWages/update/{ID}")
+    @RequiresPermissions("DILIGENT:STUDY_MONTH_WAGES_UPDATE")
+    public String updateHtmlMonthWages(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("wages", diligentStudyService.selectDiligentStudyMonthWages(mapParam));
+        return "admin/diligent/monthWages/addAndEdit";
+    }
+
+    @PutMapping("/monthWages/update")
+    @RequiresPermissions("DILIGENT:STUDY_MONTH_WAGES_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改勤工助学月工资")
+    @Validate("BUS_DILIGENT_STUDY_MONTH_WAGES")
+    @ResponseBody
+    public ResultState updateMonthWages(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = diligentStudyService.insertAndUpdateDiligentStudyMonthWages(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/monthWages/delete/{ID}")
+    @RequiresPermissions("DILIGENT:STUDY_MONTH_WAGES_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除勤工助学月工资")
+    @ResponseBody
+    public ResultState deleteMonthWages(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = diligentStudyService.deleteDiligentStudyMonthWages(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/monthWages/import")
+    @RequiresPermissions("DILIGENT:STUDY_MONTH_WAGES_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入勤工助学月工资")
+    @ResponseBody
+    public ResultState importMonthWages(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importDiligentStudyMonthWages", 600, 600, () -> {
+            Map<String, Object> resultMap = diligentStudyService.importDiligentStudyMonthWages(excelFile);
+            return resultState(resultMap);
+        });
+    }
 }

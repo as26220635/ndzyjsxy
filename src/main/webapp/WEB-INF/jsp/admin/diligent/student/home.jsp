@@ -87,6 +87,19 @@
         );
     });
 
+    //月工资
+    $dataGridTable.find('tbody').on('click', '#monthWages', function () {
+        var data = getRowData(this);
+        var param = {
+            BDSS_ID: data.ID,
+            BDS_ID: data.BDS_ID,
+            BUS_PROCESS: data.BUS_PROCESS,
+            BUS_PROCESS2: data.BUS_PROCESS2,
+        };
+        //切换主界面
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("DILIGENT:STUDY_MONTH_WAGES")}' + urlEncode(param));
+    });
+
     //删除
     $dataGridTable.find('tbody').on('click', '#del', function () {
         var data = getRowData(this);

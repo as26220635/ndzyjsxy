@@ -27,7 +27,7 @@ public class Datebox extends BaseTagSupport {
     private String value = "";
     private String placeholder = "";
     /**
-     * 1 年 2年月 3 年月日 33 年月日 无下划线
+     * year: '1', month: '4', yearMonth: '2', yearMonthDay: '3', yearMonthDayNone: '5', datetimepicker: '6'
      */
     private int type = 1;
     /**
@@ -108,16 +108,19 @@ public class Datebox extends BaseTagSupport {
      * @return
      */
     private String getFormat(int type) {
+        //year: '1', month: '4', yearMonth: '2', yearMonthDay: '3', yearMonthDayNone: '5', datetimepicker: '6'
         if (type == 1) {
-            return "datepick.model.Y";
+            return "datepick.model.year";
         } else if (type == 2) {
-            return "datepick.model.YM";
+            return "datepick.model.yearMonth";
         } else if (type == 3) {
-            return "datepick.model.YMD";
-        } else if (type == 33) {
-            return "datepick.model.YMD_NONE";
+            return "datepick.model.yearMonthDay";
         } else if (type == 4) {
-            return "datepick.model.YMDHI";
+            return "datepick.model.month";
+        } else if (type == 5) {
+            return "datepick.model.yearMonthDayNone";
+        } else if (type == 6) {
+            return "datepick.model.datetimepicker";
         }
         return "";
     }

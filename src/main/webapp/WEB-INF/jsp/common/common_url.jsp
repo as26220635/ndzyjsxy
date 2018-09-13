@@ -328,3 +328,9 @@
 <c:set var="DILIGENT_STUDY_STUDENT_UPDATE_URL" value="${DILIGENT_STUDY_STUDENT_BASE_URL}update" scope="application"/>
 <c:set var="DILIGENT_STUDY_STUDENT_DELETE_URL" value="${DILIGENT_STUDY_STUDENT_BASE_URL}delete" scope="application"/>
 <c:set var="DILIGENT_STUDY_STUDENT_IMPORT_URL" value="${DILIGENT_STUDY_STUDENT_BASE_URL}import" scope="application"/>
+<%--勤工助学月工资--%>
+<c:set var="DILIGENT_STUDY_MONTH_WAGES_BASE_URL" value="${DILIGENT_BASE_URL}monthWages/" scope="application"/>
+<c:set var="DILIGENT_STUDY_MONTH_WAGES_ADD_URL" value="${DILIGENT_STUDY_MONTH_WAGES_BASE_URL}add" scope="application"/>
+<c:set var="DILIGENT_STUDY_MONTH_WAGES_UPDATE_URL" value="${DILIGENT_STUDY_MONTH_WAGES_BASE_URL}update" scope="application"/>
+<c:set var="DILIGENT_STUDY_MONTH_WAGES_DELETE_URL" value="${DILIGENT_STUDY_MONTH_WAGES_BASE_URL}delete" scope="application"/>
+<c:set var="DILIGENT_STUDY_MONTH_WAGES_IMPORT_URL" value="${DILIGENT_STUDY_MONTH_WAGES_BASE_URL}import" scope="application"/>

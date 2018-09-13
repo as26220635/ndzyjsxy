@@ -22,6 +22,8 @@
 <%--<script src="${BASE_URL}resources/static/plugins/moment/2.17.1/moment.min.js" async defer></script>--%>
 <%--<script src="${BASE_URL}resources/static/plugins/daterangepicker/daterangepicker.js" async defer></script>--%>
 <%-- datepicker --%>
+<script src="${BASE_URL}resources/static/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js?ver=${VERSION}"></script>
+<script src="${BASE_URL}resources/static/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?ver=${VERSION}"></script>
 <script src="${BASE_URL}resources/static/plugins/datepicker/bootstrap-datepicker.js?ver=${VERSION}"></script>
 <script src="${BASE_URL}resources/static/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js?ver=${VERSION}"></script>
 <%-- AdminLTE App --%>
