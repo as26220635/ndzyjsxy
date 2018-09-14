@@ -407,7 +407,7 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
         int status = STATUS_ERROR;
         String desc = SAVE_ERROR;
         try {
-            if (isEmpty(file)) {
+            if (isEmpty(mapParam.get("ID")) && isEmpty(file)) {
                 throw new CustomException("文件为空!");
             }
 
@@ -436,18 +436,23 @@ public class ConfigureServiceImpl extends BaseServiceImpl implements ConfigureSe
 
                 baseDao.update(NameSpace.ConfigureMapper, "updateConfigureFile", paramMap);
 
-                //删除文件
-                if (!deleteFile(id, TableName.SYS_CONFIGURE_FILE)) {
-                    throw new CustomException("文件删除失败！");
+                if(!isEmpty(file)){
+                    //删除文件
+                    if (!deleteFile(id, TableName.SYS_CONFIGURE_FILE)) {
+                        throw new CustomException("文件删除失败！");
+                    }
                 }
+
 
                 resultMap.put(MagicValue.LOG, "更新配置列表文件,更新前:" + formatColumnName(TableName.SYS_CONFIGURE_FILE, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_CONFIGURE_FILE, paramMap));
             }
 
-            //上传文件
-            Map<String, Object> result = insertFile(file, id, TableName.SYS_CONFIGURE_FILE, STATUS_SUCCESS);
-            if (!result.get("code").equals(STATUS_SUCCESS)) {
-                throw new CustomException(toString(result.get("message")));
+            if(!isEmpty(file)){
+                //上传文件
+                Map<String, Object> result = insertFile(file, id, TableName.SYS_CONFIGURE_FILE, STATUS_SUCCESS);
+                if (!result.get("code").equals(STATUS_SUCCESS)) {
+                    throw new CustomException(toString(result.get("message")));
+                }
             }
 
             status = STATUS_SUCCESS;
