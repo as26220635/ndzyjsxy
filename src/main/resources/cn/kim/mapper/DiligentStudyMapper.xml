@@ -294,7 +294,7 @@
 
     <!--查询勤工助学月工资-->
     <select id="selectDiligentStudyMonthWages" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT BDSMW.*,BDSP.BDS_ID,BS.BS_NAME
+        SELECT BDSMW.*,BDSP.BDS_ID,BDSP.BDSP_HOURLY_WAGE,BS.BS_NAME
         FROM(
             SELECT * FROM BUS_DILIGENT_STUDY_MONTH_WAGES
             <where>

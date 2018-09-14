@@ -224,6 +224,7 @@ public class DiligentStudyController extends BaseController {
     public String addHtmlMonthWages(String BDSS_ID, Model model) throws Exception {
         Map<String, Object> post = diligentStudyService.selectPostByDiligentStudyStudentId(BDSS_ID);
         Map<String, Object> student = diligentStudyService.selectStudentByDiligentStudyStudentId(BDSS_ID);
+
         Map<String, Object> wages = Maps.newHashMapWithExpectedSize(2);
         wages.put("BDSS_ID", BDSS_ID);
         wages.put("BS_NAME", student.get("BS_NAME"));

@@ -666,6 +666,12 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
             String row = joinRowStr(i + 2);
 
             String[] data = dataList.get(i);
+
+            if (data.length <= 4) {
+                resultList.add(packErrorData(row, "数据错误!"));
+                continue;
+            }
+
             //学号
             String BS_NUMBER = data[2];
             //岗位编号
@@ -724,6 +730,12 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
             String row = joinRowStr(i + 2);
 
             String[] data = dataList.get(i);
+
+            if (data.length <= 6) {
+                resultList.add(packErrorData(row, "数据错误!"));
+                continue;
+            }
+
             //岗位编号
             String BDSP_NUMBER = data[0];
             //学号

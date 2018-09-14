@@ -31,7 +31,7 @@
                    value="${wages.BDSMW_WAGES}" readonly>
         </div>
     </div>
-    <div class="form-group has-feedback form-group-md-6">
+    <div class="form-group has-feedback">
         <label>月份:</label>
         <s:datebox
                 type="4"
@@ -46,7 +46,8 @@
         form: $('#addAndEditForm'),
     });
     //计算工资总额
-    $('#BDSMW_HOUR').bind("input propertychange",function () {
-
+    $('#BDSMW_HOUR').bind("input propertychange", function () {
+        var BDSMW_HOUR = Number($(this).val()) * ${wages.BDSP_HOURLY_WAGE};
+        $('#BDSMW_WAGES').val(toFixed(BDSMW_HOUR, 6));
     });
 </script>

@@ -284,6 +284,8 @@
                 </c:if>
             },
             <c:forEach items="${COLUMN_LIST}" var="COLUMN">
+            <%--如果没有按钮的话不显示操作列--%>
+            <c:if test="${COLUMN.SCC_IS_OPERATION ne Attribute.STATUS_SUCCESS or (COLUMN.SCC_IS_OPERATION eq Attribute.STATUS_SUCCESS and BUTTON_SIZE > 0)}">
             {
                 <%--data: <c:if test="${COLUMN.SCC_IS_OPERATION eq Attribute.STATUS_SUCCESS}">null</c:if><c:if test="${COLUMN.SCC_IS_OPERATION ne Attribute.STATUS_SUCCESS}">'${COLUMN.SCC_FIELD}'</c:if>,--%>
                 data: '${fns:trueOrFalse(COLUMN.SCC_IS_OPERATION, "ID" ,COLUMN.SCC_FIELD )}',
@@ -318,6 +320,7 @@
                 }
             }
             ,
+            </c:if>
             </c:forEach>
         ],
         //操作按钮
@@ -346,7 +349,7 @@
                 }
             },
             </c:when>
-            <c:when test="${COLUMN.SCC_IS_OPERATION eq Attribute.STATUS_SUCCESS }">
+            <c:when test="${COLUMN.SCC_IS_OPERATION eq Attribute.STATUS_SUCCESS and BUTTON_SIZE > 0}">
             <%--操作按钮--%>
             {
                 targets: ${status.index + FIELD_OFFSET},

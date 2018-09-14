@@ -59,8 +59,12 @@ public class GridDataFilter extends BaseServiceImpl {
             resultBuilder.append(" AND SO_ID =" + operatorId);
         } else if (TableViewName.V_DILIGENT_STUDY_POST.equalsIgnoreCase(configureView) ||
                 TableViewName.V_DILIGENT_STUDY_STUDENT.equalsIgnoreCase(configureView)) {
-            //勤工助学 管理员和学生处不过滤
-            if (!SystemEnum.MANAGER.toString().equals(operatorType)) {
+            //勤工助学
+            if (SystemEnum.STUDENT.toString().equals(operatorType)) {
+                //学生过滤
+                resultBuilder.append(" AND BS_ID =" + tableId);
+            } else if (!SystemEnum.MANAGER.toString().equals(operatorType)) {
+                //管理员和学生处不过滤
                 //根据角色编码查询角色
                 Map<String, Object> role = this.selectRoleByCode(STUDENT_DIVISION_CODE);
                 if (!containsRole(toString(role.get("ID")))) {

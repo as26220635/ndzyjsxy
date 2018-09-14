@@ -37,7 +37,7 @@
 
         ajax.getHtml('${ROLE_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
-                    title: '修改角色',
+                    title: '修改角色:' + data.SR_NAME,
                     content: html,
                     footerModel: model.footerModel.ADMIN,
                     <shiro:hasPermission name="SYSTEM:ROLE_UPDATE_SAVE">
@@ -68,7 +68,7 @@
 
         ajax.getHtml('${ROLE_PERMISSION_TREE_MENU}' + ID, {}, function (html) {
             model.show({
-                title: '设置角色权限',
+                title: '设置角色权限:'+ data.SR_NAME,
                 content: html,
                 size: model.size.LG,
                 footerModel: model.footerModel.ADMIN,
