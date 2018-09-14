@@ -157,6 +157,7 @@
 <c:set var="PROCESS_BASE_URL" value="${MANAGER_URL}process/" scope="application"/>
 <c:set var="PROCESS_DATAGRID_BTN" value="${PROCESS_BASE_URL}showDataGridBtn" scope="application"/>
 <c:set var="PROCESS_DATAGRID_IS_EDIT" value="${PROCESS_BASE_URL}showDataGridIsEdit" scope="application"/>
+<c:set var="PROCESS_PROCESS_STATUS" value="${PROCESS_BASE_URL}getProcessAuditStatus" scope="application"/>
 <c:set var="PROCESS_SHOW_HOME" value="${PROCESS_BASE_URL}showDataGridProcess" scope="application"/>
 <c:set var="PROCESS_SUBMIT" value="${PROCESS_BASE_URL}submit" scope="application"/>
 <c:set var="PROCESS_WITHDRAW" value="${PROCESS_BASE_URL}withdraw" scope="application"/>

@@ -1,15 +1,11 @@
 package cn.kim.service.util;
 
-import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableViewName;
 import cn.kim.common.eu.SystemEnum;
 import cn.kim.entity.ActiveUser;
 import cn.kim.service.impl.BaseServiceImpl;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.TableView;
 import java.util.Map;
 
 /**
@@ -18,41 +14,17 @@ import java.util.Map;
  */
 @Component
 public class GridDataFilter extends BaseServiceImpl {
-
     /**
-     * 配置列表
+     * 学生处角色编码
      */
-    private Map<String, Object> configure;
-
-    /**
-     * 请求参数
-     */
-    private Map<String, Object> requestMap;
-
-    public GridDataFilter(Map<String, Object> configure, Map<String, Object> requestMap) {
-        this.configure = configure;
-        this.requestMap = requestMap;
-    }
-
-    /**
-     * 初始化
-     *
-     * @param configure
-     * @param requestMap
-     * @return
-     */
-    @Contract("_, _ -> new")
-    @NotNull
-    public static GridDataFilter getInstance(Map<String, Object> configure, Map<String, Object> requestMap) {
-        return new GridDataFilter(configure, requestMap);
-    }
+    private static final String STUDENT_DIVISION_CODE = "STUDENT_DIVISION";
 
     /**
      * 获取自定义过滤where条件
      *
      * @return
      */
-    public String filterWhereSql() {
+    public String filterWhereSql(Map<String, Object> configure, Map<String, Object> requestMap) {
         StringBuilder resultBuilder = new StringBuilder();
 
         ActiveUser activeUser = getActiveUser();
@@ -60,29 +32,41 @@ public class GridDataFilter extends BaseServiceImpl {
         String operatorType = activeUser.getType();
         //用户ID
         String operatorId = activeUser.getId();
+        //用户类型关联ID
+        String tableId = activeUser.getTableId();
 
-        String configureView = toString(this.configure.get("SC_VIEW")).toLowerCase();
+        String configureView = toString(configure.get("SC_VIEW")).toLowerCase();
 
         if (TableViewName.V_TEST_PROCESS.equals(configureView)) {
             //测试流程
             resultBuilder.append(" AND SO_ID = " + operatorId);
-        } else if (TableViewName.V_STUDENT.equals(configureView) ||
-                TableViewName.V_STUDENT_ATTENDANCE.equals(configureView) ||
-                TableViewName.V_STUDENT_PUNISHMENT.equals(configureView) ||
-                TableViewName.V_STUDENT_COMPREHENSIVE.equals(configureView)) {
+        } else if (TableViewName.V_STUDENT.equalsIgnoreCase(configureView) ||
+                TableViewName.V_STUDENT_ATTENDANCE.equalsIgnoreCase(configureView) ||
+                TableViewName.V_STUDENT_PUNISHMENT.equalsIgnoreCase(configureView) ||
+                TableViewName.V_STUDENT_COMPREHENSIVE.equalsIgnoreCase(configureView)) {
             //学生管理
             resultBuilder.append(getAuthorizationWhere());
-        } else if (TableViewName.V_LOG_SYSTEM.equals(configureView) ||
-                TableViewName.V_LOG_USE.equals(configureView) ||
-                TableViewName.V_LOG_PERSONAL.equals(configureView) ||
-                TableViewName.V_LOG_SEE.equals(configureView)) {
+        } else if (TableViewName.V_LOG_SYSTEM.equalsIgnoreCase(configureView) ||
+                TableViewName.V_LOG_USE.equalsIgnoreCase(configureView) ||
+                TableViewName.V_LOG_PERSONAL.equalsIgnoreCase(configureView) ||
+                TableViewName.V_LOG_SEE.equalsIgnoreCase(configureView)) {
             //日志管理 管理员可以看到全部
             if (!SystemEnum.MANAGER.toString().equals(operatorType)) {
                 resultBuilder.append(" AND SO_ID =" + operatorId);
             }
-        } else if (TableViewName.V_DOCUMENT.equals(configureView)) {
+        } else if (TableViewName.V_DOCUMENT.equalsIgnoreCase(configureView)) {
             //文件管理
             resultBuilder.append(" AND SO_ID =" + operatorId);
+        } else if (TableViewName.V_DILIGENT_STUDY_POST.equalsIgnoreCase(configureView) ||
+                TableViewName.V_DILIGENT_STUDY_STUDENT.equalsIgnoreCase(configureView)) {
+            //勤工助学 管理员和学生处不过滤
+            if (!SystemEnum.MANAGER.toString().equals(operatorType)) {
+                //根据角色编码查询角色
+                Map<String, Object> role = this.selectRoleByCode(STUDENT_DIVISION_CODE);
+                if (!containsRole(toString(role.get("ID")))) {
+                    resultBuilder.append(" AND BDS_TABLE_ID =" + tableId);
+                }
+            }
         }
 
 

@@ -94,7 +94,13 @@ public interface DiligentStudyService extends BaseService {
 
     /******************     学生月工资     *****************/
 
-
+    /**
+     * 根据勤工助学学生id查询岗位信息
+     *
+     * @param id
+     * @return
+     */
+    Map<String, Object> selectPostByDiligentStudyStudentId(String id);
 
     /**
      * 根据勤工助学学生id查询学生信息

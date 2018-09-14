@@ -46,5 +46,12 @@ public class TableViewName {
      * 文件管理
      */
     public static final String V_DOCUMENT = "v_document";
-
+    /**
+     * 勤工助学岗位
+     */
+    public static final String V_DILIGENT_STUDY_POST = "v_diligent_study_post";
+    /**
+     * 勤工助学-岗位-学生
+     */
+    public static final String V_DILIGENT_STUDY_STUDENT = "v_diligent_study_student";
 }

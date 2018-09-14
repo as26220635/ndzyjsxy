@@ -190,6 +190,27 @@ public class ProcessTool {
     }
 
     /**
+     * 获取流程审核状态
+     *
+     * @param tableId
+     * @param busProcess
+     * @param busProcess2
+     * @return
+     */
+    public static String getProcessAuditStatus(String tableId, String busProcess, String busProcess2) {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(3);
+        mapParam.put("BUS_PROCESS", busProcess);
+        mapParam.put("BUS_PROCESS2", busProcess2);
+        Map<String, Object> definition = processTool.processService.selectProcessDefinition(mapParam);
+        mapParam.clear();
+        mapParam.put("SPD_ID", definition.get("ID"));
+        mapParam.put("SPS_TABLE_ID", tableId);
+        mapParam.put("SPS_IS_CANCEL", Attribute.STATUS_ERROR);
+        Map<String, Object> schedule = processTool.processService.selectProcessSchedule(mapParam);
+        return ValidateUtil.isEmpty(schedule) ? null : TextUtil.toString(schedule.get("SPS_AUDIT_STATUS"));
+    }
+
+    /**
      * 当前登录角色是否拥有随时编辑
      *
      * @param busProcess

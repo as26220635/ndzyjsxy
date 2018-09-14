@@ -15,7 +15,7 @@
     <div class="form-group has-feedback">
         <label>学生:</label>
         <input type="text" class="form-control" ${fns:validField(TableName.BUS_DILIGENT_STUDY_MONTH_WAGES, "BS_NAME")}
-               value="${wages.BS_NAME}">
+               value="${wages.BS_NAME}" readonly>
     </div>
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">
@@ -28,7 +28,7 @@
             <label>工资总额:</label>
             <input type="text"
                    class="form-control" ${fns:validField(TableName.BUS_DILIGENT_STUDY_MONTH_WAGES, "BDSMW_WAGES")}
-                   value="${wages.BDSMW_WAGES}">
+                   value="${wages.BDSMW_WAGES}" readonly>
         </div>
     </div>
     <div class="form-group has-feedback form-group-md-6">
@@ -44,5 +44,9 @@
     validator.init({
         //验证表单
         form: $('#addAndEditForm'),
+    });
+    //计算工资总额
+    $('#BDSMW_HOUR').bind("input propertychange",function () {
+
     });
 </script>

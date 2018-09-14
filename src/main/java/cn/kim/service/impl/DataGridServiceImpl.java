@@ -12,6 +12,8 @@ import cn.kim.util.CommonUtil;
 import cn.kim.util.DictUtil;
 import cn.kim.util.TextUtil;
 import com.google.common.collect.Maps;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidKeyException;
@@ -25,6 +27,12 @@ import java.util.stream.Collectors;
  */
 @Service
 public class DataGridServiceImpl extends BaseServiceImpl implements DataGridService {
+
+    /**
+     * 自定义过滤
+     */
+    @Autowired
+    private GridDataFilter gridDataFilter;
 
     @Override
     public Map<String, Object> selectConfigureById(String configureId) {
@@ -245,7 +253,7 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
         }
         //是否开启自定义过滤
         if (!isProcess && toString(configure.get("SC_IS_FILTER")).equals(toString(STATUS_SUCCESS))) {
-            querySet.setWhere(GridDataFilter.getInstance(configure, mapParam).filterWhereSql());
+            querySet.setWhere(gridDataFilter.filterWhereSql(configure, mapParam));
         }
 
         int offset = toInt(mapParam.get("start"));

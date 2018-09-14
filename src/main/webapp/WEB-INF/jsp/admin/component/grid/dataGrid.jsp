@@ -628,6 +628,33 @@
     }
 
     /**
+     * 是否审核完成
+     * */
+    function isProcessComplete(rowData) {
+        var isSubmit = false;
+        //请求后台拿到审核状态否审核完成
+        ajax.get('${PROCESS_PROCESS_STATUS}', {
+            ID: rowData.ID,
+            BUS_PROCESS: rowData.BUS_PROCESS,
+            BUS_PROCESS2: rowData.BUS_PROCESS2
+        }, function (data) {
+            if (data == '${ProcessStatus.COMPLETE.toString()}') {
+                isSubmit = true;
+            }
+        }, false);
+        //判断是否拥有审核通过也可以修改的权限
+        if (!isSubmit) {
+            ajax.get('${PROCESS_DATAGRID_IS_EDIT}', {
+                BUS_PROCESS: rowData.BUS_PROCESS,
+                BUS_PROCESS2: rowData.BUS_PROCESS2
+            }, function (data) {
+                isSubmit = data;
+            }, false);
+        }
+        return isSubmit;
+    }
+
+    /**
      * 获取选中的行
      */
     function getDataGridSelected() {

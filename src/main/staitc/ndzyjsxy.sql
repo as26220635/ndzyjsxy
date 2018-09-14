@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : db
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80011
+ Source Server Version : 80012
  Source Host           : localhost:3306
  Source Schema         : ndzyjsxy
 
  Target Server Type    : MySQL
- Target Server Version : 80011
+ Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 14/09/2018 01:03:23
+ Date: 14/09/2018 12:10:01
 */
 
 SET NAMES utf8mb4;
@@ -209,8 +209,7 @@ CREATE TABLE `bus_diligent_study`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `BDS_YEAR`(`BDS_YEAR`, `BDS_SEMESTER`) USING BTREE,
   INDEX `BDS_TABLE_ID`(`BDS_TABLE_ID`, `BDS_TABLE_NAME`) USING BTREE,
-  INDEX `SO_ID`(`SO_ID`) USING BTREE,
-  INDEX `ID`(`ID`) USING BTREE
+  INDEX `SO_ID`(`SO_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -255,7 +254,6 @@ CREATE TABLE `bus_diligent_study_post`  (
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `BDS_ID`(`BDS_ID`) USING BTREE,
   INDEX `BDSP_NUMBER`(`BDSP_NUMBER`) USING BTREE,
-  INDEX `ID`(`ID`) USING BTREE,
   CONSTRAINT `BDSP_BDS_ID` FOREIGN KEY (`BDS_ID`) REFERENCES `bus_diligent_study` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
@@ -316,7 +314,7 @@ CREATE TABLE `bus_division`  (
 -- ----------------------------
 INSERT INTO `bus_division` VALUES ('48302941391552512', '0', '教务处', NULL, '', '', '', '', '', '', 1, '2018-08-05 23:12:28');
 INSERT INTO `bus_division` VALUES ('48302970428719104', '0', '财务处', NULL, '', '', '', '', '', '', 2, '2018-08-05 23:12:34');
-INSERT INTO `bus_division` VALUES ('48308661151334400', '0', '学生处', 'test', '', '', '', '', '', '', 3, '2018-08-05 23:35:11');
+INSERT INTO `bus_division` VALUES ('48308661151334400', '0', '学生处', 'STUDENT', '', '', '', '', '', '', 3, '2018-08-05 23:35:11');
 
 -- ----------------------------
 -- Table structure for bus_division_personnel
@@ -1120,16 +1118,16 @@ INSERT INTO `sys_configure_column` VALUES ('61348451069198336', '613476224341114
 INSERT INTO `sys_configure_column` VALUES ('61348499710541824', '61347622434111488', '学期', 'BDS_SEMESTER', 'center', '100px', '', '', 'BUS_SEMESTER', '0', '1', '0', '', '1', '0', 40);
 INSERT INTO `sys_configure_column` VALUES ('61348603632812032', '61347622434111488', '创建人', 'SAI_NAME', 'center', '200px', '', '', '', '0', '1', '0', '', '1', '0', 50);
 INSERT INTO `sys_configure_column` VALUES ('61366439151403008', '61347622434111488', '审核状态', 'PROCESS_STATUS_NAME', 'center', '100px', '', 'processLogFunc(targets, field);', '', '0', '1', '0', '', '1', '0', 60);
-INSERT INTO `sys_configure_column` VALUES ('61708463880798208', '61708463717220352', '部门名称', 'TABLE_NAME', 'left', '200px', '', '', '', '0', '1', '0', '', '1', '0', 10);
-INSERT INTO `sys_configure_column` VALUES ('61708464170205184', '61708463717220352', '类型', 'BDS_TABLE_NAME', 'center', '100px', '', '', 'SYS_OPERATOR_TYPE', '0', '1', '0', '', '1', '0', 20);
-INSERT INTO `sys_configure_column` VALUES ('61708464195371008', '61708463717220352', '学年', 'BDS_YEAR', 'center', '150px', '', '', '', '0', '1', '0', '', '1', '0', 30);
-INSERT INTO `sys_configure_column` VALUES ('61708464698687488', '61708463717220352', '学期', 'BDS_SEMESTER', 'center', '100px', '', '', 'BUS_SEMESTER', '0', '1', '0', '', '1', '0', 40);
+INSERT INTO `sys_configure_column` VALUES ('61708463880798208', '61708463717220352', '部门名称', 'TABLE_NAME', 'left', '200px', '', '', '', '0', '1', '0', '', '1', '0', 40);
+INSERT INTO `sys_configure_column` VALUES ('61708464170205184', '61708463717220352', '类型', 'BDS_TABLE_NAME', 'center', '100px', '', '', 'SYS_OPERATOR_TYPE', '0', '1', '0', '', '1', '0', 50);
+INSERT INTO `sys_configure_column` VALUES ('61708464195371008', '61708463717220352', '学年', 'BDS_YEAR', 'center', '150px', '', '', '', '0', '1', '0', '', '1', '0', 60);
+INSERT INTO `sys_configure_column` VALUES ('61708464698687488', '61708463717220352', '学期', 'BDS_SEMESTER', 'center', '100px', '', '', 'BUS_SEMESTER', '0', '1', '0', '', '1', '0', 70);
 INSERT INTO `sys_configure_column` VALUES ('61708464719659008', '61708463717220352', '创建人', 'SAI_NAME', 'center', '200px', '', '', '', '0', '1', '0', '', '1', '0', 90);
 INSERT INTO `sys_configure_column` VALUES ('61708465726291968', '61708463717220352', '录入时间', 'BDSP_ENTRY_TIME', 'center', '150px', '', '', '', '0', '1', '0', '', '1', '0', 95);
 INSERT INTO `sys_configure_column` VALUES ('61708465743069184', '61708463717220352', '操作', '', 'center', '210px', '', '', '', '0', '1', '1', '', '1', '0', 100);
-INSERT INTO `sys_configure_column` VALUES ('61708750506950656', '61708463717220352', '岗位编号', 'BDSP_NUMBER', 'center', '150px', '', '', '', '0', '1', '0', '', '1', '0', 50);
-INSERT INTO `sys_configure_column` VALUES ('61708822221160448', '61708463717220352', '岗位名称', 'BDSP_NAME', 'left', '200px', '', '', '', '0', '1', '0', '', '1', '0', 60);
-INSERT INTO `sys_configure_column` VALUES ('61708886620504064', '61708463717220352', '每小时工资', 'BDSP_HOURLY_WAGE', 'center', '120px', '', '', '', '0', '1', '0', '', '1', '0', 70);
+INSERT INTO `sys_configure_column` VALUES ('61708750506950656', '61708463717220352', '岗位编号', 'BDSP_NUMBER', 'center', '150px', '', '', '', '0', '1', '0', '', '1', '0', 10);
+INSERT INTO `sys_configure_column` VALUES ('61708822221160448', '61708463717220352', '岗位名称', 'BDSP_NAME', 'left', '200px', '', '', '', '0', '1', '0', '', '1', '0', 20);
+INSERT INTO `sys_configure_column` VALUES ('61708886620504064', '61708463717220352', '每小时工资', 'BDSP_HOURLY_WAGE', 'center', '120px', '', '', '', '0', '1', '0', '', '1', '0', 30);
 INSERT INTO `sys_configure_column` VALUES ('61709011807895552', '61708463717220352', '排序', 'BDSP_ORDER', 'center', '60px', '', '', '', '0', '1', '0', '', '1', '0', 80);
 INSERT INTO `sys_configure_column` VALUES ('62083883394400256', '62083883247599616', '部门名称', 'TABLE_NAME', 'left', '200px', '', '', '', '0', '1', '0', '', '1', '0', 60);
 INSERT INTO `sys_configure_column` VALUES ('62083883432148992', '62083883247599616', '类型', 'BDS_TABLE_NAME', 'center', '100px', '', '', 'SYS_OPERATOR_TYPE', '0', '1', '0', '', '1', '0', 70);
@@ -1139,7 +1137,7 @@ INSERT INTO `sys_configure_column` VALUES ('62083883927076864', '620838832475996
 INSERT INTO `sys_configure_column` VALUES ('62083884304564224', '62083883247599616', '岗位名称', 'BDSP_NAME', 'left', '200px', '', '', '', '0', '1', '0', '', '1', '0', 110);
 INSERT INTO `sys_configure_column` VALUES ('62083885197950976', '62083883247599616', '创建人', 'SAI_NAME', 'center', '200px', '', '', '', '0', '1', '0', '', '1', '0', 120);
 INSERT INTO `sys_configure_column` VALUES ('62083885223116800', '62083883247599616', '录入时间', 'BDSS_ENTRY_TIME', 'center', '150px', '', '', '', '0', '1', '0', '', '1', '0', 130);
-INSERT INTO `sys_configure_column` VALUES ('62083885608992768', '62083883247599616', '操作', '', 'center', '140px', '', '', '', '0', '1', '1', '', '1', '0', 140);
+INSERT INTO `sys_configure_column` VALUES ('62083885608992768', '62083883247599616', '操作', '', 'center', '210px', '', '', '', '0', '1', '1', '', '1', '0', 140);
 INSERT INTO `sys_configure_column` VALUES ('62084541052878848', '62083883247599616', '学生', 'BS_NAME', 'center', '120px', '', '', '', '0', '1', '0', '', '1', '0', 10);
 INSERT INTO `sys_configure_column` VALUES ('62084598808444928', '62083883247599616', '学号', 'BS_NUMBER', 'center', '120px', '', '', '', '0', '1', '0', '', '1', '0', 20);
 INSERT INTO `sys_configure_column` VALUES ('62084669297917952', '62083883247599616', '系部', 'BDM_NAME', 'left', '200px', '', '', '', '0', '1', '0', '', '1', '0', 30);
@@ -7050,6 +7048,90 @@ INSERT INTO `sys_log` VALUES ('62463855992766464', '1', NULL, '查看列表', '0
 INSERT INTO `sys_log` VALUES ('62463858802950144', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 01:02:53', 0);
 INSERT INTO `sys_log` VALUES ('62463892445462528', '1', NULL, '修改菜单', '0:0:0:0:0:0:0:1', 1, '2018-09-14 01:03:01', 2);
 INSERT INTO `sys_log` VALUES ('62463900813099008', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 01:03:03', 0);
+INSERT INTO `sys_log` VALUES ('62610455079682048', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-09-14 10:45:25', 9);
+INSERT INTO `sys_log` VALUES ('62610569064087552', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 10:45:52', 0);
+INSERT INTO `sys_log` VALUES ('62610586092961792', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 10:45:56', 0);
+INSERT INTO `sys_log` VALUES ('62610653122134016', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 10:46:12', 0);
+INSERT INTO `sys_log` VALUES ('62610705433493504', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 10:46:24', 0);
+INSERT INTO `sys_log` VALUES ('62610723724853248', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 10:46:29', 0);
+INSERT INTO `sys_log` VALUES ('62611024041213952', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 10:47:40', 0);
+INSERT INTO `sys_log` VALUES ('62613602992914432', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 10:57:55', 0);
+INSERT INTO `sys_log` VALUES ('62620292383506432', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:24:30', 0);
+INSERT INTO `sys_log` VALUES ('62620348234858496', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:24:43', 0);
+INSERT INTO `sys_log` VALUES ('62620364861079552', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:24:47', 0);
+INSERT INTO `sys_log` VALUES ('62620370254954496', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:24:49', 0);
+INSERT INTO `sys_log` VALUES ('62620377905364992', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:24:50', 0);
+INSERT INTO `sys_log` VALUES ('62620382737203200', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:24:52', 0);
+INSERT INTO `sys_log` VALUES ('62621706346299392', '52504512421691393', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:30:07', 9);
+INSERT INTO `sys_log` VALUES ('62621739447746560', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:30:15', 0);
+INSERT INTO `sys_log` VALUES ('62622038124134400', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:31:26', 0);
+INSERT INTO `sys_log` VALUES ('62622195750273024', '48303136200196097', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:32:04', 9);
+INSERT INTO `sys_log` VALUES ('62622220383420416', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:32:10', 0);
+INSERT INTO `sys_log` VALUES ('62622245704433664', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:32:16', 0);
+INSERT INTO `sys_log` VALUES ('62622259696631808', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:32:19', 0);
+INSERT INTO `sys_log` VALUES ('62622539842584576', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:33:26', 9);
+INSERT INTO `sys_log` VALUES ('62622585745047552', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:33:37', 0);
+INSERT INTO `sys_log` VALUES ('62622601578545152', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:33:41', 0);
+INSERT INTO `sys_log` VALUES ('62622640979836928', '1', NULL, '修改配置列表列', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:33:50', 2);
+INSERT INTO `sys_log` VALUES ('62622689201750016', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:34:01', 0);
+INSERT INTO `sys_log` VALUES ('62622789651136512', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:34:25', 0);
+INSERT INTO `sys_log` VALUES ('62622813114073088', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:34:31', 0);
+INSERT INTO `sys_log` VALUES ('62622877916069888', '1', NULL, '设置菜单按钮', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:34:46', 2);
+INSERT INTO `sys_log` VALUES ('62622888078868480', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:34:49', 0);
+INSERT INTO `sys_log` VALUES ('62623006828003328', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:35:17', 2);
+INSERT INTO `sys_log` VALUES ('62623091439697920', '1', NULL, '设置角色菜单按钮权限', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:35:37', 2);
+INSERT INTO `sys_log` VALUES ('62623179268423680', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:35:58', 0);
+INSERT INTO `sys_log` VALUES ('62623206304907264', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:36:05', 0);
+INSERT INTO `sys_log` VALUES ('62623217927323648', '52504512421691393', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-09-14 11:36:08', 1);
+INSERT INTO `sys_log` VALUES ('62623591329431552', '52504512421691393', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-09-14 11:37:37', 1);
+INSERT INTO `sys_log` VALUES ('62627102591025152', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:51:34', 0);
+INSERT INTO `sys_log` VALUES ('62627126431449088', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:51:39', 0);
+INSERT INTO `sys_log` VALUES ('62627194777632768', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:51:55', 0);
+INSERT INTO `sys_log` VALUES ('62627220270612480', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:52:02', 0);
+INSERT INTO `sys_log` VALUES ('62627235340746752', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:52:05', 0);
+INSERT INTO `sys_log` VALUES ('62627244580798464', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:52:08', 0);
+INSERT INTO `sys_log` VALUES ('62627262087823360', '52504512421691393', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-09-14 11:52:12', 1);
+INSERT INTO `sys_log` VALUES ('62627300805443584', '52504512421691393', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-09-14 11:52:21', 1);
+INSERT INTO `sys_log` VALUES ('62627534126186496', '52504512421691393', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-09-14 11:53:17', 1);
+INSERT INTO `sys_log` VALUES ('62627618104541184', '52504512421691393', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-09-14 11:53:37', 1);
+INSERT INTO `sys_log` VALUES ('62628114231984128', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:55:35', 0);
+INSERT INTO `sys_log` VALUES ('62628138760273920', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:55:41', 0);
+INSERT INTO `sys_log` VALUES ('62628145601183744', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:55:42', 0);
+INSERT INTO `sys_log` VALUES ('62628156179218432', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:55:45', 0);
+INSERT INTO `sys_log` VALUES ('62628164421025792', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:55:47', 0);
+INSERT INTO `sys_log` VALUES ('62628185350602752', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:55:52', 0);
+INSERT INTO `sys_log` VALUES ('62628939666817024', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:58:52', 0);
+INSERT INTO `sys_log` VALUES ('62628963360440320', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:58:57', 0);
+INSERT INTO `sys_log` VALUES ('62629134194442240', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:59:38', 0);
+INSERT INTO `sys_log` VALUES ('62629153752481792', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:59:43', 0);
+INSERT INTO `sys_log` VALUES ('62629163906891776', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 11:59:45', 0);
+INSERT INTO `sys_log` VALUES ('62629318798344192', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:00:22', 0);
+INSERT INTO `sys_log` VALUES ('62629580027985920', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:01:24', 0);
+INSERT INTO `sys_log` VALUES ('62629591407132672', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:01:27', 0);
+INSERT INTO `sys_log` VALUES ('62629627310374912', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:01:36', 0);
+INSERT INTO `sys_log` VALUES ('62629814011428864', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:02:20', 0);
+INSERT INTO `sys_log` VALUES ('62629841878384640', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:02:27', 0);
+INSERT INTO `sys_log` VALUES ('62629907150143488', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:02:42', 0);
+INSERT INTO `sys_log` VALUES ('62629929254125568', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:02:48', 0);
+INSERT INTO `sys_log` VALUES ('62630114407481344', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:03:32', 0);
+INSERT INTO `sys_log` VALUES ('62630148209377280', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:03:40', 0);
+INSERT INTO `sys_log` VALUES ('62630173261955072', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:03:46', 0);
+INSERT INTO `sys_log` VALUES ('62630194778734592', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:03:51', 0);
+INSERT INTO `sys_log` VALUES ('62630240622477312', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:04:02', 0);
+INSERT INTO `sys_log` VALUES ('62630297958612992', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:04:16', 2);
+INSERT INTO `sys_log` VALUES ('62630305701298176', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:04:17', 0);
+INSERT INTO `sys_log` VALUES ('62630449742086144', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:04:52', 2);
+INSERT INTO `sys_log` VALUES ('62630530658598912', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:05:11', 2);
+INSERT INTO `sys_log` VALUES ('62630671247474688', '1', NULL, '添加验证', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:05:45', 2);
+INSERT INTO `sys_log` VALUES ('62630797546356736', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:06:15', 0);
+INSERT INTO `sys_log` VALUES ('62630808204083200', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:06:17', 0);
+INSERT INTO `sys_log` VALUES ('62630866148392960', '1', NULL, '添加验证正则', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:06:31', 2);
+INSERT INTO `sys_log` VALUES ('62630871701651456', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:06:32', 0);
+INSERT INTO `sys_log` VALUES ('62630912956825600', '1', NULL, '修改验证', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:06:42', 2);
+INSERT INTO `sys_log` VALUES ('62630918208094208', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:06:43', 0);
+INSERT INTO `sys_log` VALUES ('62630949795397632', '1', NULL, '修改验证字段', '0:0:0:0:0:0:0:1', 1, '2018-09-14 12:06:51', 2);
+INSERT INTO `sys_log` VALUES ('62630970532036608', '52504512421691393', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-09-14 12:06:56', 1);
+INSERT INTO `sys_log` VALUES ('62631009471954944', '52504512421691393', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-09-14 12:07:05', 1);
 
 -- ----------------------------
 -- Table structure for sys_log_text
@@ -12329,6 +12411,90 @@ INSERT INTO `sys_log_text` VALUES ('62463856106012672', '62463855992766464', '�
 INSERT INTO `sys_log_text` VALUES ('62463858836504576', '62463858802950144', '查看菜单管理');
 INSERT INTO `sys_log_text` VALUES ('62463892474822656', '62463892445462528', '更新菜单,更新前:{访问URL=admin/dataGrid/, 是否是叶节点=0, 状态:0停用1启用=1, 用户类型:1管理员 2会员=1, 排序号=40, 权限编码=DILIGENT:STUDY_MONTH_WAGES, 权限名称=勤工助学月工资, 父权限ID=61350420869545984, ID=62462551383867392, 配置列表ID=62461073449549824, icon图片class=mdi mdi-cash},更新后:{流程大类=200, 访问URL=admin/dataGrid/, 流程小类=202, 是否是叶节点=0, 用户类型:1管理员 2会员=1, 排序号=40, 权限编码=DILIGENT:STUDY_MONTH_WAGES, 权限名称=勤工助学月工资, 父权限ID=61350420869545984, ID=62462551383867392, 配置列表ID=62461073449549824, icon图片class=mdi mdi-cash}');
 INSERT INTO `sys_log_text` VALUES ('62463900926345216', '62463900813099008', '查看勤工助学月工资');
+INSERT INTO `sys_log_text` VALUES ('62610455566221312', '62610455079682048', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('62610569542238208', '62610569064087552', '查看勤工助学月工资');
+INSERT INTO `sys_log_text` VALUES ('62610586462060544', '62610586092961792', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('62610653659004928', '62610653122134016', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62610705777426432', '62610705433493504', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('62610725633261568', '62610723724853248', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('62611024422895616', '62611024041213952', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62613603399761920', '62613602992914432', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('62620293985730560', '62620292383506432', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62620348746563584', '62620348234858496', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62620365335035904', '62620364861079552', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62620370380783616', '62620370254954496', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62620378043777024', '62620377905364992', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62620382821089280', '62620382737203200', '查看勤工助学月工资');
+INSERT INTO `sys_log_text` VALUES ('62621706564403200', '62621706346299392', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('62621740433408000', '62621739447746560', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62622038514204672', '62622038124134400', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62622196014514176', '62622195750273024', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('62622221167755264', '62622220383420416', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62622245800902656', '62622245704433664', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62622259788906496', '62622259696631808', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62622540073271296', '62622539842584576', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('62622586122534912', '62622585745047552', '查看配置列表管理');
+INSERT INTO `sys_log_text` VALUES ('62622601846980608', '62622601578545152', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('62622641386684416', '62622640979836928', '更新配置列表字段,更新前:{列名=操作, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=140px, 是否隐藏=1, 是否是操作列=1, ID=62083885608992768, SC_ID=62083883247599616, 是否导出=是, 排序=140},更新后:{列名=操作, 对齐方式=center, 是否是固定列=无, 是否是状态列=0, 宽度=210px, 是否隐藏=1, 是否是操作列=1, ID=62083885608992768, SC_ID=62083883247599616, 是否导出=是, 排序=140}');
+INSERT INTO `sys_log_text` VALUES ('62622689747009536', '62622689201750016', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('62622790045401088', '62622789651136512', '查看按钮管理');
+INSERT INTO `sys_log_text` VALUES ('62622817161576448', '62622813114073088', '查看菜单管理');
+INSERT INTO `sys_log_text` VALUES ('62622877958012928', '62622877916069888', '菜单:勤工助学学生,旧按钮:[1, 48286450940116992, 793777245519872, 793562643955712, 1795360737460224, 48286237202579456],新按钮:[1, 62462439475642368, 48286450940116992, 793777245519872, 793562643955712, 1795360737460224, 48286237202579456]');
+INSERT INTO `sys_log_text` VALUES ('62622888221474816', '62622888078868480', '查看角色管理');
+INSERT INTO `sys_log_text` VALUES ('62623006874140672', '62623006828003328', '角色:学生处,菜单名称:勤工助学学生,旧按钮:[1, 48286450940116992, 793777245519872, 793562643955712, 1795360737460224, 48286237202579456],新按钮:[1, 62462439475642368, 48286450940116992, 793777245519872, 793562643955712, 1795360737460224, 48286237202579456]');
+INSERT INTO `sys_log_text` VALUES ('62623091519389696', '62623091439697920', '角色:勤工助学初审,菜单名称:勤工助学学生,旧按钮:[1, 48286450940116992, 793777245519872, 793562643955712, 1795360737460224, 48286237202579456],新按钮:[1, 62462439475642368, 48286450940116992, 793777245519872, 793562643955712, 1795360737460224, 48286237202579456]');
+INSERT INTO `sys_log_text` VALUES ('62623179570413568', '62623179268423680', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62623206791446528', '62623206304907264', '查看勤工助学月工资');
+INSERT INTO `sys_log_text` VALUES ('62623218019598336', '62623217927323648', '文件：MyBatisExceptionTranslator.java，错误行数：77，方法：translateExceptionIfPossible，错误内容：nested exception is org.apache.ibatis.exceptions.PersistenceException: \r\n### Error querying database.  Cause: java.lang.IllegalArgumentException: Mapped Statements collection does not contain value for cn.kim.mapper.StudentMapper.selectStudentByDiligentStudyStudentId\r\n### Cause: java.lang.IllegalArgumentException: Mapped Statements collection does not contain value for cn.kim.mapper.StudentMapper.selectStudentByDiligentStudyStudentId');
+INSERT INTO `sys_log_text` VALUES ('62623591660781568', '62623591329431552', '文件：MyBatisExceptionTranslator.java，错误行数：77，方法：translateExceptionIfPossible，错误内容：nested exception is org.apache.ibatis.exceptions.PersistenceException: \r\n### Error querying database.  Cause: java.lang.IllegalArgumentException: Mapped Statements collection does not contain value for cn.kim.mapper.StudentMapper.selectStudentByDiligentStudyStudentId\r\n### Cause: java.lang.IllegalArgumentException: Mapped Statements collection does not contain value for cn.kim.mapper.StudentMapper.selectStudentByDiligentStudyStudentId');
+INSERT INTO `sys_log_text` VALUES ('62627102880432128', '62627102591025152', '查看勤工助学月工资');
+INSERT INTO `sys_log_text` VALUES ('62627126641164288', '62627126431449088', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62627195234811904', '62627194777632768', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('62627221000421376', '62627220270612480', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62627235495936000', '62627235340746752', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62627244853428224', '62627244580798464', '查看勤工助学月工资');
+INSERT INTO `sys_log_text` VALUES ('62627262192680960', '62627262087823360', '文件：MyBatisExceptionTranslator.java，错误行数：77，方法：translateExceptionIfPossible，错误内容：nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2');
+INSERT INTO `sys_log_text` VALUES ('62627301023547392', '62627300805443584', '文件：MyBatisExceptionTranslator.java，错误行数：77，方法：translateExceptionIfPossible，错误内容：nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2');
+INSERT INTO `sys_log_text` VALUES ('62627535157985280', '62627534126186496', '文件：MyBatisExceptionTranslator.java，错误行数：77，方法：translateExceptionIfPossible，错误内容：nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2');
+INSERT INTO `sys_log_text` VALUES ('62627618792407040', '62627618104541184', '文件：MyBatisExceptionTranslator.java，错误行数：77，方法：translateExceptionIfPossible，错误内容：nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2');
+INSERT INTO `sys_log_text` VALUES ('62628115293143040', '62628114231984128', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62628138848354304', '62628138760273920', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62628145701847040', '62628145601183744', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('62628156300853248', '62628156179218432', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62628164714627072', '62628164421025792', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62628185447071744', '62628185350602752', '查看勤工助学月工资');
+INSERT INTO `sys_log_text` VALUES ('62628940715393024', '62628939666817024', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('62628963528212480', '62628963360440320', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62629134324465664', '62629134194442240', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62629153907671040', '62629153752481792', '查看勤工助学月工资');
+INSERT INTO `sys_log_text` VALUES ('62629164045303808', '62629163906891776', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('62629319142277120', '62629318798344192', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62629580514525184', '62629580027985920', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62629591574904832', '62629591407132672', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('62629627419426816', '62629627310374912', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62629814191783936', '62629814011428864', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('62629841966465024', '62629841878384640', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62629907573768192', '62629907150143488', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('62629929354788864', '62629929254125568', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62630114839494656', '62630114407481344', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('62630148473618432', '62630148209377280', '查看勤工助学岗位');
+INSERT INTO `sys_log_text` VALUES ('62630173563944960', '62630173261955072', '查看勤工助学学生');
+INSERT INTO `sys_log_text` VALUES ('62630194946506752', '62630194778734592', '查看勤工助学月工资');
+INSERT INTO `sys_log_text` VALUES ('62630240827998208', '62630240622477312', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('62630298042499072', '62630297958612992', '添加验证:{IS_STATUS=1, ID=62630297476268032, 表名=V_DILIGENT_STUDY_MONTH_WAGES}');
+INSERT INTO `sys_log_text` VALUES ('62630306796011520', '62630305701298176', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('62630450325094400', '62630449742086144', '添加验证字段:{是否必填=1, 是否启用=1, ID=62630449066803200, 字段名称=BDSS_ID, 查询字段=BDSS_ID, SV_ID=62630297476268032}');
+INSERT INTO `sys_log_text` VALUES ('62630530780233728', '62630530658598912', '添加验证字段:{是否必填=1, 最大字数=3, 是否启用=1, ID=62630530067202048, 字段名称=工作时长, 查询字段=BDSMW_HOUR, SV_ID=62630297476268032}');
+INSERT INTO `sys_log_text` VALUES ('62630671331360768', '62630671247474688', '添加验证字段:{是否必填=1, 是否启用=1, ID=62630670442168320, 字段名称=月份, 查询字段=BDSMW_MONTH, SV_ID=62630297476268032}');
+INSERT INTO `sys_log_text` VALUES ('62630797873512448', '62630797546356736', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('62630808334106624', '62630808204083200', '查看正则管理');
+INSERT INTO `sys_log_text` VALUES ('62630866211307520', '62630866148392960', '添加验证正则:{IS_STATUS=1, ID=62630865301143552, 正则表达式=^(0?[[1-9]|1[0-2])$, SVR_NAME=月, 正则错误提示=月份错误!}');
+INSERT INTO `sys_log_text` VALUES ('62630871894589440', '62630871701651456', '查看验证管理');
+INSERT INTO `sys_log_text` VALUES ('62630913015545856', '62630912956825600', '更新验证,更新前:{IS_STATUS=1, 表名=V_DILIGENT_STUDY_MONTH_WAGES, ID=62630297476268032},更新后:{ID=62630297476268032, 表名=BUS_DILIGENT_STUDY_MONTH_WAGES}');
+INSERT INTO `sys_log_text` VALUES ('62630918325534720', '62630918208094208', '查看设置字段');
+INSERT INTO `sys_log_text` VALUES ('62630949883478016', '62630949795397632', '更新验证字段,更新前:{字段名称=月份, SV_ID=62630297476268032, 是否必填=1, 是否启用=1, ID=62630670442168320, 查询字段=BDSMW_MONTH},更新后:{是否必填=1, ID=62630670442168320, 字段名称=月份, 查询字段=BDSMW_MONTH, SV_ID=62630297476268032, 正则表ID=62630865301143552}');
+INSERT INTO `sys_log_text` VALUES ('62630970745946112', '62630970532036608', '文件：MyBatisExceptionTranslator.java，错误行数：77，方法：translateExceptionIfPossible，错误内容：nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2');
+INSERT INTO `sys_log_text` VALUES ('62631009694253056', '62631009471954944', '文件：MyBatisExceptionTranslator.java，错误行数：77，方法：translateExceptionIfPossible，错误内容：nested exception is org.apache.ibatis.exceptions.TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 2');
 
 -- ----------------------------
 -- Table structure for sys_long_text
@@ -12763,6 +12929,7 @@ INSERT INTO `sys_menu_button` VALUES ('62462551660691456', '62462551383867392', 
 INSERT INTO `sys_menu_button` VALUES ('62462551685857280', '62462551383867392', '793562643955712');
 INSERT INTO `sys_menu_button` VALUES ('62462551702634496', '62462551383867392', '793777245519872');
 INSERT INTO `sys_menu_button` VALUES ('62462552197562368', '62462551954292736', '763206804963328');
+INSERT INTO `sys_menu_button` VALUES ('62622877668605952', '62086611252281344', '62462439475642368');
 
 -- ----------------------------
 -- Table structure for sys_operator
@@ -12879,10 +13046,7 @@ CREATE TABLE `sys_process_definition`  (
   `IS_MULTISTAGE_BACK` int(255) NULL DEFAULT NULL COMMENT '是否允许多级回退',
   PRIMARY KEY (`ID`) USING BTREE,
   INDEX `BUS_PROCESS`(`BUS_PROCESS`, `BUS_PROCESS2`) USING BTREE,
-  INDEX `IS_STATUS`(`IS_STATUS`) USING BTREE,
-  INDEX `ID`(`ID`) USING BTREE,
-  INDEX `ID_2`(`ID`) USING BTREE,
-  INDEX `ID_3`(`ID`) USING BTREE
+  INDEX `IS_STATUS`(`IS_STATUS`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -13690,6 +13854,8 @@ INSERT INTO `sys_role_button` VALUES ('62462956054511616', '62462929320017920', 
 INSERT INTO `sys_role_button` VALUES ('62462956071288832', '62462929320017920', '48286237202579456');
 INSERT INTO `sys_role_button` VALUES ('62463185084481536', '62463181540294656', '48286450940116992');
 INSERT INTO `sys_role_button` VALUES ('62463207104577536', '62463078972784640', '793562643955712');
+INSERT INTO `sys_role_button` VALUES ('62623006614093824', '62087265463042048', '62462439475642368');
+INSERT INTO `sys_role_button` VALUES ('62623090978324480', '62087389480222720', '62462439475642368');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -13962,6 +14128,7 @@ INSERT INTO `sys_validate` VALUES ('55919078191136768', 'BUS_AID_NATIONAL_SCHOLA
 INSERT INTO `sys_validate` VALUES ('55920842806132736', 'BUS_AID_NATIONAL_GRANTS', 1);
 INSERT INTO `sys_validate` VALUES ('61356916034502656', 'BUS_DILIGENT_STUDY', 1);
 INSERT INTO `sys_validate` VALUES ('61710308674109440', 'BUS_DILIGENT_STUDY_POST', 1);
+INSERT INTO `sys_validate` VALUES ('62630297476268032', 'BUS_DILIGENT_STUDY_MONTH_WAGES', 1);
 
 -- ----------------------------
 -- Table structure for sys_validate_field
@@ -14192,6 +14359,9 @@ INSERT INTO `sys_validate_field` VALUES ('61710428534734848', '61710308674109440
 INSERT INTO `sys_validate_field` VALUES ('61710462537957376', '61710308674109440', '岗位名称', 'BDSP_NAME', '0', '', '100', '', '', '', 1);
 INSERT INTO `sys_validate_field` VALUES ('61710664002961408', '61710308674109440', '每小时工资', 'BDSP_HOURLY_WAGE', '1', '', '', '', '999', '2521757806231552', 1);
 INSERT INTO `sys_validate_field` VALUES ('61710722521890816', '61710308674109440', '排序', 'BDSP_ORDER', '1', '', '5', '', '', '2510375538917376', 1);
+INSERT INTO `sys_validate_field` VALUES ('62630449066803200', '62630297476268032', 'BDSS_ID', 'BDSS_ID', '1', '', '', '', '', '', 1);
+INSERT INTO `sys_validate_field` VALUES ('62630530067202048', '62630297476268032', '工作时长', 'BDSMW_HOUR', '1', '', '3', '', '', '', 1);
+INSERT INTO `sys_validate_field` VALUES ('62630670442168320', '62630297476268032', '月份', 'BDSMW_MONTH', '1', '', '', '', '', '62630865301143552', 1);
 
 -- ----------------------------
 -- Table structure for sys_validate_group
@@ -14269,6 +14439,7 @@ INSERT INTO `sys_validate_regex` VALUES ('2522924040847360', '英文字母', '^[
 INSERT INTO `sys_validate_regex` VALUES ('2523171857104896', '匹配中文，英文字母和数字及_', '^[\\u4e00-\\u9fa5_a-zA-Z0-9]+$', '只能输入中文、英文字母、数字、_', '1');
 INSERT INTO `sys_validate_regex` VALUES ('26504926733533184', '年份', '^(19\\d\\d|20\\d\\d|2100|20\\d\\d-20\\d\\d)$', '请输入正确的年份!', '1');
 INSERT INTO `sys_validate_regex` VALUES ('55916414480941056', '年月日日期(无下划线)', '\\d{4}(\\\\/|.)\\d{1,2}\\d{1,2}', '请输入正确的日期(如19700101)!', '1');
+INSERT INTO `sys_validate_regex` VALUES ('62630865301143552', '月', '^(0?[[1-9]|1[0-2])$', '月份错误!', '1');
 
 -- ----------------------------
 -- Table structure for sys_value_record
@@ -15989,6 +16160,14 @@ INSERT INTO `sys_value_record` VALUES ('62463675524448256', '1', 'SYS_CONFIGURE_
 INSERT INTO `sys_value_record` VALUES ('62463703039082496', '1', 'SYS_CONFIGURE_COLUMN', '62463675474116608', '{\"SCC_NAME\":\"审核状态\",\"SCC_FUNC\":\"processLogFunc(targets, field);\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"PROCESS_STATUS_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"62463675474116608\",\"SC_ID\":\"62461073449549824\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":155}', '{\"SCC_NAME\":\"审核状态\",\"SCC_FUNC\":\"processLogFunc(targets, field);\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"100px\",\"SCC_FIELD\":\"PROCESS_STATUS_NAME\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"0\",\"ID\":\"62463675474116608\",\"SC_ID\":\"62461073449549824\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"165\"}', '2018-09-14 01:02:16', 2);
 INSERT INTO `sys_value_record` VALUES ('62463840918437888', '1', 'SYS_CONFIGURE_SEARCH', '62463840880689152', NULL, '{\"SCS_METHOD_TYPE\":\"3\",\"SCS_TYPE\":\"3\",\"SCS_FIELD\":\"SPS_AUDIT_STATUS\",\"SVR_TABLE_NAME\":\"SYS_CONFIGURE_SEARCH\",\"SCS_NAME\":\"审核状态\",\"SCS_IS_STUDENT_YEAR\":\"1\",\"SCS_SDT_CODE\":\"SYS_PROCESS_STATUS\",\"SCC_IS_VISIBLE\":\"1\",\"ID\":\"62463840880689152\",\"SC_ID\":\"62461073449549824\",\"SCS_REMARK\":\"\",\"SCS_ORDER\":\"90\"}', '2018-09-14 01:02:49', 1);
 INSERT INTO `sys_value_record` VALUES ('62463892218970112', '1', 'SYS_MENU', '62462551383867392', '{\"BUS_PROCESS\":\"\",\"SM_URL\":\"admin/dataGrid/\",\"SM_URL_PARAMS\":\"\",\"BUS_PROCESS2\":\"\",\"SM_IS_LEAF\":\"0\",\"SM_TYPE\":\"1\",\"SM_ORDER\":40,\"SM_CODE\":\"DILIGENT:STUDY_MONTH_WAGES\",\"SM_NAME\":\"勤工助学月工资\",\"SM_PARENTID\":\"61350420869545984\",\"ID\":\"62462551383867392\",\"SC_ID\":\"62461073449549824\",\"SM_CLASSICON\":\"mdi mdi-cash\",\"SM_IS_EXPAND\":\"\"}', '{\"BUS_PROCESS\":\"200\",\"SM_URL\":\"admin/dataGrid/\",\"SM_URL_PARAMS\":\"\",\"BUS_PROCESS2\":\"202\",\"SM_IS_LEAF\":\"0\",\"SM_TYPE\":\"1\",\"SM_ORDER\":\"40\",\"SM_CODE\":\"DILIGENT:STUDY_MONTH_WAGES\",\"SM_NAME\":\"勤工助学月工资\",\"SM_PARENTID\":\"61350420869545984\",\"ID\":\"62462551383867392\",\"SC_ID\":\"62461073449549824\",\"SM_CLASSICON\":\"mdi mdi-cash\",\"SM_IS_EXPAND\":\"\"}', '2018-09-14 01:03:01', 2);
+INSERT INTO `sys_value_record` VALUES ('62622640392634368', '1', 'SYS_CONFIGURE_COLUMN', '62083885608992768', '{\"SCC_NAME\":\"操作\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"140px\",\"SCC_FIELD\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"1\",\"ID\":\"62083885608992768\",\"SC_ID\":\"62083883247599616\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":140}', '{\"SCC_NAME\":\"操作\",\"SCC_FUNC\":\"\",\"SCC_IS_MERGE\":\"\",\"SCC_ALIGN\":\"center\",\"SCC_IS_FIXED\":\"0\",\"SCC_IS_STATUS\":\"0\",\"SCC_WIDTH\":\"210px\",\"SCC_FIELD\":\"\",\"SCC_IS_VISIBLE\":\"1\",\"SCC_IS_OPERATION\":\"1\",\"ID\":\"62083885608992768\",\"SC_ID\":\"62083883247599616\",\"SCC_IS_EXPORT\":\"1\",\"SCC_CLASS\":\"\",\"SCC_SDT_CODE\":\"\",\"SCC_ORDER\":\"140\"}', '2018-09-14 11:33:50', 2);
+INSERT INTO `sys_value_record` VALUES ('62630297534988288', '1', 'SYS_VALIDATE', '62630297476268032', NULL, '{\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_VALIDATE\",\"ID\":\"62630297476268032\",\"SV_TABLE\":\"V_DILIGENT_STUDY_MONTH_WAGES\"}', '2018-09-14 12:04:15', 1);
+INSERT INTO `sys_value_record` VALUES ('62630449570119680', '1', 'SYS_VALIDATE_FIELD', '62630449066803200', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_VALIDATE_FIELD\",\"SVF_MAX\":\"\",\"SVF_MIN_LENGTH\":\"\",\"SVF_MIN\":\"\",\"ID\":\"62630449066803200\",\"SVF_NAME\":\"BDSS_ID\",\"SVF_FIELD\":\"BDSS_ID\",\"SV_ID\":\"62630297476268032\",\"SVR_ID\":\"\"}', '2018-09-14 12:04:52', 1);
+INSERT INTO `sys_value_record` VALUES ('62630530457272320', '1', 'SYS_VALIDATE_FIELD', '62630530067202048', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"3\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_VALIDATE_FIELD\",\"SVF_MAX\":\"\",\"SVF_MIN_LENGTH\":\"\",\"SVF_MIN\":\"\",\"ID\":\"62630530067202048\",\"SVF_NAME\":\"工作时长\",\"SVF_FIELD\":\"BDSMW_HOUR\",\"SV_ID\":\"62630297476268032\",\"SVR_ID\":\"\"}', '2018-09-14 12:05:11', 1);
+INSERT INTO `sys_value_record` VALUES ('62630670517665792', '1', 'SYS_VALIDATE_FIELD', '62630670442168320', NULL, '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_VALIDATE_FIELD\",\"SVF_MAX\":\"\",\"SVF_MIN_LENGTH\":\"\",\"SVF_MIN\":\"\",\"ID\":\"62630670442168320\",\"SVF_NAME\":\"月份\",\"SVF_FIELD\":\"BDSMW_MONTH\",\"SV_ID\":\"62630297476268032\",\"SVR_ID\":\"\"}', '2018-09-14 12:05:44', 1);
+INSERT INTO `sys_value_record` VALUES ('62630865418584064', '1', 'SYS_VALIDATE_REGEX', '62630865301143552', NULL, '{\"IS_STATUS\":1,\"SVR_TABLE_NAME\":\"SYS_VALIDATE_REGEX\",\"ID\":\"62630865301143552\",\"SVR_REGEX\":\"^(0?[[1-9]|1[0-2])$\",\"SVR_NAME\":\"月\",\"SVR_REGEX_MESSAGE\":\"月份错误!\"}', '2018-09-14 12:06:31', 1);
+INSERT INTO `sys_value_record` VALUES ('62630912386400256', '1', 'SYS_VALIDATE', '62630297476268032', '{\"SV_TABLE\":\"V_DILIGENT_STUDY_MONTH_WAGES\",\"ID\":\"62630297476268032\"}', '{\"SV_TABLE\":\"BUS_DILIGENT_STUDY_MONTH_WAGES\",\"ID\":\"62630297476268032\"}', '2018-09-14 12:06:42', 2);
+INSERT INTO `sys_value_record` VALUES ('62630949061394432', '1', 'SYS_VALIDATE_FIELD', '62630670442168320', '{\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"SVF_MAX\":\"\",\"SVF_MIN_LENGTH\":\"\",\"SVF_MIN\":\"\",\"ID\":\"62630670442168320\",\"SVF_NAME\":\"月份\",\"SVF_FIELD\":\"BDSMW_MONTH\",\"SV_ID\":\"62630297476268032\",\"SVR_ID\":\"\"}', '{\"SVF_MAX\":\"\",\"SVF_MIN_LENGTH\":\"\",\"SVF_NAME\":\"月份\",\"SV_ID\":\"62630297476268032\",\"SVR_ID\":\"62630865301143552\",\"SVF_IS_REQUIRED\":\"1\",\"SVF_MAX_LENGTH\":\"\",\"SVF_MIN\":\"\",\"ID\":\"62630670442168320\",\"SVF_FIELD\":\"BDSMW_MONTH\"}', '2018-09-14 12:06:51', 2);
 
 -- ----------------------------
 -- Table structure for test_process
@@ -16148,13 +16327,13 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_diligent_study_month_w
 -- View structure for v_diligent_study_post
 -- ----------------------------
 DROP VIEW IF EXISTS `v_diligent_study_post`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_diligent_study_post` AS select `bdsp`.`ID` AS `ID`,`bdsp`.`SO_ID` AS `SO_ID`,`bdsp`.`BDS_ID` AS `BDS_ID`,`bdsp`.`BDSP_NUMBER` AS `BDSP_NUMBER`,`bdsp`.`BDSP_NAME` AS `BDSP_NAME`,`bdsp`.`BDSP_HOURLY_WAGE` AS `BDSP_HOURLY_WAGE`,`bdsp`.`BDSP_ORDER` AS `BDSP_ORDER`,`bdsp`.`BDSP_ENTRY_TIME` AS `BDSP_ENTRY_TIME`,`bds`.`BDS_YEAR` AS `BDS_YEAR`,`bds`.`BDS_SEMESTER` AS `BDS_SEMESTER`,`bds`.`BDS_TABLE_NAME` AS `BDS_TABLE_NAME`,`bds`.`TABLE_NAME` AS `TABLE_NAME`,`bds`.`BUS_PROCESS` AS `BUS_PROCESS`,`bds`.`BUS_PROCESS2` AS `BUS_PROCESS2`,`sai`.`SAI_NAME` AS `SAI_NAME` from ((`bus_diligent_study_post` `bdsp` join `v_diligent_study` `bds` on((`bds`.`ID` = `bdsp`.`BDS_ID`))) left join `sys_account_info` `sai` on((convert(`sai`.`SO_ID` using utf8mb4) = `bdsp`.`SO_ID`)));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_diligent_study_post` AS select `bdsp`.`ID` AS `ID`,`bdsp`.`SO_ID` AS `SO_ID`,`bdsp`.`BDS_ID` AS `BDS_ID`,`bdsp`.`BDSP_NUMBER` AS `BDSP_NUMBER`,`bdsp`.`BDSP_NAME` AS `BDSP_NAME`,`bdsp`.`BDSP_HOURLY_WAGE` AS `BDSP_HOURLY_WAGE`,`bdsp`.`BDSP_ORDER` AS `BDSP_ORDER`,`bdsp`.`BDSP_ENTRY_TIME` AS `BDSP_ENTRY_TIME`,`bds`.`BDS_YEAR` AS `BDS_YEAR`,`bds`.`BDS_SEMESTER` AS `BDS_SEMESTER`,`bds`.`BDS_TABLE_NAME` AS `BDS_TABLE_NAME`,`bds`.`BDS_TABLE_ID` AS `BDS_TABLE_ID`,`bds`.`TABLE_NAME` AS `TABLE_NAME`,`bds`.`BUS_PROCESS` AS `BUS_PROCESS`,`bds`.`BUS_PROCESS2` AS `BUS_PROCESS2`,`sai`.`SAI_NAME` AS `SAI_NAME` from ((`bus_diligent_study_post` `bdsp` join `v_diligent_study` `bds` on((`bds`.`ID` = `bdsp`.`BDS_ID`))) left join `sys_account_info` `sai` on((convert(`sai`.`SO_ID` using utf8mb4) = `bdsp`.`SO_ID`)));
 
 -- ----------------------------
 -- View structure for v_diligent_study_student
 -- ----------------------------
 DROP VIEW IF EXISTS `v_diligent_study_student`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_diligent_study_student` AS select `bdss`.`ID` AS `ID`,`bdss`.`SO_ID` AS `SO_ID`,`bdss`.`BS_ID` AS `BS_ID`,`bdss`.`BDSP_ID` AS `BDSP_ID`,`bdss`.`BDSS_ENTRY_TIME` AS `BDSS_ENTRY_TIME`,`bdsp`.`BDSP_NUMBER` AS `BDSP_NUMBER`,`bdsp`.`BDSP_NAME` AS `BDSP_NAME`,`bds`.`BDS_YEAR` AS `BDS_YEAR`,`bds`.`BDS_SEMESTER` AS `BDS_SEMESTER`,`bds`.`BDS_TABLE_NAME` AS `BDS_TABLE_NAME`,`bds`.`TABLE_NAME` AS `TABLE_NAME`,`bds`.`BUS_PROCESS` AS `BUS_PROCESS`,`bds`.`BUS_PROCESS2` AS `BUS_PROCESS2`,`sai`.`SAI_NAME` AS `SAI_NAME`,`bs`.`BS_NAME` AS `BS_NAME`,`bs`.`BS_NUMBER` AS `BS_NUMBER`,`bdm`.`BDM_NAME` AS `BDM_NAME`,`bc`.`BC_NAME` AS `BC_NAME`,`bc`.`BC_MAJOR` AS `BC_MAJOR` from ((((((`bus_diligent_study_student` `bdss` join `bus_diligent_study_post` `bdsp` on((`bdsp`.`ID` = `bdss`.`BDSP_ID`))) join `v_diligent_study` `bds` on((`bds`.`ID` = `bdsp`.`BDS_ID`))) left join `sys_account_info` `sai` on((convert(`sai`.`SO_ID` using utf8mb4) = `bdsp`.`SO_ID`))) left join `bus_student` `bs` on((`bs`.`ID` = `bdss`.`BS_ID`))) left join `bus_department` `bdm` on((`bdm`.`ID` = `bs`.`BDM_ID`))) left join `bus_class` `bc` on((`bc`.`ID` = `bs`.`BC_ID`)));
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_diligent_study_student` AS select `bdss`.`ID` AS `ID`,`bdss`.`SO_ID` AS `SO_ID`,`bdss`.`BS_ID` AS `BS_ID`,`bdss`.`BDSP_ID` AS `BDSP_ID`,`bdss`.`BDSS_ENTRY_TIME` AS `BDSS_ENTRY_TIME`,`bdsp`.`BDSP_NUMBER` AS `BDSP_NUMBER`,`bdsp`.`BDSP_NAME` AS `BDSP_NAME`,`bdsp`.`BDS_ID` AS `BDS_ID`,`bds`.`BDS_YEAR` AS `BDS_YEAR`,`bds`.`BDS_SEMESTER` AS `BDS_SEMESTER`,`bds`.`BDS_TABLE_NAME` AS `BDS_TABLE_NAME`,`bds`.`BDS_TABLE_ID` AS `BDS_TABLE_ID`,`bds`.`TABLE_NAME` AS `TABLE_NAME`,`bds`.`BUS_PROCESS` AS `BUS_PROCESS`,`bds`.`BUS_PROCESS2` AS `BUS_PROCESS2`,`sai`.`SAI_NAME` AS `SAI_NAME`,`bs`.`BS_NAME` AS `BS_NAME`,`bs`.`BS_NUMBER` AS `BS_NUMBER`,`bdm`.`BDM_NAME` AS `BDM_NAME`,`bc`.`BC_NAME` AS `BC_NAME`,`bc`.`BC_MAJOR` AS `BC_MAJOR` from ((((((`bus_diligent_study_student` `bdss` join `bus_diligent_study_post` `bdsp` on((`bdsp`.`ID` = `bdss`.`BDSP_ID`))) join `v_diligent_study` `bds` on((`bds`.`ID` = `bdsp`.`BDS_ID`))) left join `sys_account_info` `sai` on((convert(`sai`.`SO_ID` using utf8mb4) = `bdsp`.`SO_ID`))) left join `bus_student` `bs` on((`bs`.`ID` = `bdss`.`BS_ID`))) left join `bus_department` `bdm` on((`bdm`.`ID` = `bs`.`BDM_ID`))) left join `bus_class` `bc` on((`bc`.`ID` = `bs`.`BC_ID`)));
 
 -- ----------------------------
 -- View structure for v_division

@@ -10,8 +10,10 @@
 
 <script>
     //设置列表属性
-    editTitle('${MENU_TITLE}${MENU.SM_NAME}');
-    editNavbarBrand('${MENU.SM_PARENT_NAME}', '${MENU.SM_NAME}');
-    editMenuTitle('${MENU_TITLE}${MENU.SM_NAME}');
-    editMenuIcon('${MENU.SM_CLASSICON}');
+    setTimeout(function () {
+        editTitle('${MENU_TITLE}${MENU.SM_NAME}');
+        editNavbarBrand('${MENU.SM_PARENT_NAME}', '${MENU.SM_NAME}');
+        editMenuTitle('${MENU_TITLE}${MENU.SM_NAME}');
+        editMenuIcon('${MENU.SM_CLASSICON}');
+    },100);
 </script>

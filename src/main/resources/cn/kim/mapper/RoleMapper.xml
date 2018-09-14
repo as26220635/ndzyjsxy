@@ -9,6 +9,9 @@
             <if test="ID != NULL and ID != ''">
                 AND ID = #{ID}
             </if>
+            <if test="SR_CODE != NULL and SR_CODE != ''">
+                AND SR_CODE = #{SR_CODE}
+            </if>
             <if test="IS_STATUS != NULL and IS_STATUS != ''">
                 AND IS_STATUS = #{IS_STATUS}
             </if>

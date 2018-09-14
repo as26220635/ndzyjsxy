@@ -4,6 +4,7 @@
 <%@ page import="cn.kim.common.attr.TableName " %>
 <%@ page import="cn.kim.common.attr.Tips" %>
 <%@ page import="cn.kim.common.eu.SystemEnum" %>
+<%@ page import="cn.kim.common.eu.ProcessStatus" %>
 <%@ page import="cn.kim.common.eu.ProcessType" %>
 <%@ page import="cn.kim.common.eu.AuthorizationType" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

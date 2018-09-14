@@ -58,9 +58,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             int BAF_TYPE = toInt(mapParam.get("BAF_TYPE"));
 
 
-            paramMap.clear();
-            paramMap.put("ID", mapParam.get("BS_ID"));
-            Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+            Map<String, Object> student = this.selectStudentById(mapParam.get("BS_ID"));
             if (isEmpty(student)) {
                 throw new CustomException("学生数据查询出错!");
             }
@@ -719,9 +717,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             //备注
             String BUS_REMARKS = getImportRemarks(data, aidType);
 
-            paramMap.clear();
-            paramMap.put("BS_NUMBER", BS_NUMBER);
-            Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+            Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
             if (isEmpty(student)) {
                 throw new CustomException("学生数据查询出错!");
             }
@@ -943,9 +939,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 resultList.add(packErrorData(row, "学号为空"));
             } else {
                 //查询数据库检查学号是否为空
-                paramMap.clear();
-                paramMap.put("BS_NUMBER", BS_NUMBER);
-                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
                 if (isEmpty(student)) {
                     resultList.add(packErrorData(row, "学号错误,没有找到对应的学生"));
                 } else {

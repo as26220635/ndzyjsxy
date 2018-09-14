@@ -414,6 +414,43 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         }
         return true;
     }
+
+    /**
+     * 根据ID查询学生
+     *
+     * @param id
+     * @return
+     */
+    protected Map<String, Object> selectStudentById(Object id) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", id);
+        return baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+    }
+
+    /**
+     * 根据学号查询学生
+     *
+     * @param studentNumber
+     * @return
+     */
+    protected Map<String, Object> selectStudentByNumber(Object studentNumber) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("BS_NUMBER", studentNumber);
+        return baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+    }
+
+
+    /**
+     * 根据角色编码查询角色
+     *
+     * @param roleCode
+     * @return
+     */
+    protected Map<String, Object> selectRoleByCode(Object roleCode) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("SR_CODE", roleCode);
+        return baseDao.selectOne(NameSpace.RoleMapper, "selectRole", paramMap);
+    }
     /*****************  流程使用    *******************/
 
     /**

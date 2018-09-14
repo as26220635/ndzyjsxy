@@ -91,6 +91,7 @@
     $dataGridTable.find('tbody').on('click', '#monthWages', function () {
         var data = getRowData(this);
         var param = {
+            TITLE: data.BS_NAME,
             BDSS_ID: data.ID,
             BDS_ID: data.BDS_ID,
             BUS_PROCESS: data.BUS_PROCESS,

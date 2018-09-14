@@ -65,6 +65,7 @@
     $dataGridTable.find('tbody').on('click', '#setPost', function () {
         var data = getRowData(this);
         var param = {
+            TITLE: data.TABLE_NAME + ',学年:' + data.BDS_YEAR + '学期:' + data.BDS_SEMESTER,
             BDS_ID: data.ID,
             BUS_PROCESS: data.BUS_PROCESS,
             BUS_PROCESS2: data.BUS_PROCESS2,

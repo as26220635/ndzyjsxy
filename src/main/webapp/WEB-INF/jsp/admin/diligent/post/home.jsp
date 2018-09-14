@@ -87,6 +87,7 @@
     $dataGridTable.find('tbody').on('click', '#setStudent', function () {
         var data = getRowData(this);
         var param = {
+            TITLE: data.BDSP_NAME + '编号:' + data.BDSP_NUMBER,
             BDSP_ID: data.ID,
             BDS_ID: data.BDS_ID,
             BUS_PROCESS: data.BUS_PROCESS,

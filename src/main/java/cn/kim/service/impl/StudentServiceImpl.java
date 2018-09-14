@@ -73,8 +73,9 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
 
     @Override
     public Map<String, Object> selectStudent(Map<String, Object> mapParam) {
-        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(2);
         paramMap.put("ID", mapParam.get("ID"));
+        paramMap.put("BS_NUMBER", mapParam.get("BS_NUMBER"));
         return baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
     }
 
@@ -735,9 +736,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 BigDecimal BSC_TOTAL = BSC_EDUCATION_SCORE.add(BSC_INTELLECTUAL_SCORE.add(BSC_VOLUNTEER_SCORE));
 
                 //查询学生
-                paramMap.clear();
-                paramMap.put("BS_NUMBER", BS_NUMBER);
-                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
 
                 //记录日志
                 paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_COMPREHENSIVE);
@@ -858,9 +857,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 continue;
             }
             //判断是否找到对应学生
-            paramMap.clear();
-            paramMap.put("BS_NUMBER", BS_NUMBER);
-            Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+            Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
             if (isEmpty(student)) {
                 resultList.add(packErrorData(row, "学号错误,没有找到对应的学生"));
             } else {

@@ -222,10 +222,12 @@ public class DiligentStudyController extends BaseController {
     @RequiresPermissions("DILIGENT:STUDY_MONTH_WAGES_INSERT")
     @Token(save = true)
     public String addHtmlMonthWages(String BDSS_ID, Model model) throws Exception {
+        Map<String, Object> post = diligentStudyService.selectPostByDiligentStudyStudentId(BDSS_ID);
         Map<String, Object> student = diligentStudyService.selectStudentByDiligentStudyStudentId(BDSS_ID);
         Map<String, Object> wages = Maps.newHashMapWithExpectedSize(2);
         wages.put("BDSS_ID", BDSS_ID);
         wages.put("BS_NAME", student.get("BS_NAME"));
+        wages.put("BDSP_HOURLY_WAGE", post.get("BDSP_HOURLY_WAGE"));
 
         model.addAttribute("wages", wages);
         return "admin/diligent/monthWages/addAndEdit";

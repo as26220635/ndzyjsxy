@@ -36,7 +36,7 @@
                     title: '添加勤工助学月工资',
                     content: html,
                     footerModel: model.footerModel.ADMIN,
-                    isConfirm: isProcessSubmit(data),
+                    isConfirm: isProcessComplete(data),
                     confirm: function ($model) {
                         var $form = $('#addAndEditForm');
                         //验证

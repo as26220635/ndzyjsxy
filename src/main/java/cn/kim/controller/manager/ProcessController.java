@@ -77,6 +77,22 @@ public class ProcessController extends BaseController {
     }
 
     /**
+     * 获取流程审核状态
+     *
+     * @param ID
+     * @param BUS_PROCESS
+     * @param BUS_PROCESS2
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getProcessAuditStatus")
+    @NotEmptyLogin
+    @ResponseBody
+    public String getProcessAuditStatus(String ID, String BUS_PROCESS, String BUS_PROCESS2) throws Exception {
+        return ProcessTool.getProcessAuditStatus(ID, BUS_PROCESS, BUS_PROCESS2);
+    }
+
+    /**
      * 当前登录角色是否拥有随时编辑
      *
      * @param BUS_PROCESS

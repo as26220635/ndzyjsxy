@@ -412,9 +412,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
                 //岗位编号
                 String BDSP_NUMBER = data[4];
                 //查询学生
-                paramMap.clear();
-                paramMap.put("BS_NUMBER", BS_NUMBER);
-                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
                 //查询岗位
                 paramMap.clear();
                 paramMap.put("BDSP_NUMBER", BDSP_NUMBER);
@@ -439,10 +437,17 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
     }
 
     @Override
+    public Map<String, Object> selectPostByDiligentStudyStudentId(String id) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", id);
+        return baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectPostByDiligentStudyStudentId", paramMap);
+    }
+
+    @Override
     public Map<String, Object> selectStudentByDiligentStudyStudentId(String id) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
         paramMap.put("ID", id);
-        return baseDao.selectOne(NameSpace.StudentMapper, "selectStudentByDiligentStudyStudentId", paramMap);
+        return baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectStudentByDiligentStudyStudentId", paramMap);
     }
 
     @Override
@@ -479,7 +484,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
             //查询岗位每小时工资
             paramMap.clear();
             paramMap.put("ID", mapParam.get("BDSS_ID"));
-            Map<String, Object> post = baseDao.selectOne(NameSpace.StudentMapper, "selectPostByDiligentStudyStudentId", paramMap);
+            Map<String, Object> post = baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectPostByDiligentStudyStudentId", paramMap);
 
             //记录日志
             paramMap.clear();
@@ -506,7 +511,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
                 //查询学生
                 paramMap.clear();
                 paramMap.put("ID", mapParam.get("BDSS_ID"));
-                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentByDiligentStudyStudentId", paramMap);
+                Map<String, Object> student = baseDao.selectOne(NameSpace.DiligentStudyMapper, "selectStudentByDiligentStudyStudentId", paramMap);
 
                 //插入流程
                 createProcessSchedule(id, toString(student.get("BS_NAME")),
@@ -611,9 +616,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
                 String BDSMW_MONTH = data[6];
 
                 //查询学生
-                paramMap.clear();
-                paramMap.put("BS_NUMBER", BS_NUMBER);
-                Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+                Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
                 //查询岗位
                 paramMap.clear();
                 paramMap.put("BDSP_NUMBER", BDSP_NUMBER);
@@ -674,9 +677,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
                 continue;
             }
             //查询数据库检查学号是否为空
-            paramMap.clear();
-            paramMap.put("BS_NUMBER", BS_NUMBER);
-            Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+            Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
             if (isEmpty(student)) {
                 resultList.add(packErrorData(row, "学号错误,没有找到对应的学生"));
             } else {
@@ -744,9 +745,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
             }
 
             //查询数据库检查学号是否为空
-            paramMap.clear();
-            paramMap.put("BS_NUMBER", BS_NUMBER);
-            Map<String, Object> student = baseDao.selectOne(NameSpace.StudentMapper, "selectStudent", paramMap);
+            Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
             if (isEmpty(student)) {
                 resultList.add(packErrorData(row, "学号错误,没有找到对应的学生"));
             } else {
