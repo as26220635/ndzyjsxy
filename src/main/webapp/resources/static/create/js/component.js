@@ -540,7 +540,7 @@ tableView = {
             //ID列
             rowId: 'ID',
             language: {
-                lengthMenu: '<select class="form-control">' + '<option value="1">1</option>' + '<option value="10">10</option>' + '<option value="20">20</option>' + '<option value="30">30</option>' + '<option value="40">40</option>' + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
+                lengthMenu: '<select class="form-control">' + '<option value="5">5</option>' + '<option value="10">10</option>' + '<option value="20">20</option>' + '<option value="30">30</option>' + '<option value="40">40</option>' + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
                 search: '搜索：',//右上角的搜索文本，可以写html标签
                 processing: '<i class="mdi mdi-24px mdi-spin mdi-loading"></i>加载中',
 
