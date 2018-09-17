@@ -64,6 +64,10 @@ public class ValidateUtil {
         return value == null || "".equals(value);
     }
 
+    public static boolean isEmpty(Set<?> set) {
+        return set == null || set.size() == 0;
+    }
+
     public static boolean isEmpty(List<?> list) {
         return list == null || list.size() == 0;
     }

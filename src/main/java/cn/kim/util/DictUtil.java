@@ -95,7 +95,7 @@ public class DictUtil {
     @Nullable
     public static DictType getDictType(String sdtCode) {
         Cache cache = CacheUtil.getCache(CacheName.DICT_CACHE);
-        if (ValidateUtil.isEmpty(cache)) {
+        if (cache.size() == 0) {
             initDictToCache();
             cache = CacheUtil.getCache(CacheName.DICT_CACHE);
         }

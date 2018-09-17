@@ -540,7 +540,7 @@ tableView = {
             //ID列
             rowId: 'ID',
             language: {
-                lengthMenu: '<select class="form-control">' + '<option value="5">5</option>' + '<option value="10">10</option>' + '<option value="20">20</option>' + '<option value="30">30</option>' + '<option value="40">40</option>' + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
+                lengthMenu: '<select class="form-control">' + '<option value="1">1</option>' + '<option value="10">10</option>' + '<option value="20">20</option>' + '<option value="30">30</option>' + '<option value="40">40</option>' + '<option value="50">50</option>' + '</select>条记录',//左上角的分页大小显示。
                 search: '搜索：',//右上角的搜索文本，可以写html标签
                 processing: '<i class="mdi mdi-24px mdi-spin mdi-loading"></i>加载中',
 
@@ -1025,6 +1025,11 @@ model = {
                         }
                     }
                 },
+            },
+            onClose: function () {
+                if (!isEmpty(options.callback)) {
+                    options.callback(false);
+                }
             }
         });
     }
@@ -1047,8 +1052,14 @@ choiceBox = {
             url: '',
             modelSize: model.size.NONE,
             footerModel: model.footerModel.ADMIN,
-            isCancel: true
+            isCancel: true,
+            value: '',
         }, options);
+
+        //选中参数
+        var valueArray = settings.value.split(SERVICE_SPLIT);
+        //完整的参数
+        var valueCompleteArray = [];
 
         //初始化table
         var $table;
@@ -1152,46 +1163,66 @@ choiceBox = {
                     endCallback: function (api) {
                         tableView.choiceBox(api, 0);
                         tableView.orderNumber(api, 1);
+                        //设置选中
+                        if (!isEmpty(options.value)) {
+                            api.rows().nodes().each(function (row, i) {
+                                if (valueArray.indexOf($(row).prop('id')) != -1) {
+                                    $table.row(row).select();
+                                }
+                            });
+
+                        }
+
                     },
                     //设置
                     setting: function ($table) {
-                        //设置选择模式
-                        // if (settings.selectMode == choiceBox.mode.SINGLE) {
-                        //     //设置单选
-                        //     $('#' + tableId + ' tbody').on('click', 'tr', function () {
-                        //         if ($(this).hasClass('selected')) {
-                        //             $(this).removeClass('selected');
-                        //         } else {
-                        //             $table.$('tr.selected').removeClass('selected');
-                        //             $(this).addClass('selected');
-                        //         }
-                        //     });
-                        //
-                        // } else if (settings.selectMode == choiceBox.mode.MULTIPLE) {
-                        //     //设置多选
-                        //     $('#' + tableId + ' tbody').on('click', 'tr', function () {
-                        //         $(this).toggleClass('selected');
-                        //     });
-                        // }
                     }
                     ,
-                })
-                ;
+                });
+                //选中
+                $table.on('select', function (e, dt, type, indexes) {
+                    if (type === 'row') {
+                        var data = $table.rows(indexes).data()[0];
+                        var id = data.ID;
+                        //单选
+                        if (settings.selectMode == choiceBox.mode.SINGLE) {
+                            valueArray = [id];
+                            valueCompleteArray = [data];
+                        } else {
+                            arrayPush(valueArray, id);
+                            arrayPush(valueCompleteArray, data);
+                        }
+                    }
+                });
+                //取消选中
+                $table.on('deselect', function (e, dt, type, indexes) {
+                    if (type === 'row') {
+                        var data = $table.rows(indexes).data()[0];
+                        var id = data.ID;
+                        //单选
+                        if (settings.selectMode == choiceBox.mode.SINGLE) {
+                            valueArray = [];
+                            valueCompleteArray = [];
+                        } else {
+                            arraySplice(valueArray, id);
+                            arraySplice(valueCompleteArray, data);
+                        }
+                    }
+                });
             },
             //点击回调
             confirm: function ($model) {
-                var data = $table.rows({selected: true}).data();
-                if (settings.isCancel == true && data.length != 0) {
+                if (settings.isCancel == true && valueCompleteArray.length != 0) {
                     model.hide($model);
                 }
-                if (settings.isCancel == true && data.length == 0) {
+                if (settings.isCancel == true && valueCompleteArray.length == 0) {
                     demo.showNotify(ALERT_WARNING, '请选择!');
                     return;
                 }
                 if (settings.selectMode == choiceBox.mode.SINGLE) {
-                    options.confirm($model, data[0]);
+                    options.confirm($model, valueCompleteArray[0]);
                 } else if (settings.selectMode == choiceBox.mode.MULTIPLE) {
-                    options.confirm($model, data);
+                    options.confirm($model, valueCompleteArray);
                 }
             }
         });
@@ -1206,7 +1237,7 @@ choiceBox = {
                 modelSize: model.size.LG,
                 url: options.url,
                 title: '选择学生',
-
+                value: $('#' + options.id).val(),
                 searchLabel: '学生姓名',
                 searchFields: [
                     {
@@ -1784,7 +1815,7 @@ datepick = {
             }
         }
 
-        if(options.model == datepick.model.datetimepicker){
+        if (options.model == datepick.model.datetimepicker) {
             var date = options.obj.datetimepicker({
                 format: settings.format,
                 weekStart: settings.weekStart,
@@ -1795,7 +1826,7 @@ datepick = {
                 todayBtn: settings.todayBtn,
                 language: 'zh-CN'
             })
-        }else{
+        } else {
             var date = options.obj.datepicker({
                 format: settings.format,
                 weekStart: settings.weekStart,
@@ -2658,6 +2689,29 @@ function isPC() {
 
 function getUrl() {
     return window.location.href;
+}
+
+/**
+ * 数组添加元素
+ * @param array
+ * @param obj
+ */
+function arrayPush(array, obj) {
+    if (array.indexOf(obj) == -1) {
+        array.push(obj);
+    }
+}
+
+/**
+ * 数组移除元素
+ * @param array
+ * @param obj
+ */
+function arraySplice(array, obj) {
+    var index = array.indexOf(obj);
+    if (index != -1) {
+        array.splice(index, 1);
+    }
 }
 
 // Returns a function, that, as long as it continues to be invoked, will not
