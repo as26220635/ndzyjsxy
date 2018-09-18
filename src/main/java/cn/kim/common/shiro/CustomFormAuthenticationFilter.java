@@ -27,10 +27,10 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
     public CustomFormAuthenticationFilter() {
     }
 
-    @Override
     /**
      * 登录验证
      */
+    @Override
     protected boolean executeLogin(ServletRequest request,
                                    ServletResponse response) throws Exception {
         CaptchaUsernamePasswordToken token = createToken(request, response);
@@ -40,7 +40,8 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
             /*图形验证码验证*/
             doCaptchaValidate((HttpServletRequest) request, token);
             Subject subject = getSubject(request, response);
-            subject.login(token);//正常验证
+            //正常验证
+            subject.login(token);
             log.info(token.getUsername() + "登录成功");
             return onLoginSuccess(token, subject, request, response);
         } catch (AuthenticationException e) {
@@ -49,7 +50,11 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
         }
     }
 
-    // 验证码校验
+    /**
+     * 验证码校验
+     * @param request
+     * @param token
+     */
     protected void doCaptchaValidate(HttpServletRequest request,
                                      CaptchaUsernamePasswordToken token) {
         //session中的图形码字符串
@@ -89,8 +94,12 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
         return WebUtils.getCleanParam(request, getCaptchaParam());
     }
 
-
-    //成功后转跳的地址
+    /**
+     * 成功后转跳的地址
+     * @param request
+     * @param response
+     * @throws Exception
+     */
     @Override
     protected void issueSuccessRedirect(ServletRequest request, ServletResponse response) throws Exception {
         //管理员跳转至主页 其他都默认返回登录前页面
@@ -101,7 +110,11 @@ public class CustomFormAuthenticationFilter extends FormAuthenticationFilter {
 //        }
     }
 
-    //保存异常对象到request
+    /**
+     * 保存异常对象到request
+     * @param request
+     * @param ae
+     */
     @Override
     protected void setFailureAttribute(ServletRequest request,
                                        AuthenticationException ae) {

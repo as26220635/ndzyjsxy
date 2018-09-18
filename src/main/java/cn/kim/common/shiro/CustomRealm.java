@@ -45,14 +45,23 @@ public class CustomRealm extends AuthorizingRealm {
     @Autowired
     private ManagerService managerService;
 
-
-    // 设置realm的名称
+    /**
+     * 设置realm的名称
+     *
+     * @param name
+     */
     @Override
     public void setName(String name) {
         super.setName("customRealm");
     }
 
-    // 用于认证
+    /**
+     * 用于认证
+     *
+     * @param token
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(
             AuthenticationToken token) throws AuthenticationException {
@@ -67,7 +76,7 @@ public class CustomRealm extends AuthorizingRealm {
             return null;
         }
 
-        //用户冻结
+        //
         if (TextUtil.toInt(user.get("IS_STATUS")) != Attribute.STATUS_SUCCESS || TextUtil.toInt(user.get("SO_IS_STATUS")) != Attribute.STATUS_SUCCESS) {
             throw new FrozenException();
         }
@@ -99,7 +108,12 @@ public class CustomRealm extends AuthorizingRealm {
         return new SimpleAuthenticationInfo(cupToken.getUsername(), password, new MySimpleByteSource(salt), this.getName());
     }
 
-    // 用于授权
+    /**
+     * 用于授权
+     *
+     * @param principals
+     * @return
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(
             PrincipalCollection principals) {

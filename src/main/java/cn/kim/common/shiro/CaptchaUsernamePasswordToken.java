@@ -6,7 +6,9 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  * Created by 余庚鑫 on 2017/2/26.
  */
 public class CaptchaUsernamePasswordToken extends UsernamePasswordToken {
-    //验证码字符串
+    /**
+     * 验证码字符串
+     */
     private String captcha;
     private String type;
     private String ip;
