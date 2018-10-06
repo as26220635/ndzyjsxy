@@ -151,6 +151,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
             paramMap.put("SO_ID", mapParam.get("SO_ID"));
             paramMap.put("BDM_ID", mapParam.get("BDM_ID"));
             paramMap.put("BDMP_NAME", mapParam.get("BDMP_NAME"));
+            paramMap.put("BDMP_POST", mapParam.get("BDMP_POST"));
 
             if (isEmpty(id)) {
                 id = getId();

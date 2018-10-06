@@ -59,7 +59,7 @@ public class DocumentServiceImpl extends BaseServiceImpl implements DocumentServ
                 paramMap.put("BD_ENTRY_TIME", getDate());
 
                 baseDao.insert(NameSpace.DocumentMapper, "insertDocument", paramMap);
-                resultMap.put(MagicValue.LOG, "添加文件:" + toString(paramMap));
+                resultMap.put(MagicValue.LOG, "添加文件:" + formatColumnName(TableName.BUS_DOCUMENT, paramMap));
             } else {
                 Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
                 oldMap.put("ID", id);

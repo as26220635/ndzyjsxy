@@ -93,12 +93,14 @@
             <if test="SO_ID != null">SO_ID,</if>
             <if test="BDM_ID != null">BDM_ID,</if>
             <if test="BDMP_NAME != null">BDMP_NAME,</if>
+            <if test="BDMP_POST != null">BDMP_POST,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
             <if test="SO_ID != null">#{SO_ID},</if>
             <if test="BDM_ID != null">#{BDM_ID},</if>
             <if test="BDMP_NAME != null">#{BDMP_NAME},</if>
+            <if test="BDMP_POST != null">#{BDMP_POST},</if>
         </trim>
     </insert>
 
@@ -110,6 +112,7 @@
             <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
             <if test="BDM_ID != null">BDM_ID=#{BDM_ID},</if>
             <if test="BDMP_NAME != null">BDMP_NAME=#{BDMP_NAME},</if>
+            <if test="BDMP_POST != null">BDMP_POST=#{BDMP_POST},</if>
         </set>
         <where>
             <if test="ID !=null">ID=#{ID}</if>

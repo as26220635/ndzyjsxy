@@ -13,14 +13,19 @@
     <input type="hidden" name="ID" value="${personnel.ID}">
     <div class="form-group has-feedback">
         <label>人员名称:</label>
-        <input type="text" class="form-control" ${fns:validField("BUS_DEPARTMENT_PERSONNEL", "BDMP_NAME")}
+        <input type="text" class="form-control" ${fns:validField(TableName.BUS_DEPARTMENT_PERSONNEL, "BDMP_NAME")}
                value="${personnel.BDMP_NAME}">
     </div>
     <div class="form-group has-feedback">
         <label>所属系部:</label>
-        <s:treeBox custom='${fns:validField("BUS_DEPARTMENT_PERSONNEL","BDM_ID")}'
+        <s:treeBox custom='${fns:validField(TableName.BUS_DEPARTMENT_PERSONNEL,"BDM_ID")}'
                    value="${personnel.BDM_ID}" nameValue="${personnel.BDM_NAME}"
                    url="${DEPARTMENT_TREE_DATA_URL}" title="选择所属系部"></s:treeBox>
+    </div>
+    <div class="form-group has-feedback">
+        <label>职务:</label>
+        <s:combobox sdtCode="BUS_DEPARTMENT_POST" custom='${fns:validField(TableName.BUS_DEPARTMENT_PERSONNEL,"BDMP_POST")}'
+                    value="${personnel.BDMP_POST}"></s:combobox>
     </div>
 </form>
 
