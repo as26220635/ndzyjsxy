@@ -207,4 +207,51 @@ public class DictUtil {
 
         return result;
     }
+
+    /**
+     * 根据字典类型和字典名称获取字典编码
+     *
+     * @param dictTypeCode
+     * @param dictInfoName
+     * @return
+     */
+    public static DictInfo getDictInfoByName(@NotNull String dictTypeCode, Object dictInfoName) {
+
+        DictType dictType = getDictType(dictTypeCode.toUpperCase());
+        if (ValidateUtil.isEmpty(dictType)) {
+            return null;
+        }
+        List<DictInfo> dictInfoList = dictType.getInfos();
+        if (ValidateUtil.isEmpty(dictInfoList)) {
+            return null;
+        }
+        DictInfo dictCode = getDictInfoByName(dictInfoList, dictInfoName);
+        if (ValidateUtil.isEmpty(dictCode)) {
+            return null;
+        }
+
+        return dictCode;
+    }
+
+    /**
+     * 递归 根据字典类型和字典名称获取字典编码
+     *
+     * @param dictInfoList
+     * @param dictInfoName
+     * @return
+     */
+    public static DictInfo getDictInfoByName(@NotNull List<DictInfo> dictInfoList, Object dictInfoName) {
+        for (DictInfo dictInfo : dictInfoList) {
+            if (dictInfo.getSdiName().equals(dictInfoName)) {
+                return dictInfo;
+            }
+            if (!ValidateUtil.isEmpty(dictInfo.getChildren())) {
+                dictInfo = getDictInfoByName(dictInfo.getChildren(), dictInfoName);
+                if (!ValidateUtil.isEmpty(dictInfo)) {
+                    return dictInfo;
+                }
+            }
+        }
+        return null;
+    }
 }

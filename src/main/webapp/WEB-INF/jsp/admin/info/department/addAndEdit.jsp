@@ -17,7 +17,7 @@
                value="${department.BDM_NAME}">
     </div>
     <div class="form-group has-feedback">
-        <label>所属院系:</label>
+        <label>所属学院:</label>
         <s:combobox sdtCode="BUS_COLLEGE" custom='${fns:validField("BUS_DEPARTMENT", "BDM_COLLEGE")}'
                     value="${department.BDM_COLLEGE}"></s:combobox>
     </div>

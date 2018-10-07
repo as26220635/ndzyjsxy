@@ -188,6 +188,18 @@
                     }
                 });
             });
+        }else{
+            //导入信息
+            ajax.file('${STUDENT_IMPORT_URL}', $form, function (data) {
+                //重置上传框
+                importFileClear();
+                ajaxReturn.data(data, $model, $dataGrid, true, {
+                    error: function () {
+                        //显示错误列表
+                        showImportError(data.data)
+                    }
+                });
+            });
         }
     }
 </script>

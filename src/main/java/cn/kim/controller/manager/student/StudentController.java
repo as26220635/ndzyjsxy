@@ -194,6 +194,18 @@ public class StudentController extends BaseController {
         }
     }
 
+    @PostMapping("/import")
+    @RequiresPermissions("STUDENT:BASE_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入学生信息")
+    @ResponseBody
+    public ResultState importStudent(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importStudent", 600, 600, () -> {
+            Map<String, Object> resultMap = studentService.importStudent(excelFile);
+            return resultState(resultMap);
+        });
+    }
+
     /**********     学生考勤    ********/
 
     @GetMapping("/attendance/add")

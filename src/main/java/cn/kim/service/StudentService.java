@@ -52,7 +52,15 @@ public interface StudentService extends BaseService {
      * @param excelFile
      * @return
      */
-    List<Map<String, Object>> importQueryStudent(MultipartFile excelFile) throws IOException, Exception;
+    List<Map<String, Object>> importQueryStudent(MultipartFile excelFile) throws Exception;
+
+    /**
+     * 导入学生信息
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importStudent(MultipartFile excelFile);
 
     /**
      * 查询学生考勤

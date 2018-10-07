@@ -15,6 +15,9 @@
                 <if test="NOT_ID != NULL and NOT_ID != ''">
                     AND ID != #{NOT_ID}
                 </if>
+                <if test="BDM_NAME != NULL and BDM_NAME != ''">
+                    AND BDM_NAME = #{BDM_NAME}
+                </if>
                 <if test="BDM_COLLEGE != NULL and BDM_COLLEGE != ''">
                     AND BDM_COLLEGE = #{BDM_COLLEGE}
                 </if>

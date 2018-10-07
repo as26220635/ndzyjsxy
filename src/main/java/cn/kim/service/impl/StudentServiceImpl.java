@@ -4,10 +4,8 @@ import cn.kim.common.attr.Constants;
 import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.TableName;
 import cn.kim.common.attr.Tips;
-import cn.kim.common.eu.AidType;
-import cn.kim.common.eu.NameSpace;
+import cn.kim.common.eu.*;
 import cn.kim.common.eu.Process;
-import cn.kim.common.eu.SystemEnum;
 import cn.kim.dao.BaseDao;
 import cn.kim.entity.*;
 import cn.kim.exception.CustomException;
@@ -88,10 +86,12 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
             String id = toString(mapParam.get("ID"));
+            //学号
+            String studentNumber = toString(mapParam.get("BS_NUMBER"));
             //验证学号 身份证 手机号是否重复
             paramMap.clear();
             paramMap.put("NOT_ID", id);
-            paramMap.put("BS_NUMBER", mapParam.get("BS_NUMBER"));
+            paramMap.put("BS_NUMBER", studentNumber);
             int count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
             if (count > 0) {
                 throw new CustomException("学号重复!");
@@ -123,9 +123,9 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("BDM_ID", mapParam.get("BDM_ID"));
             paramMap.put("BC_ID", mapParam.get("BC_ID"));
             paramMap.put("BS_NAME", mapParam.get("BS_NAME"));
-            paramMap.put("BS_NUMBER", mapParam.get("BS_NUMBER"));
+            paramMap.put("BS_NUMBER", studentNumber);
             paramMap.put("BS_LENGTH", mapParam.get("BS_LENGTH"));
-            paramMap.put("BS_ENROLMENT_YEAR", mapParam.get("BS_ENROLMENT_YEAR"));
+            paramMap.put("BS_ENROLMENT", mapParam.get("BS_ENROLMENT"));
             paramMap.put("BS_EXAMINEE_NUMBER", mapParam.get("BS_EXAMINEE_NUMBER"));
             paramMap.put("BS_ID_CARD", mapParam.get("BS_ID_CARD"));
             paramMap.put("BS_SEX", mapParam.get("BS_SEX"));
@@ -135,13 +135,20 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("BS_PHONE", mapParam.get("BS_PHONE"));
             paramMap.put("BS_PERMANENT_ADDRESS", mapParam.get("BS_PERMANENT_ADDRESS"));
             paramMap.put("BS_HOME_ADDRESS", mapParam.get("BS_HOME_ADDRESS"));
-
+            paramMap.put("BS_EDUCATION", mapParam.get("BS_EDUCATION"));
+            paramMap.put("BS_POLITICAL_OUTLOOK", mapParam.get("BS_POLITICAL_OUTLOOK"));
+            paramMap.put("BS_BIRTH_DATE", mapParam.get("BS_BIRTH_DATE"));
             if (isEmpty(id)) {
                 id = getId();
                 paramMap.put("ID", id);
                 paramMap.put("BS_ENTRY_TIME", getDate());
                 //插入账号和账号信息
-                String operatorId = insertOperator(baseDao, SystemEnum.STUDENT.getType(), id, mapParam.get("BS_NAME"));
+                String operatorId = insertOperator(baseDao, SystemEnum.STUDENT.getType(), id, mapParam.get("BS_NAME"), mapParam.get("BS_PHONE"), null);
+                //插入登入账号
+                insertOperatorSub(baseDao, operatorId, studentNumber);
+                //插入角色
+                insertOperatorRole(baseDao, operatorId, RoleCode.STUDENT.getType());
+
                 paramMap.put("SO_ID", operatorId);
 
                 baseDao.insert(NameSpace.StudentMapper, "insertStudent", paramMap);
@@ -215,6 +222,8 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                         //查询学生
                         paramMap.clear();
                         paramMap.put("IMPORT_QUERY_CONDITION", condition);
+                        //加上自定义过滤
+                        paramMap.put("whereClause", getAuthorizationWhere());
                         List<Map<String, Object>> studentList = baseDao.selectList(NameSpace.StudentMapper, "selectStudent", paramMap);
                         //没有找到记录插入一条查询失败记录
                         if (isEmpty(studentList)) {
@@ -256,7 +265,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                             }
 
                             //条件
-                            if(index == 0){
+                            if (index == 0) {
                                 excelMap.put("CONDITION", condition);
                             }
                             //系
@@ -289,6 +298,254 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                     }
                 }
             }
+        }
+
+        return resultList;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> importStudent(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = IMPORT_ERROR;
+        try {
+            List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 1);
+            //校验数据
+            List<String[]> errorList = this.checkStudentExcelData(dataList);
+            if (!isEmpty(errorList)) {
+                resultMap.put(MagicValue.DATA, errorList);
+                throw new CustomException("检测数据异常!");
+            }
+
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(16);
+
+            //导入数据
+            for (String[] data : dataList) {
+                //学院
+                String BDM_COLLEGE = data[0];
+                //系
+                String BDM_NAME = data[1];
+                //专业
+                String BC_MAJOR = data[2];
+                //班级
+                String BC_NAME = data[3];
+                //考生号
+                String BS_EXAMINEE_NUMBER = data[4];
+                //学号
+                String BS_NUMBER = data[5];
+                //姓名
+                String BS_NAME = data[6];
+                //身份证号
+                String BS_ID_CARD = data[7];
+                //学制
+                String BS_LENGTH = data[8];
+                //攻读学历
+                String BS_EDUCATION = data[9];
+                //入学日期
+                String BS_ENROLMENT = data[10];
+                //银行卡号
+                String BS_BANK_CARD = data[11];
+                //政治面貌
+                String BS_POLITICAL_OUTLOOK = data[12];
+                //民族
+                String BS_NATION = data[13];
+                //手机号
+                String BS_PHONE = data.length > 14 ? data[14] : null;
+                //户籍所在地地址
+                String BS_PERMANENT_ADDRESS = data.length > 15 ? data[15] : null;
+                //现家庭住址
+                String BS_HOME_ADDRESS = data.length > 16 ? data[16] : null;
+
+                //查询系部
+                paramMap.clear();
+                paramMap.put("BDM_NAME", BDM_NAME);
+                Map<String, Object> department = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartment", paramMap);
+                //查询班级
+                paramMap.clear();
+                paramMap.put("BC_NAME", BC_NAME);
+                Map<String, Object> cls = baseDao.selectOne(NameSpace.ClsMapper, "selectClass", paramMap);
+
+                paramMap.clear();
+                paramMap.put("BDM_ID", department.get("ID"));
+                paramMap.put("BC_ID", cls.get("ID"));
+                paramMap.put("BS_NAME", BS_NAME);
+                paramMap.put("BS_NUMBER", BS_NUMBER);
+                paramMap.put("BS_LENGTH", DictUtil.getDictCode("BUS_COLLEGE_LENGTH", BS_LENGTH));
+                //入学日期格式化
+                paramMap.put("BS_ENROLMENT", BS_ENROLMENT.contains("-") ? BS_ENROLMENT : DateUtil.getDate(DateUtil.FORMAT6, DateUtil.getDateTime(DateUtil.FORMAT7, BS_ENROLMENT)));
+                paramMap.put("BS_EXAMINEE_NUMBER", BS_EXAMINEE_NUMBER);
+                paramMap.put("BS_ID_CARD", BS_ID_CARD);
+                paramMap.put("BS_SEX", IdCardUtil.getGenderByIdCard(BS_ID_CARD));
+                paramMap.put("BS_BIRTH_DATE", IdCardUtil.getBirthByIdCard(BS_ID_CARD));
+                paramMap.put("BS_NATION", DictUtil.getDictCode("BUS_NATION", BS_NATION));
+                paramMap.put("BS_BANK_CARD", BS_BANK_CARD);
+                paramMap.put("BS_PHONE", BS_PHONE);
+                paramMap.put("BS_PERMANENT_ADDRESS", BS_PERMANENT_ADDRESS);
+                paramMap.put("BS_HOME_ADDRESS", BS_HOME_ADDRESS);
+                paramMap.put("BS_EDUCATION", DictUtil.getDictCode("BUS_EDUCATION", BS_EDUCATION));
+                paramMap.put("BS_POLITICAL_OUTLOOK", DictUtil.getDictCode("BUS_POLITICAL_OUTLOOK", BS_POLITICAL_OUTLOOK));
+
+                Map<String, Object> studentResultMap = this.insertAndUpdateStudent(paramMap);
+                //校验
+                validateResultMap(studentResultMap);
+            }
+
+            resultMap.put(MagicValue.LOG, "导入学生信息,数据:" + toString(dataList));
+            status = STATUS_SUCCESS;
+            desc = IMPORT_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 检测导入数据
+     *
+     * @param dataList
+     * @return
+     */
+    public List<String[]> checkStudentExcelData(List<String[]> dataList) {
+        List<String[]> resultList = Lists.newArrayList();
+
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+
+        if (isEmpty(dataList)) {
+            resultList.add(packErrorData("文件数据错误", "没有找到可以导入数据"));
+            return resultList;
+        }
+
+        for (int i = 0; i < dataList.size(); i++) {
+            //行
+            String row = joinRowStr(i + 1);
+
+            String[] data = dataList.get(i);
+            if (data.length < 14) {
+                resultList.add(packErrorData(row, "数据错误"));
+                continue;
+            }
+
+            //检查数据
+            List<String[]> checkIsEmptyList = checkIsEmpty(row, data, new int[]{0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 12, 13});
+            if (!isEmpty(checkIsEmptyList)) {
+                resultList.addAll(checkIsEmptyList);
+                continue;
+            } else {
+                checkIsEmptyList = checkIsNumber(row, data, new int[]{8, 10});
+                if (!isEmpty(checkIsEmptyList)) {
+                    resultList.addAll(checkIsEmptyList);
+                    continue;
+                }
+            }
+            //学院
+            String BDM_COLLEGE = data[0];
+            //系
+            String BDM_NAME = data[1];
+            //专业
+            String BC_MAJOR = data[2];
+            //班级
+            String BC_NAME = data[3];
+            //学号
+            String BS_NUMBER = data[5];
+            //身份证号
+            String BS_ID_CARD = data[7];
+            //学制
+            String BS_LENGTH = data[8];
+            //攻读学历
+            String BS_EDUCATION = data[9];
+            //政治面貌
+            String BS_POLITICAL_OUTLOOK = data[12];
+            //民族
+            String BS_NATION = data[13];
+            //手机号
+            String BS_PHONE = data.length > 14 ? data[14] : null;
+
+            //校验学院是否存在
+            DictInfo college = DictUtil.getDictInfoByName("BUS_COLLEGE", BDM_COLLEGE);
+            if (isEmpty(college)) {
+                resultList.add(packErrorData(row, "没有找到学院,请检查"));
+            }
+            //校验系是否存在
+            paramMap.clear();
+            paramMap.put("BDM_NAME", BDM_NAME);
+            Map<String, Object> department = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartment", paramMap);
+            if (isEmpty(department)) {
+                resultList.add(packErrorData(row, "没有找到系部,请检查"));
+            } else {
+                if (isEmpty(college) || !college.getSdiCode().equals(toString(department.get("BDM_COLLEGE")))) {
+                    resultList.add(packErrorData(row, "系部对应学院信息错误,当前系部学院:" + department.get("BDM_COLLEGE_NAME") + ",请检查"));
+                }
+            }
+            //校验专业
+            DictInfo major = DictUtil.getDictInfoByName("BUS_MAJOR", BC_MAJOR);
+            if (isEmpty(major)) {
+                resultList.add(packErrorData(row, "没有找到专业,请检查"));
+            }
+            //校验班级是否存在
+            paramMap.clear();
+            paramMap.put("BC_NAME", BC_NAME);
+            Map<String, Object> cls = baseDao.selectOne(NameSpace.ClsMapper, "selectClass", paramMap);
+            if (isEmpty(cls)) {
+                resultList.add(packErrorData(row, "没有找到班级,请检查"));
+            } else {
+                if (isEmpty(major) || !major.getSdiCode().equals(toString(cls.get("BC_MAJOR")))) {
+                    resultList.add(packErrorData(row, "班级对应专业信息错误,当前班级专业:" + cls.get("BC_MAJOR_NAME") + ",请检查"));
+                } else {
+                    if (!toString(cls.get("BDM_ID")).equals(toString(department.get("ID")))) {
+                        resultList.add(packErrorData(row, "班级对应系部错误,当前班级系部:" + cls.get("BDM_NAME") + ",请检查"));
+                    }
+                }
+            }
+            //校验学号、身份证、手机号是否重复
+            paramMap.clear();
+            paramMap.put("BS_NUMBER", BS_NUMBER);
+            int count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
+            if (count > 0) {
+                resultList.add(packErrorData(row, "学号重复,请检查"));
+            }
+            //验证身份证是否合法
+            if (!IdCardUtil.validateCardCodeVerifySimple(BS_ID_CARD) || !IdCardUtil.validateCardCodeVerify(BS_ID_CARD)) {
+                resultList.add(packErrorData(row, "身份证错误,请检查"));
+            } else {
+                paramMap.clear();
+                paramMap.put("BS_ID_CARD", BS_ID_CARD);
+                count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
+                if (count > 0) {
+                    resultList.add(packErrorData(row, "身份证重复,请检查"));
+                }
+                if (!isEmpty(BS_PHONE)) {
+                    paramMap.clear();
+                    paramMap.put("BS_PHONE", BS_PHONE);
+                    count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
+                    if (count > 0) {
+                        resultList.add(packErrorData(row, "电话号码重复,请检查"));
+                    }
+                }
+            }
+            //校验学制
+            DictInfo collegeLength = DictUtil.getDictInfoByName("BUS_COLLEGE_LENGTH", BS_LENGTH);
+            if (isEmpty(collegeLength)) {
+                resultList.add(packErrorData(row, "没有找到对应学制,请检查"));
+            }
+            //攻读学历
+            DictInfo education = DictUtil.getDictInfoByName("BUS_EDUCATION", BS_EDUCATION);
+            if (isEmpty(education)) {
+                resultList.add(packErrorData(row, "没有找到对应攻读学历,请检查"));
+            }
+            //政治面貌
+            DictInfo politicalOutlook = DictUtil.getDictInfoByName("BUS_POLITICAL_OUTLOOK", BS_POLITICAL_OUTLOOK);
+            if (isEmpty(politicalOutlook)) {
+                resultList.add(packErrorData(row, "没有找到对应政治面貌,请检查"));
+            }
+            //民族
+            DictInfo nation = DictUtil.getDictInfoByName("BUS_NATION", BS_NATION);
+            if (isEmpty(nation)) {
+                resultList.add(packErrorData(row, "没有找到对应民族,请检查"));
+            }
+
         }
 
         return resultList;
@@ -669,7 +926,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         try {
             List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 0);
             //校验数据
-            List<String[]> errorList = checkExcelData(dataList);
+            List<String[]> errorList = checkComprehensiveExcelData(dataList);
             if (!isEmpty(errorList)) {
                 resultMap.put(MagicValue.DATA, errorList);
                 throw new CustomException("检测数据异常!");
@@ -792,7 +1049,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
      * @param dataList
      * @return
      */
-    public List<String[]> checkExcelData(List<String[]> dataList) {
+    public List<String[]> checkComprehensiveExcelData(List<String[]> dataList) {
         List<String[]> resultList = Lists.newArrayList();
 
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);

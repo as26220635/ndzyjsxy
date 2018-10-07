@@ -220,6 +220,21 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      * @throws Exception
      */
     protected String insertOperator(BaseDao baseDao, int type, String tableId, Object accountInfoName) throws Exception {
+        return this.insertOperator(baseDao, type, tableId, accountInfoName, null, null);
+    }
+
+    /***
+     * 插入账号  SYS_OPERATOR SYS_ACCOUNT_INFO
+     * @param baseDao
+     * @param type 类型
+     * @param tableId 类型关联id
+     * @param accountInfoName 真实姓名
+     * @param accountPhone 手机号
+     * @param accountEmail 邮箱
+     * @return
+     * @throws Exception
+     */
+    protected String insertOperator(BaseDao baseDao, int type, String tableId, Object accountInfoName, Object accountPhone, Object accountEmail) throws Exception {
         //插入账号和账号信息
         String operatorId = getId();
         //插入账号和账号信息
@@ -239,11 +254,53 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         operatorMap.put("ID", getId());
         operatorMap.put("SO_ID", operatorId);
         operatorMap.put("SAI_NAME", toString(accountInfoName));
+        operatorMap.put("SAI_PHONE", accountPhone);
+        operatorMap.put("SAI_EMAIL", accountEmail);
         operatorMap.put("SAI_TABLE_ID", tableId);
         operatorMap.put("SAI_TYPE", type);
         baseDao.insert(NameSpace.OperatorMapper, "insertAccountInfo", operatorMap);
 
         return operatorId;
+    }
+
+    /**
+     * 插入登入账号  SYS_OPERATOR_SUB
+     *
+     * @param baseDao
+     * @param operatorId 用户id
+     * @param userName   用户名
+     */
+    protected void insertOperatorSub(BaseDao baseDao, String operatorId, String userName) throws Exception {
+        Map<String, Object> operatorMap = Maps.newHashMapWithExpectedSize(6);
+        operatorMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_OPERATOR_SUB);
+        operatorMap.put("ID", getId());
+        operatorMap.put("SO_ID", operatorId);
+        operatorMap.put("SOS_USERNAME", userName);
+        operatorMap.put("SOS_CREATETIME", getDate());
+        operatorMap.put("SOS_DEFAULT", STATUS_SUCCESS);
+        operatorMap.put("IS_STATUS", STATUS_SUCCESS);
+        baseDao.insert(NameSpace.OperatorMapper, "insertOperatorSub", operatorMap);
+    }
+
+    /**
+     * 插入用户所属角色
+     *
+     * @param baseDao
+     * @param operatorId 用户id
+     * @param roleCode   角色编码
+     */
+    protected void insertOperatorRole(BaseDao baseDao, String operatorId, String roleCode) throws Exception {
+        Map<String, Object> role = this.selectRoleByCode(roleCode);
+        if (isEmpty(role)) {
+            throw new NullPointerException("根据角色编码没有查询到角色!");
+        }
+
+        //插入用户所属角色
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+        paramMap.put("ID", getId());
+        paramMap.put("SO_ID", operatorId);
+        paramMap.put("SR_ID", role.get("ID"));
+        baseDao.insert(NameSpace.OperatorMapper, "insertOperatorRole", paramMap);
     }
 
     /**
@@ -451,6 +508,7 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         paramMap.put("SR_CODE", roleCode);
         return baseDao.selectOne(NameSpace.RoleMapper, "selectRole", paramMap);
     }
+
     /*****************  流程使用    *******************/
 
     /**

@@ -18,6 +18,8 @@ public class DateUtil {
     public static final String FORMAT3 = "yyyyMMdd";
     public static final String FORMAT4 = "HH:mm:ss";
     public static final String FORMAT5 = "yyyy-MM-dd_HH_mm_ss";
+    public static final String FORMAT6 = "yyyy-MM";
+    public static final String FORMAT7 = "yyyyMM";
 
     /**
      * 获取数据库日期

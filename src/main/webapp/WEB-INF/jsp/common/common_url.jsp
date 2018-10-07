@@ -233,6 +233,7 @@
 <%--学生--%>
 <c:set var="STUDENT_BASE_URL" value="${MANAGER_URL}student/" scope="application"/>
 <c:set var="STUDENT_LIST_URL" value="${STUDENT_BASE_URL}list" scope="application"/>
+<c:set var="STUDENT_IMPORT_URL" value="${STUDENT_BASE_URL}import" scope="application"/>
 <c:set var="STUDENT_IMPORT_QUERY_URL" value="${STUDENT_BASE_URL}importQuery" scope="application"/>
 <c:set var="STUDENT_ADD_URL" value="${STUDENT_BASE_URL}add" scope="application"/>
 <c:set var="STUDENT_UPDATE_URL" value="${STUDENT_BASE_URL}update" scope="application"/>

@@ -51,9 +51,15 @@ public class ActiveUser implements java.io.Serializable {
     private int isDefaultPwd;
 
     /**
+     * 真实姓名
+     */
+    private int accountName;
+
+    /**
      * 菜单
      */
     private List<Map<String, Object>> menus;
+
     /**
      * 菜单按钮权限
      */

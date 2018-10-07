@@ -1,6 +1,7 @@
 package cn.kim.service.util;
 
 import cn.kim.common.attr.TableViewName;
+import cn.kim.common.eu.RoleCode;
 import cn.kim.common.eu.SystemEnum;
 import cn.kim.entity.ActiveUser;
 import cn.kim.service.impl.BaseServiceImpl;
@@ -14,11 +15,6 @@ import java.util.Map;
  */
 @Component
 public class GridDataFilter extends BaseServiceImpl {
-    /**
-     * 学生处角色编码
-     */
-    private static final String STUDENT_DIVISION_CODE = "STUDENT_DIVISION";
-
     /**
      * 获取自定义过滤where条件
      *
@@ -66,7 +62,7 @@ public class GridDataFilter extends BaseServiceImpl {
             } else if (!SystemEnum.MANAGER.toString().equals(operatorType)) {
                 //管理员和学生处不过滤
                 //根据角色编码查询角色
-                Map<String, Object> role = this.selectRoleByCode(STUDENT_DIVISION_CODE);
+                Map<String, Object> role = this.selectRoleByCode(RoleCode.STUDENT_DIVISION.getType());
                 if (!containsRole(toString(role.get("ID")))) {
                     resultBuilder.append(" AND BDS_TABLE_ID =" + tableId);
                 }
