@@ -293,7 +293,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
 
             List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.COLLEGE_SCHOLARSHIP, Process.AID, Process.AID_COLLEGE_SCHOLARSHIP, "BUS_COLLEGE_SCHOLARSHIP_TYPE");
 
-            resultMap.put(MagicValue.LOG, "导入学院奖学金,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入学院奖学金,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -320,7 +320,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             //导入
             List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.COMMEND, Process.AID, Process.AID_COMMEND, "BUS_COMMEND_TYPE");
 
-            resultMap.put(MagicValue.LOG, "导入学院奖学金,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入学院奖学金,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -347,7 +347,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             //导入
             List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.GREEN_CHANNEL, Process.AID, Process.AID_GREEN_CHANNEL, null);
 
-            resultMap.put(MagicValue.LOG, "导入绿色通道,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入绿色通道,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -374,7 +374,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             //导入
             List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.TUITION_WAIVER, Process.AID, Process.AID_TUITION_WAIVER, "BUS_TUITION_WAIVER");
 
-            resultMap.put(MagicValue.LOG, "导入减免学费,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入减免学费,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -401,7 +401,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             //导入
             List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.JOBSEEKER_SUPPORT, Process.AID, Process.AID_JOBSEEKER_SUPPORT, "BUS_DIFFICULTY_TYPE");
 
-            resultMap.put(MagicValue.LOG, "导入困难毕业生就业补助,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入困难毕业生就业补助,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -428,7 +428,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             //导入
             List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.EMERGENCY_HELP, Process.AID, Process.AID_EMERGENCY_HELP, "BUS_DIFFICULTY_TYPE");
 
-            resultMap.put(MagicValue.LOG, "导入应急求助,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入应急求助,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -463,7 +463,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             //导入
             List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.NATIONAL_SCHOLARSHIP, Process.AID, Process.AID_NATIONAL_SCHOLARSHIP, null);
 
-            resultMap.put(MagicValue.LOG, "导入国家奖学金,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入国家奖学金,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -497,7 +497,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             //导入
             List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.NATIONAL_GRANTS, Process.AID, Process.AID_NATIONAL_GRANTS, null);
 
-            resultMap.put(MagicValue.LOG, "导入国家助学金,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入国家助学金,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -531,7 +531,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             //导入
             List<String[]> dataList = importAid(resultMap, baseDao, excelFile, AidType.NATIONAL_ENDEAVOR, Process.AID, Process.AID_NATIONAL_ENDEAVOR, null);
 
-            resultMap.put(MagicValue.LOG, "导入国家励志奖学金,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入国家励志奖学金,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {

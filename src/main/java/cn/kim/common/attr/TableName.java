@@ -168,6 +168,11 @@ public class TableName {
     public static final String BUS_STUDENT_COMPREHENSIVE = "BUS_STUDENT_COMPREHENSIVE";
 
     /**
+     * 学生困难认定
+     */
+    public static final String BUS_STUDENT_DIFFICULTY = "BUS_STUDENT_DIFFICULTY";
+
+    /**
      * 学生考勤
      */
     public static final String BUS_STUDENT_ATTENDANCE = "BUS_STUDENT_ATTENDANCE";

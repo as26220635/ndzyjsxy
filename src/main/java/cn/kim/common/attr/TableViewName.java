@@ -25,6 +25,10 @@ public class TableViewName {
      * 学生管理-综合素质测评
      */
     public static final String V_STUDENT_COMPREHENSIVE = "v_student_comprehensive";
+    /**
+     * 学生管理-困难学生认定
+     */
+    public static final String V_STUDENT_DIFFICULTY = "v_student_difficulty";
 
     /**
      * 系统日志

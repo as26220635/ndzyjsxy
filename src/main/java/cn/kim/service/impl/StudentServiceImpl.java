@@ -63,6 +63,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         dataTablesView.setRecordsTotal(count);
         dataTablesView.setTotalPages(CommonUtil.getPage(count, limit));
 
+        System.out.println(toString(querySet.getWhereMap()));
         List<Map<String, Object>> dataList = baseDao.selectList(NameSpace.StudentMapper, "selectStudentList", querySet.getWhereMap());
         dataTablesView.setData(dataList);
 
@@ -391,7 +392,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 validateResultMap(studentResultMap);
             }
 
-            resultMap.put(MagicValue.LOG, "导入学生信息,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入学生信息,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -1032,7 +1033,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             //计算排名
             calculationRank(baseDao, toString(cls.get("ID")), year, semester);
 
-            resultMap.put(MagicValue.LOG, "导入学生综合素质测评,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入学生综合素质测评,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -1181,5 +1182,273 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("BSC_INTELLECTUAL_RANK", rank);
             baseDao.update(NameSpace.StudentExtendMapper, "updateStudentComprehensive", paramMap);
         }
+    }
+
+    /***********    困难学生认定    *********/
+
+    @Override
+    public Map<String, Object> selectStudentDifficulty(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(4);
+        paramMap.put("ID", mapParam.get("ID"));
+        paramMap.put("BS_ID", mapParam.get("BS_ID"));
+        return baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentDifficulty", paramMap);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insertAndUpdateStudentDifficulty(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+            String id = toString(mapParam.get("ID"));
+
+            paramMap.put("NOT_ID", id);
+            paramMap.put("BS_ID", mapParam.get("BS_ID"));
+            int count = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentDifficultyCount", paramMap);
+            if (count > 0) {
+                throw new CustomException("该学生已经认定困难学生!");
+            }
+
+            paramMap.clear();
+
+            //记录日志
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_DIFFICULTY);
+
+            paramMap.put("ID", id);
+            paramMap.put("BS_ID", mapParam.get("BS_ID"));
+            paramMap.put("BSD_TYPE", mapParam.get("BSD_TYPE"));
+            paramMap.put("BSD_COGNIZANCE_TIME", mapParam.get("BSD_COGNIZANCE_TIME"));
+            paramMap.put("BSD_COGNIZANCE_REASON", mapParam.get("BSD_COGNIZANCE_REASON"));
+            paramMap.put("BSD_CLASS_REASON", mapParam.get("BSD_CLASS_REASON"));
+            paramMap.put("BSD_GRADE_REASON", mapParam.get("BSD_GRADE_REASON"));
+
+            if (isEmpty(id)) {
+                id = getId();
+                paramMap.put("ID", id);
+                paramMap.put("BSD_ENTRY_TIME", getDate());
+
+                baseDao.insert(NameSpace.StudentExtendMapper, "insertStudentDifficulty", paramMap);
+                resultMap.put(MagicValue.LOG, "添加困难学生认定:" + formatColumnName(TableName.BUS_STUDENT_DIFFICULTY, paramMap));
+            } else {
+                Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+                oldMap.put("ID", id);
+                oldMap = selectStudentDifficulty(oldMap);
+
+                baseDao.update(NameSpace.StudentExtendMapper, "updateStudentDifficulty", paramMap);
+                resultMap.put(MagicValue.LOG, "更新困难学生认定,更新前:" + formatColumnName(TableName.BUS_STUDENT_DIFFICULTY, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_STUDENT_DIFFICULTY, paramMap));
+            }
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteStudentDifficulty(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = DELETE_ERROR;
+        try {
+            if (isEmpty(mapParam.get("ID"))) {
+                throw new CustomException(Tips.ID_NULL_ERROR);
+            }
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            String id = toString(mapParam.get("ID"));
+
+            //删除困难学生认定表
+            paramMap.clear();
+            paramMap.put("ID", id);
+            Map<String, Object> oldMap = selectStudentDifficulty(paramMap);
+            //记录日志
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_STUDENT_DIFFICULTY);
+
+            baseDao.delete(NameSpace.StudentExtendMapper, "deleteStudentDifficulty", paramMap);
+
+            resultMap.put(MagicValue.LOG, "删除困难学生认定,信息:" + formatColumnName(TableName.BUS_STUDENT_DIFFICULTY, oldMap));
+            status = STATUS_SUCCESS;
+            desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> importStudentDifficulty(MultipartFile excelFile) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = IMPORT_ERROR;
+        try {
+            List<String[]> dataList = PoiUtil.readExcel(excelFile, 0, 2);
+            //校验数据
+            List<String[]> errorList = this.checkStudentDifficultyExcelData(dataList);
+            if (!isEmpty(errorList)) {
+                resultMap.put(MagicValue.DATA, errorList);
+                throw new CustomException("检测数据异常!");
+            }
+
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(16);
+
+            //导入数据
+            for (String[] data : dataList) {
+                //学号
+                String BS_NUMBER = data[3];
+                //认定困难级别名称
+                String BSD_TYPE = data[7];
+                //认定时间
+                String BSD_COGNIZANCE_TIME = data[8];
+                //认定时间
+                String BSD_COGNIZANCE_REASON = data[9];
+                //认定时间
+                String BSD_CLASS_REASON = data.length > 10 ? data[10] : null;
+                //认定时间
+                String BSD_GRADE_REASON = data.length > 11 ? data[11] : null;
+
+                //查询学生
+                Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
+
+                paramMap.clear();
+                paramMap.put("BS_ID", student.get("ID"));
+                paramMap.put("BSD_TYPE", DictUtil.getDictCode("BUS_DIFFICULTY_TYPE", BSD_TYPE));
+                paramMap.put("BSD_COGNIZANCE_TIME", BSD_COGNIZANCE_TIME);
+                paramMap.put("BSD_COGNIZANCE_REASON", BSD_COGNIZANCE_REASON);
+                paramMap.put("BSD_CLASS_REASON", BSD_CLASS_REASON);
+                paramMap.put("BSD_GRADE_REASON", BSD_GRADE_REASON);
+                Map<String, Object> difficultyResultMap = this.insertAndUpdateStudentDifficulty(paramMap);
+                //校验
+                validateResultMap(difficultyResultMap);
+            }
+
+            resultMap.put(MagicValue.LOG, "导入困难学生认定信息,数据:" + listToString(dataList));
+            status = STATUS_SUCCESS;
+            desc = IMPORT_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 检测导入数据
+     *
+     * @param dataList
+     * @return
+     */
+    public List<String[]> checkStudentDifficultyExcelData(List<String[]> dataList) {
+        List<String[]> resultList = Lists.newArrayList();
+
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+
+        if (isEmpty(dataList)) {
+            resultList.add(packErrorData("文件数据错误", "没有找到可以导入数据"));
+            return resultList;
+        }
+
+        for (int i = 0; i < dataList.size(); i++) {
+            //行
+            String row = joinRowStr(i + 1);
+
+            String[] data = dataList.get(i);
+            if (data.length < 9) {
+                resultList.add(packErrorData(row, "数据错误"));
+                continue;
+            }
+
+            //检查数据
+            List<String[]> checkIsEmptyList = checkIsEmpty(row, data, new int[]{0, 1, 2, 3, 4, 6, 7, 8, 9});
+            if (!isEmpty(checkIsEmptyList)) {
+                resultList.addAll(checkIsEmptyList);
+                continue;
+            }
+            //学院
+            String BDM_COLLEGE = data[0];
+            //系
+            String BDM_NAME = data[1];
+            //班级
+            String BC_NAME = data[2];
+            //学号
+            String BS_NUMBER = data[3];
+            //身份证号
+            String BS_ID_CARD = data[6];
+            //认定困难级别名称
+            String BSD_TYPE = data[7];
+            //认定时间
+            String BSD_COGNIZANCE_TIME = data[8];
+
+            //校验学院是否存在
+            DictInfo college = DictUtil.getDictInfoByName("BUS_COLLEGE", BDM_COLLEGE);
+            if (isEmpty(college)) {
+                resultList.add(packErrorData(row, "没有找到学院,请检查"));
+            }
+            //校验系是否存在
+            paramMap.clear();
+            paramMap.put("BDM_NAME", BDM_NAME);
+            Map<String, Object> department = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartment", paramMap);
+            if (isEmpty(department)) {
+                resultList.add(packErrorData(row, "没有找到系部,请检查"));
+            } else {
+                if (isEmpty(college) || !college.getSdiCode().equals(toString(department.get("BDM_COLLEGE")))) {
+                    resultList.add(packErrorData(row, "系部对应学院信息错误,当前系部学院:" + department.get("BDM_COLLEGE_NAME") + ",请检查"));
+                }
+            }
+            //校验班级是否存在
+            paramMap.clear();
+            paramMap.put("BC_NAME", BC_NAME);
+            Map<String, Object> cls = baseDao.selectOne(NameSpace.ClsMapper, "selectClass", paramMap);
+            if (isEmpty(cls)) {
+                resultList.add(packErrorData(row, "没有找到班级,请检查"));
+            } else {
+                if (!toString(cls.get("BDM_ID")).equals(toString(department.get("ID")))) {
+                    resultList.add(packErrorData(row, "班级对应系部错误,当前班级系部:" + cls.get("BDM_NAME") + ",请检查"));
+                }
+            }
+
+            //验证身份证是否合法
+            if (!IdCardUtil.validateCardCodeVerifySimple(BS_ID_CARD) || !IdCardUtil.validateCardCodeVerify(BS_ID_CARD)) {
+                resultList.add(packErrorData(row, "身份证错误,请检查"));
+            }
+
+            //验证学生是否存在
+            Map<String, Object> student = this.selectStudentByNumber(BS_NUMBER);
+            if (isEmpty(student)) {
+                resultList.add(packErrorData(row, "根据学号没有找到学生,请检查"));
+            } else {
+                //验证是否重复导入
+                paramMap.clear();
+                paramMap.put("BS_ID", student.get("ID"));
+                int count = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentDifficultyCount", paramMap);
+                if (count > 0) {
+                    resultList.add(packErrorData(row, "困难学生认定重复导入,请检查"));
+                }
+            }
+
+            //校验困难级别
+            DictInfo difficulty = DictUtil.getDictInfoByName("BUS_DIFFICULTY_TYPE", BSD_TYPE);
+            if (isEmpty(difficulty)) {
+                resultList.add(packErrorData(row, "困难级别名称填写错误,请检查"));
+            }
+
+            //认定时间校验
+            if (!DateUtil.validateDate(DateUtil.FORMAT3, BSD_COGNIZANCE_TIME)) {
+                resultList.add(packErrorData(row, "认定时间填写错误(格式如20020112),请检查"));
+            }
+        }
+
+        return resultList;
     }
 }

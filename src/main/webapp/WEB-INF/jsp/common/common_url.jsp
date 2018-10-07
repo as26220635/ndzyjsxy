@@ -257,6 +257,12 @@
        scope="application"/>
 <c:set var="STUDENT_COMPREHENSIVE_DELETE_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}delete" scope="application"/>
 <c:set var="STUDENT_COMPREHENSIVE_IMPORT_URL" value="${STUDENT_COMPREHENSIVE_BASE_URL}import" scope="application"/>
+<%--困难学生认定--%>
+<c:set var="STUDENT_DIFFICULTY_BASE_URL" value="${STUDENT_BASE_URL}difficulty/" scope="application"/>
+<c:set var="STUDENT_DIFFICULTY_ADD_URL" value="${STUDENT_DIFFICULTY_BASE_URL}add" scope="application"/>
+<c:set var="STUDENT_DIFFICULTY_UPDATE_URL" value="${STUDENT_DIFFICULTY_BASE_URL}update" scope="application"/>
+<c:set var="STUDENT_DIFFICULTY_DELETE_URL" value="${STUDENT_DIFFICULTY_BASE_URL}delete" scope="application"/>
+<c:set var="STUDENT_DIFFICULTY_IMPORT_URL" value="${STUDENT_DIFFICULTY_BASE_URL}import" scope="application"/>
 <%--资助管理--%>
 <c:set var="AID_BASE_URL" value="${MANAGER_URL}aidFinancially/" scope="application"/>
 <%--学院奖学金--%>

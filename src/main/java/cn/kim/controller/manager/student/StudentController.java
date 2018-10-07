@@ -66,7 +66,7 @@ public class StudentController extends BaseController {
             "AID:GREEN_CHANNEL", "AID:NATIONAL_SCHOLARSHIP", "AID:NATIONAL_ENDEAVOR",
             "AID:NATIONAL_GRANTS", "AID:TUITION_WAIVER", "AID:COLLEGE_SCHOLARSHIP",
             "AID:COMMEND", "AID:JOBSEEKER_SUPPORT", "AID:EMERGENCY_HELP",
-            "DILIGENT:STUDY_STUDENT"}, logical = Logical.OR)
+            "DILIGENT:STUDY_STUDENT","STUDENT:DIFFICULTY"}, logical = Logical.OR)
     @ResponseBody
     public DataTablesView<?> list(@RequestParam Map<String, Object> mapParam) {
         DataTablesView<?> view = studentService.selectStudentDataTablesView(mapParam);
@@ -396,6 +396,73 @@ public class StudentController extends BaseController {
         //最多等待10分钟10分钟后解锁
         return fairLock("importComprehensive", 600, 600, () -> {
             Map<String, Object> resultMap = studentService.importStudentComprehensive(excelFile);
+            return resultState(resultMap);
+        });
+    }
+
+    /**********     困难学生认定    ********/
+
+    @GetMapping("/difficulty/add")
+    @RequiresPermissions("STUDENT:DIFFICULTY_INSERT")
+    @Token(save = true)
+    public String addHtmlDifficulty(Model model) throws Exception {
+        Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAttribute("difficulty", setStudentYearSemester(aid, "BSA_YEAR", "BSA_SEMESTER"));
+        return "admin/student/difficulty/addAndEdit";
+    }
+
+
+    @PostMapping("/difficulty/add")
+    @RequiresPermissions("STUDENT:DIFFICULTY_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加困难学生认定")
+    @Token(remove = true)
+    @Validate(value = "BUS_STUDENT_DIFFICULTY", required = true)
+    @ResponseBody
+    public ResultState addDifficulty(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = studentService.insertAndUpdateStudentDifficulty(mapParam);
+
+        return resultState(resultMap);
+    }
+
+
+    @GetMapping("/difficulty/update/{ID}")
+    @RequiresPermissions("STUDENT:DIFFICULTY_UPDATE")
+    public String updateHtmlDifficulty(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("difficulty", studentService.selectStudentDifficulty(mapParam));
+        return "admin/student/difficulty/addAndEdit";
+    }
+
+    @PutMapping("/difficulty/update")
+    @RequiresPermissions("STUDENT:DIFFICULTY_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改困难学生认定")
+    @Validate(value = "BUS_STUDENT_DIFFICULTY", required = true)
+    @ResponseBody
+    public ResultState updateDifficulty(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = studentService.insertAndUpdateStudentDifficulty(mapParam);
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/difficulty/delete/{ID}")
+    @RequiresPermissions("STUDENT:DIFFICULTY_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除困难学生认定")
+    @ResponseBody
+    public ResultState deleteDifficulty(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = studentService.deleteStudentDifficulty(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PostMapping("/difficulty/import")
+    @RequiresPermissions("STUDENT:DIFFICULTY_IMPORT")
+    @SystemControllerLog(useType = UseType.USE, event = "导入困难学生认定")
+    @ResponseBody
+    public ResultState importDifficulty(MultipartFile excelFile) throws Exception {
+        //最多等待10分钟10分钟后解锁
+        return fairLock("importDifficulty", 600, 600, () -> {
+            Map<String, Object> resultMap = studentService.importStudentDifficulty(excelFile);
             return resultState(resultMap);
         });
     }

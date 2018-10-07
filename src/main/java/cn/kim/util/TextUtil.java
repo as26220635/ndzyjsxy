@@ -183,6 +183,28 @@ public class TextUtil {
         }
     }
 
+    /**
+     * list转为string加上符号
+     *
+     * @param list
+     * @return
+     */
+    public static String listToString(List<String[]> list) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            String[] strings = list.get(i);
+            sb.append("{第" + i + "个,");
+            for (int j = 0; j < strings.length; j++) {
+                if (j > 0) {
+                    sb.append(Attribute.SERVICE_SPLIT);
+                }
+                sb.append(j + "(" + strings[j] + ")");
+            }
+            sb.append("}" + Attribute.SERVICE_SPLIT);
+        }
+        return sb.toString();
+    }
+
     public static String toJSONString(List<?> list) {
         return JSON.toJSONString(list);
     }

@@ -149,4 +149,36 @@ public interface StudentService extends BaseService {
      * @return
      */
     Map<String, Object> importStudentComprehensive(MultipartFile excelFile);
+
+    /**
+     * 查询困难学生
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> selectStudentDifficulty(Map<String, Object> mapParam);
+
+    /**
+     * 插入或更新困难学生
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> insertAndUpdateStudentDifficulty(Map<String, Object> mapParam);
+
+    /**
+     * 删除困难学生
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> deleteStudentDifficulty(Map<String, Object> mapParam);
+
+    /**
+     * 导入困难学生
+     *
+     * @param excelFile
+     * @return
+     */
+    Map<String, Object> importStudentDifficulty(MultipartFile excelFile);
 }

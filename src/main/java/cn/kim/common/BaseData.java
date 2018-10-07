@@ -256,8 +256,24 @@ public abstract class BaseData {
         return TextUtil.getPinYinHeadChar(str);
     }
 
+    /**
+     * 转为String
+     *
+     * @param str
+     * @return
+     */
     protected String toString(Object str) {
         return TextUtil.toString(str);
+    }
+
+    /**
+     * list转为string加上符号
+     *
+     * @param list
+     * @return
+     */
+    protected String listToString(List<String[]> list) {
+        return TextUtil.listToString(list);
     }
 
     protected Integer toInt(Object str) {

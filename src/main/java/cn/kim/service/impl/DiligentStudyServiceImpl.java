@@ -425,7 +425,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
                 validateResultMap(diligentStudyStudent);
             }
 
-            resultMap.put(MagicValue.LOG, "导入勤工助学学生数据,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入勤工助学学生数据,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {
@@ -636,7 +636,7 @@ public class DiligentStudyServiceImpl extends BaseServiceImpl implements Diligen
                 validateResultMap(diligentStudyMonthWages);
             }
 
-            resultMap.put(MagicValue.LOG, "导入勤工助学月工资数据,数据:" + toString(dataList));
+            resultMap.put(MagicValue.LOG, "导入勤工助学月工资数据,数据:" + listToString(dataList));
             status = STATUS_SUCCESS;
             desc = IMPORT_SUCCESS;
         } catch (Exception e) {

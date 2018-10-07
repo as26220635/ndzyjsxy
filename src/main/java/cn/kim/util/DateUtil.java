@@ -193,4 +193,20 @@ public class DateUtil {
         return a.get(Calendar.MONTH) + 1;
     }
 
+    /**
+     * 校验日期是否正确
+     * @param format
+     * @param time
+     * @return
+     */
+    public static boolean validateDate(String format, String time) {
+        try {
+            if (ValidateUtil.isEmpty(getDateTime(format, time))) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }

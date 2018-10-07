@@ -39,7 +39,8 @@ public class GridDataFilter extends BaseServiceImpl {
         } else if (TableViewName.V_STUDENT.equalsIgnoreCase(configureView) ||
                 TableViewName.V_STUDENT_ATTENDANCE.equalsIgnoreCase(configureView) ||
                 TableViewName.V_STUDENT_PUNISHMENT.equalsIgnoreCase(configureView) ||
-                TableViewName.V_STUDENT_COMPREHENSIVE.equalsIgnoreCase(configureView)) {
+                TableViewName.V_STUDENT_COMPREHENSIVE.equalsIgnoreCase(configureView) ||
+                TableViewName.V_STUDENT_DIFFICULTY.equalsIgnoreCase(configureView)) {
             //学生管理
             resultBuilder.append(getAuthorizationWhere());
         } else if (TableViewName.V_LOG_SYSTEM.equalsIgnoreCase(configureView) ||

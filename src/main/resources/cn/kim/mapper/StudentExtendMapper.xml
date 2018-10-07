@@ -343,4 +343,82 @@
     <select id="selectStudentAvgYearScore" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT * FROM V_STUDENT_AVG_YEAR WHERE BS_ID = #{BS_ID} AND BSC_YEAR = #{BSC_YEAR}
     </select>
+
+    <!--查询困难学生-->
+    <select id="selectStudentDifficulty" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BSD.*,BS.BS_NAME
+        FROM(
+            SELECT * FROM BUS_STUDENT_DIFFICULTY
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+                <if test ="BS_ID != NULL and BS_ID != ''">
+                    AND BS_ID = #{BS_ID}
+                </if>
+            </where>
+        )BSD
+        LEFT JOIN BUS_STUDENT BS ON BS.ID = BSD.BS_ID
+    </select>
+
+    <!--查询困难学生-->
+    <select id="selectStudentDifficultyCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM BUS_STUDENT_DIFFICULTY
+        <where>
+            <if test ="NOT_ID != NULL and NOT_ID != ''">
+                AND ID != #{NOT_ID}
+            </if>
+            <if test ="BS_ID != NULL and BS_ID != ''">
+                AND BS_ID = #{BS_ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入困难学生-->
+    <insert id="insertStudentDifficulty" parameterType="java.util.Map">
+        INSERT INTO BUS_STUDENT_DIFFICULTY
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BS_ID != null">BS_ID,</if>
+            <if test="BSD_TYPE != null">BSD_TYPE,</if>
+            <if test="BSD_COGNIZANCE_TIME != null">BSD_COGNIZANCE_TIME,</if>
+            <if test="BSD_COGNIZANCE_REASON != null">BSD_COGNIZANCE_REASON,</if>
+            <if test="BSD_CLASS_REASON != null">BSD_CLASS_REASON,</if>
+            <if test="BSD_GRADE_REASON != null">BSD_GRADE_REASON,</if>
+            <if test="BSD_ENTRY_TIME != null">BSD_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BS_ID != null">#{BS_ID},</if>
+            <if test="BSD_TYPE != null">#{BSD_TYPE},</if>
+            <if test="BSD_COGNIZANCE_TIME != null">#{BSD_COGNIZANCE_TIME},</if>
+            <if test="BSD_COGNIZANCE_REASON != null">#{BSD_COGNIZANCE_REASON},</if>
+            <if test="BSD_CLASS_REASON != null">#{BSD_CLASS_REASON},</if>
+            <if test="BSD_GRADE_REASON != null">#{BSD_GRADE_REASON},</if>
+            <if test="BSD_ENTRY_TIME != null">#{BSD_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑困难学生-->
+    <update id="updateStudentDifficulty" parameterType="java.util.Map">
+        UPDATE BUS_STUDENT_DIFFICULTY
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BS_ID != null">BS_ID=#{BS_ID},</if>
+            <if test="BSD_TYPE != null">BSD_TYPE=#{BSD_TYPE},</if>
+            <if test="BSD_COGNIZANCE_TIME != null">BSD_COGNIZANCE_TIME=#{BSD_COGNIZANCE_TIME},</if>
+            <if test="BSD_COGNIZANCE_REASON != null">BSD_COGNIZANCE_REASON=#{BSD_COGNIZANCE_REASON},</if>
+            <if test="BSD_CLASS_REASON != null">BSD_CLASS_REASON=#{BSD_CLASS_REASON},</if>
+            <if test="BSD_GRADE_REASON != null">BSD_GRADE_REASON=#{BSD_GRADE_REASON},</if>
+            <if test="BSD_ENTRY_TIME != null">BSD_ENTRY_TIME=#{BSD_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除困难学生-->
+    <delete id="deleteStudentDifficulty" parameterType="java.util.Map">
+		DELETE FROM BUS_STUDENT_DIFFICULTY WHERE ID = #{ID}
+	</delete>
 </mapper>
