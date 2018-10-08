@@ -53,7 +53,12 @@
         data: ${backlogList},
         columns: [
             {data: 'SPD_NAME', class: 'text-center'},
-            {data: 'BACKLOG_NUM', class: 'text-center'},
+            {
+                data: 'BACKLOG_NUM', class: 'text-center',
+                createdCell: function (td, cellData, rowData, row, col) {
+                    $(td).text(cellData + '项');
+                }
+            },
         ],
     });
 </script>

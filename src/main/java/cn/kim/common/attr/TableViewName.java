@@ -51,6 +51,14 @@ public class TableViewName {
      */
     public static final String V_DOCUMENT = "v_document";
     /**
+     * 勤工助学
+     */
+    public static final String V_DILIGENT_STUDY = "v_diligent_study";
+    /**
+     * 勤工助学-岗位-学生-月工资
+     */
+    public static final String V_DILIGENT_STUDY_MONTH_WAGES = "v_diligent_study_month_wages";
+    /**
      * 勤工助学岗位
      */
     public static final String V_DILIGENT_STUDY_POST = "v_diligent_study_post";
@@ -58,4 +66,49 @@ public class TableViewName {
      * 勤工助学-岗位-学生
      */
     public static final String V_DILIGENT_STUDY_STUDENT = "v_diligent_study_student";
+
+    /**
+     * 资助管理-绿色通道
+     */
+    public static final String V_AID_GREEN_CHANNEL = "v_aid_green_channel";
+
+    /**
+     * 资助管理-国家奖学金
+     */
+    public static final String V_AID_NATIONAL_SCHOLARSHIP = "v_aid_national_scholarship";
+
+    /**
+     * 资助管理-国家励志奖学金
+     */
+    public static final String V_AID_NATIONAL_ENDEAVOR = "v_aid_national_endeavor";
+
+    /**
+     * 资助管理-国家助学金
+     */
+    public static final String V_AID_NATIONAL_GRANTS = "v_aid_national_grants";
+
+    /**
+     * 资助管理-减免学费
+     */
+    public static final String V_AID_TUITION_WAIVER = "v_aid_tuition_waiver";
+
+    /**
+     * 资助管理-学院奖学金
+     */
+    public static final String V_AID_COLLEGE_SCHOLARSHIP = "v_aid_college_scholarship";
+
+    /**
+     * 资助管理-年度表彰
+     */
+    public static final String V_AID_COMMEND = "v_aid_commend";
+
+    /**
+     * 资助管理-困难毕业生就业补助
+     */
+    public static final String V_AID_JOBSEEKER_SUPPORT = "v_aid_jobseeker_support";
+
+    /**
+     * 资助管理-应急求助
+     */
+    public static final String V_AID_EMERGENCY_HELP = "v_aid_emergency_help";
 }

@@ -526,6 +526,21 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
     }
 
     /**
+     * 获取当前用户授权过滤
+     * 需要字段 院系BDM_COLLEGE 系部BDM_ID 班级BC_ID
+     *
+     * @param isProcess
+     * @return
+     */
+    protected String getAuthorizationWhere(boolean isProcess) {
+        Map<String, Object> fieldMap = Maps.newHashMapWithExpectedSize(3);
+        fieldMap.put(AuthorizationType.COLLEGE.toString(), "BDM_COLLEGE");
+        fieldMap.put(AuthorizationType.DEPARTMENT.toString(), "BDM_ID");
+        fieldMap.put(AuthorizationType.CLS.toString(), "BC_ID");
+        return getAuthorizationWhere(isProcess, fieldMap);
+    }
+
+    /**
      * 获取当前用户授权过滤 是否流程过滤
      *
      * @param isProcess
