@@ -134,9 +134,12 @@ public class ManagerServiceImpl extends BaseServiceImpl implements ManagerServic
             backlog.put("SPD_NAME", "没有待办事项");
             backlog.put("BACKLOG_NUM", "0项");
             backlogList.add(backlog);
-        }else{
+        } else {
             //授权过滤
+            for (Map<String, Object> backlog : backlogList) {
+                String definitionId = toString(backlog.get("SPD_ID"));
 
+            }
         }
         Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(2);
         resultMap.put("backlogNumber", backlogNumber);
