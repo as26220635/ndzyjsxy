@@ -66,7 +66,7 @@
                         <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="${BASE_URL}resources/static/dist/img/user2-160x160.jpg" class="user-image"
                                  alt="User Image">
-                            <span class="hidden-xs">${activeUser.username}</span>
+                            <span class="hidden-xs">${activeUser.usercode}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <%--<!-- User image -->--%>
@@ -74,7 +74,7 @@
                                 <img src="${BASE_URL}resources/static/dist/img/user2-160x160.jpg" class="img-circle"
                                      alt="User Image">
                                 <p>
-                                    ${activeUser.username}
+                                    ${activeUser.usercode}
                                     <small>${activeUser.role}</small>
                                 </p>
                             </li>
@@ -123,8 +123,8 @@
                 <%--<img class="img-circle">--%>
                 <%--</div>--%>
                 <div class="pull-left info" style="left: 0px;">
-                    <p>用户:${activeUser.username}</p>
-                    <p style="width:200px;text-overflow: ellipsis;white-space: nowrap;" title="角色:${activeUser.role}">类型:${activeUser.typeName}</p>
+                    <p>登录名:${activeUser.username}</p>
+                    <p style="width:200px;text-overflow: ellipsis;white-space: nowrap;" title="角色:${activeUser.role}">类　型:${activeUser.typeName}</p>
                     <input type="hidden" id="IS_DEFAULT_PWD" value="${activeUser.isDefaultPwd}">
                 </div>
             </div>

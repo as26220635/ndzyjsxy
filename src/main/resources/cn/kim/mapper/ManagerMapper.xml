@@ -93,4 +93,16 @@
         GROUP  BY PRECODE
     </select>
 
+    <select id="selectProcessScheduleBacklog" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT SPS.*,SPD.SPD_NAME
+        FROM(
+            SELECT SPS_TABLE_ID,SPD_ID,CONCAT(COUNT(*),'项')  AS BACKLOG_NUM
+            FROM SYS_PROCESS_SCHEDULE
+            WHERE ((SPS_STEP_TYPE = 1 AND SPS_STEP_TRANSACTOR IN(SELECT SR_ID FROM SYS_OPERATOR_ROLE WHERE SO_ID = #{SO_ID})) OR (SPS_STEP_TYPE = 2 AND SPS_STEP_TRANSACTOR = #{SO_ID})) AND SPS_IS_CANCEL = 0
+            GROUP BY SPD_ID
+        )SPS
+        INNER JOIN SYS_PROCESS_DEFINITION SPD ON SPD.ID =SPS.SPD_ID
+        LEFT JOIN SYS_VALUE_RECORD SVR ON SVR.SVR_TABLE_ID = SPS.SPS_TABLE_ID AND SVR.SVR_TYPE = 3
+        WHERE SVR.ID IS NULL
+    </select>
 </mapper>

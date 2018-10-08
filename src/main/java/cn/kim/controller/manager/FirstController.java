@@ -1,15 +1,20 @@
 package cn.kim.controller.manager;
 
+import cn.kim.common.annotation.NotEmptyLogin;
 import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.annotation.Validate;
 import cn.kim.common.eu.UseType;
+import cn.kim.entity.ActiveUser;
 import cn.kim.entity.ResultState;
+import cn.kim.service.ManagerService;
 import cn.kim.service.OperatorService;
+import cn.kim.util.TextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -19,7 +24,11 @@ public class FirstController extends BaseController {
     @Autowired
     private OperatorService operatorService;
 
+    @Autowired
+    private ManagerService managerService;
+
     @GetMapping("/editUser")
+    @NotEmptyLogin
     public String queryUser(Model model) throws Exception {
         model.addAttribute("accountInfo", getAccountInfo());
         return "admin/system/first/editActiveUser";
@@ -29,6 +38,7 @@ public class FirstController extends BaseController {
     @PostMapping("/editUser")
     @SystemControllerLog(useType = UseType.USE, event = "修改信息")
     @Validate("SYS_ACCOUNT_INFO")
+    @NotEmptyLogin
     @ResponseBody
     public ResultState editUser(@RequestParam Map<String, Object> mapParam) throws Exception {
         String id = activeUser().getId();
@@ -48,6 +58,7 @@ public class FirstController extends BaseController {
      * @throws Exception
      */
     @GetMapping("/editPwd")
+    @NotEmptyLogin
     public String editPswdHtml(Model model) throws Exception {
         return "admin/system/first/editPwd";
     }
@@ -60,6 +71,7 @@ public class FirstController extends BaseController {
      * @throws Exception
      */
     @GetMapping("/editPwdR")
+    @NotEmptyLogin
     public String editPswdR(Model model) throws Exception {
         return "admin/system/first/editPwdR";
     }
@@ -67,6 +79,7 @@ public class FirstController extends BaseController {
 
     @PostMapping("/editPwd")
     @SystemControllerLog(useType = UseType.USE, event = "修改密码")
+    @NotEmptyLogin
     @ResponseBody
     public ResultState editPwd(@RequestParam Map<String, Object> mapParam) throws Exception {
         String id = activeUser().getId();
@@ -77,4 +90,22 @@ public class FirstController extends BaseController {
         });
     }
 
+    /**
+     * 后台首页
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/home")
+    @NotEmptyLogin
+    public String home(Model model) throws Exception {
+        ActiveUser activeUser = activeUser();
+
+        Map<String, Object> backlogMap = managerService.selectProcessScheduleBacklog(activeUser.getId());
+
+        model.addAttribute("backlogNumber", backlogMap.get("backlogNumber"));
+        model.addAttribute("backlogList", TextUtil.toJSONString((List) backlogMap.get("backlogList")));
+        return "admin/system/first/home";
+    }
 }

@@ -67,4 +67,12 @@ public interface ManagerService extends BaseService {
      */
     public List<Map<String, Object>> queryOperatorMenuTree(String operatorId);
 
+    /**
+     * 获取待办事项
+     *
+     * @param operatorId
+     * @return
+     */
+    Map<String,Object> selectProcessScheduleBacklog(String operatorId);
+
 }

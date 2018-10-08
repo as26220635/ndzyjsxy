@@ -17,11 +17,11 @@ public class ActiveUser implements java.io.Serializable {
      */
     private String id;
     /**
-     * 用户账号
+     * 用户名称
      */
     private String usercode;
     /**
-     * 用户名称
+     * 用户账号
      */
     private String username;
     /**

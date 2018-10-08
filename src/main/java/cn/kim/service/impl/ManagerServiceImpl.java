@@ -120,4 +120,28 @@ public class ManagerServiceImpl extends BaseServiceImpl implements ManagerServic
         return getOperatorMenuTree(baseDao, NameSpace.ManagerMapper, "queryOperatorMenu", operatorId, "0", "-1", null, null);
     }
 
+    @Override
+    public Map<String, Object> selectProcessScheduleBacklog(String operatorId) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("SO_ID", operatorId);
+
+        List<Map<String, Object>> backlogList = baseDao.selectList(NameSpace.ManagerMapper, "selectProcessScheduleBacklog", paramMap);
+        int backlogNumber = 0;
+
+        if (isEmpty(backlogList)) {
+            backlogList = new ArrayList<>();
+            Map<String, Object> backlog = Maps.newHashMapWithExpectedSize(2);
+            backlog.put("SPD_NAME", "没有待办事项");
+            backlog.put("BACKLOG_NUM", "0项");
+            backlogList.add(backlog);
+        }else{
+            //授权过滤
+
+        }
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(2);
+        resultMap.put("backlogNumber", backlogNumber);
+        resultMap.put("backlogList", backlogList);
+        return resultMap;
+    }
+
 }

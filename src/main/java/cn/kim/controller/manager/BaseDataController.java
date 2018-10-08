@@ -190,7 +190,7 @@ public class BaseDataController extends BaseController {
             model.addAttribute("FILE_LIST", fileList);
             model.addAttribute("TOP_BUTTON", topButton);
             model.addAttribute("LIST_BUTTON", listButton);
-            model.addAttribute("BUTTON_SIZE", listButton.size());
+            model.addAttribute("BUTTON_SIZE", 1);
             //拿到左右固定列个数
             boolean isFixed = false;
             int leftFixedLength = toInt(configure.get("LEFT_FIXED_LENGTH"));
