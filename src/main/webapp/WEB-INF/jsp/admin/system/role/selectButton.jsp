@@ -19,7 +19,7 @@
     </div>
 </div>
 <script>
-    ajax.get('${ROLE_PERMISSION_TREE_BUTTON_DATA}${ID}/${SM_ID}', {}, function (data) {
+    ajax.get('${BASE_URL}${Url.ROLE_PERMISSION_TREE_BUTTON_DATA}${ID}/${SM_ID}', {}, function (data) {
         //创建按钮选择
         treeBox.create({
             tree: '#buttonTree',
@@ -42,7 +42,7 @@
         params.SM_ID = '${SM_ID}';
         params.BUTTONIDS = buttonIds;
 
-        ajax.put('${ROLE_PERMISSION_TREE_BUTTON_UPDATE}', params, function (data) {
+        ajax.put('${BASE_URL}${Url.ROLE_PERMISSION_TREE_BUTTON_UPDATE}', params, function (data) {
             ajaxReturn.data(data, null, null, null);
         })
     });

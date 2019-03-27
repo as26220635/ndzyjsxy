@@ -93,14 +93,14 @@
         }
         var params = packFormParams($form);
 
-        ajax.put('${EMAIL_BASE_URL}', params, function (data) {
+        ajax.put('${BASE_URL}${Url.EMAIL_BASE_URL}', params, function (data) {
             ajaxReturn.data(data, null, null, null);
         })
     });
 
     //刷新缓存
     $('#cache').on('click', function () {
-        ajax.post('${EMAIL_CACHE_URL}', {}, function (data) {
+        ajax.post('${BASE_URL}${Url.EMAIL_CACHE_URL}', {}, function (data) {
                 ajaxReturn.data(data, null, null, null);
             }
         );

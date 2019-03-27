@@ -6,7 +6,7 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${TEACHER_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.TEACHER_ADD_URL}', {}, function (html) {
                 model.show({
                     title: '添加教师',
                     content: html,
@@ -21,7 +21,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${TEACHER_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.TEACHER_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -35,7 +35,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${TEACHER_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.TEACHER_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改教师',
                     content: html,
@@ -51,7 +51,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${TEACHER_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.TEACHER_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -66,7 +66,7 @@
         var data = getRowData(this);
         var SO_ID = data.SO_ID;
 
-        ajax.getHtml('${TEACHER_ADDOUNT_INFO_URL}/' + SO_ID, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.TEACHER_ADDOUNT_INFO_URL}/' + SO_ID, {}, function (html) {
                 model.show({
                     title: '账号信息',
                     content: html,
@@ -81,7 +81,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${TEACHER_ADDOUNT_INFO_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.TEACHER_ADDOUNT_INFO_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -109,7 +109,7 @@
 
         treeBox.init({
             title: '选择角色',
-            url: '${OPERATOR_TREE_ROLE_DATA_URL}',
+            url:'${BASE_URL}${Url.OPERATOR_TREE_ROLE_DATA_URL}',
             searchParams: {
                 ID: id,
                 SR_TYPE: '${SystemEnum.TEACHER.toString()}',
@@ -124,7 +124,7 @@
                 params.ID = id;
                 params.ROLEIDS = roleIds;
 
-                ajax.put('${OPERATOR_TREE_ROLE_DATA_UPDATE_URL}', params, function (data) {
+                ajax.put('${BASE_URL}${Url.OPERATOR_TREE_ROLE_DATA_UPDATE_URL}', params, function (data) {
                     ajaxReturn.data(data, $model, null, null);
                 })
             }
@@ -144,7 +144,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.put('${TEACHER_RESET_PWD_URL}', {ID: id}, function (data) {
+                ajax.put('${BASE_URL}${Url.TEACHER_RESET_PWD_URL}', {ID: id}, function (data) {
                     ajaxReturn.data(data, $model, null, null);
                 });
             }
@@ -164,7 +164,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${TEACHER_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.TEACHER_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }

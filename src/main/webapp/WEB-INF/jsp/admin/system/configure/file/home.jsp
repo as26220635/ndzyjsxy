@@ -16,7 +16,7 @@
 
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${CONFIGURE_FILE_ADD_URL}', {SC_ID: '${EXTRA.SC_ID}'}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.CONFIGURE_FILE_ADD_URL}', {SC_ID: '${EXTRA.SC_ID}'}, function (html) {
                 model.show({
                     title: '添加配置列表文件',
                     content: html,
@@ -30,7 +30,7 @@
                             return;
                         }
 
-                        ajax.file('${CONFIGURE_FILE_ADD_URL}', $form, function (data) {
+                       ajax.file('${BASE_URL}${Url.CONFIGURE_FILE_ADD_URL}', $form, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -44,7 +44,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${CONFIGURE_FILE_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.CONFIGURE_FILE_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改配置列表文件',
                     content: html,
@@ -59,7 +59,7 @@
                             return;
                         }
 
-                        ajax.file('${CONFIGURE_FILE_UPDATE_URL}', $form, function (data) {
+                       ajax.file('${BASE_URL}${Url.CONFIGURE_FILE_UPDATE_URL}', $form, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -82,7 +82,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${CONFIGURE_FILE_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.CONFIGURE_FILE_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }
@@ -92,7 +92,7 @@
     //切换状态
     function onSwitchChange($this, field, check, IS_STATUS) {
         showLoadingContentDiv();
-        ajax.put('${CONFIGURE_FILE_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
+        ajax.put('${BASE_URL}${Url.CONFIGURE_FILE_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
             if (data.code == STATUS_SUCCESS) {
                 demo.showNotify(ALERT_SUCCESS, '状态修改成功!');
             } else {

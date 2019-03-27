@@ -46,7 +46,7 @@
 
     var treeData = {};
     var $checkableTree;
-    ajax.get('${ROLE_PERMISSION_TREE_MENU_DATA}${ID}', {}, function (data) {
+    ajax.get('${BASE_URL}${Url.ROLE_PERMISSION_TREE_MENU_DATA}${ID}', {}, function (data) {
         $checkableTree = treeBox.create({
             tree: '#menuTree',
             data: data,
@@ -58,7 +58,7 @@
                 if (node.state.checked == true) {
                     //切换按钮菜单
                     addLoadingContentDiv('#permissionDiv');
-                    ajax.getHtml('${ROLE_PERMISSION_TREE_BUTTON}${ID}/' + node.id, {}, function (html) {
+                    ajax.getHtml('${BASE_URL}${Url.ROLE_PERMISSION_TREE_BUTTON}${ID}/' + node.id, {}, function (html) {
                         $('#buttonDiv').html(html);
                         removeLoadingDiv();
                     });

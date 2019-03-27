@@ -3,6 +3,7 @@
 <%@ page import="cn.kim.common.attr.AttributePath" %>
 <%@ page import="cn.kim.common.attr.TableName " %>
 <%@ page import="cn.kim.common.attr.Tips" %>
+<%@ page import="cn.kim.common.attr.Url" %>
 <%@ page import="cn.kim.common.eu.SystemEnum" %>
 <%@ page import="cn.kim.common.eu.ProcessStatus" %>
 <%@ page import="cn.kim.common.eu.ProcessType" %>

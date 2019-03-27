@@ -54,7 +54,7 @@
     <div class="form-group has-feedback">
         <label>正则:</label>
         <s:treeBox id="SVR_ID" name="SVR_NAME" value="${FILED.SVR_ID}" nameValue="${FILED.SVR_NAME}"
-                   url="${VALIDATE_REGEX_TREE_DATA_URL}" title="选择正则"></s:treeBox>
+                   url="${BASE_URL}${Url.VALIDATE_REGEX_TREE_DATA_URL}" title="选择正则"></s:treeBox>
     </div>
 </form>
 

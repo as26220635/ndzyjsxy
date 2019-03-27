@@ -16,7 +16,7 @@
 
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${DICT_INFO_ADD_URL}', {SDT_ID: '${EXTRA.SDT_ID}'}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.DICT_INFO_ADD_URL}', {SDT_ID: '${EXTRA.SDT_ID}'}, function (html) {
                 model.show({
                     title: '添加字典信息',
                     content: html,
@@ -31,7 +31,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${DICT_INFO_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.DICT_INFO_ADD_URL}', params, function (data) {
                             ajaxReturn.tree(data, $model, $treeGridTable);
                         })
                     }
@@ -45,7 +45,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${DICT_INFO_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.DICT_INFO_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改字典信息',
                     content: html,
@@ -60,7 +60,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${DICT_INFO_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.DICT_INFO_UPDATE_URL}', params, function (data) {
                             ajaxReturn.tree(data, $model, $treeGridTable);
                         });
                     }
@@ -82,7 +82,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${DICT_INFO_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.DICT_INFO_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.tree(data, $model, $treeGridTable);
                 })
             }
@@ -92,7 +92,7 @@
     //切换状态
     function onSwitchChange($this, field, check, IS_STATUS) {
         showLoadingContentDiv();
-        ajax.put('${DICT_INFO_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
+        ajax.put('${BASE_URL}${Url.DICT_INFO_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
             if (data.code == STATUS_SUCCESS) {
                 demo.showNotify(ALERT_SUCCESS, '状态修改成功!');
             } else {

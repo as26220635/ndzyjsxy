@@ -241,7 +241,7 @@
         }
         var params = packFormParams($form);
 
-        ajax.put('${STUDENT_COMPREHENSIVE_INSERT_AND_UPDATE_URL}', params, function (data) {
+        ajax.put('${BASE_URL}${Url.STUDENT_COMPREHENSIVE_INSERT_AND_UPDATE_URL}', params, function (data) {
             ajaxReturn.data(data, null, null, null, {
                 success: function () {
                     backHtml();
@@ -301,7 +301,7 @@
     choiceBox.student({
         id: 'BS_ID',
         name: 'BS_NAME',
-        url: '${STUDENT_LIST_URL}'
+        url:'${BASE_URL}${Url.STUDENT_LIST_URL}'
     });
 
 </script>

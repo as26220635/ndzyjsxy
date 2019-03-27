@@ -6,7 +6,7 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${NATIONAL_SCHOLARSHIP_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.NATIONAL_SCHOLARSHIP_ADD_URL}', {}, function (html) {
                 model.show({
                     title: '添加国家奖学金',
                     content: html,
@@ -21,7 +21,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${NATIONAL_SCHOLARSHIP_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.NATIONAL_SCHOLARSHIP_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -35,7 +35,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${NATIONAL_SCHOLARSHIP_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.NATIONAL_SCHOLARSHIP_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改国家奖学金',
                     content: html,
@@ -51,7 +51,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${NATIONAL_SCHOLARSHIP_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.NATIONAL_SCHOLARSHIP_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -74,7 +74,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${NATIONAL_SCHOLARSHIP_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.NATIONAL_SCHOLARSHIP_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }
@@ -85,7 +85,7 @@
      * 导入excel
      */
     function excelImport($form, $model) {
-        ajax.file('${NATIONAL_SCHOLARSHIP_IMPORT_URL}', $form, function (data) {
+       ajax.file('${BASE_URL}${Url.NATIONAL_SCHOLARSHIP_IMPORT_URL}', $form, function (data) {
             //重置上传框
             importFileClear();
             ajaxReturn.data(data, $model, $dataGrid, true, {

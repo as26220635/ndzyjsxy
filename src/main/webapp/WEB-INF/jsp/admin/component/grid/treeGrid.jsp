@@ -71,7 +71,7 @@
 
     $treeGridTable.bootstrapTable({
         class: 'table table-bordered table-striped table-overflow-x',
-        url: '${TREE_GRID_URL}${CONFIGURE.ID}',
+        url:'${BASE_URL}${Url.TREE_GRID_URL}${CONFIGURE.ID}',
         pagination: false,//分页请设置为false
         treeView: true,//是否开启树视图
         uniqueId: 'ID', //每行的id

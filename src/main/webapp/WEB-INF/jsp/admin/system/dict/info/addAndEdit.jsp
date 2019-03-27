@@ -32,7 +32,7 @@
         <s:treeBox id="SDI_PARENTID" name="SDI_PARENT_NAME" value="${INFO.SDI_PARENTID}"
                    nameValue="${INFO.SDI_PARENT_NAME}" sdtId="${fns:trueOrFalse(INFO != null ,INFO.SDT_ID,SDT_ID)}"
                    notId="${INFO.ID}"
-                   url="${DICT_INFO_TREE_URL}" title="选择字典父信息节点"></s:treeBox>
+                   url="${BASE_URL}${Url.DICT_INFO_TREE_URL}" title="选择字典父信息节点"></s:treeBox>
     </div>
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">

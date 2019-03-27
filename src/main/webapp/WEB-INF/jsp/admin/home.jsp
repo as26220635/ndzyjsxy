@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/WEB-INF/jsp/common/tag.jsp" %>
 <%@ include file="/WEB-INF/jsp/common/common_config.jsp" %>
-<%@ include file="/WEB-INF/jsp/common/common_url.jsp" %>
+<%--<%@ include file="/WEB-INF/jsp/common/common_url.jsp" %>--%>
 <html>
 <head>
     <%@ include file="/WEB-INF/jsp/common/common_meta.jsp" %>
@@ -124,7 +124,8 @@
                 <%--</div>--%>
                 <div class="pull-left info" style="left: 0px;">
                     <p>登录名:${activeUser.username}</p>
-                    <p style="width:200px;text-overflow: ellipsis;white-space: nowrap;" title="角色:${activeUser.role}">类　型:${activeUser.typeName}</p>
+                    <p style="width:200px;text-overflow: ellipsis;white-space: nowrap;" title="角色:${activeUser.role}">
+                        类　型:${activeUser.typeName}</p>
                     <input type="hidden" id="IS_DEFAULT_PWD" value="${activeUser.isDefaultPwd}">
                 </div>
             </div>
@@ -228,7 +229,7 @@
     <%-- 设置全局ajax请求判断 --%>
     ajax.init();
     ajax.setup({
-        logoutUrl: '${BASE_URL}logout'
+        logouturl:'${BASE_URL}${Url.BASE_URL}logout'
     });
 
     mainInit.initPjax();
@@ -237,7 +238,7 @@
 
     //修改用户信息
     $('#editActiveUserBtn').on('click', function () {
-        ajax.getHtml('${EDIT_USER}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.EDIT_USER}', {}, function (html) {
             model.show({
                 title: '修改用户信息',
                 content: html,
@@ -253,7 +254,7 @@
 
                     var params = packFormParams($form);
 
-                    ajax.post('${EDIT_USER}', params, function (data) {
+                    ajax.post('${BASE_URL}${Url.EDIT_USER}', params, function (data) {
                         ajaxReturn.data(data, model, null, null);
                     })
                 }
@@ -263,7 +264,7 @@
     var editPasswordModelId = 'editPasswordModel';
     //修改密码
     $('#editPasswordBtn').on('click', function () {
-        ajax.getHtml('${EDIT_PASSWORD}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.EDIT_PASSWORD}', {}, function (html) {
             model.show({
                 id: editPasswordModelId,
                 title: '修改密码',
@@ -281,7 +282,7 @@
 
                     var params = packFormParams($form);
 
-                    ajax.post('${EDIT_PASSWORD}', params, function (data) {
+                    ajax.post('${BASE_URL}${Url.EDIT_PASSWORD}', params, function (data) {
                         if (data.code == STATUS_SUCCESS) {
                             $('#IS_DEFAULT_PWD').val(STATUS_ERROR);
                         }

@@ -6,7 +6,7 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${STUDENT_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.STUDENT_ADD_URL}', {}, function (html) {
                 model.show({
                     title: '添加学生',
                     content: html,
@@ -21,7 +21,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${STUDENT_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.STUDENT_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -35,7 +35,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${STUDENT_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.STUDENT_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改学生',
                     content: html,
@@ -51,7 +51,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${STUDENT_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.STUDENT_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -66,7 +66,7 @@
         var data = getRowData(this);
         var SO_ID = data.SO_ID;
 
-        ajax.getHtml('${STUDENT_ADDOUNT_INFO_URL}/' + SO_ID, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.STUDENT_ADDOUNT_INFO_URL}/' + SO_ID, {}, function (html) {
                 model.show({
                     title: '账号信息',
                     content: html,
@@ -81,7 +81,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${STUDENT_ADDOUNT_INFO_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.STUDENT_ADDOUNT_INFO_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -109,7 +109,7 @@
 
         treeBox.init({
             title: '选择角色',
-            url: '${OPERATOR_TREE_ROLE_DATA_URL}',
+            url:'${BASE_URL}${Url.OPERATOR_TREE_ROLE_DATA_URL}',
             searchParams: {
                 ID: id,
                 SR_TYPE: '${SystemEnum.STUDENT.toString()}',
@@ -124,7 +124,7 @@
                 params.ID = id;
                 params.ROLEIDS = roleIds;
 
-                ajax.put('${OPERATOR_TREE_ROLE_DATA_UPDATE_URL}', params, function (data) {
+                ajax.put('${BASE_URL}${Url.OPERATOR_TREE_ROLE_DATA_UPDATE_URL}', params, function (data) {
                     ajaxReturn.data(data, $model, null, null);
                 })
             }
@@ -144,7 +144,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.put('${STUDENT_RESET_PWD_URL}', {ID: id}, function (data) {
+                ajax.put('${BASE_URL}${Url.STUDENT_RESET_PWD_URL}', {ID: id}, function (data) {
                     ajaxReturn.data(data, $model, null, null);
                 });
             }
@@ -164,7 +164,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${STUDENT_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.STUDENT_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }
@@ -177,20 +177,20 @@
     function excelImport($form, $model, importBtnId) {
         //导入查询
         if (importBtnId == 'importQuery') {
-            ajax.file('${STUDENT_IMPORT_QUERY_URL}', $form, function (data) {
+           ajax.file('${BASE_URL}${Url.STUDENT_IMPORT_QUERY_URL}', $form, function (data) {
                 //重置上传框
                 importFileClear();
                 //下载缓存文件
                 ajaxReturn.data(data, $model, null, null, {
                     success: function () {
-                        window.location.href = '${DOWN_CACHE_URL}' + data.id;
+                        window.location.href = '${BASE_URL}${Url.DOWN_CACHE_URL}' + data.id;
                         <%--window.open('${DOWN_CACHE_URL}' + data.id);--%>
                     }
                 });
             });
         }else{
             //导入信息
-            ajax.file('${STUDENT_IMPORT_URL}', $form, function (data) {
+           ajax.file('${BASE_URL}${Url.STUDENT_IMPORT_URL}', $form, function (data) {
                 //重置上传框
                 importFileClear();
                 ajaxReturn.data(data, $model, $dataGrid, true, {

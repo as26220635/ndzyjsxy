@@ -25,7 +25,7 @@
                 okBtnName = model.btnName.WITHDRAW;
             }
 
-            ajax.getHtml('${PROCESS_SHOW_HOME}', {
+            ajax.getHtml('${BASE_URL}${Url.PROCESS_SHOW_HOME}', {
                 ID: option.ID,
                 BUS_PROCESS: option.BUS_PROCESS,
                 BUS_PROCESS2: option.BUS_PROCESS2,
@@ -61,7 +61,7 @@
                             message: '是否' + okBtnName + '流程!',
                             callback: function (result) {
                                 if (result) {
-                                    ajax.put('${PROCESS_SUBMIT}', params, function (data) {
+                                    ajax.put('${BASE_URL}${Url.PROCESS_SUBMIT}', params, function (data) {
                                         ajaxReturn.data(data, $model, option.dataGrid, false, {
                                             error: function () {
                                                 model.alert({
@@ -89,7 +89,7 @@
                 message: '是否撤回流程!',
                 callback: function (result) {
                     if (result) {
-                        ajax.put('${PROCESS_WITHDRAW}', {
+                        ajax.put('${BASE_URL}${Url.PROCESS_WITHDRAW}', {
                             SPS_TABLE_ID: option.ID,
                             BUS_PROCESS: option.BUS_PROCESS,
                             BUS_PROCESS2: option.BUS_PROCESS2,
@@ -104,7 +104,7 @@
          * 显示log日志
          */
         processLog: throttle(function (option) {
-            ajax.getHtml('${PROCESS_LOG}', {
+            ajax.getHtml('${BASE_URL}${Url.PROCESS_LOG}', {
                     ID: option.ID,
                     BUS_PROCESS: option.BUS_PROCESS,
                     BUS_PROCESS2: option.BUS_PROCESS2,

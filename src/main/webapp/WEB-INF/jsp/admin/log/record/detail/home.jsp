@@ -18,7 +18,7 @@
         var data = getRowData(this);
         var id = data.ID;
         // var id = data.ID;
-        ajax.getHtml('${LOG_VALUE_RECORD_DETAIL_URL}', {
+        ajax.getHtml('${BASE_URL}${Url.LOG_VALUE_RECORD_DETAIL_URL}', {
                 ID: id,
             }, function (html) {
                 model.show({

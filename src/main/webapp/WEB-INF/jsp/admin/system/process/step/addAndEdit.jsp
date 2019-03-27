@@ -21,7 +21,7 @@
         <label>办理角色:</label>
         <s:treeBox custom='${fns:validField(TableName.SYS_PROCESS_STEP, "SR_ID")}'
                    value="${SPS.SR_ID}" nameValue="${SPS.SR_NAME}"
-                   url="${ROLE_TREE_DATA_URL}" title="步骤办理角色"></s:treeBox>
+                   url="${BASE_URL}${Url.ROLE_TREE_DATA_URL}" title="步骤办理角色"></s:treeBox>
     </div>
     <div class="form-group has-feedback">
         <label>办理类型:</label>

@@ -47,7 +47,7 @@
         }
         var params = packFormParams($form);
 
-        ajax.put('${PROCESS_DEFINITION_UPDATE_URL}', params, function (data) {
+        ajax.put('${BASE_URL}${Url.PROCESS_DEFINITION_UPDATE_URL}', params, function (data) {
             ajaxReturn.data(data, null, null, null);
         })
     });

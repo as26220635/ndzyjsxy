@@ -26,7 +26,7 @@
             BUS_PROCESS: '${EXTRA.BUS_PROCESS}',
             BUS_PROCESS2: '${EXTRA.BUS_PROCESS2}',
         };
-        ajax.getHtml('${DILIGENT_STUDY_POST_ADD_URL}', {BDS_ID: BDS_ID}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.DILIGENT_STUDY_POST_ADD_URL}', {BDS_ID: BDS_ID}, function (html) {
                 model.show({
                     title: '添加勤工助学岗位',
                     content: html,
@@ -41,7 +41,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${DILIGENT_STUDY_POST_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.DILIGENT_STUDY_POST_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -56,7 +56,7 @@
         var id = data.ID;
         data.ID = data.BDS_ID;
 
-        ajax.getHtml('${DILIGENT_STUDY_POST_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.DILIGENT_STUDY_POST_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改勤工助学岗位',
                     content: html,
@@ -72,7 +72,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${DILIGENT_STUDY_POST_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.DILIGENT_STUDY_POST_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -110,7 +110,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${DILIGENT_STUDY_POST_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.DILIGENT_STUDY_POST_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }

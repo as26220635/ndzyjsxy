@@ -20,7 +20,7 @@
         <label>所属部门:</label>
         <s:treeBox custom='${fns:validField("BUS_DIVISION_PERSONNEL","BD_ID")}'
                    value="${personnel.BD_ID}" nameValue="${personnel.BD_NAME}"
-                   url="${DIVISION_TREE_DATA_URL}" title="选择所属部门"></s:treeBox>
+                   url="${BASE_URL}${Url.DIVISION_TREE_DATA_URL}" title="选择所属部门"></s:treeBox>
     </div>
 </form>
 

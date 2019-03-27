@@ -6,7 +6,7 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${ROLE_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.ROLE_ADD_URL}', {}, function (html) {
                 model.show({
                     title: '添加角色',
                     content: html,
@@ -21,7 +21,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${ROLE_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.ROLE_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -35,7 +35,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${ROLE_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.ROLE_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改角色:' + data.SR_NAME,
                     content: html,
@@ -51,7 +51,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${ROLE_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.ROLE_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -66,7 +66,7 @@
         var data = getRowData(this);
         var ID = data.ID;
 
-        ajax.getHtml('${ROLE_PERMISSION_TREE_MENU}' + ID, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.ROLE_PERMISSION_TREE_MENU}' + ID, {}, function (html) {
             model.show({
                 title: '设置角色权限:'+ data.SR_NAME,
                 content: html,
@@ -84,7 +84,7 @@
                     params.ID = ID;
                     params.MENUIDS = menuIds;
 
-                    ajax.put('${ROLE_PERMISSION_TREE_MENU_UPDATE}', params, function (data) {
+                    ajax.put('${BASE_URL}${Url.ROLE_PERMISSION_TREE_MENU_UPDATE}', params, function (data) {
                         ajaxReturn.data(data, null, null, null);
                     })
                 }
@@ -106,7 +106,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${ROLE_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.ROLE_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }
@@ -116,7 +116,7 @@
     //切换状态
     function onSwitchChange($this, field, check, IS_STATUS) {
         showLoadingContentDiv();
-        ajax.put('${ROLE_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
+        ajax.put('${BASE_URL}${Url.ROLE_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
             if (data.code == STATUS_SUCCESS) {
                 demo.showNotify(ALERT_SUCCESS, '状态修改成功!');
             } else {

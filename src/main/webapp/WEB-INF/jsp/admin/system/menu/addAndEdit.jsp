@@ -22,13 +22,13 @@
         <s:treeBox custom='${fns:validField("SYS_MENU","SM_PARENTID")}'
                    value="${MENU.SM_PARENTID}" nameValue="${MENU.SM_PARENT_NAME}"
                    notId="${MENU.ID}"
-                   url="${MENU_TREE_DATA_URL}" title="选择父菜单"></s:treeBox>
+                   url="${BASE_URL}${Url.MENU_TREE_DATA_URL}" title="选择父菜单"></s:treeBox>
     </div>
     <div class="form-group has-feedback">
         <label>配置列表:</label>
         <s:treeBox custom='${fns:validField("SYS_MENU","SC_ID")}'
                    value="${MENU.SC_ID}" nameValue="${MENU.SC_NAME}"
-                   url="${CONFIGURE_TREE_DATA_URL}" title="选择配置列表"></s:treeBox>
+                   url="${BASE_URL}${Url.CONFIGURE_TREE_DATA_URL}" title="选择配置列表"></s:treeBox>
     </div>
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">

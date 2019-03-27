@@ -21,7 +21,7 @@
         <s:treeBox custom='${fns:validField(TableName.BUS_DIVISION,"BD_PARENT_ID")}'
                    value="${division.BD_PARENT_ID}" nameValue="${division.BD_PARENT_NAME}"
                    notId="${division.ID}"
-                   url="${DIVISION_TREE_DATA_URL}" title="选择上级部门"></s:treeBox>
+                   url="${BASE_URL}${Url.DIVISION_TREE_DATA_URL}" title="选择上级部门"></s:treeBox>
     </div>
     <div class="form-group has-feedback">
         <label>部门编号:</label>

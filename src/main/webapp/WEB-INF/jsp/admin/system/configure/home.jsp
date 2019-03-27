@@ -6,7 +6,7 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${CONFIGURE_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.CONFIGURE_ADD_URL}', {}, function (html) {
                 model.show({
                     title: '添加配置列表',
                     content: html,
@@ -21,7 +21,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${CONFIGURE_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.CONFIGURE_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -35,7 +35,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${CONFIGURE_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.CONFIGURE_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改配置列表',
                     content: html,
@@ -51,7 +51,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${CONFIGURE_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.CONFIGURE_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -99,7 +99,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${CONFIGURE_COPY_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.CONFIGURE_COPY_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '拷贝配置列表',
                     content: html,
@@ -114,7 +114,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${CONFIGURE_COPY_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.CONFIGURE_COPY_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -136,7 +136,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${CONFIGURE_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.CONFIGURE_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }

@@ -27,7 +27,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${PROCESS_SCHEDULE_BASE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.PROCESS_SCHEDULE_BASE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '作废流程进度(项目名称:' + data.SPS_TABLE_NAME + ')',
                     content: html,
@@ -43,7 +43,7 @@
 
                         var params = packFormParams($form);
 
-                        ajax.put('${PROCESS_SCHEDULE_CANCEL_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.PROCESS_SCHEDULE_CANCEL_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -57,7 +57,7 @@
         var data = getRowData(this);
         var SPSC_ID = data.SPSC_ID;
 
-        ajax.getHtml('${PROCESS_SCHEDULE_CANCEL_URL}/' + SPSC_ID, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.PROCESS_SCHEDULE_CANCEL_URL}/' + SPSC_ID, {}, function (html) {
                 model.show({
                     title: '作废流程进度信息(项目名称:' + data.SPS_TABLE_NAME + ')',
                     content: html,

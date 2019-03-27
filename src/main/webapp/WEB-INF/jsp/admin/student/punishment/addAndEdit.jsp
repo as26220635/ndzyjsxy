@@ -84,6 +84,6 @@
     choiceBox.student({
         id: 'BS_ID',
         name: 'BS_NAME',
-        url: '${STUDENT_LIST_URL}'
+        url:'${BASE_URL}${Url.STUDENT_LIST_URL}'
     });
 </script>

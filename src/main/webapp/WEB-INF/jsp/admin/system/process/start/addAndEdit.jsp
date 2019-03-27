@@ -16,7 +16,7 @@
         <label>流程启动角色:</label>
         <s:treeBox custom='${fns:validField("SYS_PROCESS_START", "SR_ID")}'
                    value="${SPS.SR_ID}" nameValue="${SPS.SR_NAME}"
-                   url="${ROLE_TREE_DATA_URL}" title="流程启动角色"></s:treeBox>
+                   url="${BASE_URL}${Url.ROLE_TREE_DATA_URL}" title="流程启动角色"></s:treeBox>
     </div>
 </form>
 

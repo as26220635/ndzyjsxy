@@ -53,7 +53,7 @@
     $diffTable.find('tbody').on('click', '#diff', function () {
         var data = tableView.rowData($table, this);
 
-        ajax.getHtml('${DIFF_URL}', {
+        ajax.getHtml('${BASE_URL}${Url.DIFF_URL}', {
                 oldValue: data.oldValue,
                 newValue: data.newValue,
             }, function (html) {

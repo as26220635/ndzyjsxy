@@ -19,7 +19,7 @@
     </div>
     <div class="form-group has-feedback">
         <label>组字段:</label>
-        <s:combobox url="${VALIDATE_FIELD_LIST_URL}?SV_ID=${fns:trueOrFalse(GROUP != null ,GROUP.SV_ID,SV_ID)}"
+        <s:combobox url="${BASE_URL}${Url.VALIDATE_FIELD_LIST_URL}?SV_ID=${fns:trueOrFalse(GROUP != null ,GROUP.SV_ID,SV_ID)}"
                     custom='${fns:validField("SYS_VALIDATE_GROUP","SVF_IDS")}'
                     value="${GROUP.SVF_IDS}" single="false"></s:combobox>
     </div>

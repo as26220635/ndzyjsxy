@@ -33,7 +33,7 @@
         cache: false,
         info: false,
         //查询URL链接
-        url: '${PROCESS_LOG_LIST}',
+        url:'${BASE_URL}${Url.PROCESS_LOG_LIST}',
         createdRow: function (row, data, dataIndex) {
             //提交
             if (data.SPL_TYPE == '${ProcessType.SUBMIT.toString()}') {

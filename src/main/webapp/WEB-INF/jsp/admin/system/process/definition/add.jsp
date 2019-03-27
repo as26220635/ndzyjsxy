@@ -73,7 +73,7 @@
         <div class="form-group has-feedback form-group-md-6">
             <label>查看全部记录角色:</label>
             <s:treeBox id="SR_ID" name="SR_NAME" value="${SPD.SR_ID}" nameValue="${SPD.SR_NAME}"
-                       url="${ROLE_TREE_DATA_URL}" title="选择查看记录角色"></s:treeBox>
+                       url="${BASE_URL}${Url.ROLE_TREE_DATA_URL}" title="选择查看记录角色"></s:treeBox>
         </div>
         <div class="form-group has-feedback form-group-md-6">
             <label>是否多级退回:</label>

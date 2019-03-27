@@ -23,13 +23,13 @@
     </div>
     <div class="form-group has-feedback">
         <label>下载权限:</label>
-        <s:combobox url="${ROLE_LIST_URL}"
+        <s:combobox url="${BASE_URL}${Url.ROLE_LIST_URL}"
                     custom='${fns:validField("SYS_DICT_TYPE","SDT_ROLE_DOWN")}'
                     value="${DICT.SDT_ROLE_DOWN}" single="false"></s:combobox>
     </div>
     <div class="form-group has-feedback">
         <label>删除权限:</label>
-        <s:combobox url="${ROLE_LIST_URL}"
+        <s:combobox url="${BASE_URL}${Url.ROLE_LIST_URL}"
                     custom='${fns:validField("SYS_DICT_TYPE","SDT_ROLE_DEL")}'
                     value="${DICT.SDT_ROLE_DEL}" single="false"></s:combobox>
     </div>

@@ -21,7 +21,7 @@
         <s:treeBox custom='${fns:validField("SYS_MENU","SM_PARENTID")}'
                    value="${MENU.SM_PARENTID}" nameValue="${MENU.SM_PARENT_NAME}"
                    notId="${MENU.ID}"
-                   url="${MENU_TREE_DATA_URL}" title="选择父菜单"></s:treeBox>
+                   url="${BASE_URL}${Url.MENU_TREE_DATA_URL}" title="选择父菜单"></s:treeBox>
     </div>
     <div class="form-group has-feedback">
         <label>权限编码:</label>

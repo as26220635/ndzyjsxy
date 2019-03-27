@@ -18,7 +18,7 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${BUTTON_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.BUTTON_ADD_URL}', {}, function (html) {
                 model.show({
                     title: '添加按钮',
                     content: html,
@@ -33,7 +33,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${BUTTON_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.BUTTON_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -47,7 +47,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${BUTTON_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.BUTTON_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改按钮',
                     content: html,
@@ -63,7 +63,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${BUTTON_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.BUTTON_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -86,7 +86,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${BUTTON_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.BUTTON_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }

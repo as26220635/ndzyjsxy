@@ -20,14 +20,14 @@
     <div class="form-group has-feedback">
         <label>菜单:</label>
         <s:treeBox id="SM_ID" name="SM_NAME" value="${SFD.SM_ID}" nameValue="${SFD.SM_NAME}"
-                   url="${MENU_TREE_DATA_URL}" title="选择菜单"></s:treeBox>
+                   url="${BASE_URL}${Url.MENU_TREE_DATA_URL}" title="选择菜单"></s:treeBox>
     </div>
     <div class="form-group has-feedback">
         <label>父节点:</label>
         <s:treeBox id="SFD_PARENT_ID" name="SFD_PARENT_NAME" value="${SFD.SFD_PARENT_ID}"
                    nameValue="${SFD.SFD_PARENT_NAME}" sdtId="${fns:trueOrFalse(SFD != null ,SFD.SF_ID,SF_ID)}"
                    notId="${SFD.ID}"
-                   url="${FORMAT_DETAIL_TREE_URL}" title="选择格式详细父节点"></s:treeBox>
+                   url="${BASE_URL}${Url.FORMAT_DETAIL_TREE_URL}" title="选择格式详细父节点"></s:treeBox>
     </div>
     <div class="form-group has-feedback">
         <label>排序:</label>

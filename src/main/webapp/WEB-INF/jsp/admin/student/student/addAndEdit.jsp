@@ -20,7 +20,7 @@
         <label>系部:</label>
         <s:treeBox custom='${fns:validField(TableName.BUS_STUDENT,"BDM_ID")}'
                    value="${student.BDM_ID}" nameValue="${student.BDM_NAME}"
-                   url="${DEPARTMENT_TREE_DATA_URL}" title="选择系部"></s:treeBox>
+                   url="${BASE_URL}${Url.DEPARTMENT_TREE_DATA_URL}" title="选择系部"></s:treeBox>
     </div>
     <div class="form-group has-feedback">
         <label>班级:</label>
@@ -130,6 +130,6 @@
         cObj: $('#BC_ID'),
         val: '${student.BC_ID}',
         dVal: '${student.BDM_ID}',
-        url: '${CLASS_SELECT_DEPARTMENT_URL}'
+        url:'${BASE_URL}${Url.CLASS_SELECT_DEPARTMENT_URL}'
     });
 </script>

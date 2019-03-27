@@ -224,7 +224,7 @@
         //后台加载div
         adminLoadingDiv: $('#dataGridBox${MENU.ID}'),
         //查询URL链接
-        url: '${DATA_GRID_URL}${CONFIGURE.ID}',
+        url:'${BASE_URL}${Url.DATA_GRID_URL}${CONFIGURE.ID}',
         <%--不分页就把选择显示数选择关掉--%>
         <c:if test="${CONFIGURE.SC_IS_PAGING != Attribute.STATUS_SUCCESS}">
         headLength: false,
@@ -307,7 +307,7 @@
                     <c:if test="${!fns:isEmpty(MENU.BUS_PROCESS)}">
                     <%--查询权限菜单--%>
                     if (rowData.SPS_AUDIT_STATUS != ${ProcessStatus.COMPLETE.type}) {
-                        ajax.get('${PROCESS_DATAGRID_BTN}', {
+                        ajax.get('${BASE_URL}${Url.PROCESS_DATAGRID_BTN}', {
                             ID: cellData,
                             BUS_PROCESS: rowData.BUS_PROCESS,
                             BUS_PROCESS2: rowData.BUS_PROCESS2
@@ -611,7 +611,7 @@
     function isProcessSubmit(rowData) {
         var isSubmit = false;
         //请求后台是否拥有提交按钮
-        ajax.get('${PROCESS_DATAGRID_BTN}', {
+        ajax.get('${BASE_URL}${Url.PROCESS_DATAGRID_BTN}', {
             ID: rowData.ID,
             BUS_PROCESS: rowData.BUS_PROCESS,
             BUS_PROCESS2: rowData.BUS_PROCESS2
@@ -620,7 +620,7 @@
         }, false);
         //判断是否拥有审核通过也可以修改的权限
         if (!isSubmit) {
-            ajax.get('${PROCESS_DATAGRID_IS_EDIT}', {
+            ajax.get('${BASE_URL}${Url.PROCESS_DATAGRID_IS_EDIT}', {
                 BUS_PROCESS: rowData.BUS_PROCESS,
                 BUS_PROCESS2: rowData.BUS_PROCESS2
             }, function (data) {
@@ -636,7 +636,7 @@
     function isProcessComplete(rowData) {
         var isSubmit = false;
         //请求后台拿到审核状态否审核完成
-        ajax.get('${PROCESS_PROCESS_STATUS}', {
+        ajax.get('${BASE_URL}${Url.PROCESS_PROCESS_STATUS}', {
             ID: rowData.ID,
             BUS_PROCESS: rowData.BUS_PROCESS,
             BUS_PROCESS2: rowData.BUS_PROCESS2
@@ -647,7 +647,7 @@
         }, false);
         //判断是否拥有审核通过也可以修改的权限
         if (!isSubmit) {
-            ajax.get('${PROCESS_DATAGRID_IS_EDIT}', {
+            ajax.get('${BASE_URL}${Url.PROCESS_DATAGRID_IS_EDIT}', {
                 BUS_PROCESS: rowData.BUS_PROCESS,
                 BUS_PROCESS2: rowData.BUS_PROCESS2
             }, function (data) {

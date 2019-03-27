@@ -20,7 +20,7 @@
         <label>所属系部:</label>
         <s:treeBox custom='${fns:validField("BUS_TEACHER","BDM_ID")}'
                    value="${teacher.BDM_ID}" nameValue="${teacher.BDM_NAME}"
-                   url="${DEPARTMENT_TREE_DATA_URL}" title="选择系部"></s:treeBox>
+                   url="${BASE_URL}${Url.DEPARTMENT_TREE_DATA_URL}" title="选择系部"></s:treeBox>
     </div>
     <div class="form-group has-feedback">
         <label>工号:</label>

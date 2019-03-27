@@ -6,7 +6,7 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${PROCESS_DEFINITION_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.PROCESS_DEFINITION_ADD_URL}', {}, function (html) {
                 model.show({
                     title: '添加流程定义',
                     content: html,
@@ -21,7 +21,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${PROCESS_DEFINITION_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.PROCESS_DEFINITION_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -43,7 +43,7 @@
     //切换状态
     function onSwitchChange($this, field, check, IS_STATUS) {
         showLoadingContentDiv();
-        ajax.put('${PROCESS_DEFINITION_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
+        ajax.put('${BASE_URL}${Url.PROCESS_DEFINITION_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
             if (data.code == STATUS_SUCCESS) {
                 demo.showNotify(ALERT_SUCCESS, '状态修改成功!');
             } else {
@@ -59,7 +59,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${PROCESS_DEFINITION_COPY_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.PROCESS_DEFINITION_COPY_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '拷贝流程定义',
                     content: html,
@@ -74,7 +74,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${PROCESS_DEFINITION_COPY_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.PROCESS_DEFINITION_COPY_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }

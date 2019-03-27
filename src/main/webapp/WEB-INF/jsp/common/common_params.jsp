@@ -11,8 +11,8 @@
 <script>
     <%-- 基础属性  url--%>
     var BASE_URL = '${BASE_URL}';
-    var MANAGER_URL = '${MANAGER_URL}';
-    var IMG_URL = '${IMG_URL}';
+    var MANAGER_URL = '${Url.MANAGER_URL}';
+    var IMG_URL = '${Url.IMG_URL}';
     <%-- icon预览地址--%>
     var PREVIEW_ICON_URL = BASE_URL + "previewIcon";
     <%--错误图片地址--%>

@@ -57,7 +57,7 @@
         }
         var params = packFormParams($form);
 
-        ajax.put('${PUNISHMENT_BASE_URL}', params, function (data) {
+        ajax.put('${BASE_URL}${Url.PUNISHMENT_BASE_URL}', params, function (data) {
             ajaxReturn.data(data, null, null, null);
         })
     });

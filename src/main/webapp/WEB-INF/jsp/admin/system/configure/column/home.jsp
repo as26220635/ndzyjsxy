@@ -16,7 +16,7 @@
 
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${CONFIGURE_COLUMN_ADD_URL}', {SC_ID: '${EXTRA.SC_ID}'}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.CONFIGURE_COLUMN_ADD_URL}', {SC_ID: '${EXTRA.SC_ID}'}, function (html) {
                 model.show({
                     title: '添加配置列表列',
                     content: html,
@@ -31,7 +31,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${CONFIGURE_COLUMN_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.CONFIGURE_COLUMN_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -45,7 +45,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${CONFIGURE_COLUMN_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.CONFIGURE_COLUMN_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改配置列表列',
                     content: html,
@@ -61,7 +61,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${CONFIGURE_COLUMN_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.CONFIGURE_COLUMN_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -84,7 +84,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${CONFIGURE_COLUMN_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.CONFIGURE_COLUMN_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }

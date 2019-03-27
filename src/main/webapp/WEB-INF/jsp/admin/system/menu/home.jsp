@@ -12,7 +12,7 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${MENU_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.MENU_ADD_URL}', {}, function (html) {
                 model.show({
                     title: '添加菜单',
                     content: html,
@@ -27,7 +27,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${MENU_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.MENU_ADD_URL}', params, function (data) {
                             demo.showNotify(ALERT_SUCCESS, data.message);
                             model.hide($model);
                             //刷新菜单
@@ -44,7 +44,7 @@
         var id = data.ID;
         var index = $(this).attr("data-index");
 
-        ajax.getHtml('${MENU_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.MENU_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改菜单',
                     content: html,
@@ -60,7 +60,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${MENU_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.MENU_UPDATE_URL}', params, function (data) {
                             if (data.code == STATUS_SUCCESS) {
                                 model.hide($model);
                                 demo.showNotify(ALERT_SUCCESS, data.message);
@@ -84,7 +84,7 @@
 
         treeBox.init({
             title: '选择按钮',
-            url: '${MENU_TREE_BUTTON_DATA_URL}',
+            url:'${BASE_URL}${Url.MENU_TREE_BUTTON_DATA_URL}',
             modelSize: model.size.LG,
             searchParams: {
                 ID: id
@@ -99,7 +99,7 @@
                 params.ID = id;
                 params.BUTTONIDS = buttonIds;
 
-                ajax.put('${MENU_TREE_BUTTON_DATA_UPDATE_URL}', params, function (data) {
+                ajax.put('${BASE_URL}${Url.MENU_TREE_BUTTON_DATA_UPDATE_URL}', params, function (data) {
                     ajaxReturn.tree(data, $model, null, null);
                 })
             }
@@ -111,7 +111,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${MENU_COPY_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.MENU_COPY_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '拷贝菜单',
                     content: html,
@@ -126,7 +126,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${MENU_COPY_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.MENU_COPY_URL}', params, function (data) {
                             if (data.code == STATUS_SUCCESS) {
                                 model.hide($model);
                                 demo.showNotify(ALERT_SUCCESS, data.message);
@@ -153,7 +153,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${MENU_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.MENU_DELETE_URL}/' + id, {}, function (data) {
                     if (data.code == STATUS_SUCCESS) {
                         model.hide($model);
                         demo.showNotify(ALERT_SUCCESS, data.message);
@@ -169,7 +169,7 @@
     //切换状态
     function onSwitchChange($this, field, check, IS_STATUS) {
         showLoadingContentDiv();
-        ajax.put('${MENU_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
+        ajax.put('${BASE_URL}${Url.MENU_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
             if (data.code == STATUS_SUCCESS) {
                 demo.showNotify(ALERT_SUCCESS, '状态修改成功!');
             } else {

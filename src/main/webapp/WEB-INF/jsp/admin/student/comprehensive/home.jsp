@@ -33,7 +33,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${STUDENT_COMPREHENSIVE_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.STUDENT_COMPREHENSIVE_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }
@@ -44,7 +44,7 @@
      * 导入excel
      */
     function excelImport($form, $model) {
-        ajax.file('${STUDENT_COMPREHENSIVE_IMPORT_URL}', $form, function (data) {
+       ajax.file('${BASE_URL}${Url.STUDENT_COMPREHENSIVE_IMPORT_URL}', $form, function (data) {
             //重置上传框
             importFileClear();
             ajaxReturn.data(data, $model, $dataGrid, true, {

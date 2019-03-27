@@ -12,7 +12,7 @@
 
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${VALIDATE_ADD_URL}', {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.VALIDATE_ADD_URL}', {}, function (html) {
                 model.show({
                     title: '添加验证',
                     content: html,
@@ -27,7 +27,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${VALIDATE_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.VALIDATE_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -41,7 +41,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${VALIDATE_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.VALIDATE_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改验证',
                     content: html,
@@ -57,7 +57,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${VALIDATE_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.VALIDATE_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -91,7 +91,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${VALIDATE_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.VALIDATE_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }
@@ -101,7 +101,7 @@
     //切换状态
     function onSwitchChange($this, field, check, IS_STATUS) {
         showLoadingContentDiv();
-        ajax.put('${VALIDATE_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
+        ajax.put('${BASE_URL}${Url.VALIDATE_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
             if (data.code == STATUS_SUCCESS) {
                 demo.showNotify(ALERT_SUCCESS, '状态修改成功!');
             } else {

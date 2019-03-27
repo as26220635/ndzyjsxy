@@ -16,7 +16,7 @@
 
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${FORMAT_DETAIL_ADD_URL}', {SF_ID: '${EXTRA.SF_ID}'}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.FORMAT_DETAIL_ADD_URL}', {SF_ID: '${EXTRA.SF_ID}'}, function (html) {
                 model.show({
                     title: '添加格式详细',
                     content: html,
@@ -31,7 +31,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${FORMAT_DETAIL_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.FORMAT_DETAIL_ADD_URL}', params, function (data) {
                             ajaxReturn.tree(data, $model, $treeGridTable);
                         })
                     }
@@ -45,7 +45,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${FORMAT_DETAIL_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.FORMAT_DETAIL_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改格式详细',
                     content: html,
@@ -61,7 +61,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${FORMAT_DETAIL_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.FORMAT_DETAIL_UPDATE_URL}', params, function (data) {
                             ajaxReturn.tree(data, $model, $treeGridTable);
                         });
                     }
@@ -84,7 +84,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${FORMAT_DETAIL_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.FORMAT_DETAIL_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.tree(data, $model, $treeGridTable);
                 })
             }
@@ -94,7 +94,7 @@
     //切换状态
     function onSwitchChange($this, field, check, IS_STATUS) {
         showLoadingContentDiv();
-        ajax.put('${FORMAT_DETAIL_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
+        ajax.put('${BASE_URL}${Url.FORMAT_DETAIL_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
             if (data.code == STATUS_SUCCESS) {
                 demo.showNotify(ALERT_SUCCESS, '状态修改成功!');
             } else {

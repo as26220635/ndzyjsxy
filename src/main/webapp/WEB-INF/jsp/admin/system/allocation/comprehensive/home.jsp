@@ -68,7 +68,7 @@
             return;
         }
 
-        ajax.put('${COMPREHENSIVE_BASE_URL}', params, function (data) {
+        ajax.put('${BASE_URL}${Url.COMPREHENSIVE_BASE_URL}', params, function (data) {
             ajaxReturn.data(data, null, null, null);
         })
     });

@@ -20,7 +20,7 @@
 <script>
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${DOCUMENT_ADD_URL}', {SC_ID: '${EXTRA.SC_ID}'}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.DOCUMENT_ADD_URL}', {SC_ID: '${EXTRA.SC_ID}'}, function (html) {
                 model.show({
                     title: '添加文件',
                     content: html,
@@ -35,7 +35,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${DOCUMENT_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.DOCUMENT_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, true);
                         })
                     }
@@ -48,7 +48,7 @@
     $dataGridTable.find('tbody').on('click', '#edit', function () {
         var data = getRowData(this);
         var id = data.ID;
-        ajax.getHtml('${DOCUMENT_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.DOCUMENT_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改文件',
                     content: html,
@@ -64,7 +64,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${DOCUMENT_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.DOCUMENT_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -79,7 +79,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${DOCUMENT_REPLY_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.DOCUMENT_REPLY_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改文件',
                     content: html,
@@ -94,7 +94,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${DOCUMENT_REPLY_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.DOCUMENT_REPLY_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -116,7 +116,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${DOCUMENT_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.DOCUMENT_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }

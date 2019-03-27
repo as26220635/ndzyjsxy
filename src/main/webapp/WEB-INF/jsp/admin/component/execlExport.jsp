@@ -34,7 +34,7 @@
                 }
 
                 //导出
-                window.location.href = '${EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(dataGridAjaxParams);
+                window.location.href = '${BASE_URL}${Url.EXPORT_URL}${MENU.ID}/' + columnIds + '?' + urlEncode(dataGridAjaxParams);
                 model.hide($model);
             }
         });

@@ -16,7 +16,7 @@
 
     //添加
     $('#addBtn').on('click', function () {
-        ajax.getHtml('${OPERATOR_SUB_ADD_URL}', {SO_ID: '${EXTRA.SO_ID}'}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.OPERATOR_SUB_ADD_URL}', {SO_ID: '${EXTRA.SO_ID}'}, function (html) {
                 model.show({
                     title: '添加操作员账号',
                     content: html,
@@ -31,7 +31,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.post('${OPERATOR_SUB_ADD_URL}', params, function (data) {
+                        ajax.post('${BASE_URL}${Url.OPERATOR_SUB_ADD_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         })
                     }
@@ -45,7 +45,7 @@
         var data = getRowData(this);
         var id = data.ID;
 
-        ajax.getHtml('${OPERATOR_SUB_UPDATE_URL}/' + id, {}, function (html) {
+        ajax.getHtml('${BASE_URL}${Url.OPERATOR_SUB_UPDATE_URL}/' + id, {}, function (html) {
                 model.show({
                     title: '修改操作员账号',
                     content: html,
@@ -60,7 +60,7 @@
                         }
                         var params = packFormParams($form);
 
-                        ajax.put('${OPERATOR_SUB_UPDATE_URL}', params, function (data) {
+                        ajax.put('${BASE_URL}${Url.OPERATOR_SUB_UPDATE_URL}', params, function (data) {
                             ajaxReturn.data(data, $model, $dataGrid, false);
                         });
                     }
@@ -82,7 +82,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${OPERATOR_SUB_DELETE_URL}/' + id, {}, function (data) {
+                ajax.del('${BASE_URL}${Url.OPERATOR_SUB_DELETE_URL}/' + id, {}, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 })
             }
@@ -92,7 +92,7 @@
     //切换状态
     function onSwitchChange($this, field, check, IS_STATUS) {
         showLoadingContentDiv();
-        ajax.put('${OPERATOR_SUB_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
+        ajax.put('${BASE_URL}${Url.OPERATOR_SUB_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
             if (data.code == STATUS_SUCCESS) {
                 demo.showNotify(ALERT_SUCCESS, '状态修改成功!');
             } else {
