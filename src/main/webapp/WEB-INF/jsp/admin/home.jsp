@@ -229,7 +229,7 @@
     <%-- 设置全局ajax请求判断 --%>
     ajax.init();
     ajax.setup({
-        logouturl:'${BASE_URL}${Url.BASE_URL}logout'
+        logouturl:'${BASE_URL}logout'
     });
 
     mainInit.initPjax();
