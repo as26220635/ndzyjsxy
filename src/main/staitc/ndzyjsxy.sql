@@ -1,17 +1,17 @@
 /*
  Navicat MySQL Data Transfer
 
- Source Server         : db
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80011
+ Source Server Version : 80012
  Source Host           : localhost:3306
  Source Schema         : ndzyjsxy
 
  Target Server Type    : MySQL
- Target Server Version : 80011
+ Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 08/10/2018 20:22:37
+ Date: 11/02/2019 14:21:24
 */
 
 SET NAMES utf8mb4;
@@ -8072,30 +8072,117 @@ INSERT INTO `sys_log` VALUES ('71132258752266240', '1', NULL, '查看列表', '0
 INSERT INTO `sys_log` VALUES ('71132277886681088', '1', NULL, '删除困难学生认定', '0:0:0:0:0:0:0:1', 1, '2018-10-07 23:08:06', 2);
 INSERT INTO `sys_log` VALUES ('71132290599616512', '1', NULL, '导入困难学生认定', '0:0:0:0:0:0:0:1', 1, '2018-10-07 23:08:09', 2);
 INSERT INTO `sys_log` VALUES ('71132305778802688', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-07 23:08:12', 0);
-INSERT INTO `sys_log` VALUES ('71445971480870912', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 19:54:36', 9);
-INSERT INTO `sys_log` VALUES ('71445994734092288', '1', NULL, 'SQL运行错误', '0:0:0:0:0:0:0:1', 0, '2018-10-08 19:54:41', 1);
-INSERT INTO `sys_log` VALUES ('71446226205147136', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 19:55:37', 0);
-INSERT INTO `sys_log` VALUES ('71448348103540736', '1', NULL, 'SQL运行错误', '0:0:0:0:0:0:0:1', 0, '2018-10-08 20:04:03', 1);
-INSERT INTO `sys_log` VALUES ('71450274543173632', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:11:42', 0);
-INSERT INTO `sys_log` VALUES ('71450381472759808', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:12:07', 0);
-INSERT INTO `sys_log` VALUES ('71451180361842688', '48601651874889729', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:15:18', 9);
-INSERT INTO `sys_log` VALUES ('71451197931782144', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:15:22', 0);
-INSERT INTO `sys_log` VALUES ('71451204772691968', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:15:24', 0);
-INSERT INTO `sys_log` VALUES ('71451416991891456', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:16:14', 0);
-INSERT INTO `sys_log` VALUES ('71451423044272128', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:16:16', 0);
-INSERT INTO `sys_log` VALUES ('71451493655379968', '52504512421691393', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:16:33', 9);
-INSERT INTO `sys_log` VALUES ('71451512756240384', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:16:37', 0);
-INSERT INTO `sys_log` VALUES ('71452565052588032', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:20:48', 0);
-INSERT INTO `sys_log` VALUES ('71452570198999040', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:20:49', 0);
-INSERT INTO `sys_log` VALUES ('71452646413697024', '48303136200196097', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:21:07', 9);
-INSERT INTO `sys_log` VALUES ('71452661697740800', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:21:11', 0);
-INSERT INTO `sys_log` VALUES ('71452716374687744', '48303136200196097', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:21:24', 0);
-INSERT INTO `sys_log` VALUES ('71452755998277632', '48601651874889729', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:21:33', 9);
-INSERT INTO `sys_log` VALUES ('71452793067536384', '52504512421691393', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:21:42', 9);
-INSERT INTO `sys_log` VALUES ('71452811493113856', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:21:47', 0);
-INSERT INTO `sys_log` VALUES ('71452815679029248', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:21:48', 0);
-INSERT INTO `sys_log` VALUES ('71452870590857216', '48303136200196097', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:22:01', 9);
-INSERT INTO `sys_log` VALUES ('71452919077011456', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 20:22:12', 9);
+INSERT INTO `sys_log` VALUES ('71393214363336704', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 16:24:58', 9);
+INSERT INTO `sys_log` VALUES ('71394297215188992', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 16:29:16', 0);
+INSERT INTO `sys_log` VALUES ('71394307780640768', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 16:29:18', 0);
+INSERT INTO `sys_log` VALUES ('71401090515468288', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:56:15', 1);
+INSERT INTO `sys_log` VALUES ('71401181687054336', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:56:37', 1);
+INSERT INTO `sys_log` VALUES ('71401193804398592', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:56:40', 1);
+INSERT INTO `sys_log` VALUES ('71401300692041728', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:06', 1);
+INSERT INTO `sys_log` VALUES ('71401309651075072', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:08', 1);
+INSERT INTO `sys_log` VALUES ('71401322754080768', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:11', 1);
+INSERT INTO `sys_log` VALUES ('71401331608256512', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:13', 1);
+INSERT INTO `sys_log` VALUES ('71401346716139520', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:17', 1);
+INSERT INTO `sys_log` VALUES ('71401362885181440', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:20', 1);
+INSERT INTO `sys_log` VALUES ('71401379628843008', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:24', 1);
+INSERT INTO `sys_log` VALUES ('71401392908009472', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:28', 1);
+INSERT INTO `sys_log` VALUES ('71401410238873600', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:32', 1);
+INSERT INTO `sys_log` VALUES ('71401420233900032', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:34', 1);
+INSERT INTO `sys_log` VALUES ('71401428832223232', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:36', 1);
+INSERT INTO `sys_log` VALUES ('71401435954151424', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:38', 1);
+INSERT INTO `sys_log` VALUES ('71401447631093760', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:41', 1);
+INSERT INTO `sys_log` VALUES ('71401455994535936', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:43', 1);
+INSERT INTO `sys_log` VALUES ('71401462260826112', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:44', 1);
+INSERT INTO `sys_log` VALUES ('71401468350955520', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:46', 1);
+INSERT INTO `sys_log` VALUES ('71401475758096384', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:47', 1);
+INSERT INTO `sys_log` VALUES ('71401484129927168', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:49', 1);
+INSERT INTO `sys_log` VALUES ('71401493223178240', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:51', 1);
+INSERT INTO `sys_log` VALUES ('71401499330084864', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:53', 1);
+INSERT INTO `sys_log` VALUES ('71401511527120896', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:56', 1);
+INSERT INTO `sys_log` VALUES ('71401518607106048', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:58', 1);
+INSERT INTO `sys_log` VALUES ('71401524189724672', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:57:59', 1);
+INSERT INTO `sys_log` VALUES ('71401531592671232', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:01', 1);
+INSERT INTO `sys_log` VALUES ('71401542791462912', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:03', 1);
+INSERT INTO `sys_log` VALUES ('71401549422657536', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:05', 1);
+INSERT INTO `sys_log` VALUES ('71401556737523712', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:07', 1);
+INSERT INTO `sys_log` VALUES ('71401567776931840', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:09', 1);
+INSERT INTO `sys_log` VALUES ('71401580133351424', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:12', 1);
+INSERT INTO `sys_log` VALUES ('71401586508693504', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:14', 1);
+INSERT INTO `sys_log` VALUES ('71401606138036224', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:18', 1);
+INSERT INTO `sys_log` VALUES ('71401627881308160', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:24', 1);
+INSERT INTO `sys_log` VALUES ('71401642171301888', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:27', 1);
+INSERT INTO `sys_log` VALUES ('71401774895857664', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:58:59', 1);
+INSERT INTO `sys_log` VALUES ('71401785180291072', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:01', 1);
+INSERT INTO `sys_log` VALUES ('71401794487451648', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:03', 1);
+INSERT INTO `sys_log` VALUES ('71401802163027968', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:05', 1);
+INSERT INTO `sys_log` VALUES ('71401810337726464', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:07', 1);
+INSERT INTO `sys_log` VALUES ('71401820768960512', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:10', 1);
+INSERT INTO `sys_log` VALUES ('71401828578754560', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:11', 1);
+INSERT INTO `sys_log` VALUES ('71401836078170112', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:13', 1);
+INSERT INTO `sys_log` VALUES ('71401849894207488', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:17', 1);
+INSERT INTO `sys_log` VALUES ('71401859335585792', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:19', 1);
+INSERT INTO `sys_log` VALUES ('71401867782914048', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:21', 1);
+INSERT INTO `sys_log` VALUES ('71401875223609344', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:23', 1);
+INSERT INTO `sys_log` VALUES ('71401883524136960', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:25', 1);
+INSERT INTO `sys_log` VALUES ('71401890448932864', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:26', 1);
+INSERT INTO `sys_log` VALUES ('71401897554083840', '1', NULL, '系统发现异常', '0:0:0:0:0:0:0:1', 0, '2018-10-08 16:59:28', 1);
+INSERT INTO `sys_log` VALUES ('71402064999088128', '1', NULL, 'SQL运行错误', '0:0:0:0:0:0:0:1', 0, '2018-10-08 17:00:08', 1);
+INSERT INTO `sys_log` VALUES ('71402088508162048', '1', NULL, 'SQL运行错误', '0:0:0:0:0:0:0:1', 0, '2018-10-08 17:00:13', 1);
+INSERT INTO `sys_log` VALUES ('71402335892406272', '1', NULL, 'SQL运行错误', '0:0:0:0:0:0:0:1', 0, '2018-10-08 17:01:12', 1);
+INSERT INTO `sys_log` VALUES ('71402351327444992', '1', NULL, 'SQL运行错误', '0:0:0:0:0:0:0:1', 0, '2018-10-08 17:01:16', 1);
+INSERT INTO `sys_log` VALUES ('71402722573680640', '1', NULL, 'SQL运行错误', '0:0:0:0:0:0:0:1', 0, '2018-10-08 17:02:44', 1);
+INSERT INTO `sys_log` VALUES ('71404714775805952', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:10:40', 0);
+INSERT INTO `sys_log` VALUES ('71404811647451136', '48303136200196097', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:11:03', 9);
+INSERT INTO `sys_log` VALUES ('71404961325383680', '48601651874889729', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:11:38', 9);
+INSERT INTO `sys_log` VALUES ('71405009069146112', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:11:50', 0);
+INSERT INTO `sys_log` VALUES ('71405032930541568', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:11:55', 0);
+INSERT INTO `sys_log` VALUES ('71405142653534208', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:12:22', 0);
+INSERT INTO `sys_log` VALUES ('71405197628276736', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:12:35', 0);
+INSERT INTO `sys_log` VALUES ('71405252036788224', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:12:48', 0);
+INSERT INTO `sys_log` VALUES ('71405948425469952', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:15:34', 0);
+INSERT INTO `sys_log` VALUES ('71406007988781056', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:15:48', 0);
+INSERT INTO `sys_log` VALUES ('71406266840252416', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:16:50', 0);
+INSERT INTO `sys_log` VALUES ('71406275556016128', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:16:52', 0);
+INSERT INTO `sys_log` VALUES ('71406401716486144', '1', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:17:22', 9);
+INSERT INTO `sys_log` VALUES ('71406423841439744', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:17:27', 0);
+INSERT INTO `sys_log` VALUES ('71406451590955008', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:17:34', 0);
+INSERT INTO `sys_log` VALUES ('71406591148032000', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:18:07', 0);
+INSERT INTO `sys_log` VALUES ('71406598597115904', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:18:09', 0);
+INSERT INTO `sys_log` VALUES ('71406609116430336', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:18:11', 0);
+INSERT INTO `sys_log` VALUES ('71406613109407744', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:18:12', 0);
+INSERT INTO `sys_log` VALUES ('71406624400474112', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:18:15', 0);
+INSERT INTO `sys_log` VALUES ('71406629685297152', '1', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:18:16', 0);
+INSERT INTO `sys_log` VALUES ('71406716956180480', '52504512421691393', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:18:37', 9);
+INSERT INTO `sys_log` VALUES ('71406751290753024', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:18:45', 0);
+INSERT INTO `sys_log` VALUES ('71406833968873472', '48601651874889729', NULL, '登录', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:19:05', 9);
+INSERT INTO `sys_log` VALUES ('71406854038618112', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:19:10', 0);
+INSERT INTO `sys_log` VALUES ('71406858828513280', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:19:11', 0);
+INSERT INTO `sys_log` VALUES ('71406979603496960', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:19:40', 0);
+INSERT INTO `sys_log` VALUES ('71407017708748800', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:19:49', 0);
+INSERT INTO `sys_log` VALUES ('71407031541563392', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:19:52', 0);
+INSERT INTO `sys_log` VALUES ('71407042639691776', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:19:55', 0);
+INSERT INTO `sys_log` VALUES ('71407054094336000', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:19:57', 0);
+INSERT INTO `sys_log` VALUES ('71407057038737408', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:19:58', 0);
+INSERT INTO `sys_log` VALUES ('71408167061291008', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:24:23', 0);
+INSERT INTO `sys_log` VALUES ('71408233398403072', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:24:38', 0);
+INSERT INTO `sys_log` VALUES ('71408329431187456', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:25:01', 0);
+INSERT INTO `sys_log` VALUES ('71408867111600128', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:27:09', 0);
+INSERT INTO `sys_log` VALUES ('71408899336437760', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:27:17', 0);
+INSERT INTO `sys_log` VALUES ('71408914628870144', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:27:21', 0);
+INSERT INTO `sys_log` VALUES ('71409359237677056', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:29:07', 0);
+INSERT INTO `sys_log` VALUES ('71409506906537984', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:29:42', 0);
+INSERT INTO `sys_log` VALUES ('71410090141286400', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:32:01', 0);
+INSERT INTO `sys_log` VALUES ('71410113230929920', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:32:07', 0);
+INSERT INTO `sys_log` VALUES ('71411086338818048', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:35:59', 0);
+INSERT INTO `sys_log` VALUES ('71411096082186240', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:36:01', 0);
+INSERT INTO `sys_log` VALUES ('71417104074539008', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 17:59:53', 0);
+INSERT INTO `sys_log` VALUES ('71417822655283200', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 18:02:45', 0);
+INSERT INTO `sys_log` VALUES ('71417942142615552', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 18:03:13', 0);
+INSERT INTO `sys_log` VALUES ('71417949373595648', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 18:03:15', 0);
+INSERT INTO `sys_log` VALUES ('71417978033274880', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 18:03:22', 0);
+INSERT INTO `sys_log` VALUES ('71417989244649472', '48601651874889729', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 18:03:24', 0);
+INSERT INTO `sys_log` VALUES ('71418024711684096', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 18:03:33', 0);
+INSERT INTO `sys_log` VALUES ('71419099778908160', '52504512421691393', NULL, '查看列表', '0:0:0:0:0:0:0:1', 1, '2018-10-08 18:07:49', 0);
 
 -- ----------------------------
 -- Table structure for sys_log_text
@@ -14310,30 +14397,117 @@ INSERT INTO `sys_log_text` VALUES ('71132259373023232', '71132258752266240', '�
 INSERT INTO `sys_log_text` VALUES ('71132277924429824', '71132277886681088', '删除困难学生认定,信息:{学生(ID)=70966830583250944, 学生=张三, 年级认定意见=12, 困难级别=特别困难, 认定时间=20181007, 录入时间=2018-10-07 23:06:54, ID=71131978195271680, 认定原因=家庭人口众多，劳动力较少, 班级认定意见=11}');
 INSERT INTO `sys_log_text` VALUES ('71132290649948160', '71132290599616512', '导入困难学生认定信息,数据:{第0个,0(宁德职业技术学院),1(计算机系),2(18多媒体),3(201802201),4(张三),5(居民身份证),6(432503197505028819),7(特别困难),8(20181007),9(家庭人口众多，劳动力较少),10(11),11(12)},');
 INSERT INTO `sys_log_text` VALUES ('71132305896243200', '71132305778802688', '查看操作日志');
-INSERT INTO `sys_log_text` VALUES ('71445972013547520', '71445971480870912', '登录成功!登录地址:未知');
-INSERT INTO `sys_log_text` VALUES ('71445994964779008', '71445994734092288', 'SQL运行错误:sql injection violation, syntax error: ERROR. pos 610, line 7, column 34, token RPAREN : SELECT SPS.SPD_ID,CONCAT(COUNT(*),\'项\')  AS BACKLOG_NUM,SPD.BUS_PROCESS,SPD.BUS_PROCESS2\n        FROM SYS_PROCESS_SCHEDULE SPS\n        INNER JOIN SYS_PROCESS_DEFINITION SPD ON SPD.ID =SPS.SPD_ID\n        LEFT JOIN SYS_VALUE_RECORD SVR ON SVR.SVR_TABLE_ID = SPS.SPS_TABLE_ID AND SVR.SVR_TYPE = 3\n        WHERE SVR.ID IS NULL AND ((SPS.SPS_STEP_TYPE = 1 AND SPS.SPS_STEP_TRANSACTOR IN(SELECT SR_ID FROM SYS_OPERATOR_ROLE WHERE SO_ID = ?)) OR (SPS.SPS_STEP_TYPE = 2 AND SPS.SPS_STEP_TRANSACTOR = ?)) AND SPS.SPS_IS_CANCEL = 0\n        AND SPD.BUS_PROCESS =? AND SPD.BUS_PROCESS2 = ?\n        AND SPS.SVR_TABLE_ID IN()');
-INSERT INTO `sys_log_text` VALUES ('71446226553274368', '71446226205147136', '查看配置列表管理');
-INSERT INTO `sys_log_text` VALUES ('71448348246147072', '71448348103540736', 'SQL运行错误:Unknown column \'SPS.SVR_TABLE_ID\' in \'IN/ALL/ANY subquery\'');
-INSERT INTO `sys_log_text` VALUES ('71450274824192000', '71450274543173632', '查看配置列表管理');
-INSERT INTO `sys_log_text` VALUES ('71450381929938944', '71450381472759808', '查看配置列表管理');
-INSERT INTO `sys_log_text` VALUES ('71451180567363584', '71451180361842688', '登录成功!登录地址:未知');
-INSERT INTO `sys_log_text` VALUES ('71451198074388480', '71451197931782144', '查看绿色通道');
-INSERT INTO `sys_log_text` VALUES ('71451205078876160', '71451204772691968', '查看国家奖学金');
-INSERT INTO `sys_log_text` VALUES ('71451417394544640', '71451416991891456', '查看国家励志奖学金');
-INSERT INTO `sys_log_text` VALUES ('71451423186878464', '71451423044272128', '查看国家奖学金');
-INSERT INTO `sys_log_text` VALUES ('71451493714100224', '71451493655379968', '登录成功!登录地址:未知');
-INSERT INTO `sys_log_text` VALUES ('71451513075007488', '71451512756240384', '查看勤工助学');
-INSERT INTO `sys_log_text` VALUES ('71452565283274752', '71452565052588032', '查看勤工助学岗位');
-INSERT INTO `sys_log_text` VALUES ('71452570257719296', '71452570198999040', '查看勤工助学');
-INSERT INTO `sys_log_text` VALUES ('71452646841516032', '71452646413697024', '登录成功!登录地址:未知');
-INSERT INTO `sys_log_text` VALUES ('71452662054256640', '71452661697740800', '查看勤工助学');
-INSERT INTO `sys_log_text` VALUES ('71452716685066240', '71452716374687744', '查看绿色通道');
-INSERT INTO `sys_log_text` VALUES ('71452756191215616', '71452755998277632', '登录成功!登录地址:未知');
-INSERT INTO `sys_log_text` VALUES ('71452793306611712', '71452793067536384', '登录成功!登录地址:未知');
-INSERT INTO `sys_log_text` VALUES ('71452811870601216', '71452811493113856', '查看国家励志奖学金');
-INSERT INTO `sys_log_text` VALUES ('71452815741943808', '71452815679029248', '查看国家奖学金');
-INSERT INTO `sys_log_text` VALUES ('71452870750240768', '71452870590857216', '登录成功!登录地址:未知');
-INSERT INTO `sys_log_text` VALUES ('71452919240589312', '71452919077011456', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('71393214841487360', '71393214363336704', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('71394297697533952', '71394297215188992', '查看按钮管理');
+INSERT INTO `sys_log_text` VALUES ('71394308510449664', '71394307780640768', '查看菜单管理');
+INSERT INTO `sys_log_text` VALUES ('71401090775515136', '71401090515468288', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401181884186624', '71401181687054336', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401193909256192', '71401193804398592', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401300834648064', '71401300692041728', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401310095671296', '71401309651075072', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401322825383936', '71401322754080768', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401331713114112', '71401331608256512', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401347718578176', '71401346716139520', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401362969067520', '71401362885181440', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401379742089216', '71401379628843008', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401393688150016', '71401392908009472', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401410448588800', '71401410238873600', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401420393283584', '71401420233900032', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401428899332096', '71401428832223232', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401436054814720', '71401435954151424', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401447853391872', '71401447631093760', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401456078422016', '71401455994535936', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401462332129280', '71401462260826112', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401468418064384', '71401468350955520', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401475879731200', '71401475758096384', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401484259950592', '71401484129927168', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401493298675712', '71401493223178240', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401499569160192', '71401499330084864', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401511652950016', '71401511527120896', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401518682603520', '71401518607106048', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401524495908864', '71401524189724672', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401531689140224', '71401531592671232', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401542959235072', '71401542791462912', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401549498155008', '71401549422657536', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401556926267392', '71401556737523712', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401568083116032', '71401567776931840', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401580267569152', '71401580133351424', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401586676465664', '71401586508693504', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401606255476736', '71401606138036224', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401627923251200', '71401627881308160', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401642318102528', '71401642171301888', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401774996520960', '71401774895857664', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401785394200576', '71401785180291072', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401794596503552', '71401794487451648', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401802645372928', '71401802163027968', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401810643910656', '71401810337726464', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401820865429504', '71401820768960512', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401828637474816', '71401828578754560', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401836208193536', '71401836078170112', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401850028425216', '71401849894207488', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401859394306048', '71401859335585792', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401867971657728', '71401867782914048', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401875345244160', '71401875223609344', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401883591245824', '71401883524136960', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401890566373376', '71401890448932864', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71401897646358528', '71401897554083840', '文件：ManagerServiceImpl.java，错误行数：127，方法：selectProcessScheduleBacklog，错误内容：java.lang.NullPointerException');
+INSERT INTO `sys_log_text` VALUES ('71402065267523584', '71402064999088128', 'SQL运行错误:sql injection violation, syntax error: syntax error, error in :\'RDER ASCIFNULLIFNULL\', expect IDENTIFIER, actual IDENTIFIER pos 570, line 20, column 46, token IDENTIFIER ASCIFNULLIFNULL : SELECT SM.*,SMP.SM_NAME AS SM_PARENT_NAME,SC.SC_NAME\n        FROM SYS_MENU SM\n        LEFT JOIN SYS_MENU SMP ON SMP.ID = SM.SM_PARENTID\n        LEFT JOIN SYS_CONFIGURE SC ON SC.ID = SM.SC_ID\n        WHERE SM.ID IN(\n            SELECT SM_ID\n            FROM SYS_ROLE_MENU\n            WHERE SR_ID IN(\n                SELECT SR_ID\n                FROM SYS_OPERATOR_ROLE\n                WHERE SO_ID =?\n            )\n        )\n        AND SM.IS_STATUS = 1\n         \n            AND SM.SM_PARENTID = ?\n         \n         \n         \n        ORDER BY SM.SM_ORDER ASCIFNULLIFNULL');
+INSERT INTO `sys_log_text` VALUES ('71402088654962688', '71402088508162048', 'SQL运行错误:sql injection violation, syntax error: syntax error, error in :\'RDER ASCIFNULLIFNULL\', expect IDENTIFIER, actual IDENTIFIER pos 570, line 20, column 46, token IDENTIFIER ASCIFNULLIFNULL : SELECT SM.*,SMP.SM_NAME AS SM_PARENT_NAME,SC.SC_NAME\n        FROM SYS_MENU SM\n        LEFT JOIN SYS_MENU SMP ON SMP.ID = SM.SM_PARENTID\n        LEFT JOIN SYS_CONFIGURE SC ON SC.ID = SM.SC_ID\n        WHERE SM.ID IN(\n            SELECT SM_ID\n            FROM SYS_ROLE_MENU\n            WHERE SR_ID IN(\n                SELECT SR_ID\n                FROM SYS_OPERATOR_ROLE\n                WHERE SO_ID =?\n            )\n        )\n        AND SM.IS_STATUS = 1\n         \n            AND SM.SM_PARENTID = ?\n         \n         \n         \n        ORDER BY SM.SM_ORDER ASCIFNULLIFNULL');
+INSERT INTO `sys_log_text` VALUES ('71402336374751232', '71402335892406272', 'SQL运行错误:sql injection violation, syntax error: syntax error, error in :\'RDER ASCIFNULLIFNULL\', expect IDENTIFIER, actual IDENTIFIER pos 570, line 20, column 46, token IDENTIFIER ASCIFNULLIFNULL : SELECT SM.*,SMP.SM_NAME AS SM_PARENT_NAME,SC.SC_NAME\n        FROM SYS_MENU SM\n        LEFT JOIN SYS_MENU SMP ON SMP.ID = SM.SM_PARENTID\n        LEFT JOIN SYS_CONFIGURE SC ON SC.ID = SM.SC_ID\n        WHERE SM.ID IN(\n            SELECT SM_ID\n            FROM SYS_ROLE_MENU\n            WHERE SR_ID IN(\n                SELECT SR_ID\n                FROM SYS_OPERATOR_ROLE\n                WHERE SO_ID =?\n            )\n        )\n        AND SM.IS_STATUS = 1\n         \n            AND SM.SM_PARENTID = ?\n         \n         \n         \n        ORDER BY SM.SM_ORDER ASCIFNULLIFNULL');
+INSERT INTO `sys_log_text` VALUES ('71402351499411456', '71402351327444992', 'SQL运行错误:sql injection violation, syntax error: syntax error, error in :\'RDER ASCIFNULLIFNULL\', expect IDENTIFIER, actual IDENTIFIER pos 570, line 20, column 46, token IDENTIFIER ASCIFNULLIFNULL : SELECT SM.*,SMP.SM_NAME AS SM_PARENT_NAME,SC.SC_NAME\n        FROM SYS_MENU SM\n        LEFT JOIN SYS_MENU SMP ON SMP.ID = SM.SM_PARENTID\n        LEFT JOIN SYS_CONFIGURE SC ON SC.ID = SM.SC_ID\n        WHERE SM.ID IN(\n            SELECT SM_ID\n            FROM SYS_ROLE_MENU\n            WHERE SR_ID IN(\n                SELECT SR_ID\n                FROM SYS_OPERATOR_ROLE\n                WHERE SO_ID =?\n            )\n        )\n        AND SM.IS_STATUS = 1\n         \n            AND SM.SM_PARENTID = ?\n         \n         \n         \n        ORDER BY SM.SM_ORDER ASCIFNULLIFNULL');
+INSERT INTO `sys_log_text` VALUES ('71402722800173056', '71402722573680640', 'SQL运行错误:sql injection violation, syntax error: syntax error, error in :\'RDER ASCIFNULLIFNULL\', expect IDENTIFIER, actual IDENTIFIER pos 570, line 20, column 46, token IDENTIFIER ASCIFNULLIFNULL : SELECT SM.*,SMP.SM_NAME AS SM_PARENT_NAME,SC.SC_NAME\n        FROM SYS_MENU SM\n        LEFT JOIN SYS_MENU SMP ON SMP.ID = SM.SM_PARENTID\n        LEFT JOIN SYS_CONFIGURE SC ON SC.ID = SM.SC_ID\n        WHERE SM.ID IN(\n            SELECT SM_ID\n            FROM SYS_ROLE_MENU\n            WHERE SR_ID IN(\n                SELECT SR_ID\n                FROM SYS_OPERATOR_ROLE\n                WHERE SO_ID =?\n            )\n        )\n        AND SM.IS_STATUS = 1\n         \n            AND SM.SM_PARENTID = ?\n         \n         \n         \n        ORDER BY SM.SM_ORDER ASCIFNULLIFNULL');
+INSERT INTO `sys_log_text` VALUES ('71404715023269888', '71404714775805952', '查看学生管理');
+INSERT INTO `sys_log_text` VALUES ('71404811928469504', '71404811647451136', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('71404961421852672', '71404961325383680', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('71405009266278400', '71405009069146112', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71405033295446016', '71405032930541568', '查看学院奖学金');
+INSERT INTO `sys_log_text` VALUES ('71405143014244352', '71405142653534208', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('71405198026735616', '71405197628276736', '查看绿色通道');
+INSERT INTO `sys_log_text` VALUES ('71405252334583808', '71405252036788224', '查看年度表彰');
+INSERT INTO `sys_log_text` VALUES ('71405948555493376', '71405948425469952', '查看年度表彰');
+INSERT INTO `sys_log_text` VALUES ('71406008072667136', '71406007988781056', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71406267263877120', '71406266840252416', '查看年度表彰');
+INSERT INTO `sys_log_text` VALUES ('71406275694428160', '71406275556016128', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71406401905229824', '71406401716486144', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('71406424067932160', '71406423841439744', '查看应急求助');
+INSERT INTO `sys_log_text` VALUES ('71406451943276544', '71406451590955008', '查看学院奖学金');
+INSERT INTO `sys_log_text` VALUES ('71406591789760512', '71406591148032000', '查看减免学费');
+INSERT INTO `sys_log_text` VALUES ('71406598706167808', '71406598597115904', '查看学院奖学金');
+INSERT INTO `sys_log_text` VALUES ('71406609200316416', '71406609116430336', '查看减免学费');
+INSERT INTO `sys_log_text` VALUES ('71406613176516608', '71406613109407744', '查看绿色通道');
+INSERT INTO `sys_log_text` VALUES ('71406624509526016', '71406624400474112', '查看国家励志奖学金');
+INSERT INTO `sys_log_text` VALUES ('71406629760794624', '71406629685297152', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71406717203644416', '71406716956180480', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('71406751739543552', '71406751290753024', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('71406834472189952', '71406833968873472', '登录成功!登录地址:未知');
+INSERT INTO `sys_log_text` VALUES ('71406854181224448', '71406854038618112', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71406858908205056', '71406858828513280', '查看国家励志奖学金');
+INSERT INTO `sys_log_text` VALUES ('71406979683188736', '71406979603496960', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71407018094624768', '71407017708748800', '查看绿色通道');
+INSERT INTO `sys_log_text` VALUES ('71407031591895040', '71407031541563392', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71407042761326592', '71407042639691776', '查看国家励志奖学金');
+INSERT INTO `sys_log_text` VALUES ('71407054169833472', '71407054094336000', '查看国家励志奖学金');
+INSERT INTO `sys_log_text` VALUES ('71407057093263360', '71407057038737408', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71408167367475200', '71408167061291008', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('71408233826222080', '71408233398403072', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('71408329586376704', '71408329431187456', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('71408867656859648', '71408867111600128', '查看国家助学金');
+INSERT INTO `sys_log_text` VALUES ('71408899550347264', '71408899336437760', '查看国家励志奖学金');
+INSERT INTO `sys_log_text` VALUES ('71408914771476480', '71408914628870144', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71409359468363776', '71409359237677056', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71409507099475968', '71409506906537984', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71410090355195904', '71410090141286400', '查看年度表彰');
+INSERT INTO `sys_log_text` VALUES ('71410113327398912', '71410113230929920', '查看绿色通道');
+INSERT INTO `sys_log_text` VALUES ('71411086523367424', '71411086338818048', '查看应急求助');
+INSERT INTO `sys_log_text` VALUES ('71411096178655232', '71411096082186240', '查看绿色通道');
+INSERT INTO `sys_log_text` VALUES ('71417104623992832', '71417104074539008', '查看绿色通道');
+INSERT INTO `sys_log_text` VALUES ('71417822827249664', '71417822655283200', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('71417942608183296', '71417942142615552', '查看年度表彰');
+INSERT INTO `sys_log_text` VALUES ('71417949478453248', '71417949373595648', '查看绿色通道');
+INSERT INTO `sys_log_text` VALUES ('71417978268155904', '71417978033274880', '查看勤工助学');
+INSERT INTO `sys_log_text` VALUES ('71417989391450112', '71417989244649472', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71418024799764480', '71418024711684096', '查看国家奖学金');
+INSERT INTO `sys_log_text` VALUES ('71419100093480960', '71419099778908160', '查看国家奖学金');
 
 -- ----------------------------
 -- Table structure for sys_long_text
@@ -15074,12 +15248,8 @@ INSERT INTO `sys_process_log` VALUES ('62687515131248640', '62683794938789888', 
 INSERT INTO `sys_process_log` VALUES ('62687515194163200', '62683794938789888', '62683793974099968', '48303136200196097', 999, 'division_test', '审核通过(系统)', '2018-09-14 15:51:37', 0);
 INSERT INTO `sys_process_log` VALUES ('62687516616032256', '62686391544315904', '62686390910976000', '48303136200196097', 99, 'division_test', '1qqqqqqq', '2018-09-14 15:51:38', 0);
 INSERT INTO `sys_process_log` VALUES ('62687516666363904', '62686391544315904', '62686390910976000', '48303136200196097', 999, 'division_test', '审核通过(系统)', '2018-09-14 15:51:38', 0);
-INSERT INTO `sys_process_log` VALUES ('71451243347705856', '55931630077870080', '55931629410975744', '48601651874889729', -1, 'department_test', '用户撤回(系统)', '2018-10-08 20:15:33', 2);
-INSERT INTO `sys_process_log` VALUES ('71451552862175232', '55931630077870080', '55931629410975744', '48601651874889729', 50, 'department_test', 'sj2', '2018-10-08 20:16:47', 0);
-INSERT INTO `sys_process_log` VALUES ('71452590604288000', '61684757297102848', '61684756747649024', '52504512421691393', 1, 'department_manager', 'sj2', '2018-10-08 20:20:54', 0);
-INSERT INTO `sys_process_log` VALUES ('71452690374197248', '61684757297102848', '61684756747649024', '48303136200196097', 99, 'division_test', 'sj2', '2018-10-08 20:21:18', 0);
-INSERT INTO `sys_process_log` VALUES ('71452690437111808', '61684757297102848', '61684756747649024', '48303136200196097', 999, 'division_test', '审核通过(系统)', '2018-10-08 20:21:18', 0);
-INSERT INTO `sys_process_log` VALUES ('71452836340170752', '55931630077870080', '55931629410975744', '52504512421691393', 51, 'department_manager', 'sj', '2018-10-08 20:21:53', 0);
+INSERT INTO `sys_process_log` VALUES ('71406028985466880', '55931630077870080', '55931629410975744', '48601651874889729', -1, 'department_test', '用户撤回(系统)', '2018-10-08 17:15:53', 2);
+INSERT INTO `sys_process_log` VALUES ('71406886615777280', '55931630077870080', '55931629410975744', '48601651874889729', 50, 'department_test', '123', '2018-10-08 17:19:17', 0);
 
 -- ----------------------------
 -- Table structure for sys_process_schedule
@@ -15153,7 +15323,7 @@ INSERT INTO `sys_process_schedule` VALUES ('54832017690329088', '486016518748897
 INSERT INTO `sys_process_schedule` VALUES ('54832265850519552', '48601651874889729', '51930103373889536', '54826696930492416', NULL, '54832265422700544', 'student_test2', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `sys_process_schedule` VALUES ('54832741979521024', '48601651874889729', '51930103373889536', '54826783379292160', NULL, '54832741484593152', 'student_test2', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `sys_process_schedule` VALUES ('55930502435045376', '48601651874889729', '48944951878221825', '55926177663025152', NULL, '55930435980492800', 'student_test', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
-INSERT INTO `sys_process_schedule` VALUES ('55931630077870080', '48601651874889729', '48944951878221825', '55926177663025152', '55926178371862528', '55931629410975744', '', 99, 0, -1, 1, '48307839919194112', 51, 0, '52504512421691393', '55926178090844160', 0);
+INSERT INTO `sys_process_schedule` VALUES ('55931630077870080', '48601651874889729', '48944951878221825', '55926177663025152', '55926178090844160', '55931629410975744', '', 51, 0, -1, 1, '48309996873580544', -1, 0, '48601651874889729', '55926177939849216', 0);
 INSERT INTO `sys_process_schedule` VALUES ('55932233017458688', '48601651874889729', '48944951878221825', '55926279777550336', NULL, '55932232270872576', 'student_test', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `sys_process_schedule` VALUES ('56284975883878400', '1', '51930103373889536', '54464045612269568', NULL, '56284975699329024', '郑文', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `sys_process_schedule` VALUES ('56300753827921920', '48601651874889729', '51930103373889536', '54464045612269568', '54464045708738560', '56300753723064320', '', -1, 2, 50, 2, '48601651874889729', 51, 2, '48601651874889729', '54464045784236032', 0);
@@ -15161,7 +15331,7 @@ INSERT INTO `sys_process_schedule` VALUES ('56505673164259328', '1', '5193010337
 INSERT INTO `sys_process_schedule` VALUES ('56505788989964288', '1', '51930103373889536', '54464045612269568', NULL, '56505788906078208', '郑文', 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 INSERT INTO `sys_process_schedule` VALUES ('57553972096925696', '48601651874889729', '57553787815985153', '54464045612269568', '54464046128168960', '57553971711049728', '', 999, 0, -1, 1, '0', 99, 0, '48303136200196097', '54464045805207552', 0);
 INSERT INTO `sys_process_schedule` VALUES ('61364546543026176', '52504512421691393', NULL, '61349280497008640', '61349281428144128', '61364546077458432', '', 999, 0, -1, 1, '0', 99, 0, '48303136200196097', '61349281046462464', 0);
-INSERT INTO `sys_process_schedule` VALUES ('61684757297102848', '52504512421691393', NULL, '61349280497008640', '61349281428144128', '61684756747649024', '', 999, 0, -1, 1, '0', 99, 0, '48303136200196097', '61349281046462464', 0);
+INSERT INTO `sys_process_schedule` VALUES ('61684757297102848', '52504512421691393', NULL, '61349280497008640', '61349280689946624', '61684756747649024', '', -1, 2, 1, 2, '52504512421691393', 99, 2, '52504512421691393', '61349281046462464', 0);
 INSERT INTO `sys_process_schedule` VALUES ('62683794938789888', '52504512421691393', '48944951878221825', '62459997333749760', '62459997723820032', '62683793974099968', '', 999, 0, -1, 1, '0', 99, 0, '48303136200196097', '62459997476356096', 0);
 INSERT INTO `sys_process_schedule` VALUES ('62686391544315904', '52504512421691393', '57553787815985153', '62459997333749760', '62459997723820032', '62686390910976000', '', 999, 0, -1, 1, '0', 99, 0, '48303136200196097', '62459997476356096', 0);
 
@@ -16358,10 +16528,9 @@ CREATE TABLE `sys_value_record`  (
   `SVR_ENTRY_TIME` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '录入时间',
   `SVR_TYPE` int(5) NULL DEFAULT NULL COMMENT '类型，1插入2更新3删除',
   PRIMARY KEY (`ID`) USING BTREE,
+  INDEX `SVR_TABLE`(`SVR_TABLE_NAME`, `SVR_TABLE_ID`) USING BTREE,
   INDEX `SVR_TYPE`(`SVR_TYPE`) USING BTREE,
-  INDEX `SO_ID`(`SO_ID`) USING BTREE,
-  INDEX `SVR_TABLE_ID`(`SVR_TABLE_ID`) USING BTREE,
-  INDEX `SVR_TABLE_NAME`(`SVR_TABLE_NAME`) USING BTREE
+  INDEX `SO_ID`(`SO_ID`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -18283,11 +18452,8 @@ INSERT INTO `sys_value_record` VALUES ('71131964437954560', '1', 'BUS_STUDENT_DI
 INSERT INTO `sys_value_record` VALUES ('71131978249797632', '1', 'BUS_STUDENT_DIFFICULTY', '71131978195271680', NULL, '{\"BS_ID\":\"70966830583250944\",\"BSD_GRADE_REASON\":\"12\",\"SVR_TABLE_NAME\":\"BUS_STUDENT_DIFFICULTY\",\"BSD_TYPE\":\"PARTICULARLY_DIFFICULT\",\"BSD_COGNIZANCE_TIME\":\"20181007\",\"BSD_ENTRY_TIME\":\"2018-10-07 23:06:54\",\"ID\":\"71131978195271680\",\"BSD_COGNIZANCE_REASON\":\"家庭人口众多，劳动力较少\",\"BSD_CLASS_REASON\":\"11\"}', '2018-10-07 23:06:54', 1);
 INSERT INTO `sys_value_record` VALUES ('71132277676965888', '1', 'BUS_STUDENT_DIFFICULTY', '71131978195271680', '{\"BS_ID\":\"70966830583250944\",\"BSD_GRADE_REASON\":\"12\",\"BSD_TYPE\":\"PARTICULARLY_DIFFICULT\",\"BSD_COGNIZANCE_TIME\":\"20181007\",\"BSD_ENTRY_TIME\":\"2018-10-07 23:06:54\",\"ID\":\"71131978195271680\",\"BSD_COGNIZANCE_REASON\":\"家庭人口众多，劳动力较少\",\"BSD_CLASS_REASON\":\"11\"}', NULL, '2018-10-07 23:08:05', 3);
 INSERT INTO `sys_value_record` VALUES ('71132290385707008', '1', 'BUS_STUDENT_DIFFICULTY', '71132290306015232', NULL, '{\"BS_ID\":\"70966830583250944\",\"BSD_GRADE_REASON\":\"12\",\"SVR_TABLE_NAME\":\"BUS_STUDENT_DIFFICULTY\",\"BSD_TYPE\":\"PARTICULARLY_DIFFICULT\",\"BSD_COGNIZANCE_TIME\":\"20181007\",\"BSD_ENTRY_TIME\":\"2018-10-07 23:08:08\",\"ID\":\"71132290306015232\",\"BSD_COGNIZANCE_REASON\":\"家庭人口众多，劳动力较少\",\"BSD_CLASS_REASON\":\"11\"}', '2018-10-07 23:08:09', 1);
-INSERT INTO `sys_value_record` VALUES ('71451243033133056', '48601651874889729', 'SYS_PROCESS_SCHEDULE', '55931630077870080', '{\"SPS_PREV_STEP_ID\":\"55926177939849216\",\"SPS_STEP_TRANSACTOR\":\"48309996873580544\",\"SPS_BACK_STATUS\":0,\"SPS_STEP_TYPE\":1,\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":-1,\"SPS_PREV_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_ID\":\"55926178090844160\",\"SPS_PREV_STEP_TYPE\":0,\"SPS_AUDIT_STATUS\":51,\"SPS_PREV_AUDIT_STATUS\":-1,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '{\"SPS_PREV_STEP_ID\":\"55926178090844160\",\"SPS_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_BACK_STATUS\":\"2\",\"SPS_STEP_TYPE\":2,\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":50,\"SPS_PREV_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_ID\":\"55926177939849216\",\"SPS_PREV_STEP_TYPE\":\"2\",\"SPS_AUDIT_STATUS\":-1,\"SPS_PREV_AUDIT_STATUS\":51,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '2018-10-08 20:15:33', 2);
-INSERT INTO `sys_value_record` VALUES ('71451552509853696', '48601651874889729', 'SYS_PROCESS_SCHEDULE', '55931630077870080', '{\"SPS_PREV_STEP_ID\":\"55926178090844160\",\"SPS_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_BACK_STATUS\":2,\"SPS_STEP_TYPE\":2,\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":50,\"SPS_PREV_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_ID\":\"55926177939849216\",\"SPS_PREV_STEP_TYPE\":2,\"SPS_AUDIT_STATUS\":-1,\"SPS_PREV_AUDIT_STATUS\":51,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '{\"SPS_PREV_STEP_ID\":\"55926177939849216\",\"SPS_STEP_TRANSACTOR\":\"48309996873580544\",\"SPS_BACK_STATUS\":\"0\",\"SPS_STEP_TYPE\":\"1\",\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":\"-1\",\"SPS_PREV_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_ID\":\"55926178090844160\",\"SPS_PREV_STEP_TYPE\":\"0\",\"SPS_AUDIT_STATUS\":\"51\",\"SPS_PREV_AUDIT_STATUS\":-1,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '2018-10-08 20:16:47', 2);
-INSERT INTO `sys_value_record` VALUES ('71452590323269632', '52504512421691393', 'SYS_PROCESS_SCHEDULE', '61684757297102848', '{\"SPS_PREV_STEP_ID\":\"61349281046462464\",\"SPS_STEP_TRANSACTOR\":\"52504512421691393\",\"SPS_BACK_STATUS\":2,\"SPS_STEP_TYPE\":2,\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":1,\"SPS_PREV_STEP_TRANSACTOR\":\"52504512421691393\",\"SPS_ID\":\"61349280689946624\",\"SPS_PREV_STEP_TYPE\":2,\"SPS_AUDIT_STATUS\":-1,\"SPS_PREV_AUDIT_STATUS\":99,\"SPS_TABLE_ID\":\"61684756747649024\",\"SPD_ID\":\"61349280497008640\",\"ID\":\"61684757297102848\"}', '{\"SPS_PREV_STEP_ID\":\"61349280689946624\",\"SPS_STEP_TRANSACTOR\":\"48307839919194112\",\"SPS_BACK_STATUS\":\"0\",\"SPS_STEP_TYPE\":\"1\",\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":\"-1\",\"SPS_PREV_STEP_TRANSACTOR\":\"52504512421691393\",\"SPS_ID\":\"61349281046462464\",\"SPS_PREV_STEP_TYPE\":\"0\",\"SPS_AUDIT_STATUS\":\"99\",\"SPS_PREV_AUDIT_STATUS\":-1,\"SPS_TABLE_ID\":\"61684756747649024\",\"SPD_ID\":\"61349280497008640\",\"ID\":\"61684757297102848\"}', '2018-10-08 20:20:54', 2);
-INSERT INTO `sys_value_record` VALUES ('71452690047041536', '48303136200196097', 'SYS_PROCESS_SCHEDULE', '61684757297102848', '{\"SPS_PREV_STEP_ID\":\"61349280689946624\",\"SPS_STEP_TRANSACTOR\":\"48307839919194112\",\"SPS_BACK_STATUS\":0,\"SPS_STEP_TYPE\":1,\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":-1,\"SPS_PREV_STEP_TRANSACTOR\":\"52504512421691393\",\"SPS_ID\":\"61349281046462464\",\"SPS_PREV_STEP_TYPE\":0,\"SPS_AUDIT_STATUS\":99,\"SPS_PREV_AUDIT_STATUS\":-1,\"SPS_TABLE_ID\":\"61684756747649024\",\"SPD_ID\":\"61349280497008640\",\"ID\":\"61684757297102848\"}', '{\"SPS_PREV_STEP_ID\":\"61349281046462464\",\"SPS_STEP_TRANSACTOR\":\"0\",\"SPS_BACK_STATUS\":\"0\",\"SPS_STEP_TYPE\":\"1\",\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":\"-1\",\"SPS_PREV_STEP_TRANSACTOR\":\"48303136200196097\",\"SPS_ID\":\"61349281428144128\",\"SPS_PREV_STEP_TYPE\":\"0\",\"SPS_AUDIT_STATUS\":\"999\",\"SPS_PREV_AUDIT_STATUS\":99,\"SPS_TABLE_ID\":\"61684756747649024\",\"SPD_ID\":\"61349280497008640\",\"ID\":\"61684757297102848\"}', '2018-10-08 20:21:18', 2);
-INSERT INTO `sys_value_record` VALUES ('71452835958489088', '52504512421691393', 'SYS_PROCESS_SCHEDULE', '55931630077870080', '{\"SPS_PREV_STEP_ID\":\"55926177939849216\",\"SPS_STEP_TRANSACTOR\":\"48309996873580544\",\"SPS_BACK_STATUS\":0,\"SPS_STEP_TYPE\":1,\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":-1,\"SPS_PREV_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_ID\":\"55926178090844160\",\"SPS_PREV_STEP_TYPE\":0,\"SPS_AUDIT_STATUS\":51,\"SPS_PREV_AUDIT_STATUS\":-1,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '{\"SPS_PREV_STEP_ID\":\"55926178090844160\",\"SPS_STEP_TRANSACTOR\":\"48307839919194112\",\"SPS_BACK_STATUS\":\"0\",\"SPS_STEP_TYPE\":\"1\",\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":\"-1\",\"SPS_PREV_STEP_TRANSACTOR\":\"52504512421691393\",\"SPS_ID\":\"55926178371862528\",\"SPS_PREV_STEP_TYPE\":\"0\",\"SPS_AUDIT_STATUS\":\"99\",\"SPS_PREV_AUDIT_STATUS\":51,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '2018-10-08 20:21:53', 2);
+INSERT INTO `sys_value_record` VALUES ('71406028477956096', '48601651874889729', 'SYS_PROCESS_SCHEDULE', '55931630077870080', '{\"SPS_PREV_STEP_ID\":\"55926177939849216\",\"SPS_STEP_TRANSACTOR\":\"48309996873580544\",\"SPS_BACK_STATUS\":0,\"SPS_STEP_TYPE\":1,\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":-1,\"SPS_PREV_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_ID\":\"55926178090844160\",\"SPS_PREV_STEP_TYPE\":0,\"SPS_AUDIT_STATUS\":51,\"SPS_PREV_AUDIT_STATUS\":-1,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '{\"SPS_PREV_STEP_ID\":\"55926178090844160\",\"SPS_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_BACK_STATUS\":\"2\",\"SPS_STEP_TYPE\":2,\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":50,\"SPS_PREV_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_ID\":\"55926177939849216\",\"SPS_PREV_STEP_TYPE\":\"2\",\"SPS_AUDIT_STATUS\":-1,\"SPS_PREV_AUDIT_STATUS\":51,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '2018-10-08 17:15:53', 2);
+INSERT INTO `sys_value_record` VALUES ('71406886276038656', '48601651874889729', 'SYS_PROCESS_SCHEDULE', '55931630077870080', '{\"SPS_PREV_STEP_ID\":\"55926178090844160\",\"SPS_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_BACK_STATUS\":2,\"SPS_STEP_TYPE\":2,\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":50,\"SPS_PREV_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_ID\":\"55926177939849216\",\"SPS_PREV_STEP_TYPE\":2,\"SPS_AUDIT_STATUS\":-1,\"SPS_PREV_AUDIT_STATUS\":51,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '{\"SPS_PREV_STEP_ID\":\"55926177939849216\",\"SPS_STEP_TRANSACTOR\":\"48309996873580544\",\"SPS_BACK_STATUS\":\"0\",\"SPS_STEP_TYPE\":\"1\",\"SPS_TABLE_NAME\":\"\",\"SPS_BACK_STATUS_TRANSACTOR\":\"-1\",\"SPS_PREV_STEP_TRANSACTOR\":\"48601651874889729\",\"SPS_ID\":\"55926178090844160\",\"SPS_PREV_STEP_TYPE\":\"0\",\"SPS_AUDIT_STATUS\":\"51\",\"SPS_PREV_AUDIT_STATUS\":-1,\"SPS_TABLE_ID\":\"55931629410975744\",\"SPD_ID\":\"55926177663025152\",\"ID\":\"55931630077870080\"}', '2018-10-08 17:19:17', 2);
 
 -- ----------------------------
 -- Table structure for test_process
