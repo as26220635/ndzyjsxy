@@ -36,7 +36,7 @@ public class EncryptView extends JstlView {
             }
             super.renderMergedOutputModel(map, httpServletRequest, httpServletResponse);
         } catch (Exception e) {
-            log.error(e.getMessage());
+//            log.error(e.getMessage());
         }
     }
 
