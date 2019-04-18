@@ -67,14 +67,14 @@
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">
             <label>入学日期:</label>
-            <s:datebox type="2" custom='${fns:validField(TableName.BUS_STUDENT, "BS_ENROLMENT")}'
+            <s:datebox type="3" custom='${fns:validField(TableName.BUS_STUDENT, "BS_ENROLMENT")}'
                        value="${student.BS_ENROLMENT}" studentYear="false"></s:datebox>
         </div>
-        <div class="form-group has-feedback form-group-md-6">
-            <label>考生号:</label>
-            <input type="text" class="form-control" ${fns:validField(TableName.BUS_STUDENT, "BS_EXAMINEE_NUMBER")}
-                   value="${student.BS_EXAMINEE_NUMBER}">
-        </div>
+        <%--<div class="form-group has-feedback form-group-md-6">--%>
+            <%--<label>考生号:</label>--%>
+            <%--<input type="text" class="form-control" ${fns:validField(TableName.BUS_STUDENT, "BS_EXAMINEE_NUMBER")}--%>
+                   <%--value="${student.BS_EXAMINEE_NUMBER}">--%>
+        <%--</div>--%>
     </div>
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">

@@ -139,6 +139,8 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("BS_EDUCATION", mapParam.get("BS_EDUCATION"));
             paramMap.put("BS_POLITICAL_OUTLOOK", mapParam.get("BS_POLITICAL_OUTLOOK"));
             paramMap.put("BS_BIRTH_DATE", mapParam.get("BS_BIRTH_DATE"));
+            paramMap.put("BS_STATUS", mapParam.get("BS_STATUS"));
+
             if (isEmpty(id)) {
                 id = getId();
                 paramMap.put("ID", id);
@@ -331,18 +333,18 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 String BC_MAJOR = data[2];
                 //班级
                 String BC_NAME = data[3];
-                //考生号
-                String BS_EXAMINEE_NUMBER = data[4];
                 //学号
-                String BS_NUMBER = data[5];
+                String BS_NUMBER = data[4];
                 //姓名
-                String BS_NAME = data[6];
+                String BS_NAME = data[5];
+                //状态
+                String BS_STATUS = data[6];
                 //身份证号
                 String BS_ID_CARD = data[7];
-                //学制
-                String BS_LENGTH = data[8];
                 //攻读学历
-                String BS_EDUCATION = data[9];
+                String BS_EDUCATION = data[8];
+                //学制
+                String BS_LENGTH = data[9];
                 //入学日期
                 String BS_ENROLMENT = data[10];
                 //银行卡号
@@ -352,11 +354,12 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 //民族
                 String BS_NATION = data[13];
                 //手机号
-                String BS_PHONE = data.length > 14 ? data[14] : null;
+                String BS_PHONE = data[14];
                 //户籍所在地地址
-                String BS_PERMANENT_ADDRESS = data.length > 15 ? data[15] : null;
+                String BS_PERMANENT_ADDRESS = data[15];
                 //现家庭住址
-                String BS_HOME_ADDRESS = data.length > 16 ? data[16] : null;
+                String BS_HOME_ADDRESS = data[16];
+
 
                 //查询系部
                 paramMap.clear();
@@ -373,9 +376,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 paramMap.put("BS_NAME", BS_NAME);
                 paramMap.put("BS_NUMBER", BS_NUMBER);
                 paramMap.put("BS_LENGTH", DictUtil.getDictCode("BUS_COLLEGE_LENGTH", BS_LENGTH));
-                //入学日期格式化
-                paramMap.put("BS_ENROLMENT", BS_ENROLMENT.contains("-") ? BS_ENROLMENT : DateUtil.getDate(DateUtil.FORMAT6, DateUtil.getDateTime(DateUtil.FORMAT7, BS_ENROLMENT)));
-                paramMap.put("BS_EXAMINEE_NUMBER", BS_EXAMINEE_NUMBER);
+                paramMap.put("BS_ENROLMENT", DateUtil.dateToDate(BS_ENROLMENT, DateUtil.FORMAT3, DateUtil.FORMAT2));
                 paramMap.put("BS_ID_CARD", BS_ID_CARD);
                 paramMap.put("BS_SEX", IdCardUtil.getGenderByIdCard(BS_ID_CARD));
                 paramMap.put("BS_BIRTH_DATE", IdCardUtil.getBirthByIdCard(BS_ID_CARD));
@@ -386,6 +387,7 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 paramMap.put("BS_HOME_ADDRESS", BS_HOME_ADDRESS);
                 paramMap.put("BS_EDUCATION", DictUtil.getDictCode("BUS_EDUCATION", BS_EDUCATION));
                 paramMap.put("BS_POLITICAL_OUTLOOK", DictUtil.getDictCode("BUS_POLITICAL_OUTLOOK", BS_POLITICAL_OUTLOOK));
+                paramMap.put("BS_STATUS", DictUtil.getDictCode("BUS_STUDENT_STATUS", BS_STATUS));
 
                 Map<String, Object> studentResultMap = this.insertAndUpdateStudent(paramMap);
                 //校验
@@ -421,21 +423,21 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
 
         for (int i = 0; i < dataList.size(); i++) {
             //行
-            String row = joinRowStr(i + 1);
+            String row = joinRowStr(i + 2);
 
             String[] data = dataList.get(i);
-            if (data.length < 14) {
-                resultList.add(packErrorData(row, "数据错误"));
+            if (data.length < 16) {
+                resultList.add(packErrorData(row, "数据错误列数应为17列,当前为" + (data.length + 1) + "列"));
                 continue;
             }
 
             //检查数据
-            List<String[]> checkIsEmptyList = checkIsEmpty(row, data, new int[]{0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 12, 13});
+            List<String[]> checkIsEmptyList = checkIsEmpty(row, data, new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
             if (!isEmpty(checkIsEmptyList)) {
                 resultList.addAll(checkIsEmptyList);
                 continue;
             } else {
-                checkIsEmptyList = checkIsNumber(row, data, new int[]{8, 10});
+                checkIsEmptyList = checkIsNumber(row, data, new int[]{9, 14});
                 if (!isEmpty(checkIsEmptyList)) {
                     resultList.addAll(checkIsEmptyList);
                     continue;
@@ -450,53 +452,59 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             //班级
             String BC_NAME = data[3];
             //学号
-            String BS_NUMBER = data[5];
+            String BS_NUMBER = data[4];
+            //状态
+            String BS_STATUS = data[6];
             //身份证号
             String BS_ID_CARD = data[7];
-            //学制
-            String BS_LENGTH = data[8];
             //攻读学历
-            String BS_EDUCATION = data[9];
+            String BS_EDUCATION = data[8];
+            //学制
+            String BS_LENGTH = data[9];
+            //入学日期
+            String BS_ENROLMENT = data[10];
+            //银行卡号
+            String BS_BANK_CARD = data[11];
             //政治面貌
             String BS_POLITICAL_OUTLOOK = data[12];
             //民族
             String BS_NATION = data[13];
             //手机号
-            String BS_PHONE = data.length > 14 ? data[14] : null;
+            String BS_PHONE = data[14];
 
             //校验学院是否存在
             DictInfo college = DictUtil.getDictInfoByName("BUS_COLLEGE", BDM_COLLEGE);
             if (isEmpty(college)) {
-                resultList.add(packErrorData(row, "没有找到学院,请检查"));
+                resultList.add(packErrorData(row, "没有找到学院,请检查", data));
             }
             //校验系是否存在
             paramMap.clear();
             paramMap.put("BDM_NAME", BDM_NAME);
             Map<String, Object> department = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartment", paramMap);
             if (isEmpty(department)) {
-                resultList.add(packErrorData(row, "没有找到系部,请检查"));
+                resultList.add(packErrorData(row, "没有找到系部,请检查", data));
             } else {
                 if (isEmpty(college) || !college.getSdiCode().equals(toString(department.get("BDM_COLLEGE")))) {
-                    resultList.add(packErrorData(row, "系部对应学院信息错误,当前系部学院:" + department.get("BDM_COLLEGE_NAME") + ",请检查"));
+                    resultList.add(packErrorData(row, "系部对应学院信息错误,当前系部学院:" + department.get("BDM_COLLEGE_NAME") + ",请检查", data));
                 }
             }
             //校验专业
             DictInfo major = DictUtil.getDictInfoByName("BUS_MAJOR", BC_MAJOR);
             if (isEmpty(major)) {
-                resultList.add(packErrorData(row, "没有找到专业,请检查"));
+                resultList.add(packErrorData(row, "没有找到专业,请检查", data));
             }
             //校验班级是否存在
             paramMap.clear();
             paramMap.put("BC_NAME", BC_NAME);
             Map<String, Object> cls = baseDao.selectOne(NameSpace.ClsMapper, "selectClass", paramMap);
             if (isEmpty(cls)) {
-                resultList.add(packErrorData(row, "没有找到班级,请检查"));
+                resultList.add(packErrorData(row, "没有找到班级,请检查", data));
             } else {
                 if (isEmpty(major) || !major.getSdiCode().equals(toString(cls.get("BC_MAJOR")))) {
-                    resultList.add(packErrorData(row, "班级对应专业信息错误,当前班级专业:" + cls.get("BC_MAJOR_NAME") + ",请检查"));
+                    resultList.add(packErrorData(row, "班级对应专业信息错误,当前班级专业:" + cls.get("BC_MAJOR_NAME") + ",请检查", data));
                 } else {
                     if (!toString(cls.get("BDM_ID")).equals(toString(department.get("ID")))) {
-                        resultList.add(packErrorData(row, "班级对应系部错误,当前班级系部:" + cls.get("BDM_NAME") + ",请检查"));
+                        resultList.add(packErrorData(row, "班级对应系部错误,当前班级系部:" + cls.get("BDM_NAME") + ",请检查", data));
                     }
                 }
             }
@@ -505,48 +513,60 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
             paramMap.put("BS_NUMBER", BS_NUMBER);
             int count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
             if (count > 0) {
-                resultList.add(packErrorData(row, "学号重复,请检查"));
+                resultList.add(packErrorData(row, "学号重复,请检查", data));
             }
             //验证身份证是否合法
             if (!IdCardUtil.validateCardCodeVerifySimple(BS_ID_CARD) || !IdCardUtil.validateCardCodeVerify(BS_ID_CARD)) {
-                resultList.add(packErrorData(row, "身份证错误,请检查"));
+                resultList.add(packErrorData(row, "身份证错误,请检查", data));
             } else {
                 paramMap.clear();
                 paramMap.put("BS_ID_CARD", BS_ID_CARD);
                 count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
                 if (count > 0) {
-                    resultList.add(packErrorData(row, "身份证重复,请检查"));
+                    resultList.add(packErrorData(row, "身份证重复,请检查", data));
                 }
                 if (!isEmpty(BS_PHONE)) {
                     paramMap.clear();
                     paramMap.put("BS_PHONE", BS_PHONE);
                     count = baseDao.selectOne(NameSpace.StudentMapper, "selectStudentCheckCount", paramMap);
                     if (count > 0) {
-                        resultList.add(packErrorData(row, "电话号码重复,请检查"));
+                        resultList.add(packErrorData(row, "电话号码重复,请检查", data));
                     }
                 }
             }
             //校验学制
             DictInfo collegeLength = DictUtil.getDictInfoByName("BUS_COLLEGE_LENGTH", BS_LENGTH);
             if (isEmpty(collegeLength)) {
-                resultList.add(packErrorData(row, "没有找到对应学制,请检查"));
+                resultList.add(packErrorData(row, "没有找到对应学制,请检查", data));
             }
             //攻读学历
             DictInfo education = DictUtil.getDictInfoByName("BUS_EDUCATION", BS_EDUCATION);
             if (isEmpty(education)) {
-                resultList.add(packErrorData(row, "没有找到对应攻读学历,请检查"));
+                resultList.add(packErrorData(row, "没有找到对应攻读学历,请检查", data));
+            }
+            //状态
+            DictInfo studentStatus = DictUtil.getDictInfoByName("BUS_STUDENT_STATUS", BS_STATUS);
+            if (isEmpty(studentStatus)) {
+                resultList.add(packErrorData(row, "没有找到对应状态,请检查", data));
             }
             //政治面貌
             DictInfo politicalOutlook = DictUtil.getDictInfoByName("BUS_POLITICAL_OUTLOOK", BS_POLITICAL_OUTLOOK);
-            if (isEmpty(politicalOutlook)) {
-                resultList.add(packErrorData(row, "没有找到对应政治面貌,请检查"));
+            if (!isEmpty(BS_POLITICAL_OUTLOOK) && isEmpty(politicalOutlook)) {
+                resultList.add(packErrorData(row, "没有找到对应政治面貌,请检查", data));
             }
             //民族
             DictInfo nation = DictUtil.getDictInfoByName("BUS_NATION", BS_NATION);
-            if (isEmpty(nation)) {
-                resultList.add(packErrorData(row, "没有找到对应民族,请检查"));
+            if (!isEmpty(BS_NATION) && isEmpty(nation)) {
+                resultList.add(packErrorData(row, "没有找到对应民族,请检查", data));
             }
-
+            //检测日期
+            if (!isEmpty(BS_ENROLMENT) && !ValidateUtil.checkDate(DateUtil.FORMAT3, BS_ENROLMENT)) {
+                resultList.add(packErrorData(row, "入学日期格式错误,参考格式(20160901),请检查", data));
+            }
+            //检测银行卡号
+            if (!isEmpty(BS_BANK_CARD) && !ValidateUtil.checkBankCard(BS_BANK_CARD)) {
+                resultList.add(packErrorData(row, "银行卡号格式错误,请检查", data));
+            }
         }
 
         return resultList;

@@ -60,6 +60,10 @@
         </div>
     </div>
 </section>
+<%--标题--%>
+<c:if test="${!fns:isEmpty(EXTRA.TITLE)}">
+    <c:set scope="request" var="MENU_TITLE" value="${EXTRA.TITLE}-"></c:set>
+</c:if>
 <%--设置列表属性--%>
 <%@ include file="/WEB-INF/jsp/admin/component/setTitleParams.jsp" %>
 <%--excel导出模块--%>

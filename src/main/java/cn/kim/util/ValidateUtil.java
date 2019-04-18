@@ -24,6 +24,8 @@ import java.util.*;
 @Component
 public class ValidateUtil {
 
+    public static final String REG_BANK_CARD = "^([1-9]{1})(\\d{14}|\\d{18})$";
+
     @Autowired
     private ValidateService validateService;
     private static ValidateUtil validateUtil;
@@ -224,6 +226,32 @@ public class ValidateUtil {
         }
     }
 
+    /**
+     * 检测日期格式
+     * @param format
+     * @param date
+     * @return
+     */
+    public static boolean checkDate(String format,String date){
+        try {
+            Date formatDate = new SimpleDateFormat(format).parse(date);
+            if (isEmpty(formatDate)){
+                return false;
+            }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    /**
+     * 验证银行卡号
+     * @param bankCard
+     * @return
+     */
+    public static boolean checkBankCard(String bankCard){
+        return bankCard.matches(REG_BANK_CARD);
+    }
     /**
      * 检查密码等级 从低到高 0 1 2
      *

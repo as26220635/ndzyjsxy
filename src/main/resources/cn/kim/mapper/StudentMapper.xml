@@ -163,6 +163,7 @@
             <if test="BS_HOME_ADDRESS != null">BS_HOME_ADDRESS,</if>
             <if test="BS_EDUCATION != null">BS_EDUCATION,</if>
             <if test="BS_POLITICAL_OUTLOOK != null">BS_POLITICAL_OUTLOOK,</if>
+            <if test="BS_STATUS != null">BS_STATUS,</if>
             <if test="BS_ENTRY_TIME != null">BS_ENTRY_TIME,</if>
             <if test="BS_BIRTH_DATE != null">BS_BIRTH_DATE,</if>
         </trim>
@@ -186,6 +187,7 @@
             <if test="BS_HOME_ADDRESS != null">#{BS_HOME_ADDRESS},</if>
             <if test="BS_EDUCATION != null">#{BS_EDUCATION},</if>
             <if test="BS_POLITICAL_OUTLOOK != null">#{BS_POLITICAL_OUTLOOK},</if>
+            <if test="BS_STATUS != null">#{BS_STATUS},</if>
             <if test="BS_ENTRY_TIME != null">#{BS_ENTRY_TIME},</if>
             <if test="BS_BIRTH_DATE != null">#{BS_BIRTH_DATE},</if>
         </trim>
@@ -214,6 +216,7 @@
             <if test="BS_HOME_ADDRESS != null">BS_HOME_ADDRESS=#{BS_HOME_ADDRESS},</if>
             <if test="BS_EDUCATION != null">BS_EDUCATION=#{BS_EDUCATION},</if>
             <if test="BS_POLITICAL_OUTLOOK != null">BS_POLITICAL_OUTLOOK=#{BS_POLITICAL_OUTLOOK},</if>
+            <if test="BS_STATUS != null">BS_STATUS=#{BS_STATUS},</if>
             <if test="BS_ENTRY_TIME != null">BS_ENTRY_TIME=#{BS_ENTRY_TIME},</if>
             <if test="BS_BIRTH_DATE != null">BS_BIRTH_DATE=#{BS_BIRTH_DATE},</if>
         </set>

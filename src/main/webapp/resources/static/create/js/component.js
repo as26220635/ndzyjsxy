@@ -998,6 +998,7 @@ model = {
             message: '是否确定?',
             isConfirm: true,
         }, options);
+        var isCheck = false;
         $.confirm({
             icon: settings.icon,
             closeIcon: true,
@@ -1014,6 +1015,7 @@ model = {
                         if (!isEmpty(options.callback)) {
                             options.callback(true);
                         }
+                        isCheck = true;
                     }
                 },
                 cancel: {
@@ -1023,11 +1025,12 @@ model = {
                         if (!isEmpty(options.callback)) {
                             options.callback(false);
                         }
+                        isCheck = true;
                     }
                 },
             },
             onClose: function () {
-                if (!isEmpty(options.callback)) {
+                if (!isCheck && !isEmpty(options.callback)) {
                     options.callback(false);
                 }
             }
@@ -1535,7 +1538,7 @@ ajax = {
                 // 提示形如：发送AJAX请求到"/index.html"时出错[404]：Not Found
                 ajax.stop();
                 NProgress.done();
-                if (typeof(removeLoadingDiv) == 'function') {
+                if (typeof (removeLoadingDiv) == 'function') {
                     removeLoadingDiv();
                 }
                 //ajax访问超时ss
@@ -2555,7 +2558,7 @@ function uuid() {
  * @returns {boolean}
  */
 function isEmpty(val) {
-    return typeof  val == 'undefined' || val == undefined || val == null || val == '';
+    return typeof val == 'undefined' || val == undefined || val == null || val == '';
 }
 
 /**

@@ -10,6 +10,7 @@ import cn.kim.entity.ActiveUser;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
+import cn.kim.exception.CustomExceptionResolver;
 import cn.kim.service.BaseService;
 import cn.kim.service.ProcessService;
 import cn.kim.tools.ProcessTool;
@@ -100,6 +101,10 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         baseDao.rollback();
         //输出异常
         e.printStackTrace();
+        //插入异常日志
+        if (!(e instanceof CustomException)) {
+            CustomExceptionResolver.saveException(e, e.getMessage());
+        }
         return desc;
     }
 
@@ -377,6 +382,18 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
      */
     protected String[] packErrorData(String key, String val) {
         String[] errors = {key, val};
+        return errors;
+    }
+
+    /**
+     * 打包错误
+     *
+     * @param key
+     * @param val
+     * @return
+     */
+    protected String[] packErrorData(String key, String val, String[] detail) {
+        String[] errors = {key, val, TextUtil.toString(detail)};
         return errors;
     }
 

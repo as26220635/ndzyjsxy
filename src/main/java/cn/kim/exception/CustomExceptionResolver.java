@@ -62,17 +62,7 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
 
         //记录日志
         if (isSave) {
-            try {
-                //拿到错误的栈
-                StackTraceElement stackTraceElement = ex.getStackTrace()[0];
-
-                String error = "文件：" + stackTraceElement.getFileName() + "，错误行数：" + stackTraceElement.getLineNumber() +
-                        "，方法：" + stackTraceElement.getMethodName() + "，错误内容：" + message;
-
-                LogUtil.recordLog("系统发现异常", error, UseType.SYSTEM.getType(), Attribute.STATUS_ERROR);
-                log.error(error);
-            } catch (Exception e) {
-            }
+            saveException(ex, message);
         }
 
         request.setAttribute("message", message);
@@ -89,6 +79,27 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
         }
 
         return modelAndView;
+
+    }
+
+    /**
+     * 记录异常
+     *
+     * @param ex
+     * @param message
+     */
+    public static void saveException(Exception ex, String message) {
+        try {
+            //拿到错误的栈
+            StackTraceElement stackTraceElement = ex.getStackTrace()[0];
+
+            String error = "文件：" + stackTraceElement.getFileName() + "，错误行数：" + stackTraceElement.getLineNumber() +
+                    "，方法：" + stackTraceElement.getMethodName() + "，错误内容：" + message;
+
+            LogUtil.recordLog("系统发现异常", error, UseType.SYSTEM.getType(), Attribute.STATUS_ERROR);
+            log.error(error);
+        } catch (Exception e) {
+        }
     }
 
 }

@@ -46,6 +46,7 @@
                     <tr>
                         <th style="min-width: 60px;">行号</th>
                         <th style="min-width: 380px;">错误消息</th>
+                        <th style="min-width: 50px;">数据信息</th>
                     </tr>
                     </thead>
                 </table>
@@ -98,6 +99,7 @@
         $("#excelFile").fileinput('clear');
     }
 
+    var errorTableView;
     /**
      * 显示错误
      * @param data
@@ -107,14 +109,34 @@
             return;
         }
         //情况文件上传框
-        tableView.init({
+        errorTableView = tableView.init({
             object: $('#errorImportTable'),
             data: data,
             columns: [
                 {class: 'text-center'},
                 {},
+                {
+                    render: function (data, type, row, meta) {
+                        return '<button class="btn btn-xs btn-info" id="detail">详细数据</button>';
+                    }
+                },
             ],
         });
         $('#errorImportModal').modal('show');
+
+        $("#errorImportTable").find('tbody').on('click', '#detail', function () {
+            var data = tableView.rowData(errorTableView, this);
+            var detail = data[2];
+            if (detail != undefined){
+                model.alert({
+                    title: '异常数据',
+                    message: detail,
+                });
+            }else{
+                demo.showNotify(ALERT_WARNING, '没有异常数据!');
+            }
+
+
+        });
     }
 </script>

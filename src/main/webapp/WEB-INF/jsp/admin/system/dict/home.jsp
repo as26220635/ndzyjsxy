@@ -82,6 +82,7 @@
         var param = {
             SDT_ID: data.ID,
             SDT_NAME: data.SDT_NAME,
+            TITLE: data.SDT_NAME,
         };
         //切换主界面
         loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:DICTINFO")}' + urlEncode(param));

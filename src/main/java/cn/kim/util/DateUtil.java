@@ -58,6 +58,10 @@ public class DateUtil {
         return new SimpleDateFormat(format).format(time);
     }
 
+    public static String dateToDate(String date, String format, String toFormat) {
+        return getDate(toFormat, getDateTime(format, date));
+    }
+
     /**
      * 将时间转换为时间戳
      *
@@ -195,6 +199,7 @@ public class DateUtil {
 
     /**
      * 校验日期是否正确
+     *
      * @param format
      * @param time
      * @return

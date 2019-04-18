@@ -120,4 +120,18 @@
             }
         });
     });
+
+    //切换状态
+    function onSwitchChange($this, field, check, IS_STATUS) {
+        showLoadingContentDiv();
+        ajax.put('${BASE_URL}${Url.VALIDATE_FIELD_SWITCH_STATUS_URL}', {ID: $this.val(), IS_STATUS: IS_STATUS}, function (data) {
+            if (data.code == STATUS_SUCCESS) {
+                demo.showNotify(ALERT_SUCCESS, '状态修改成功!');
+            } else {
+                $this.bootstrapSwitch('toggleState', true);
+                demo.showNotify(ALERT_WARNING, '状态修改失败!');
+            }
+            removeLoadingDiv();
+        });
+    }
 </script>
