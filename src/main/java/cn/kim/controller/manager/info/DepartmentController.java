@@ -186,4 +186,39 @@ public class DepartmentController extends BaseController {
         return resultState(resultMap);
     }
 
+    /****************   辅导员管理   ************/
+
+    /**
+     * 添加班级
+     *
+     * @param mapParam
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/instructor/class/add")
+    @RequiresPermissions("INFO:DEPARTMENT_INSTRUCTOR_CLASS_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "添加辅导员管理班级")
+    @ResponseBody
+    public ResultState instructorClassAdd(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = departmentService.insertInstructorClass(mapParam);
+
+        return resultState(resultMap);
+    }
+
+    /**
+     * 删除班级
+     *
+     * @param mapParam
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping("/instructor/class/delete")
+    @RequiresPermissions("INFO:DEPARTMENT_INSTRUCTOR_DISTRIBUTION_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "添加辅导员管理班级")
+    @ResponseBody
+    public ResultState instructorClassDelete(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = departmentService.deleteInstructorClass(mapParam);
+
+        return resultState(resultMap);
+    }
 }

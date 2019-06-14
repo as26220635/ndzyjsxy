@@ -1634,8 +1634,9 @@ ajax = {
         });
     },
     del: function (url, params, callback) {
+        params['_method'] = "DELETE";
         return $.ajax({
-            type: "DELETE",
+            type: "POST",
             url: url,
             data: params,
             dataType: "json",
@@ -1691,7 +1692,10 @@ ajaxReturn = {
         if (data.code == STATUS_SUCCESS) {
 
             if (!isEmpty(data.message)) {
-                demo.showNotify(ALERT_SUCCESS, data.message);
+                model.alert({
+                    title: '操作成功',
+                    message: data.message,
+                });
             }
             //关闭模态框
             if (!isEmpty($model)) {
@@ -1700,13 +1704,17 @@ ajaxReturn = {
             //刷新列表
             if (!isEmpty(table)) {
                 tableView.reload(table, isFirst);
+                $('input[type="checkbox"][data-id="dataGridSelectAll"]').prop('checked', false);
             }
             if (!isEmpty(options) && !isEmpty(options.success)) {
                 options.success(data);
             }
         } else {
             if (!isEmpty(data.message)) {
-                demo.showNotify(ALERT_WARNING, data.message);
+                model.alert({
+                    title: '操作失败',
+                    message: data.message,
+                });
             }
             if (!isEmpty(options) && !isEmpty(options.error)) {
                 options.error(data);
@@ -2787,4 +2795,17 @@ function openWin(url) {
     $('body').append($('<a href="' + url + '" target="_blank" id="openWin"></a>'))
     document.getElementById("openWin").click();//点击事件
     $('#openWin').remove();
+}
+
+/**
+ * 判断是否为空 空就提示
+ * @param obj
+ * @param message
+ */
+function isNotNullAndTips(obj, message) {
+    if (obj == undefined || obj.length == 0) {
+        demo.showNotify(ALERT_WARNING, message);
+        return true;
+    }
+    return false;
 }

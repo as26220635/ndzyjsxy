@@ -8,6 +8,7 @@ import cn.kim.common.eu.ButtonType;
 import cn.kim.common.eu.ProcessStatus;
 import cn.kim.common.eu.UseType;
 import cn.kim.common.tag.Button;
+import cn.kim.controller.manager.util.DataGridUtil;
 import cn.kim.entity.DataTablesView;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
@@ -58,6 +59,9 @@ public class BaseDataController extends BaseController {
 
     @Autowired
     private ProcessService processService;
+
+    @Autowired
+    private DataGridUtil dataGridUtil;
 
     /**
      * 预览图片
@@ -214,6 +218,7 @@ public class BaseDataController extends BaseController {
             }
             model.addAttribute("IS_FIXED", isFixed);
             //URL额外参数
+            dataGridUtil.setExtraParams(toString(configure.get("SC_VIEW")), extra, request);
             model.addAttribute("EXTRA", extra);
 
             log.info("菜单:" + menu.get("SM_NAME") + ",视图:" + configure.get("SC_VIEW") + ",配置列表地址:" + configure.get("SC_JSP"));

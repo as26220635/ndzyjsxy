@@ -67,6 +67,7 @@
         var param = {
             SC_ID: data.ID,
             SC_NAME: data.SC_NAME,
+            TITLE: data.SC_NAME,
         };
         //切换主界面
         loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_COLUMN")}' + urlEncode(param));
@@ -78,6 +79,7 @@
         var param = {
             SC_ID: data.ID,
             SC_NAME: data.SC_NAME,
+            TITLE: data.SC_NAME,
         };
         //切换主界面
         loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_SEARCH")}' + urlEncode(param));
@@ -89,6 +91,7 @@
         var param = {
             SC_ID: data.ID,
             SC_NAME: data.SC_NAME,
+            TITLE: data.SC_NAME,
         };
         //切换主界面
         loadUrl('${BASE_URL}${fns:getUrlByMenuCode("SYSTEM:CONFIGURE_SET_FILE")}' + urlEncode(param));

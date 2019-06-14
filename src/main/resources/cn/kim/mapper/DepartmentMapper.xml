@@ -126,4 +126,137 @@
     <delete id="deleteDepartmentPersonnel" parameterType="java.util.Map">
 		DELETE FROM BUS_DEPARTMENT_PERSONNEL WHERE ID = #{ID}
 	</delete>
+
+
+    <!--查询辅导员-->
+    <select id="selectDepartmentInstructor" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT BDI.*,BC.BC_NAME,BDMP.BDMP_NAME,BC.BC_YEAR
+        FROM(
+        SELECT * FROM BUS_DEPARTMENT_INSTRUCTOR
+            <where>
+                <if test ="ID != NULL and ID != ''">
+                    AND ID = #{ID}
+                </if>
+                <if test ="BC_ID != NULL and BC_ID != ''">
+                    AND BC_ID = #{BC_ID}
+                </if>
+                <if test ="BDI_YEAR != NULL and BDI_YEAR != ''">
+                    AND BDI_YEAR = #{BDI_YEAR}
+                </if>
+                <if test ="BDI_SEMESTER != NULL and BDI_SEMESTER != ''">
+                    AND BDI_SEMESTER = #{BDI_SEMESTER}
+                </if>
+            </where>
+        )BDI
+        LEFT JOIN BUS_CLASS BC ON BC.ID = BDI.BC_ID
+        LEFT JOIN BUS_DEPARTMENT_PERSONNEL BDMP ON BDMP.ID = BDI.BDMP_ID
+    </select>
+
+    <!--插入辅导员-->
+    <insert id="insertDepartmentInstructor" parameterType="java.util.Map">
+        INSERT INTO BUS_DEPARTMENT_INSTRUCTOR
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BDMP_ID != null">BDMP_ID,</if>
+            <if test="BC_ID != null">BC_ID,</if>
+            <if test="BDI_YEAR != null">BDI_YEAR,</if>
+            <if test="BDI_SEMESTER != null">BDI_SEMESTER,</if>
+            <if test="BDI_ENTRY_TIME != null">BDI_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BDMP_ID != null">#{BDMP_ID},</if>
+            <if test="BC_ID != null">#{BC_ID},</if>
+            <if test="BDI_YEAR != null">#{BDI_YEAR},</if>
+            <if test="BDI_SEMESTER != null">#{BDI_SEMESTER},</if>
+            <if test="BDI_ENTRY_TIME != null">#{BDI_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑辅导员-->
+    <update id="updateDepartmentInstructor" parameterType="java.util.Map">
+        UPDATE BUS_DEPARTMENT_INSTRUCTOR
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BDMP_ID != null">BDMP_ID=#{BDMP_ID},</if>
+            <if test="BC_ID != null">BC_ID=#{BC_ID},</if>
+            <if test="BDI_YEAR != null">BDI_YEAR=#{BDI_YEAR},</if>
+            <if test="BDI_SEMESTER != null">BDI_SEMESTER=#{BDI_SEMESTER},</if>
+            <if test="BDI_ENTRY_TIME != null">BDI_ENTRY_TIME=#{BDI_ENTRY_TIME},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除辅导员-->
+    <delete id="deleteDepartmentInstructor" parameterType="java.util.Map">
+		DELETE FROM BUS_DEPARTMENT_INSTRUCTOR WHERE ID = #{ID}
+	</delete>
+
+    <!--查询-->
+    <select id="selectDepartmentInstructorLog" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DEPARTMENT_INSTRUCTOR_LOG
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入-->
+    <insert id="insertDepartmentInstructorLog" parameterType="java.util.Map">
+        INSERT INTO BUS_DEPARTMENT_INSTRUCTOR_LOG
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BDI_ID != null">BDI_ID,</if>
+            <if test="BDMP_ID != null">BDMP_ID,</if>
+            <if test="BDMP_NAME != null">BDMP_NAME,</if>
+            <if test="BC_ID != null">BC_ID,</if>
+            <if test="BC_NAME != null">BC_NAME,</if>
+            <if test="BDMIL_YEAR != null">BDMIL_YEAR,</if>
+            <if test="BDMIL_SEMESTER != null">BDMIL_SEMESTER,</if>
+            <if test="BDMIL_ENTRY_TIME != null">BDMIL_ENTRY_TIME,</if>
+            <if test="BDMIL_TYPE != null">BDMIL_TYPE,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BDI_ID != null">#{BDI_ID},</if>
+            <if test="BDMP_ID != null">#{BDMP_ID},</if>
+            <if test="BDMP_NAME != null">#{BDMP_NAME},</if>
+            <if test="BC_ID != null">#{BC_ID},</if>
+            <if test="BC_NAME != null">#{BC_NAME},</if>
+            <if test="BDMIL_YEAR != null">#{BDMIL_YEAR},</if>
+            <if test="BDMIL_SEMESTER != null">#{BDMIL_SEMESTER},</if>
+            <if test="BDMIL_ENTRY_TIME != null">#{BDMIL_ENTRY_TIME},</if>
+            <if test="BDMIL_TYPE != null">#{BDMIL_TYPE},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+        </trim>
+    </insert>
+
+    <!--编辑-->
+    <update id="updateDepartmentInstructorLog" parameterType="java.util.Map">
+        UPDATE BUS_DEPARTMENT_INSTRUCTOR_LOG
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BDI_ID != null">BDI_ID=#{BDI_ID},</if>
+            <if test="BDMP_ID != null">BDMP_ID=#{BDMP_ID},</if>
+            <if test="BDMP_NAME != null">BDMP_NAME=#{BDMP_NAME},</if>
+            <if test="BC_ID != null">BC_ID=#{BC_ID},</if>
+            <if test="BC_NAME != null">BC_NAME=#{BC_NAME},</if>
+            <if test="BDMIL_YEAR != null">BDMIL_YEAR=#{BDMIL_YEAR},</if>
+            <if test="BDMIL_SEMESTER != null">BDMIL_SEMESTER=#{BDMIL_SEMESTER},</if>
+            <if test="BDMIL_ENTRY_TIME != null">BDMIL_ENTRY_TIME=#{BDMIL_ENTRY_TIME},</if>
+            <if test="BDMIL_TYPE != null">BDMIL_TYPE=#{BDMIL_TYPE},</if>
+        </set>
+        <where>
+            <if test="ID !=null">ID=#{ID}</if>
+        </where>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteDepartmentInstructorLog" parameterType="java.util.Map">
+		DELETE FROM BUS_DEPARTMENT_INSTRUCTOR_LOG WHERE ID = #{ID}
+	</delete>
 </mapper>

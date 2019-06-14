@@ -278,6 +278,12 @@ public class Url {
     public static final String DEPARTMENT_DELETE_URL = DEPARTMENT_BASE_URL + "delete";
     public static final String DEPARTMENT_TREE_DATA_URL = DEPARTMENT_BASE_URL + "tree";
     /**
+     * 辅导员管理
+     */
+    public static final String DEPARTMENT_INSTRUCTOR= DEPARTMENT_BASE_URL + "instructor/";
+    public static final String DEPARTMENT_INSTRUCTOR_CLASS_ADD = DEPARTMENT_INSTRUCTOR + "class/add";
+    public static final String DEPARTMENT_INSTRUCTOR_CLASS_DELETE = DEPARTMENT_INSTRUCTOR + "class/delete";
+    /**
      * 系部人员
      */
     public static final String DEPARTMENT_PERSONNEL_BASE_URL = DEPARTMENT_BASE_URL + "personnel/";

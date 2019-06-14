@@ -74,4 +74,20 @@ public interface DepartmentService extends BaseService {
      * @return
      */
     Map<String, Object> deleteDepartmentPersonnel(Map<String, Object> mapParam);
+
+    /**
+     * 添加辅导员管理班级
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> insertInstructorClass(Map<String, Object> mapParam);
+
+    /**
+     * 删除辅导员管理班级
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> deleteInstructorClass(Map<String, Object> mapParam);
 }

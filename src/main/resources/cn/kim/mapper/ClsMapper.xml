@@ -36,6 +36,7 @@
             <if test="BC_MAJOR != null">BC_MAJOR,</if>
             <if test="BC_NAME != null">BC_NAME,</if>
             <if test="BC_YEAR != null">BC_YEAR,</if>
+            <if test="BC_LENGTH != null">BC_LENGTH,</if>
             <if test="BC_ENTRY_TIME != null">BC_ENTRY_TIME,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -44,6 +45,7 @@
             <if test="BC_MAJOR != null">#{BC_MAJOR},</if>
             <if test="BC_NAME != null">#{BC_NAME},</if>
             <if test="BC_YEAR != null">#{BC_YEAR},</if>
+            <if test="BC_LENGTH != null">#{BC_LENGTH},</if>
             <if test="BC_ENTRY_TIME != null">#{BC_ENTRY_TIME},</if>
         </trim>
     </insert>
@@ -57,6 +59,7 @@
             <if test="BC_MAJOR != null">BC_MAJOR=#{BC_MAJOR},</if>
             <if test="BC_NAME != null">BC_NAME=#{BC_NAME},</if>
             <if test="BC_YEAR != null">BC_YEAR=#{BC_YEAR},</if>
+            <if test="BC_LENGTH != null">BC_LENGTH=#{BC_LENGTH},</if>
             <if test="BC_ENTRY_TIME != null">BC_ENTRY_TIME=#{BC_ENTRY_TIME},</if>
         </set>
         <where>

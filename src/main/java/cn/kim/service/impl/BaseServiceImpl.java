@@ -570,51 +570,26 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         //拿到当前用户的角色
         ActiveUser activeUser = getActiveUser();
         String operatorId = activeUser.getId();
+        String tableId = activeUser.getTableId();
         int type = toInt(activeUser.getType());
+
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
 
         if (type == SystemEnum.MANAGER.getType()) {
             //管理员不过滤
             return "";
-        } else if (type == SystemEnum.DIVISION.getType() || type == SystemEnum.DEPARTMENT.getType()) {
-            //系部和部门根据授权过滤
-            //查询授权
-            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
-            paramMap.put("SO_ID", operatorId);
-            List<Map<String, Object>> authorizationList = DaoSession.daoSession.baseDao.selectList(NameSpace.AuthorizationMapper, "selectAuthorizationGroupBy", paramMap);
-            if (!isEmpty(fieldMap) && !isEmpty(authorizationList)) {
-                StringBuilder filterWhere = new StringBuilder();
-                authorizationList.forEach(authorization -> {
-                    int BA_TABLE_TYPE = toInt(authorization.get("BA_TABLE_TYPE"));
-                    String BA_TABLE_ID = toString(authorization.get("BA_TABLE_ID"));
-                    //查询字段
-                    String field = toString(fieldMap.get(toString(BA_TABLE_TYPE)));
-                    //字段没有传来就不查询
-                    if (!isEmpty(field)) {
-                        if (BA_TABLE_TYPE == AuthorizationType.COLLEGE.getType()) {
-                            //院系
-                            filterWhere.append(" OR " + field + " IN(" + BA_TABLE_ID + ") ");
-                        } else if (BA_TABLE_TYPE == AuthorizationType.DEPARTMENT.getType()) {
-                            //系部
-                            filterWhere.append(" OR " + field + " IN(" + BA_TABLE_ID + ") ");
-                        } else if (BA_TABLE_TYPE == AuthorizationType.CLS.getType()) {
-                            //班级
-                            filterWhere.append(" OR " + field + " IN(" + BA_TABLE_ID + ") ");
-                        }
-                    }
-                });
-                //过滤语句
-                String filterString = filterWhere.toString();
-                if (!isEmpty(filterString)) {
-                    builder.append(" AND (" + TextUtil.interceptSymbol(filterString, " OR ") + ") ");
-                }
-            } else {
-                //不查询出数据
-                if (isProcess) {
-                    builder.append(" AND (DG.SO_ID = " + operatorId + " OR SPS.SO_ID = " + operatorId + " OR SPS.SHOW_SO_ID = " + operatorId + ")");
-                } else {
-                    builder.append(" AND SO_ID = " + operatorId);
-                }
-            }
+        } else if (type == SystemEnum.DIVISION.getType()) {
+            //部门
+            paramMap.put("ID",tableId);
+            Map<String, Object> division = baseDao.selectOne(NameSpace.DivisionMapper, "selectDivision", paramMap);
+
+            builder.append(" AND BDM_COLLEGE= " + division.get("BD_COLLEGE"));
+        } else if (type == SystemEnum.DEPARTMENT.getType()) {
+            //系部
+            paramMap.put("ID",tableId);
+            Map<String, Object> department = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartment", paramMap);
+
+            builder.append(" AND BDM_ID = " + department.get("ID"));
         } else if (type == SystemEnum.STUDENT.getType()) {
             //学生
             if (isProcess) {

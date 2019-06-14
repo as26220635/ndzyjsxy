@@ -482,12 +482,34 @@ public abstract class BaseData {
         //拿到当前月份
         int nowMonth = DateUtil.getMonth();
 
-        if (nowMonth >= 9) {
+        if (nowMonth >= 8) {
             return nowYear + "-" + (nowYear + 1);
         } else {
             return (nowYear - 1) + "-" + nowYear;
         }
     }
+
+    /**
+     * 获取当前学年开始
+     *
+     * @return
+     */
+    protected int getStudentYearStart() {
+        String studentYear = getStudentYear();
+
+        return toInt(studentYear.substring(0, 4));
+    }
+
+    /**
+     * 获取当前学年结束
+     * @return
+     */
+    protected int getStudentYearEnd() {
+        String studentYear = getStudentYear();
+
+        return toInt(studentYear.substring(studentYear.length() - 4));
+    }
+
 
     /**
      * 获得学期

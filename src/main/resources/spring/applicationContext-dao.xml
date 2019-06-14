@@ -68,8 +68,8 @@
         <!-- 监控数据库 -->
         <property name="proxyFilters">
             <list>
-                <ref bean="statfilter"/>
-                <ref bean="logFilter"/>
+<!--                <ref bean="statfilter"/>-->
+<!--                <ref bean="logFilter"/>-->
             </list>
         </property>
         <!--设置wall SQL防注入-->

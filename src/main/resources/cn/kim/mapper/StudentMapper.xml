@@ -10,6 +10,7 @@
             SELECT
             BS.*,SDI.SDI_NAME AS BS_SEX_NAME,NDI.SDI_NAME AS BS_NATION_NAME,BDM.BDM_NAME,BC.BC_NAME,
             MDI.SDI_NAME AS BC_MAJOR_NAME,
+            BC.BC_YEAR,
             BDM.BDM_COLLEGE
             FROM(
             SELECT * FROM BUS_STUDENT

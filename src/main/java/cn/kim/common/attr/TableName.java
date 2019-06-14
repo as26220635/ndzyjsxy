@@ -143,6 +143,11 @@ public class TableName {
     public static final String BUS_DEPARTMENT_PERSONNEL = "BUS_DEPARTMENT_PERSONNEL";
 
     /**
+     * 辅导员管理班级
+     */
+    public static final String BUS_DEPARTMENT_INSTRUCTOR = "BUS_DEPARTMENT_INSTRUCTOR";
+
+    /**
      * 班级
      */
     public static final String BUS_CLASS = "BUS_CLASS";

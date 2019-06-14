@@ -65,14 +65,22 @@
 
     <!-- 配置 HiddenHttpMethodFilter 可以把POST请求转为 DELETE 和 PUT请求 -->
     <filter>
-        <filter-name>httpPutFormFilter</filter-name>
+        <filter-name>HttpMethodFilter</filter-name>
         <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>httpPutFormFilter</filter-name>
+        <filter-name>HttpMethodFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
+    <filter>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HiddenHttpMethodFilter</filter-name>
+        <!-- 备注，这边的名称必须和配置'springmvc'的servlet名称一样 -->
+        <servlet-name>springmvc_rest</servlet-name>
+    </filter-mapping>
     <!-- shiro的filter -->
     <!-- shiro过虑器，DelegatingFilterProxy通过代理模式将spring容器中的bean和filter关联起来 -->
     <filter>

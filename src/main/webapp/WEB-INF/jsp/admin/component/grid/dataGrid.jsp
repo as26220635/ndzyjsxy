@@ -126,7 +126,7 @@
                         <div class="box box-default">
                             <c:if test="${CONFIGURE.SC_IS_PAGING == Attribute.STATUS_SUCCESS}">
                                 <div class="box-header">
-                                    <h3 class="box-title">${MENU.SM_NAME}</h3>
+                                    <h3 id="tableTitle" class="box-title">${MENU.SM_NAME}</h3>
                                     <div class="box-tools pull-right">
                                             <%--其他按钮--%>
                                         <c:if test="${CONFIGURE.SC_IS_SELECT ne null && CONFIGURE.SC_IS_SELECT eq Attribute.STATUS_SUCCESS}">
@@ -506,7 +506,7 @@
             BUS_PROCESS2 = data.BUS_PROCESS2;
             SPS_AUDIT_STATUS = data.SPS_AUDIT_STATUS;
             if (i > 0) {
-                IDS += ",";
+                IDS += SERVICE_SPLIT;
             }
             IDS += data.ID;
         }
@@ -662,5 +662,21 @@
      */
     function getDataGridSelected() {
         return $dataGrid.rows({selected: true}).data();
+    }
+
+    /**
+     * 设置表格标题
+     * @param title
+     */
+    function setTableTile(title) {
+        $('#tableTitle').html(title);
+    }
+
+    /**
+     * 添加表格标题
+     * @param title
+     */
+    function appendTableTile(title) {
+        $('#tableTitle').html($('#tableTitle').html()+title);
     }
 </script>

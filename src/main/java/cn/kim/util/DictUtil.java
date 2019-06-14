@@ -133,7 +133,7 @@ public class DictUtil {
      */
     public static DictInfo getDictInfo(@NotNull List<DictInfo> dictInfoList, Object dictInfoCode) {
         for (DictInfo dictInfo : dictInfoList) {
-            if (dictInfo.getSdiCode().equals(dictInfoCode)) {
+            if (dictInfo.getSdiCode().equals(TextUtil.toString(dictInfoCode))) {
                 return dictInfo;
             }
             if (!ValidateUtil.isEmpty(dictInfo.getChildren())) {

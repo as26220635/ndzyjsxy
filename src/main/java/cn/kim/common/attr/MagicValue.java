@@ -63,4 +63,11 @@ public class MagicValue {
     public static final String GREATER_THAN = "&gt;";
     public static final String LESS_THAN = "&lt;";
     public static final String NBSP = "&nbsp;";
+
+    /**
+     * 数据记录类型
+     */
+    public static final int RECODE_TYPE_INSERT = 1;
+    public static final int RECODE_TYPE_UPDATE = 2;
+    public static final int RECODE_TYPE_DELETE = 3;
 }

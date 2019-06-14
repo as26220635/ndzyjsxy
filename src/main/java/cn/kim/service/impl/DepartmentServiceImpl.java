@@ -10,6 +10,7 @@ import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.DepartmentService;
+import cn.kim.util.DictUtil;
 import cn.kim.util.PasswordMd5;
 import cn.kim.util.RandomSalt;
 import com.google.common.collect.Lists;
@@ -207,6 +208,170 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
             resultMap.put(MagicValue.LOG, "删除系部人员,信息:" + formatColumnName(TableName.BUS_DEPARTMENT_PERSONNEL, oldMap));
             status = STATUS_SUCCESS;
             desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 添加辅导员管理班级
+     *
+     * @param mapParam
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> insertInstructorClass(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+            String IDS = toString(mapParam.get("IDS"));
+            String BDMP_ID = toString(mapParam.get("BDMP_ID"));
+
+            if (isEmpty(IDS) || isEmpty(BDMP_ID)) {
+                throw new CustomException(Tips.ID_NULL_ERROR);
+            }
+
+            String studentYear = getStudentYear();
+            int studentSemester = getStudentSemester();
+
+            StringBuilder errorBuilder = new StringBuilder();
+            int success = 0;
+            int error = 0;
+
+            for (String ID : IDS.split(SERVICE_SPLIT)) {
+                //查询是否已经被选中
+                paramMap.clear();
+                paramMap.put("BC_ID", ID);
+                paramMap.put("BDI_YEAR", studentYear);
+                paramMap.put("BDI_SEMESTER", studentSemester);
+                Map<String, Object> instructor = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartmentInstructor", paramMap);
+                if (!isEmpty(instructor)) {
+                    error++;
+                    errorBuilder.append("班级(" + instructor.get("BC_NAME") + ")已经分配辅导员(" + instructor.get("BDMP_NAME") + ")!");
+                    continue;
+                }
+                //查询班级
+                paramMap.clear();
+                paramMap.put("ID", ID);
+                Map<String, Object> cls = baseDao.selectOne(NameSpace.ClsMapper, "selectClass", paramMap);
+                //查询系部人员
+                paramMap.clear();
+                paramMap.put("ID", BDMP_ID);
+                Map<String, Object> personnel = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartmentPersonnel", paramMap);
+                //插入记录
+                String BDI_ID = getId();
+                paramMap.clear();
+                paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DEPARTMENT_INSTRUCTOR);
+
+                paramMap.put("ID", BDI_ID);
+                paramMap.put("BDMP_ID", BDMP_ID);
+                paramMap.put("BC_ID", ID);
+                paramMap.put("BDI_YEAR", getStudentYear());
+                paramMap.put("BDI_SEMESTER", getStudentSemester());
+                paramMap.put("BDI_ENTRY_TIME", getDate());
+                baseDao.insert(NameSpace.DepartmentMapper, "insertDepartmentInstructor", paramMap);
+
+                //插入日志
+                paramMap.clear();
+                paramMap.put("ID", getId());
+                paramMap.put("BDI_ID", BDI_ID);
+                paramMap.put("BDMP_ID", BDMP_ID);
+                paramMap.put("BDMP_NAME", personnel.get("BDMP_NAME"));
+                paramMap.put("BC_ID", ID);
+                paramMap.put("BC_NAME", cls.get("BC_NAME"));
+                paramMap.put("BDMIL_YEAR", getStudentYear());
+                paramMap.put("BDMIL_SEMESTER", getStudentSemester());
+                paramMap.put("BDMIL_ENTRY_TIME", getDate());
+                paramMap.put("SO_ID", getActiveUser().getId());
+                paramMap.put("BDMIL_TYPE", MagicValue.RECODE_TYPE_INSERT);
+                baseDao.insert(NameSpace.DepartmentMapper, "insertDepartmentInstructorLog", paramMap);
+
+                success++;
+            }
+
+            status = STATUS_SUCCESS;
+            desc = "分配成功" + success + "个班级,失败" + error + "个班级<br>" + errorBuilder.toString();
+
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    /**
+     * 删除辅导员管理班级
+     *
+     * @param mapParam
+     * @return
+     */
+    @Override
+    @Transactional
+    public Map<String, Object> deleteInstructorClass(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+            String IDS = toString(mapParam.get("IDS"));
+
+            if (isEmpty(IDS)) {
+                throw new CustomException(Tips.ID_NULL_ERROR);
+            }
+
+            StringBuilder errorBuilder = new StringBuilder();
+            int success = 0;
+            int error = 0;
+
+            for (String ID : IDS.split(SERVICE_SPLIT)) {
+                paramMap.clear();
+                paramMap.put("ID", ID);
+                Map<String, Object> instructor = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartmentInstructor", paramMap);
+
+                //查看是否已经不能删除
+                String studentYear = getStudentYear();
+                int studentSemester = getStudentSemester();
+                if (!studentYear.equals(toString(instructor.get("BDI_YEAR"))) || studentSemester != toInt(instructor.get("BDI_SEMESTER"))) {
+                    error++;
+                    errorBuilder.append("班级(" + instructor.get("BC_NAME") + ")分配学期(" + instructor.get("BDI_YEAR") + DictUtil.getDictName("BUS_SEMESTER", instructor.get("BDI_SEMESTER")) + ")已超过分配时间,不能删除!");
+                    continue;
+                }
+
+                //删除记录
+                paramMap.clear();
+                paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DEPARTMENT_INSTRUCTOR);
+
+                paramMap.put("ID", ID);
+                baseDao.delete(NameSpace.DepartmentMapper, "deleteDepartmentInstructor", paramMap);
+
+                //插入日志
+                paramMap.clear();
+                paramMap.put("ID", getId());
+                paramMap.put("BDI_ID", ID);
+                paramMap.put("BDMP_ID", instructor.get("BDMP_ID"));
+                paramMap.put("BDMP_NAME", instructor.get("BDMP_NAME"));
+                paramMap.put("BC_ID", instructor.get("BC_ID"));
+                paramMap.put("BC_NAME", instructor.get("BC_NAME"));
+                paramMap.put("BDMIL_YEAR", instructor.get("BDI_YEAR"));
+                paramMap.put("BDMIL_SEMESTER", instructor.get("BDI_SEMESTER"));
+                paramMap.put("BDMIL_ENTRY_TIME", getDate());
+                paramMap.put("SO_ID", getActiveUser().getId());
+                paramMap.put("BDMIL_TYPE", MagicValue.RECODE_TYPE_DELETE);
+
+                baseDao.insert(NameSpace.DepartmentMapper, "insertDepartmentInstructorLog", paramMap);
+                success++;
+            }
+
+            status = STATUS_SUCCESS;
+            desc = "删除成功" + success + "个班级,失败" + error + "个班级<br>" + errorBuilder.toString();
+
         } catch (Exception e) {
             desc = catchException(e, baseDao, resultMap);
         }

@@ -51,6 +51,7 @@ public class ClsServiceImpl extends BaseServiceImpl implements ClsService {
             paramMap.put("BC_MAJOR", mapParam.get("BC_MAJOR"));
             paramMap.put("BC_NAME", mapParam.get("BC_NAME"));
             paramMap.put("BC_YEAR", mapParam.get("BC_YEAR"));
+            paramMap.put("BC_LENGTH", mapParam.get("BC_LENGTH"));
 
             if (isEmpty(id)) {
                 id = getId();

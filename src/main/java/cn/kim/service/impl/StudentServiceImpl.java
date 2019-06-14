@@ -161,6 +161,14 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
                 oldMap.put("ID", id);
                 oldMap = selectStudent(oldMap);
 
+                //查询学生是否已经锁定
+                //获取班级年度加上学制是否已经毕业
+                int BC_YEAR = toInt(oldMap.get("BC_YEAR"));
+                int BS_LENGTH = toInt(oldMap.get("BS_LENGTH"));
+                if (toInt(getStudentYear().substring(0, 4)) >= (BC_YEAR + BS_LENGTH)) {
+                    throw new CustomException("新学年，锁定毕业生!");
+                }
+
                 baseDao.update(NameSpace.StudentMapper, "updateStudent", paramMap);
                 resultMap.put(MagicValue.LOG, "更新学生,更新前:" + formatColumnName(TableName.BUS_STUDENT, oldMap) + ",更新后:" + formatColumnName(TableName.BUS_STUDENT, paramMap));
             }

@@ -31,6 +31,7 @@
         INSERT INTO BUS_DIVISION
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ID != null">ID,</if>
+            <if test="BD_COLLEGE != null">BD_COLLEGE,</if>
             <if test="BD_PARENT_ID != null">BD_PARENT_ID,</if>
             <if test="BD_NAME != null">BD_NAME,</if>
             <if test="BD_NUMBER != null">BD_NUMBER,</if>
@@ -45,6 +46,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
+            <if test="BD_COLLEGE != null">#{BD_COLLEGE},</if>
             <if test="BD_PARENT_ID != null">#{BD_PARENT_ID},</if>
             <if test="BD_NAME != null">#{BD_NAME},</if>
             <if test="BD_NUMBER != null">#{BD_NUMBER},</if>
@@ -64,6 +66,7 @@
         UPDATE BUS_DIVISION
         <set>
             <if test="ID != null">ID=#{ID},</if>
+            <if test="BD_COLLEGE != null">BD_COLLEGE=#{BD_COLLEGE},</if>
             <if test="BD_PARENT_ID != null">BD_PARENT_ID=#{BD_PARENT_ID},</if>
             <if test="BD_NAME != null">BD_NAME=#{BD_NAME},</if>
             <if test="BD_NUMBER != null">BD_NUMBER=#{BD_NUMBER},</if>

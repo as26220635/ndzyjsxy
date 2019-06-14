@@ -111,4 +111,35 @@ public class TableViewName {
      * 资助管理-应急求助
      */
     public static final String V_AID_EMERGENCY_HELP = "v_aid_emergency_help";
+
+    /**
+     * 系部管理
+     */
+    public static final String V_DEPARTMENT = "v_department";
+
+    /**
+     * 系部人员
+     */
+    public static final String V_DEPARTMENT_PERSONNEL = "v_department_personnel";
+
+    /**
+     * 辅导员管理
+     */
+    public static final String V_DEPARTMENT_INSTRUCTOR = "v_department_instructor";
+
+    /**
+     * 班级选择
+     */
+    public static final String V_DEPARTMENT_INSTRUCTOR_CLASS = "v_department_instructor_class";
+
+    /**
+     * 部门管理
+     */
+    public static final String V_DIVISION = "v_division";
+
+    /**
+     * 部门人员
+     */
+    public static final String V_DIVISION_PERSONNEL = "v_division_personnel";
+
 }

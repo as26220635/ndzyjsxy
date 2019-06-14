@@ -28,6 +28,11 @@
         <input type="text" class="form-control" ${fns:validField(TableName.BUS_DIVISION, "BD_NUMBER")}
                value="${division.BD_NUMBER}">
     </div>
+    <div class="form-group has-feedback">
+        <label>所属学院:</label>
+        <s:combobox sdtCode="BUS_COLLEGE" custom='${fns:validField(TableName.BUS_DIVISION, "BD_COLLEGE")}'
+                    value="${division.BD_COLLEGE}"></s:combobox>
+    </div>
     <div class="form-group has-feedback form-group-md-6">
         <label>联系人:</label>
         <input type="text" class="form-control" ${fns:validField(TableName.BUS_DIVISION, "BD_CONTACTS")}

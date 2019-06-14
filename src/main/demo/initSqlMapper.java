@@ -9,9 +9,9 @@ public class initSqlMapper {
 
     public static void main(String[] args) throws IOException {
         //字段
-        String str = "ID\tBS_ID\tBSD_TYPE\tBSD_COGNIZANCE_TIME\tBSD_COGNIZANCE_REASON\tBSD_CLASS_REASON\tBSD_GRADE_REASON";
+        String str = "ID\tBDI_ID\tBDMP_ID\tBDMP_NAME\tBC_ID\tBC_NAME\tBDMIL_ENTRY_TIME";
         //表名
-        String tablename = "bus_student_difficulty";
+        String tablename = "bus_department_instructor_log";
         creatsql(str, tablename);
     }
 
@@ -63,7 +63,7 @@ public class initSqlMapper {
         for (String string : strr) {
             str5 += "\t\t\t<if test=\"" + string + " != null\">" + string + "=#{" + string + "},</if>\n";
         }
-        str5 += "\t\t</set>\n\t\t<where>\n\t\t\t<if test=\"ID !=null\">ID=#{ID}</if>\n\t\t</where>\n\t</update>";
+        str5 += "\t\t</set>\n\t\t<where>\n\t\t\tID=#{ID}\n\t\t</where>\n\t</update>";
         System.out.println(str5 + "\n");
 
         //删除

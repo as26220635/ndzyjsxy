@@ -31,6 +31,11 @@
         <label>年段:</label>
         <s:datebox custom='${fns:validField("BUS_CLASS", "BC_YEAR")}' value="${cls.BC_YEAR}" studentYear="false"></s:datebox>
     </div>
+    <div class="form-group has-feedback">
+        <label>学制:</label>
+        <s:combobox sdtCode="BUS_COLLEGE_LENGTH" custom='${fns:validField(TableName.BUS_STUDENT,"BC_LENGTH")}'
+                    value="${cls.BC_LENGTH}" defaultValue="3"></s:combobox>
+    </div>
 </form>
 
 <script>
