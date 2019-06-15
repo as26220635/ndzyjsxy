@@ -259,4 +259,51 @@
     <delete id="deleteDepartmentInstructorLog" parameterType="java.util.Map">
 		DELETE FROM BUS_DEPARTMENT_INSTRUCTOR_LOG WHERE ID = #{ID}
 	</delete>
+
+    <select id="selectDepartmentInstructorList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT *
+        FROM (
+            SELECT V.*,SDI.SDI_CODE AS BDM_COLLEGE_NAME
+            FROM V_DEPARTMENT_INSTRUCTOR V
+            LEFT JOIN sys_dict_info SDI ON SDI.SDT_CODE = 'BUS_COLLEGE' AND SDT_CODE = V.BDM_COLLEGE
+        )V
+        <where>
+            <if test="whereClause != null and whereClause != ''">
+                ${whereClause}
+            </if>
+        </where>
+        <if test="orderByClause != null and orderByClause != ''">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+
+    <select id="selectDepartmentInstructorCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM V_DEPARTMENT_INSTRUCTOR
+        <where>
+            <if test="whereClause != null and whereClause != ''">
+                ${whereClause}
+            </if>
+        </where>
+    </select>
+
+    <!--查询系部人员-->
+    <select id="selectClassInstructor" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            BC.*,
+            BDI.BDMP_ID,
+            BDMP.BDMP_NAME
+        FROM BUS_CLASS BC
+        LEFT JOIN BUS_DEPARTMENT_INSTRUCTOR BDI ON BDI.BC_ID = BC.ID AND BDI.BDI_YEAR = #{BDI_YEAR} AND BDI.BDI_SEMESTER = #{BDI_SEMESTER}
+        LEFT JOIN BUS_DEPARTMENT_PERSONNEL BDMP ON BDMP.ID = BDI.BDMP_ID
+        WHERE BC.ID = #{ID}
+    </select>
 </mapper>

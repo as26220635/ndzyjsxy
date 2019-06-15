@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--流程工具--%>
 <script>
-    process = {
+    var process = {
         /**
          * 显示流程主页
          * @param ID

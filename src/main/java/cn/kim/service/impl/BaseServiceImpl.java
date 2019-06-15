@@ -580,13 +580,13 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
             return "";
         } else if (type == SystemEnum.DIVISION.getType()) {
             //部门
-            paramMap.put("ID",tableId);
+            paramMap.put("ID", tableId);
             Map<String, Object> division = baseDao.selectOne(NameSpace.DivisionMapper, "selectDivision", paramMap);
 
             builder.append(" AND BDM_COLLEGE= " + division.get("BD_COLLEGE"));
         } else if (type == SystemEnum.DEPARTMENT.getType()) {
             //系部
-            paramMap.put("ID",tableId);
+            paramMap.put("ID", tableId);
             Map<String, Object> department = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartment", paramMap);
 
             builder.append(" AND BDM_ID = " + department.get("ID"));
@@ -717,6 +717,29 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
             if (!isEdit) {
                 throw new CustomException(Tips.PROCESS_DELETE_ERROR);
             }
+        }
+    }
+
+    /**
+     * 是否当前班级辅导员能修改
+     *
+     * @param BC_ID
+     * @return
+     */
+    public boolean isNowChangeInstructor(String BC_ID) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("ID", BC_ID);
+        Map<String, Object> cls = baseDao.selectOne(NameSpace.ClsMapper, "selectClass", paramMap);
+
+        int BC_YEAR = toInt(cls.get("BC_YEAR"));
+        int BC_LENGTH = toInt(cls.get("BC_LENGTH"));
+
+        int startYear = getStudentYearStart();
+        int endYear = getStudentYearEnd();
+        if (BC_YEAR <= endYear && BC_YEAR > startYear - BC_LENGTH) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

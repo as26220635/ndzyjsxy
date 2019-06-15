@@ -1,5 +1,6 @@
 package cn.kim.service;
 
+import cn.kim.entity.DataTablesView;
 import cn.kim.entity.Tree;
 
 import java.util.List;
@@ -90,4 +91,28 @@ public interface DepartmentService extends BaseService {
      * @return
      */
     Map<String, Object> deleteInstructorClass(Map<String, Object> mapParam);
+
+    /**
+     * 查询辅导员列表
+     *
+     * @param mapParam
+     * @return
+     */
+    DataTablesView<?> selectDepartmentInstructor(Map<String, Object> mapParam);
+
+    /**
+     * 查询辅导员列表
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> selectClassInstructor(Map<String, Object> mapParam);
+
+    /**
+     * 修改辅导员列表
+     *
+     * @param mapParam
+     * @return
+     */
+    Map<String, Object> updateClassInstructor(Map<String, Object> mapParam);
 }

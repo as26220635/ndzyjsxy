@@ -9,6 +9,9 @@
 <%--通用列表--%>
 <%@ include file="/WEB-INF/jsp/admin/component/grid/dataGrid.jsp" %>
 <script>
+    setTimeout(function () {
+        setMenuActive('admin-dataGrid-${MENU.SM_PARENTID}');
+    }, 50);
     /**
      * 选择班级
      */
@@ -53,7 +56,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.del('${BASE_URL}${Url.DEPARTMENT_INSTRUCTOR_CLASS_DELETE}', params, function (data) {
+                ajax.del('${BASE_URL}${Url.DEPARTMENT_INSTRUCTOR_CLASS_DELETE_URL}', params, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false);
                 });
             }

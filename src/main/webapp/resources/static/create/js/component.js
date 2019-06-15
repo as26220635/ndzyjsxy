@@ -1045,7 +1045,7 @@ model = {
 choiceBox = {
     mode: {MULTIPLE: 'multi', SINGLE: 'single'},
     init: function (options) {
-        var settings = $.extend({
+        let settings = $.extend({
             title: '请选择',
             selectMode: choiceBox.mode.SINGLE,
             fields: [],
@@ -1060,65 +1060,68 @@ choiceBox = {
         }, options);
 
         //选中参数
-        var valueArray = settings.value.split(SERVICE_SPLIT);
+        let valueArray = settings.value.split(SERVICE_SPLIT);
         //完整的参数
-        var valueCompleteArray = [];
+        let valueCompleteArray = [];
 
         //初始化table
-        var $table;
+        let $table;
         //初始化字段
-        var tableId = uuid();
-        var tableFields = '';
+        let tableId = uuid();
+        let tableFields = '';
         //tabel查询字段
-        var tableDatas = [];
+        let tableDatas = [];
 
         //添加选择框 序号字段
-        settings.fields.unshift({min_width: 30, name: '序号', data: null});
-        settings.fields.unshift({min_width: 30, name: '', data: null});
-
-        for (var i in settings.fields) {
-            var map = settings.fields[i];
+        let fields = [];
+        fields.unshift({min_width: 30, name: '序号', data: null});
+        fields.unshift({min_width: 30, name: '', data: null});
+        for (let i in settings.fields) {
+            fields.push(settings.fields[i]);
+        }
+        for (let i in fields) {
+            let map = fields[i];
             //最小宽度
-            var min_width = (isEmpty(map.min_width) ? 120 : map.min_width) + 'px';
+            let min_width = (isEmpty(map.min_width) ? 120 : map.min_width) + 'px';
             //字段名
-            var name = map.name;
+            let name = map.name;
             tableFields += '<th style="min-width: ' + min_width + ';">' + name + '</th>';
 
             tableDatas.push({data: map.data});
         }
 
-        var tableClass = '';
-        var tableContent = '<table id="' + tableId + '" class="table table-bordered table-striped ' + tableClass + '"><thead><tr>' + tableFields + '</tr></thead></table>';
+        let tableClass = options.tableClass;
+        let tableContent = '<table id="' + tableId + '" class="table table-bordered table-striped ' + tableClass + '"><thead><tr>' + tableFields + '</tr></thead></table>';
 
         //初始化搜索框
-        var searchInputs = '';
+        let searchInputs = '';
         if (isEmpty(settings.searchFields)) {
             searchInputs = '<div class="form-group form-group-search" style="width: 100%;"><label for="name" class="col-sm-2 control-label">' + settings.searchLabel + '</label><div class="col-sm-10"><input name="name" type="text" class="form-control form-control-input-search"></div></div>';
         } else {
-            for (var i in settings.searchFields) {
-                var map = settings.searchFields[i];
+            for (let i in settings.searchFields) {
+                let map = settings.searchFields[i];
                 //label名
-                var label = isEmpty(map.label) ? map.name : map.label;
+                let label = isEmpty(map.label) ? map.name : map.label;
                 //提交参数的名字
-                var name = map.name;
+                let name = map.name;
                 // 扩展input的参数
-                var extend = map.extend;
+                let extend = map.extend;
 
                 searchInputs += '<div class="form-group col-sm-6"><label for="' + name + '" class="col-sm-4 control-label">' + label + '</label><div class="col-sm-8"><input name="' + name + '" type="text" class="form-control form-control-input-search" ' + extend + '></div></div>';
             }
         }
 
         //搜索按钮
-        var okBtnId = uuid();
-        var resBtnId = uuid();
-        var searchBtn = '<div class="btn-group-search"><button type="button" class="btn btn-success"  id="' + okBtnId + '">搜索</button><button type="button" class="btn btn-danger" id="' + resBtnId + '">重置</button></div>';
+        let okBtnId = uuid();
+        let resBtnId = uuid();
+        let searchBtn = '<div class="btn-group-search"><button type="button" class="btn btn-success"  id="' + okBtnId + '">搜索</button><button type="button" class="btn btn-danger" id="' + resBtnId + '">重置</button></div>';
 
         //搜索框ID
-        var formId = uuid();
+        let formId = uuid();
         //拼接HTML
-        var html = '<div class=""><form id="' + formId + '" class="form-horizontal">' + searchInputs + searchBtn + '</form>' + tableContent + '</div>';
+        let html = '<div class=""><form id="' + formId + '" class="form-horizontal">' + searchInputs + searchBtn + '</form>' + tableContent + '</div>';
 
-        var selectMode = '';
+        let selectMode = '';
         if (settings.selectMode == choiceBox.mode.SINGLE) {
             selectMode = '(单选)';
         } else if (settings.selectMode == choiceBox.mode.MULTIPLE) {
@@ -1133,9 +1136,10 @@ choiceBox = {
             isConfirm: true,
             //HTML加载完成回调
             loadContentComplete: function () {
+                let $dataGridTable = $('#' + tableId);
                 $table = tableView.init({
                     //table对象
-                    object: $('#' + tableId),
+                    object: $dataGridTable,
                     //搜索按钮
                     searchBtn: $('#' + okBtnId),
                     //重置按钮
@@ -1159,7 +1163,7 @@ choiceBox = {
                     cache: false,
                     //添加搜索参数
                     searchParams: function (param) {
-                        for (var i in settings.searchParams) {
+                        for (let i in settings.searchParams) {
                             param[i] = settings.searchParams[i];
                         }
                     },
@@ -1175,7 +1179,6 @@ choiceBox = {
                             });
 
                         }
-
                     },
                     //设置
                     setting: function ($table) {
@@ -1185,8 +1188,8 @@ choiceBox = {
                 //选中
                 $table.on('select', function (e, dt, type, indexes) {
                     if (type === 'row') {
-                        var data = $table.rows(indexes).data()[0];
-                        var id = data.ID;
+                        let data = $table.rows(indexes).data()[0];
+                        let id = data.ID;
                         //单选
                         if (settings.selectMode == choiceBox.mode.SINGLE) {
                             valueArray = [id];
@@ -1200,8 +1203,8 @@ choiceBox = {
                 //取消选中
                 $table.on('deselect', function (e, dt, type, indexes) {
                     if (type === 'row') {
-                        var data = $table.rows(indexes).data()[0];
-                        var id = data.ID;
+                        let data = $table.rows(indexes).data()[0];
+                        let id = data.ID;
                         //单选
                         if (settings.selectMode == choiceBox.mode.SINGLE) {
                             valueArray = [];
@@ -1287,6 +1290,22 @@ choiceBox = {
                     $('#' + options.id).val(data.ID);
                     $('#' + options.name).val(data.BS_NAME);
                 }
+            })
+        });
+    },
+    //基础选择
+    base: function (options) {
+        $('#' + options.name).selectInput(function () {
+            choiceBox.init({
+                modelSize: model.size.LG,
+                url: options.url,
+                title: options.title,
+                value: $('#' + options.id).val(),
+                tableClass: options.tableClass,
+                searchLabel: isEmpty(options.searchLabel) ? '名称' : options.searchLabel,
+                searchParams: options.searchParams,
+                fields: options.fields,
+                confirm: options.confirm,
             })
         });
     }

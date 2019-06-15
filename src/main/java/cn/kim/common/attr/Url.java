@@ -280,9 +280,10 @@ public class Url {
     /**
      * 辅导员管理
      */
-    public static final String DEPARTMENT_INSTRUCTOR= DEPARTMENT_BASE_URL + "instructor/";
-    public static final String DEPARTMENT_INSTRUCTOR_CLASS_ADD = DEPARTMENT_INSTRUCTOR + "class/add";
-    public static final String DEPARTMENT_INSTRUCTOR_CLASS_DELETE = DEPARTMENT_INSTRUCTOR + "class/delete";
+    public static final String DEPARTMENT_INSTRUCTOR_URL= DEPARTMENT_BASE_URL + "instructor/";
+    public static final String DEPARTMENT_INSTRUCTOR_LIST_URL = DEPARTMENT_INSTRUCTOR_URL + "list";
+    public static final String DEPARTMENT_INSTRUCTOR_CLASS_ADD_URL = DEPARTMENT_INSTRUCTOR_URL + "class/add";
+    public static final String DEPARTMENT_INSTRUCTOR_CLASS_DELETE_URL = DEPARTMENT_INSTRUCTOR_URL + "class/delete";
     /**
      * 系部人员
      */
@@ -300,6 +301,7 @@ public class Url {
     public static final String CLASS_ADD_URL = CLASS_BASE_URL + "add";
     public static final String CLASS_UPDATE_URL = CLASS_BASE_URL + "update";
     public static final String CLASS_DELETE_URL = CLASS_BASE_URL + "delete";
+    public static final String CLASS_INSTRUCTOR_UPDATE_URL = CLASS_BASE_URL + "/instructor/update";
     /**
      * 教师
      */

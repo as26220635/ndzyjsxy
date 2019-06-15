@@ -30,6 +30,17 @@
         );
     });
 
+    //辅导员查看
+    $dataGridTable.find('tbody').on('click', '#instructor', function () {
+        var data = getRowData(this);
+        var param = {
+            BC_ID: data.ID,
+            TITLE: '班级:'+data.BC_NAME,
+        };
+        //切换主界面
+        loadUrl('${BASE_URL}${fns:getUrlByMenuCode("INFO:CLASS_INSTRUCTOR")}' + urlEncode(param));
+    });
+
     //修改
     $dataGridTable.find('tbody').on('click', '#edit', function () {
         var data = getRowData(this);

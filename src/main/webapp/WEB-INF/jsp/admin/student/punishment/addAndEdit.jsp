@@ -14,42 +14,42 @@
     <input type="hidden" name="insertId" value="${insertId}">
     <div class="form-group has-feedback">
         <label>学生:</label>
-        <input type="hidden" ${fns:validField("BUS_STUDENT_PUNISHMENT", "BS_ID")} value="${punishment.BS_ID}">
-        <input type="text" class="form-control" ${fns:validField("BUS_STUDENT_PUNISHMENT", "BS_NAME")}
+        <input type="hidden" ${fns:validField(TableName.BUS_STUDENT_PUNISHMENT, "BS_ID")} value="${punishment.BS_ID}">
+        <input type="text" class="form-control" ${fns:validField(TableName.BUS_STUDENT_PUNISHMENT, "BS_NAME")}
                value="${punishment.BS_NAME}">
     </div>
     <div class="form-group has-feedback">
         <label>标题:</label>
-        <input type="text" class="form-control" ${fns:validField("BUS_STUDENT_PUNISHMENT", "BSP_TITLE")}
+        <input type="text" class="form-control" ${fns:validField(TableName.BUS_STUDENT_PUNISHMENT, "BSP_TITLE")}
                value="${punishment.BSP_TITLE}">
     </div>
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">
             <label>文件号:</label>
-            <input type="text" class="form-control" ${fns:validField("BUS_STUDENT_PUNISHMENT", "BSP_FILE_NUMBER")}
+            <input type="text" class="form-control" ${fns:validField(TableName.BUS_STUDENT_PUNISHMENT, "BSP_FILE_NUMBER")}
                    value="${punishment.BSP_FILE_NUMBER}">
         </div>
         <div class="form-group has-feedback form-group-md-6">
             <label>发布时间:</label>
-            <s:datebox custom='${fns:validField("BUS_STUDENT_PUNISHMENT", "BSP_RELEASE_TIME")}'
+            <s:datebox custom='${fns:validField(TableName.BUS_STUDENT_PUNISHMENT, "BSP_RELEASE_TIME")}'
                        value="${punishment.BSP_RELEASE_TIME}" type="3"></s:datebox>
         </div>
     </div>
     <div class="row">
         <div class="form-group has-feedback form-group-md-6">
             <label>处分类型:</label>
-            <s:combobox sdtCode="BUS_PUNISHMENT" custom='${fns:validField("BUS_STUDENT_PUNISHMENT","BSP_TYPE")}'
+            <s:combobox sdtCode="BUS_PUNISHMENT" custom='${fns:validField(TableName.BUS_STUDENT_PUNISHMENT,"BSP_TYPE")}'
                         value="${punishment.BSP_TYPE}"></s:combobox>
         </div>
         <div class="form-group has-feedback form-group-md-6">
             <label>撤销时间:</label>
-            <s:datebox custom='${fns:validField("BUS_STUDENT_PUNISHMENT", "BSP_REVOKE_TIME")}'
+            <s:datebox custom='${fns:validField(TableName.BUS_STUDENT_PUNISHMENT, "BSP_REVOKE_TIME")}'
                        value="${punishment.BSP_REVOKE_TIME}" type="3"></s:datebox>
         </div>
     </div>
     <div class="form-group has-feedback">
         <label>描述:</label>
-        <textarea ${fns:validField("BUS_STUDENT_PUNISHMENT","BSP_DESCRIBE")}
+        <textarea ${fns:validField(TableName.BUS_STUDENT_PUNISHMENT,"BSP_DESCRIBE")}
                 class="form-control form-textarea"
                 rows="3">${punishment.BSP_DESCRIBE}</textarea>
     </div>

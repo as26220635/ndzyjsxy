@@ -6,10 +6,13 @@ import cn.kim.common.attr.TableName;
 import cn.kim.common.attr.Tips;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.SystemEnum;
+import cn.kim.entity.DataTablesView;
+import cn.kim.entity.QuerySet;
 import cn.kim.entity.Tree;
 import cn.kim.entity.TreeState;
 import cn.kim.exception.CustomException;
 import cn.kim.service.DepartmentService;
+import cn.kim.util.CommonUtil;
 import cn.kim.util.DictUtil;
 import cn.kim.util.PasswordMd5;
 import cn.kim.util.RandomSalt;
@@ -372,6 +375,152 @@ public class DepartmentServiceImpl extends BaseServiceImpl implements Department
             status = STATUS_SUCCESS;
             desc = "删除成功" + success + "个班级,失败" + error + "个班级<br>" + errorBuilder.toString();
 
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    public DataTablesView<?> selectDepartmentInstructor(Map<String, Object> mapParam) {
+        DataTablesView<Map<String, Object>> dataTablesView = new DataTablesView<>();
+        QuerySet querySet = new QuerySet();
+
+        //学生姓名
+        if (!isEmpty(mapParam.get("name"))) {
+            querySet.set(QuerySet.LIKE, "BDMP_NAME", mapParam.get("name"));
+        }
+
+        //当前系部
+        querySet.set(QuerySet.EQ, "BDM_ID", mapParam.get("BDM_ID"));
+
+        int offset = toInt(mapParam.get("start"));
+        int limit = toInt(mapParam.get("length"));
+
+        querySet.setOffset(offset);
+        querySet.setLimit(limit);
+
+        querySet.setOrderByClause("CONVERT(ID,SIGNED) DESC");
+
+        long count = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartmentInstructorCount", querySet.getWhereMap());
+        dataTablesView.setRecordsTotal(count);
+        dataTablesView.setTotalPages(CommonUtil.getPage(count, limit));
+
+        System.out.println(toString(querySet.getWhereMap()));
+        List<Map<String, Object>> dataList = baseDao.selectList(NameSpace.DepartmentMapper, "selectDepartmentInstructorList", querySet.getWhereMap());
+        dataTablesView.setData(dataList);
+
+        return dataTablesView;
+    }
+
+    @Override
+    public Map<String, Object> selectClassInstructor(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+        paramMap.put("ID", mapParam.get("ID"));
+        paramMap.put("BDI_YEAR", getStudentYear());
+        paramMap.put("BDI_SEMESTER", getStudentSemester());
+        return baseDao.selectOne(NameSpace.DepartmentMapper, "selectClassInstructor", paramMap);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> updateClassInstructor(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(10);
+
+            String BC_ID = toString(mapParam.get("BC_ID"));
+            String BC_NAME = toString(mapParam.get("BC_NAME"));
+            String BDMP_ID = toString(mapParam.get("BDMP_ID"));
+            String BDMP_NAME = toString(mapParam.get("BDMP_NAME"));
+
+            String studentYear = getStudentYear();
+            int studentSemester = getStudentSemester();
+
+            //查询当前学期是否能修改
+            if (!isNowChangeInstructor(BC_ID)) {
+                throw new CustomException(Tips.CLASS_LOCKED);
+            }
+            //是否变更
+            boolean isChange = true;
+
+            //查询当前学期旧辅导员信息
+            paramMap.clear();
+            paramMap.put("BC_ID", BC_ID);
+            paramMap.put("BDI_YEAR", studentYear);
+            paramMap.put("BDI_SEMESTER", studentSemester);
+            Map<String, Object> instructor = baseDao.selectOne(NameSpace.DepartmentMapper, "selectDepartmentInstructor", paramMap);
+
+            if (!isEmpty(instructor)) {
+                if (toString(instructor.get("BDMP_ID")).equals(BDMP_ID)) {
+                    isChange = false;
+                }
+            }
+
+            if (isChange) {
+                if (!isEmpty(instructor)) {
+                    //删除旧辅导员信息并插入日志
+                    //删除记录
+                    paramMap.clear();
+                    paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DEPARTMENT_INSTRUCTOR);
+
+                    paramMap.put("ID", instructor.get("ID"));
+                    baseDao.delete(NameSpace.DepartmentMapper, "deleteDepartmentInstructor", paramMap);
+
+                    //插入日志
+                    paramMap.clear();
+                    paramMap.put("ID", getId());
+                    paramMap.put("BDI_ID", instructor.get("ID"));
+                    paramMap.put("BDMP_ID", instructor.get("BDMP_ID"));
+                    paramMap.put("BDMP_NAME", instructor.get("BDMP_NAME"));
+                    paramMap.put("BC_ID", instructor.get("BC_ID"));
+                    paramMap.put("BC_NAME", instructor.get("BC_NAME"));
+                    paramMap.put("BDMIL_YEAR", instructor.get("BDI_YEAR"));
+                    paramMap.put("BDMIL_SEMESTER", instructor.get("BDI_SEMESTER"));
+                    paramMap.put("BDMIL_ENTRY_TIME", getDate());
+                    paramMap.put("SO_ID", getActiveUser().getId());
+                    paramMap.put("BDMIL_TYPE", MagicValue.RECODE_TYPE_DELETE);
+
+                    baseDao.insert(NameSpace.DepartmentMapper, "insertDepartmentInstructorLog", paramMap);
+                }
+
+                //插入新日志
+
+                //插入记录
+                String BDI_ID = getId();
+                paramMap.clear();
+                paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.BUS_DEPARTMENT_INSTRUCTOR);
+
+                paramMap.put("ID", BDI_ID);
+                paramMap.put("BDMP_ID", BDMP_ID);
+                paramMap.put("BC_ID", BC_ID);
+                paramMap.put("BDI_YEAR", studentYear);
+                paramMap.put("BDI_SEMESTER", studentSemester);
+                paramMap.put("BDI_ENTRY_TIME", getDate());
+                baseDao.insert(NameSpace.DepartmentMapper, "insertDepartmentInstructor", paramMap);
+
+                //插入日志
+                paramMap.clear();
+                paramMap.put("ID", getId());
+                paramMap.put("BDI_ID", BDI_ID);
+                paramMap.put("BDMP_ID", BDMP_ID);
+                paramMap.put("BDMP_NAME", BDMP_NAME);
+                paramMap.put("BC_ID", BC_ID);
+                paramMap.put("BC_NAME", BC_NAME);
+                paramMap.put("BDMIL_YEAR", studentYear);
+                paramMap.put("BDMIL_SEMESTER", studentSemester);
+                paramMap.put("BDMIL_ENTRY_TIME", getDate());
+                paramMap.put("SO_ID", getActiveUser().getId());
+                paramMap.put("BDMIL_TYPE", MagicValue.RECODE_TYPE_INSERT);
+                baseDao.insert(NameSpace.DepartmentMapper, "insertDepartmentInstructorLog", paramMap);
+            }
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
         } catch (Exception e) {
             desc = catchException(e, baseDao, resultMap);
         }

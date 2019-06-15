@@ -93,7 +93,7 @@ public class GridDataFilter extends BaseServiceImpl {
             int startYear = getStudentYearStart();
             int endYear = getStudentYearEnd();
             int semester = getStudentSemester();
-            resultBuilder.append(" AND BC_YEAR + BC_LENGTH <=" + endYear);
+            resultBuilder.append(" AND BC_YEAR <=" + endYear);
             resultBuilder.append(" AND BC_YEAR >" + startYear + " - BC_LENGTH");
             resultBuilder.append(" AND ID NOT IN(SELECT BC_ID FROM BUS_DEPARTMENT_INSTRUCTOR WHERE BDI_YEAR = '" + studentYear + "' AND BDI_SEMESTER = " + semester + ")");
 

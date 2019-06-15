@@ -8,6 +8,7 @@ import cn.kim.controller.manager.BaseController;
 import cn.kim.entity.CustomParam;
 import cn.kim.entity.ResultState;
 import cn.kim.service.ClsService;
+import cn.kim.service.DepartmentService;
 import com.google.common.collect.Maps;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class ClsController extends BaseController {
     @Autowired
     private ClsService clsService;
 
+    @Autowired
+    private DepartmentService departmentService;
+
     /**
      * 根据系部获取对应的班级
      *
@@ -46,9 +50,9 @@ public class ClsController extends BaseController {
         List<Map<String, Object>> classList = clsService.selectClassList(mapParam);
 
         if (mode == 1) {
-            return toComboboxValue(classList,"ID","BC_NAME");
+            return toComboboxValue(classList, "ID", "BC_NAME");
         } else {
-            return toComboboxValue(classList,"BC_NAME","ID");
+            return toComboboxValue(classList, "BC_NAME", "ID");
         }
     }
 
@@ -99,6 +103,28 @@ public class ClsController extends BaseController {
         Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
         mapParam.put("ID", ID);
         Map<String, Object> resultMap = clsService.deleteClass(mapParam);
+        return resultState(resultMap);
+    }
+
+    /****************   辅导员管理   ************/
+
+    @GetMapping("/instructor/update/{ID}")
+    @Token(save = true)
+    @RequiresPermissions("INFO:CLASS_INSTRUCTOR_UPDATE")
+    public String updateHtmlInstructor(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("cls", departmentService.selectClassInstructor(mapParam));
+        return "admin/info/cls/instructor/updateInstructor";
+    }
+
+    @PutMapping("/instructor/update")
+    @RequiresPermissions("INFO:CLASS_INSTRUCTOR_UPDATE_SAVE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改辅导员")
+    @Token(remove = true)
+    @ResponseBody
+    public ResultState updateInstructor(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = departmentService.updateClassInstructor(mapParam);
         return resultState(resultMap);
     }
 

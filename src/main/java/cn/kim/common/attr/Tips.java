@@ -26,6 +26,8 @@ public class Tips {
     public static final String PROCESS_DELETE_ERROR = "流程办理中或办理完成不能删除!";
 
     public static final String ID_NULL_ERROR = "ID不能为空!";
+
+    public static final String CLASS_LOCKED = "班级已经锁定无法修改!";
     /**
      * 日志
      */

@@ -32,23 +32,23 @@
                                            value="${VOLUNTEER_PROPORTION}">
                                     <div class="form-group has-feedback">
                                         <label>学生:</label>
-                                        <input type="hidden" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BS_ID")}
+                                        <input type="hidden" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BS_ID")}
                                                value="${comprehensive.BS_ID}">
                                         <input type="text"
-                                               class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BS_NAME")}
+                                               class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BS_NAME")}
                                                value="${comprehensive.BS_NAME}">
                                     </div>
                                     <div class="row">
                                         <div class="form-group has-feedback col-md-6">
                                             <label>学年:</label>
                                             <s:datebox
-                                                    custom='${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_YEAR")}'
+                                                    custom='${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_YEAR")}'
                                                     value="${comprehensive.BSC_YEAR}"></s:datebox>
                                         </div>
                                         <div class="form-group has-feedback col-md-6">
                                             <label>学期:</label>
                                             <s:combobox sdtCode="BUS_SEMESTER"
-                                                        custom='${fns:validField("BUS_STUDENT_COMPREHENSIVE","BSC_SEMESTER")}'
+                                                        custom='${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE,"BSC_SEMESTER")}'
                                                         value="${comprehensive.BSC_SEMESTER}"></s:combobox>
                                         </div>
                                     </div>
@@ -56,13 +56,13 @@
                                         <div class="form-group has-feedback col-md-6">
                                             <label>总分:</label>
                                             <input type="text"
-                                                   class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_TOTAL")}
+                                                   class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_TOTAL")}
                                                    value="${comprehensive.BSC_TOTAL}" readonly>
                                         </div>
                                         <div class="form-group has-feedback col-md-6">
                                             <label>排名:</label>
                                             <input type="text"
-                                                   class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_RANK")}
+                                                   class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_RANK")}
                                                    value="${comprehensive.BSC_RANK}" readonly>
                                         </div>
                                     </div>
@@ -74,25 +74,25 @@
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>政治态度和表现10分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_POLITICAL_ATTITUDE")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_POLITICAL_ATTITUDE")}
                                                        value="${comprehensive.BSC_POLITICAL_ATTITUDE}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>劳动态度和表现20分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_LABOR_ATTITUDE")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_LABOR_ATTITUDE")}
                                                        value="${comprehensive.BSC_LABOR_ATTITUDE}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>遵纪守法10分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_COMPLIANCE")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_COMPLIANCE")}
                                                        value="${comprehensive.BSC_COMPLIANCE}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>集体观念10分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_COLLECTIVE")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_COLLECTIVE")}
                                                        value="${comprehensive.BSC_COLLECTIVE}">
                                             </div>
                                         </div>
@@ -100,25 +100,25 @@
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>文明礼貌15分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_DECORUM")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_DECORUM")}
                                                        value="${comprehensive.BSC_DECORUM}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>爱护公物15分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_CARE")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_CARE")}
                                                        value="${comprehensive.BSC_CARE}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>个人品质10分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_PERSONAL_QUALITY")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_PERSONAL_QUALITY")}
                                                        value="${comprehensive.BSC_PERSONAL_QUALITY}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>服务精神10分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_SERVICE_SPIRIT")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_SERVICE_SPIRIT")}
                                                        value="${comprehensive.BSC_SERVICE_SPIRIT}">
                                             </div>
                                         </div>
@@ -126,25 +126,25 @@
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>满勤分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_FULL_WORK")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_FULL_WORK")}
                                                        value="${comprehensive.BSC_FULL_WORK}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>奖励分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_BONUS_POINTS")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_BONUS_POINTS")}
                                                        value="${comprehensive.BSC_BONUS_POINTS}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>扣分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_EDUCATION_DEDUCTION")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_EDUCATION_DEDUCTION")}
                                                        value="${comprehensive.BSC_EDUCATION_DEDUCTION}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>总分:</label>
                                                 <input type="text"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_EDUCATION_TOTAL")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_EDUCATION_TOTAL")}
                                                        value="${comprehensive.BSC_EDUCATION_TOTAL}" readonly>
                                             </div>
                                         </div>
@@ -152,7 +152,7 @@
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>得分:</label>
                                                 <input type="text"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_EDUCATION_SCORE")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_EDUCATION_SCORE")}
                                                        value="${comprehensive.BSC_EDUCATION_SCORE}" readonly>
                                             </div>
                                         </div>
@@ -165,25 +165,25 @@
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>学习成绩:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_ACADEMIC_RECORD")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_ACADEMIC_RECORD")}
                                                        value="${comprehensive.BSC_ACADEMIC_RECORD}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>奖励分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_INTELLECTUAL_POINTS")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_INTELLECTUAL_POINTS")}
                                                        value="${comprehensive.BSC_INTELLECTUAL_POINTS}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>得分:</label>
                                                 <input type="text"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_INTELLECTUAL_SCORE")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_INTELLECTUAL_SCORE")}
                                                        value="${comprehensive.BSC_INTELLECTUAL_SCORE}" readonly>
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>排名:</label>
                                                 <input type="text"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_INTELLECTUAL_RANK")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_INTELLECTUAL_RANK")}
                                                        value="${comprehensive.BSC_INTELLECTUAL_RANK}" readonly>
                                             </div>
                                         </div>
@@ -196,13 +196,13 @@
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>总分:</label>
                                                 <input type="number"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_VOLUNTEER_TOTAL")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_VOLUNTEER_TOTAL")}
                                                        value="${comprehensive.BSC_VOLUNTEER_TOTAL}">
                                             </div>
                                             <div class="form-group has-feedback col-md-3">
                                                 <label>得分:</label>
                                                 <input type="text"
-                                                       class="form-control" ${fns:validField("BUS_STUDENT_COMPREHENSIVE", "BSC_VOLUNTEER_SCORE")}
+                                                       class="form-control" ${fns:validField(TableName.BUS_STUDENT_COMPREHENSIVE, "BSC_VOLUNTEER_SCORE")}
                                                        value="${comprehensive.BSC_VOLUNTEER_SCORE}" readonly>
                                             </div>
                                         </div>

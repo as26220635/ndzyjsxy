@@ -6,6 +6,9 @@
 <%--通用列表--%>
 <%@ include file="/WEB-INF/jsp/admin/component/grid/dataGrid.jsp" %>
 <script>
+    setTimeout(function () {
+        setMenuActive('admin-dataGrid-${MENU.SM_PARENTID}');
+    }, 50);
     /**
      * 保存选择
      */
@@ -37,7 +40,7 @@
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
             confirm: function ($model) {
-                ajax.post('${BASE_URL}${Url.DEPARTMENT_INSTRUCTOR_CLASS_ADD}', params, function (data) {
+                ajax.post('${BASE_URL}${Url.DEPARTMENT_INSTRUCTOR_CLASS_ADD_URL}', params, function (data) {
                     ajaxReturn.data(data, $model, $dataGrid, false, {
                         success: function () {
                             backHtml();

@@ -5,6 +5,7 @@ import cn.kim.common.annotation.Token;
 import cn.kim.common.annotation.Validate;
 import cn.kim.common.eu.UseType;
 import cn.kim.controller.manager.BaseController;
+import cn.kim.entity.DataTablesView;
 import cn.kim.entity.ResultState;
 import cn.kim.entity.Tree;
 import cn.kim.service.DepartmentService;
@@ -221,4 +222,20 @@ public class DepartmentController extends BaseController {
 
         return resultState(resultMap);
     }
+
+    /**
+     * 获取辅导员列表
+     *
+     * @param mapParam
+     * @return
+     */
+    @GetMapping("/instructor/list")
+    @RequiresPermissions(value = {"INFO:CLASS_INSTRUCTOR_U_INSTRUCTOR"}, logical = Logical.OR)
+    @ResponseBody
+    public DataTablesView<?> selectDepartmentInstructor(@RequestParam Map<String, Object> mapParam) {
+        DataTablesView<?> view = departmentService.selectDepartmentInstructor(mapParam);
+        view.setDraw(toInt(mapParam.get("draw")));
+        return view;
+    }
+
 }
