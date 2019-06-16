@@ -134,6 +134,9 @@
             <if test="SPL_TYPE != NULL and SPL_TYPE != ''">
                 AND SPL_TYPE = #{SPL_TYPE}
             </if>
+            <if test="NOT_SPL_PROCESS_STATUS != NULL and NOT_SPL_PROCESS_STATUS != ''">
+                AND SPL_PROCESS_STATUS NOT IN(${NOT_SPL_PROCESS_STATUS})
+            </if>
         </where>
         )SPL
         LEFT JOIN SYS_DICT_INFO SDI ON SDI.SDT_CODE = 'SYS_PROCESS_STATUS' AND SDI.SDI_CODE = SPL.SPL_PROCESS_STATUS

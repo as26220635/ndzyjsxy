@@ -78,6 +78,8 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         if (isEmpty(id) || isEmpty(process) || isEmpty(process2)) {
             throw new CustomException("参数错误!");
         }
+        ActiveUser activeUser = getActiveUser();
+        String operatorId = activeUser.getId();
 
         String resultBtn = "";
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(5);
@@ -104,7 +106,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             }
             //4:判断进度是不是退回状态
             if (toInt(schedule.get("SPS_AUDIT_STATUS")) == ProcessStatus.BACK.getType()) {
-                if (toString(schedule.get("SPS_STEP_TRANSACTOR")).equals(getActiveUser().getId())) {
+                if (toString(schedule.get("SPS_STEP_TRANSACTOR")).equals(operatorId)) {
                     //查询当前流程步骤是否存在
                     paramMap.clear();
                     paramMap.put("SPD_ID", definitionId);
@@ -114,7 +116,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                         //查询是否是第一个节点
                         paramMap.clear();
                         paramMap.put("SPD_ID", definitionId);
-                        paramMap.put("SR_ID", step.get("SR_ID"));
+//                        paramMap.put("SR_ID", step.get("SR_ID"));
                         paramMap.put("SPS_PROCESS_STATUS", schedule.get("SPS_BACK_STATUS_TRANSACTOR"));
                         List<Map<String, Object>> prevStepList = this.processPrevStepList(paramMap);
                         //不是启动步骤
@@ -142,7 +144,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
                     }
                 } else if (MagicValue.TWO.equals(toString(schedule.get("SPS_STEP_TYPE")))) {
                     //当前办理为人员
-                    if (toString(schedule.get("SPS_STEP_TRANSACTOR")).equals(getActiveUser().getId())) {
+                    if (toString(schedule.get("SPS_STEP_TRANSACTOR")).equals(operatorId)) {
                         //查询当前流程步骤是否存在
                         paramMap.clear();
                         paramMap.put("SPD_ID", definitionId);
@@ -158,21 +160,20 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             //不能是退回状态
             if (toInt(schedule.get("SPS_AUDIT_STATUS")) != -1) {
                 //5:上次办理人是自己切 当前步骤之前只有自己出现一次说明是第一次经过
-                if (toString(schedule.get("SO_ID")).equals(getActiveUser().getId())
-                        && toString(schedule.get("SPS_PREV_STEP_TRANSACTOR")).equals(getActiveUser().getId())) {
-                    //查询上一步骤办理人
-                    paramMap.clear();
-                    paramMap.put("ID", schedule.get("SPS_PREV_STEP_ID"));
-                    Map<String, Object> prevStep = this.selectProcessStep(paramMap);
-                    //查询当前办理角色是否是第一个
-                    paramMap.clear();
-                    paramMap.put("SPD_ID", definitionId);
-                    paramMap.put("SR_ID", prevStep.get("SR_ID"));
-                    paramMap.put("SPS_PROCESS_STATUS", schedule.get("SPS_AUDIT_STATUS"));
-                    List<Map<String, Object>> stepList = this.processPrevStepList(paramMap);
-                    if (stepList.size() == 1) {
-                        resultBtn += ProcessType.WITHDRAW.toString();
-                    }
+                if (toString(schedule.get("SPS_PREV_STEP_TRANSACTOR")).equals(operatorId)) {
+//                    //查询上一步骤办理人
+//                    paramMap.clear();
+//                    paramMap.put("ID", schedule.get("SPS_PREV_STEP_ID"));
+//                    Map<String, Object> prevStep = this.selectProcessStep(paramMap);
+//                    //查询当前办理角色是否是第一个
+//                    paramMap.clear();
+//                    paramMap.put("SPD_ID", definitionId);
+//                    paramMap.put("SR_ID", prevStep.get("SR_ID"));
+//                    paramMap.put("SPS_PROCESS_STATUS", schedule.get("SPS_AUDIT_STATUS"));
+//                    List<Map<String, Object>> stepList = this.processPrevStepList(paramMap);
+//                    if (stepList.size() == 1) {
+                    resultBtn += ProcessType.WITHDRAW.toString();
+//                    }
                 }
             }
 
@@ -347,6 +348,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             //流程运行传递参数
             ProcessRunBean processRunBean = new ProcessRunBean();
             processRunBean.setBaseDao(baseDao);
+            processRunBean.setDefinitionId(definitionId);
             processRunBean.setBusTableId(scheduleTableId);
             processRunBean.setBusProcess(toString(definition.get("BUS_PROCESS")));
             processRunBean.setBusProcess2(toString(definition.get("BUS_PROCESS2")));
@@ -386,6 +388,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
 
                 //查询流程步骤，拿到对应的节点
                 paramMap.clear();
+                paramMap.put("SPD_ID", definitionId);
                 paramMap.put("SPS_PROCESS_STATUS", processHandles[0]);
                 Map<String, Object> backStep = this.selectProcessStep(paramMap);
                 if (isEmpty(backStep)) {
@@ -659,6 +662,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             paramMap.put("SDP_ENTRY_TIME", mapParam.get("SDP_ENTRY_TIME"));
             paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));
             paramMap.put("IS_MULTISTAGE_BACK", mapParam.get("IS_MULTISTAGE_BACK"));
+            paramMap.put("IS_TIME_CONTROL", mapParam.get("IS_TIME_CONTROL"));
 
             if (isEmpty(id)) {
                 id = getId();
@@ -755,6 +759,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
             definition.put("BUS_PROCESS2", mapParam.get("BUS_PROCESS2"));
             definition.put("SPD_UPDATE_TABLE", mapParam.get("SPD_UPDATE_TABLE"));
             definition.put("SPD_UPDATE_NAME", mapParam.get("SPD_UPDATE_NAME"));
+            definition.put("SDP_ENTRY_TIME", getDate());
             baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessDefinition", definition);
 
             //拷贝流程步骤
@@ -1016,6 +1021,145 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         return resultMap;
     }
 
+
+    /****   流程控制时间    ***/
+
+    @Override
+    public Map<String, Object> selectProcessTimeControl(Map<String, Object> mapParam) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+        paramMap.put("ID", mapParam.get("ID"));
+        paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
+        paramMap.put("IS_STATUS", mapParam.get("IS_STATUS"));
+        return baseDao.selectOne(NameSpace.ProcessFixedMapper, "selectProcessTimeControl", paramMap);
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> insertAndUpdateProcessTimeControl(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+            String id = toString(mapParam.get("ID"));
+
+            paramMap.put("ID", id);
+            paramMap.put("SPD_ID", mapParam.get("SPD_ID"));
+            paramMap.put("SPTC_START_TIME", mapParam.get("SPTC_START_TIME"));
+            paramMap.put("SPTC_END_TIME", mapParam.get("SPTC_END_TIME"));
+
+            if (isEmpty(id)) {
+                id = getId();
+                paramMap.put("ID", id);
+                paramMap.put("IS_STATUS", Attribute.STATUS_ERROR);
+                paramMap.put("SPTC_ENTRY_TIME", getDate());
+
+                baseDao.insert(NameSpace.ProcessFixedMapper, "insertProcessTimeControl", paramMap);
+                resultMap.put(MagicValue.LOG, "添加流程时间控制:" + formatColumnName(TableName.SYS_PROCESS_TIME_CONTROL, paramMap));
+            } else {
+                Map<String, Object> oldMap = Maps.newHashMapWithExpectedSize(1);
+                oldMap.put("ID", id);
+                oldMap = selectProcessTimeControl(oldMap);
+
+                baseDao.update(NameSpace.ProcessFixedMapper, "updateProcessTimeControl", paramMap);
+                resultMap.put(MagicValue.LOG, "更新流程时间控制,更新前:" + formatColumnName(TableName.SYS_PROCESS_TIME_CONTROL, oldMap) + ",更新后:" + formatColumnName(TableName.SYS_PROCESS_TIME_CONTROL, paramMap));
+            }
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> changeProcessTimeControlStatus(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = SAVE_ERROR;
+        try {
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
+            String id = toString(mapParam.get("ID"));
+            int IS_STATUS = toInt(mapParam.get("IS_STATUS"));
+
+            paramMap.put("ID", id);
+            Map<String, Object> oldMap = selectProcessTimeControl(paramMap);
+
+            if (IS_STATUS == 1) {
+                //如果是启用要把正在启用的停止
+                paramMap.clear();
+                paramMap.put("SDP_ID", oldMap.get("SDP_ID"));
+                paramMap.put("IS_STATUS", Attribute.STATUS_SUCCESS);
+                Map<String, Object> timeControl = this.selectProcessTimeControl(paramMap);
+                if (!isEmpty(timeControl)) {
+                    //记录日志
+                    paramMap.clear();
+                    paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_PROCESS_TIME_CONTROL);
+                    paramMap.put("ID", timeControl.get("ID"));
+                    paramMap.put("IS_STATUS", Attribute.STATUS_ERROR);
+                    baseDao.update(NameSpace.ProcessFixedMapper, "updateProcessTimeControl", paramMap);
+                }
+            }
+
+            paramMap.clear();
+            //记录日志
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_PROCESS_TIME_CONTROL);
+
+            paramMap.put("ID", id);
+            paramMap.put("IS_STATUS", IS_STATUS);
+
+            baseDao.update(NameSpace.ProcessFixedMapper, "updateProcessTimeControl", paramMap);
+            resultMap.put(MagicValue.LOG, "更新流程时间控制状态,流程时间控制名:" + toString(oldMap.get("SPD_NAME")) + ",状态更新为:" + ParamTypeResolve.statusExplain(mapParam.get("IS_STATUS")));
+
+            status = STATUS_SUCCESS;
+            desc = SAVE_SUCCESS;
+
+            resultMap.put("ID", id);
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> deleteProcessTimeControl(Map<String, Object> mapParam) {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(5);
+        int status = STATUS_ERROR;
+        String desc = DELETE_ERROR;
+        try {
+            if (isEmpty(mapParam.get("ID"))) {
+                throw new CustomException(Tips.ID_NULL_ERROR);
+            }
+            Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+            String id = toString(mapParam.get("ID"));
+
+            //删除流程时间控制表
+            paramMap.clear();
+            paramMap.put("ID", id);
+            Map<String, Object> oldMap = selectProcessTimeControl(paramMap);
+            //记录日志
+            paramMap.put(MagicValue.SVR_TABLE_NAME, TableName.SYS_PROCESS_TIME_CONTROL);
+            baseDao.delete(NameSpace.ProcessFixedMapper, "deleteProcessTimeControl", paramMap);
+
+            resultMap.put(MagicValue.LOG, "删除流程时间控制,信息:" + formatColumnName(TableName.SYS_PROCESS_TIME_CONTROL, oldMap));
+            status = STATUS_SUCCESS;
+            desc = DELETE_SUCCESS;
+        } catch (Exception e) {
+            desc = catchException(e, baseDao, resultMap);
+        }
+        resultMap.put(MagicValue.STATUS, status);
+        resultMap.put(MagicValue.DESC, desc);
+        return resultMap;
+    }
+
     /****   流程进度   ***/
 
     @Override
@@ -1172,6 +1316,7 @@ public class ProcessServiceImpl extends BaseServiceImpl implements ProcessServic
         paramMap.put("SPS_ID", mapParam.get("SPS_ID"));
         paramMap.put("SPL_TABLE_ID", mapParam.get("SPL_TABLE_ID"));
         paramMap.put("SPL_PROCESS_STATUS_ARRAY", mapParam.get("SPL_PROCESS_STATUS_ARRAY_ARRAY"));
+        paramMap.put("NOT_SPL_PROCESS_STATUS", mapParam.get("NOT_SPL_PROCESS_STATUS"));
         paramMap.put("SPL_TYPE", mapParam.get("SPL_TYPE"));
         paramMap.put("IS_GROUP", mapParam.get("IS_GROUP"));
         return baseDao.selectList(NameSpace.ProcessMapper, "selectProcessLog", paramMap);

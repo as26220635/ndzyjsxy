@@ -136,6 +136,15 @@ public interface ProcessService extends BaseService {
 
     Map<String, Object> deleteProcessStart(Map<String, Object> mapParam);
 
+    /****   流程控制时间    ***/
+    Map<String, Object> selectProcessTimeControl(Map<String, Object> mapParam);
+
+    Map<String, Object> insertAndUpdateProcessTimeControl(Map<String, Object> mapParam);
+
+    Map<String, Object> changeProcessTimeControlStatus(Map<String, Object> mapParam);
+
+    Map<String, Object> deleteProcessTimeControl(Map<String, Object> mapParam);
+
     /****   流程进度    ***/
     Map<String, Object> selectProcessSchedule(Map<String, Object> mapParam);
 

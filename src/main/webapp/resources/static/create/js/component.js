@@ -356,16 +356,16 @@ tableView = {
     isSerach: false,
     //记录缓存的值
     saveCacheValue: function (key, queryForm) {
-        var cache = {};
+        let cache = {};
         if (!isEmpty(queryForm)) {
             //获取select的值
             queryForm.find('select').each(function () {
-                var $select = $(this);
+                let $select = $(this);
                 cache[$select.prop('name')] = $select.val();
             });
             //获取input的值
             queryForm.find('input').each(function () {
-                var $input = $(this);
+                let $input = $(this);
                 cache[$input.prop('name')] = $input.val();
             });
         }
@@ -375,15 +375,15 @@ tableView = {
     //设置缓存的值
     callbackCacheValue: function (key, queryForm) {
         //获取缓存
-        var cache = $.data(overallCache, 'tableView' + key);
+        let cache = $.data(overallCache, 'tableView' + key);
         if (isEmpty(cache) || cache.length == 0) {
             return false;
         }
         if (!isEmpty(queryForm)) {
             //设置select
             queryForm.find('select').each(function () {
-                var $select = $(this);
-                var val = cache[$select.prop('name')];
+                let $select = $(this);
+                let val = cache[$select.prop('name')];
                 //选中option
                 if (!isEmpty(val)) {
                     $select.val(val).trigger('change');
@@ -391,8 +391,8 @@ tableView = {
             });
             //设置input
             queryForm.find('input').each(function () {
-                var $input = $(this);
-                var val = cache[$input.prop('name')];
+                let $input = $(this);
+                let val = cache[$input.prop('name')];
                 if (!isEmpty(val)) {
                     $input.val(val).trigger('hide');
                 }
@@ -400,11 +400,11 @@ tableView = {
         }
 
         //设置待审已审
-        var processStatus = cache['processStatus'];
+        let processStatus = cache['processStatus'];
         if (!isEmpty(processStatus)) {
             $('#processAllBtn,#processStayBtn,#processAlreadyBtn').each(function () {
-                var $this = $(this);
-                var val = $this.attr('data-process-status');
+                let $this = $(this);
+                let val = $this.attr('data-process-status');
                 $this.removeClass('active');
 
                 if (processStatus == val) {
@@ -447,7 +447,7 @@ tableView = {
     }, 1),
     //返回列表的data数据
     rowData: function (table, row) {
-        var $row = $(row);
+        let $row = $(row);
         return table.row($row[0].tagName == 'TR' ? $row : $row.parents('tr')).data();
     },
     //为行添加class
@@ -475,7 +475,7 @@ tableView = {
      * @param index
      */
     orderNumber: function (api, index) {
-        var startIndex = api.context[0]._iDisplayStart;//获取到本页开始的条数
+        let startIndex = api.context[0]._iDisplayStart;//获取到本页开始的条数
         api.column(index).nodes().each(function (cell, i) {
             cell.innerHTML = startIndex + i + 1;
         });
@@ -494,7 +494,7 @@ tableView = {
         });
     },
     init: function (options) {
-        var settings = $.extend({
+        let settings = $.extend({
             select: false,
             info: true,
             paging: true,
@@ -516,7 +516,7 @@ tableView = {
             }
         }
         //配置数据
-        var optionData = {
+        let optionData = {
             //lengthMenu: [5, 10, 20, 30],//这里也可以设置分页，但是不能设置具体内容，只能是一维或二维数组的方式，所以推荐下面language里面的写法。
             serverSide: true,//分页，取数据等等的都放到服务端去
             processing: true,//载入数据的时候是否显示“载入中”
@@ -616,14 +616,14 @@ tableView = {
                         options.startSearchCallback();
                     }
 
-                    var param = {};
+                    let param = {};
                     param.draw = d.draw;
                     param.start = d.start;
                     param.length = d.length;
 
                     //需要定义tableView.isSerach是否搜索
                     if (tableView.isSerach) {
-                        var formData = options.queryForm.serializeArray();//把form里面的数据序列化成数组
+                        let formData = options.queryForm.serializeArray();//把form里面的数据序列化成数组
                         formData.forEach(function (e) {
                             //同KEY合并
                             if (param[e.name] != undefined) {
@@ -654,16 +654,17 @@ tableView = {
             optionData.stateSave = false;
         }
         //绘制表格
-        var $table = options.object.DataTable(optionData);
+        let $table = options.object.DataTable(optionData);
 
         //切换待审已审
+        $('#processAllBtn,#processStayBtn,#processAlreadyBtn').off('click');
         $('#processAllBtn,#processStayBtn,#processAlreadyBtn').on('click', function () {
-            var $this = $(this);
-            var val = $this.attr('data-process-status');
+            let $this = $(this);
+            let val = $this.attr('data-process-status');
             $('#processAllBtn,#processStayBtn,#processAlreadyBtn').removeClass('active');
             $this.addClass('active');
             $('#processStatus').val(val);
-            tableView.reload($dataGrid, false);
+            tableView.reload($table, false);
             tableView.saveCacheValue(options.url, options.queryForm);
         });
 
@@ -795,11 +796,11 @@ validator = {
 
 /**
  * 模态框
- * @type {{size: {LG: string, SM: string, NONE: string}, class: {DEFAULT: string, PRIMARY: string, INFO: string, WARNING: string, SUCCESS: string, DANGER: string}, btnName: {DEL: string, SAVE: string, CLOSE: string, OK: string, RESET: string, SUBMIT: string, BACK: string, WITHDRAW: string}, footerModel: {ADMIN: string, MY_HOME: string}, show: Function, noDelay: model.noDelay, init: model.init, hide: model.hide, closeSubmit: model.closeSubmit, tips: model.tips, confirm: model.confirm}}
+ * @type {{btnName: {WITHDRAW: string, SUBMIT: string, EXPORT: string, BACK: string, DEL: string, SAVE: string, CLOSE: string, RESET: string, OK: string}, confirm: model.confirm, init: model.init, hide: model.hide, size: {MAX: string, SM: string, LG: string, NONE: string}, footerModel: {MY_HOME: string, ADMIN: string}, alert: model.alert, closeSubmit: model.closeSubmit, noDelay: model.noDelay, show: Function, class: {DANGER: string, SUCCESS: string, PRIMARY: string, INFO: string, WARNING: string, DEFAULT: string}}}
  */
 model = {
     //模态框大小
-    size: {LG: 'modal-lg', SM: 'modal-sm', NONE: ''},
+    size: {MAX: 'modal-max',LG: 'modal-lg', SM: 'modal-sm', NONE: ''},
     //模态框样式
     class: {
         DEFAULT: '',
@@ -941,6 +942,7 @@ model = {
             if (settings.cancel != undefined) {
                 settings.cancel();
             }
+            //销毁表格
             $(jquery).remove();
             // 解决多层模态框关闭导致下一层不能滚动
             if ($('.model-custom').length > 0) {

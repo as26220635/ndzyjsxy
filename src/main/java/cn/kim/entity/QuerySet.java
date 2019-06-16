@@ -70,6 +70,8 @@ public class QuerySet implements Serializable {
     private String processSelect;
     private String processJoin;
     private String processWhere;
+    private String busProcess;
+    private String busProcess2;
     /**
      * 流程定义id
      */
@@ -173,7 +175,8 @@ public class QuerySet implements Serializable {
         resultMap.put("processJoin", processJoin);
         resultMap.put("processWhere", processWhere);
         resultMap.put("processDefinitionId", processDefinitionId);
-
+        resultMap.put("BUS_PROCESS", busProcess);
+        resultMap.put("BUS_PROCESS2", busProcess2);
         return resultMap;
     }
 
@@ -297,5 +300,21 @@ public class QuerySet implements Serializable {
 
     public void setProcessDefinitionId(String processDefinitionId) {
         this.processDefinitionId = processDefinitionId;
+    }
+
+    public String getBusProcess() {
+        return busProcess;
+    }
+
+    public void setBusProcess(String busProcess) {
+        this.busProcess = busProcess;
+    }
+
+    public String getBusProcess2() {
+        return busProcess2;
+    }
+
+    public void setBusProcess2(String busProcess2) {
+        this.busProcess2 = busProcess2;
     }
 }

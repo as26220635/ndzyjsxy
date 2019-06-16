@@ -248,6 +248,14 @@ public class Url {
     public static final String PROCESS_START_UPDATE_URL = PROCESS_START_BASE_URL + "update";
     public static final String PROCESS_START_DELETE_URL = PROCESS_START_BASE_URL + "delete";
     /**
+     * 流程时间控制
+     */
+    public static final String PROCESS_TIME_CONTROL_BASE_URL = PROCESS_BASE_URL + "timeControl/";
+    public static final String PROCESS_TIME_CONTROL_ADD_URL = PROCESS_TIME_CONTROL_BASE_URL + "add";
+    public static final String PROCESS_TIME_CONTROL_UPDATE_URL = PROCESS_TIME_CONTROL_BASE_URL + "update";
+    public static final String PROCESS_TIME_CONTROL_SWITCH_STATUS_URL = PROCESS_TIME_CONTROL_BASE_URL + "switchStatus";
+    public static final String PROCESS_TIME_CONTROL_DELETE_URL = PROCESS_TIME_CONTROL_BASE_URL + "delete";
+    /**
      * 流程进度列表
      */
     public static final String PROCESS_SCHEDULE_BASE_URL = PROCESS_BASE_URL + "schedule/";

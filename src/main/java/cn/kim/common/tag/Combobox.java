@@ -83,7 +83,9 @@ public class Combobox extends BaseTagSupport {
             Map<String, Object> customMap = customResolve(custom);
             id = toString(customMap.get("id"));
             name = toString(customMap.get("name"));
-            required = toBoolean(customMap.get("required"));
+            if (!isEmpty(customMap.get("required"))){
+                required = toBoolean(customMap.get("required"));
+            }
         }
 
         if (isEmpty(id)) {

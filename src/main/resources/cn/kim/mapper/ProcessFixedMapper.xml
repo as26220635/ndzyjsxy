@@ -121,6 +121,7 @@
             <if test="SDP_ENTRY_TIME != null">SDP_ENTRY_TIME,</if>
             <if test="IS_STATUS != null">IS_STATUS,</if>
             <if test="IS_MULTISTAGE_BACK != null">IS_MULTISTAGE_BACK,</if>
+            <if test="IS_TIME_CONTROL != null">IS_TIME_CONTROL,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="ID != null">#{ID},</if>
@@ -139,6 +140,7 @@
             <if test="SDP_ENTRY_TIME != null">#{SDP_ENTRY_TIME},</if>
             <if test="IS_STATUS != null">#{IS_STATUS},</if>
             <if test="IS_MULTISTAGE_BACK != null">#{IS_MULTISTAGE_BACK},</if>
+            <if test="IS_TIME_CONTROL != null">#{IS_TIME_CONTROL},</if>
         </trim>
     </insert>
 
@@ -162,6 +164,7 @@
             <if test="SDP_ENTRY_TIME != null">SDP_ENTRY_TIME=#{SDP_ENTRY_TIME},</if>
             <if test="IS_STATUS != null">IS_STATUS=#{IS_STATUS},</if>
             <if test="IS_MULTISTAGE_BACK != null">IS_MULTISTAGE_BACK=#{IS_MULTISTAGE_BACK},</if>
+            <if test="IS_TIME_CONTROL != null">IS_TIME_CONTROL=#{IS_TIME_CONTROL},</if>
         </set>
         <where>
             <if test="ID !=null">ID=#{ID}</if>
@@ -360,4 +363,62 @@
             </if>
         </where>
     </select>
+
+    <!--查询时间控制-->
+    <select id="selectProcessTimeControl" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM SYS_PROCESS_TIME_CONTROL
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test ="SPD_ID != NULL and SPD_ID != ''">
+                AND SPD_ID = #{SPD_ID}
+            </if>
+            <if test ="IS_STATUS != NULL and IS_STATUS != ''">
+                AND IS_STATUS = #{IS_STATUS}
+            </if>
+        </where>
+    </select>
+
+    <!--插入时间控制-->
+    <insert id="insertProcessTimeControl" parameterType="java.util.Map">
+        INSERT INTO SYS_PROCESS_TIME_CONTROL
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="SPD_ID != null">SPD_ID,</if>
+            <if test="SPTC_START_TIME != null">SPTC_START_TIME,</if>
+            <if test="SPTC_END_TIME != null">SPTC_END_TIME,</if>
+            <if test="SPTC_ENTRY_TIME != null">SPTC_ENTRY_TIME,</if>
+            <if test="IS_STATUS != null">IS_STATUS,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="SPD_ID != null">#{SPD_ID},</if>
+            <if test="SPTC_START_TIME != null">#{SPTC_START_TIME},</if>
+            <if test="SPTC_END_TIME != null">#{SPTC_END_TIME},</if>
+            <if test="SPTC_ENTRY_TIME != null">#{SPTC_ENTRY_TIME},</if>
+            <if test="IS_STATUS != null">#{IS_STATUS},</if>
+        </trim>
+    </insert>
+
+    <!--编辑时间控制-->
+    <update id="updateProcessTimeControl" parameterType="java.util.Map">
+        UPDATE SYS_PROCESS_TIME_CONTROL
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="SPD_ID != null">SPD_ID=#{SPD_ID},</if>
+            <if test="SPTC_START_TIME != null">SPTC_START_TIME=#{SPTC_START_TIME},</if>
+            <if test="SPTC_END_TIME != null">SPTC_END_TIME=#{SPTC_END_TIME},</if>
+            <if test="SPTC_ENTRY_TIME != null">SPTC_ENTRY_TIME=#{SPTC_ENTRY_TIME},</if>
+            <if test="IS_STATUS != null">IS_STATUS=#{IS_STATUS},</if>
+        </set>
+        <where>
+            ID=#{ID}
+        </where>
+    </update>
+
+    <!--删除时间控制-->
+    <delete id="deleteProcessTimeControl" parameterType="java.util.Map">
+		DELETE FROM SYS_PROCESS_TIME_CONTROL WHERE ID = #{ID}
+	</delete>
 </mapper>

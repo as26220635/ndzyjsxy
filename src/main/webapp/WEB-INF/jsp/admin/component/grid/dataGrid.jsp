@@ -224,7 +224,7 @@
         //后台加载div
         adminLoadingDiv: $('#dataGridBox${MENU.ID}'),
         //查询URL链接
-        url:'${BASE_URL}${Url.DATA_GRID_URL}${CONFIGURE.ID}',
+        url: '${BASE_URL}${Url.DATA_GRID_URL}${CONFIGURE.ID}',
         <%--不分页就把选择显示数选择关掉--%>
         <c:if test="${CONFIGURE.SC_IS_PAGING != Attribute.STATUS_SUCCESS}">
         headLength: false,
@@ -677,6 +677,17 @@
      * @param title
      */
     function appendTableTile(title) {
-        $('#tableTitle').html($('#tableTitle').html()+title);
+        $('#tableTitle').html($('#tableTitle').html() + title);
+    }
+
+    /**
+     * 刷新
+     */
+    function reload() {
+        tableView.reload($dataGrid, false);
+    }
+
+    function reload(isFirst) {
+        tableView.reload($dataGrid, isFirst);
     }
 </script>

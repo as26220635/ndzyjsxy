@@ -16,6 +16,10 @@ public class ProcessRunBean {
      */
     private BaseDao baseDao;
     /**
+     * 流程定义ID
+     */
+    private String definitionId;
+    /**
      * 大类
      */
     private String busProcess;

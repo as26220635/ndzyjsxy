@@ -97,14 +97,14 @@ public class MenuServiceImpl extends BaseServiceImpl implements MenuService {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(16);
             String id = toString(mapParam.get("ID"));
             //查询权限编码是否重复
-            if (!isEmpty(mapParam.get("SM_CODE"))) {
-                paramMap.put("NOT_ID", id);
-                paramMap.put("SM_CODE", mapParam.get("SM_CODE"));
-                int count = baseDao.selectOne(NameSpace.MenuMapper, "selectMenuCount", paramMap);
-                if (count > 0) {
-                    throw new CustomException("菜单权限编码重复,请检查!");
-                }
-            }
+//            if (!isEmpty(mapParam.get("SM_CODE"))) {
+//                paramMap.put("NOT_ID", id);
+//                paramMap.put("SM_CODE", mapParam.get("SM_CODE"));
+//                int count = baseDao.selectOne(NameSpace.MenuMapper, "selectMenuCount", paramMap);
+//                if (count > 0) {
+//                    throw new CustomException("菜单权限编码重复,请检查!");
+//                }
+//            }
 
             paramMap.clear();
             //记录日志

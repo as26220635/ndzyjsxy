@@ -32,6 +32,12 @@
         </div>
     </div>
     <div class="form-group has-feedback">
+        <label>补助类型:</label>
+        <s:combobox sdtCode="BUS_SUBSIDY_TYPE"
+                    custom='${fns:validField(TableName.BUS_AID_FINANCIALLY,"BAF_SUBSIDY_TYPE")}'
+                    value="${aid.BAF_SUBSIDY_TYPE}" defaultValue="1" required="true"></s:combobox>
+    </div>
+    <div class="form-group has-feedback">
         <label>困难类型:</label>
         <s:combobox sdtCode="BUS_DIFFICULTY_TYPE"
                     custom='${fns:validField(TableName.BUS_AID_FINANCIALLY,"BAF_AID_TYPE")}'

@@ -124,7 +124,8 @@ public class DataGridServiceImpl extends BaseServiceImpl implements DataGridServ
                 String processStatus = toString(mapParam.get("processStatus"));
                 //设置流程查询ID
                 querySet.setProcessDefinitionId(processDefinitionIds);
-
+                querySet.setBusProcess(busProcess);
+                querySet.setBusProcess2(busProcess2);
                 //流程过滤
                 ActiveUser activeUser = getActiveUser();
 

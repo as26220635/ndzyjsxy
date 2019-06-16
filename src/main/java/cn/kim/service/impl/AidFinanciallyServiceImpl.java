@@ -71,6 +71,7 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
             paramMap.put("BAF_YEAR", mapParam.get("BAF_YEAR"));
             paramMap.put("BAF_SEMESTER", mapParam.get("BAF_SEMESTER"));
             paramMap.put("BAF_AID_TYPE", mapParam.get("BAF_AID_TYPE"));
+            paramMap.put("BAF_SUBSIDY_TYPE", mapParam.get("BAF_SUBSIDY_TYPE"));
             paramMap.put("BAF_REDUCTION_QUOTA", mapParam.get("BAF_REDUCTION_QUOTA"));
             paramMap.put("BAF_DIFFICULTY_QUOTA", mapParam.get("BAF_DIFFICULTY_QUOTA"));
             paramMap.put("BUS_REMARKS", mapParam.get("BUS_REMARKS"));

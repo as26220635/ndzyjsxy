@@ -659,6 +659,10 @@ table.dataTable tbody tr.selected .btn {
     z-index: 16000 !important;
 }
 
+.modal-max {
+    width: 85%;
+}
+
 @media (max-width: 768px) {
     .form-group-md-6 {
         width: 100%;
@@ -677,6 +681,10 @@ table.dataTable tbody tr.selected .btn {
 
     .form-group button {
         margin-right: 0px;
+    }
+
+    .modal-max {
+        width: 100%;
     }
 }
 

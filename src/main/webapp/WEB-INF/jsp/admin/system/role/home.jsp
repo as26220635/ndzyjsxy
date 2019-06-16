@@ -70,7 +70,7 @@
             model.show({
                 title: '设置角色权限:'+ data.SR_NAME,
                 content: html,
-                size: model.size.LG,
+                size: model.size.MAX,
                 footerModel: model.footerModel.ADMIN,
                 isConfirm: true,
                 confirm: function ($model) {

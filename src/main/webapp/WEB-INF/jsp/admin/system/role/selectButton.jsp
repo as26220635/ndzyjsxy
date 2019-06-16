@@ -12,6 +12,7 @@
     <div class="col-sm-12">
         <div class="row  btn-group-header text-center" style="margin-top: 0px;">
             <button type="button" class="btn btn-success btn-sm" id="buttonSave">保存</button>
+            <button type="button" class="btn btn-default btn-sm" id="buttonCheckAll">全选</button>
         </div>
     </div>
     <div class="col-sm-12">
@@ -19,14 +20,20 @@
     </div>
 </div>
 <script>
+    var $buttonTree;
     ajax.get('${BASE_URL}${Url.ROLE_PERMISSION_TREE_BUTTON_DATA}${ID}/${SM_ID}', {}, function (data) {
         //创建按钮选择
-        treeBox.create({
+        $buttonTree = treeBox.create({
             tree: '#buttonTree',
             data: data,
             showIcon: false,
             showCheckbox: true,
         });
+    });
+
+    //全选/取消全选
+    $('#buttonCheckAll').on('click', function (e) {
+        $buttonTree.treeview('checkAll', {silent: true});
     });
 
     //保存操作

@@ -98,6 +98,10 @@ public class TableName {
      */
     public static final String SYS_PROCESS_START = "SYS_PROCESS_START";
     /**
+     * 流程时间控制
+     */
+    public static final String SYS_PROCESS_TIME_CONTROL = "SYS_PROCESS_TIME_CONTROL";
+    /**
      * 流程进度
      */
     public static final String SYS_PROCESS_SCHEDULE = "SYS_PROCESS_SCHEDULE";

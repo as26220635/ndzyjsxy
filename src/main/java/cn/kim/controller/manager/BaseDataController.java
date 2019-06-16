@@ -221,6 +221,10 @@ public class BaseDataController extends BaseController {
             dataGridUtil.setExtraParams(toString(configure.get("SC_VIEW")), extra, request);
             model.addAttribute("EXTRA", extra);
 
+            //流程大小类
+            model.addAttribute("BUS_PROCESS", menu.get("BUS_PROCESS"));
+            model.addAttribute("BUS_PROCESS2", menu.get("BUS_PROCESS2"));
+
             log.info("菜单:" + menu.get("SM_NAME") + ",视图:" + configure.get("SC_VIEW") + ",配置列表地址:" + configure.get("SC_JSP"));
             return toString(configure.get("SC_JSP"));
         } catch (Exception e) {

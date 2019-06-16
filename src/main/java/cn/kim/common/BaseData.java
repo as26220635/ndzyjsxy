@@ -14,6 +14,7 @@ import cn.kim.exception.CustomException;
 import cn.kim.util.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.UnsupportedEncodingException;
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.security.InvalidKeyException;
 import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Created by 余庚鑫 on 2018/3/31.
@@ -466,7 +468,7 @@ public abstract class BaseData {
      */
     protected String replaceMap(String str, Map<String, String> replaceMap) {
         for (String key : replaceMap.keySet()) {
-            str = str.replaceAll(key, replaceMap.get(key));
+            str = str.replace(key, replaceMap.get(key));
         }
         return str;
     }
@@ -502,6 +504,7 @@ public abstract class BaseData {
 
     /**
      * 获取当前学年结束
+     *
      * @return
      */
     protected int getStudentYearEnd() {
@@ -813,5 +816,28 @@ public abstract class BaseData {
         });
 
         return resultMap;
+    }
+
+    /**
+     * 手动创建线程池
+     *
+     * @param size
+     * @return
+     */
+    public ExecutorService threadPoolExecutor(int size) {
+        return threadPoolExecutor("thread-call-runner-%d", size);
+    }
+
+    /**
+     * 手动创建线程池
+     *
+     * @param nameFormat
+     * @param size
+     * @return
+     */
+    public ExecutorService threadPoolExecutor(String nameFormat, int size) {
+        ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat(nameFormat).build();
+        ExecutorService executorService = new ThreadPoolExecutor(size, size, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(), namedThreadFactory);
+        return executorService;
     }
 }

@@ -11,6 +11,8 @@
 <form id="addAndEditForm" class="row">
     <input type="hidden" name="${SUBMIT_TOKEN_NAME}" value="${token}">
     <input type="hidden" name="ID" value="${aid.ID}">
+    <input type="hidden" name="BUS_PROCESS" value="${BUS_PROCESS}">
+    <input type="hidden" name="BUS_PROCESS2" value="${BUS_PROCESS2}">
     <div class="form-group has-feedback">
         <label>学生:</label>
         <input type="hidden" ${fns:validField(TableName.BUS_AID_FINANCIALLY, "BS_ID")} value="${aid.BS_ID}">

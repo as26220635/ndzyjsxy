@@ -13,17 +13,29 @@ import java.util.Random;
  */
 public class CreateImageCode {
 
-    // 图片的宽度。
+    /**
+     * 图片的宽度。
+     */
     private int width = 160;
-    // 图片的高度。
+    /**
+     * 图片的高度。
+     */
     private int height = 40;
-    // 验证码字符个数
+    /**
+     * 验证码字符个数
+     */
     private int codeCount = 5;
-    // 验证码干扰线数
-    private int lineCount = 20;
-    // 验证码
+    /**
+     * 验证码干扰线数
+     */
+    private int lineCount = 5;
+    /**
+     * 验证码
+     */
     private String code = null;
-    // 验证码图片Buffer
+    /**
+     * 验证码图片Buffer
+     */
     private BufferedImage buffImg = null;
     Random random = new Random();
 

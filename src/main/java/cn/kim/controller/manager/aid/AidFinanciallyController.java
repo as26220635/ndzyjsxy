@@ -179,8 +179,9 @@ public class AidFinanciallyController extends BaseController {
     @GetMapping("/greenChannel/add")
     @RequiresPermissions("AID:GREEN_CHANNEL_INSERT")
     @Token(save = true)
-    public String addHtmlGreenChannel(Model model) throws Exception {
+    public String addHtmlGreenChannel(@RequestParam Map<String, Object> mapParam, Model model) throws Exception {
         Map<String, Object> aid = Maps.newHashMapWithExpectedSize(2);
+        model.addAllAttributes(mapParam);
         model.addAttribute("aid", setStudentYearSemester(aid, "BAF_YEAR", "BAF_SEMESTER"));
         return "admin/aid/greenChannel/addAndEdit";
     }
@@ -193,9 +194,6 @@ public class AidFinanciallyController extends BaseController {
     @Validate("BUS_AID_FINANCIALLY")
     @ResponseBody
     public ResultState addGreenChannel(@RequestParam Map<String, Object> mapParam) throws Exception {
-        //流程
-        mapParam.put("BUS_PROCESS", Process.AID.toString());
-        mapParam.put("BUS_PROCESS2", Process.AID_GREEN_CHANNEL.toString());
         //类型
         mapParam.put("BAF_TYPE", AidType.GREEN_CHANNEL.toString());
         Map<String, Object> resultMap = aidFinanciallyService.insertAndUpdateAidFinancially(mapParam);
@@ -390,7 +388,7 @@ public class AidFinanciallyController extends BaseController {
         });
     }
 
-    /******************     应急求助   *****************/
+    /******************     临时补助   *****************/
 
     @GetMapping("/emergencyHelp/add")
     @RequiresPermissions("AID:EMERGENCY_HELP_INSERT")

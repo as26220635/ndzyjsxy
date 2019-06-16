@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Created by 余庚鑫 on 2018/3/21
@@ -131,27 +134,30 @@ public class ManagerServiceImpl extends BaseServiceImpl implements ManagerServic
         int backlogNumber = 0;
 
         //资助管理-绿色通道
-        getBacklog(backlogList, operatorId, Process.AID.toString(), Process.AID_GREEN_CHANNEL.toString(), TableViewName.V_AID_GREEN_CHANNEL, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_GREEN_CHANNEL, TableViewName.V_AID_GREEN_CHANNEL, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_GREEN_CHANNEL_DEPARTMENT, TableViewName.V_AID_GREEN_CHANNEL, true);
         //资助管理-国家奖学金
-        getBacklog(backlogList, operatorId, Process.AID.toString(), Process.AID_NATIONAL_SCHOLARSHIP.toString(), TableViewName.V_AID_NATIONAL_SCHOLARSHIP, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_NATIONAL_SCHOLARSHIP, TableViewName.V_AID_NATIONAL_SCHOLARSHIP, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_NATIONAL_SCHOLARSHIP_DEPARTMENT, TableViewName.V_AID_NATIONAL_SCHOLARSHIP, true);
         //资助管理-国家励志奖学金
-        getBacklog(backlogList, operatorId, Process.AID.toString(), Process.AID_NATIONAL_ENDEAVOR.toString(), TableViewName.V_AID_NATIONAL_ENDEAVOR, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_NATIONAL_ENDEAVOR, TableViewName.V_AID_NATIONAL_ENDEAVOR, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_NATIONAL_ENDEAVOR_DEPARTMENT, TableViewName.V_AID_NATIONAL_ENDEAVOR, true);
         //资助管理-国家助学金
-        getBacklog(backlogList, operatorId, Process.AID.toString(), Process.AID_NATIONAL_GRANTS.toString(), TableViewName.V_AID_NATIONAL_GRANTS, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_NATIONAL_GRANTS, TableViewName.V_AID_NATIONAL_GRANTS, true);
         //资助管理-减免学费
-        getBacklog(backlogList, operatorId, Process.AID.toString(), Process.AID_TUITION_WAIVER.toString(), TableViewName.V_AID_TUITION_WAIVER, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_TUITION_WAIVER, TableViewName.V_AID_TUITION_WAIVER, true);
         //资助管理-学院奖学金
-        getBacklog(backlogList, operatorId, Process.AID.toString(), Process.AID_COLLEGE_SCHOLARSHIP.toString(), TableViewName.V_AID_COLLEGE_SCHOLARSHIP, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_COLLEGE_SCHOLARSHIP, TableViewName.V_AID_COLLEGE_SCHOLARSHIP, true);
         //资助管理-年度表彰
-        getBacklog(backlogList, operatorId, Process.AID.toString(), Process.AID_COMMEND.toString(), TableViewName.V_AID_COMMEND, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_COMMEND, TableViewName.V_AID_COMMEND, true);
         //资助管理-困难毕业生就业补助
-        getBacklog(backlogList, operatorId, Process.AID.toString(), Process.AID_JOBSEEKER_SUPPORT.toString(), TableViewName.V_AID_JOBSEEKER_SUPPORT, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_JOBSEEKER_SUPPORT, TableViewName.V_AID_JOBSEEKER_SUPPORT, true);
         //资助管理-应急求助
-        getBacklog(backlogList, operatorId, Process.AID.toString(), Process.AID_EMERGENCY_HELP.toString(), TableViewName.V_AID_EMERGENCY_HELP, true);
+        getBacklog(backlogList, operatorId, Process.AID, Process.AID_EMERGENCY_HELP, TableViewName.V_AID_EMERGENCY_HELP, true);
         //勤工助学
-        getBacklog(backlogList, operatorId, Process.DILIGENT.toString(), Process.DILIGENT_STUDY.toString(), TableViewName.V_DILIGENT_STUDY, false);
+        getBacklog(backlogList, operatorId, Process.DILIGENT, Process.DILIGENT_STUDY, TableViewName.V_DILIGENT_STUDY, false);
         //	勤工助学-岗位-学生-月工资
-        getBacklog(backlogList, operatorId, Process.DILIGENT.toString(), Process.DILIGENT_STUDY_MONTH_WAGES.toString(), TableViewName.V_DILIGENT_STUDY_MONTH_WAGES, false);
+        getBacklog(backlogList, operatorId, Process.DILIGENT, Process.DILIGENT_STUDY_MONTH_WAGES, TableViewName.V_DILIGENT_STUDY_MONTH_WAGES, false);
 
         if (isEmpty(backlogList)) {
             backlogList = new ArrayList<>();
@@ -159,7 +165,7 @@ public class ManagerServiceImpl extends BaseServiceImpl implements ManagerServic
             backlog.put("SPD_NAME", "没有待办事项");
             backlog.put("BACKLOG_NUM", "0");
             backlogList.add(backlog);
-        }else{
+        } else {
             //计算总数
             for (Map<String, Object> backlog : backlogList) {
                 backlogNumber += toInt(backlog.get("BACKLOG_NUM"));
@@ -181,11 +187,11 @@ public class ManagerServiceImpl extends BaseServiceImpl implements ManagerServic
      * @param tableView
      * @param isAuthorization
      */
-    private void getBacklog(List<Map<String, Object>> backlogList, String operatorId, String busProcess, String busProcess2, String tableView, boolean isAuthorization) {
+    private void getBacklog(List<Map<String, Object>> backlogList, String operatorId, Process busProcess, Process busProcess2, String tableView, boolean isAuthorization) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(4);
         paramMap.put("SO_ID", operatorId);
-        paramMap.put("BUS_PROCESS", busProcess);
-        paramMap.put("BUS_PROCESS2", busProcess2);
+        paramMap.put("BUS_PROCESS", busProcess.getType());
+        paramMap.put("BUS_PROCESS2", busProcess2.getType());
         paramMap.put("AUTHORIZATION", !isAuthorization ? null : getAuthorizationWhere(tableView));
         Map<String, Object> backlog = baseDao.selectOne(NameSpace.ManagerMapper, "selectProcessScheduleBacklog", paramMap);
         if (!isEmpty(backlog)) {

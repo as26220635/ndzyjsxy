@@ -50,6 +50,8 @@ public class StudentServiceImpl extends BaseServiceImpl implements StudentServic
         if (!isEmpty(mapParam.get("BS_ID_CARD"))) {
             querySet.set(QuerySet.LIKE, "BS_ID_CARD", mapParam.get("BS_ID_CARD"));
         }
+        //根据登录角色获取条件
+        querySet.setWhere(getAuthorizationWhere());
 
         int offset = toInt(mapParam.get("start"));
         int limit = toInt(mapParam.get("length"));

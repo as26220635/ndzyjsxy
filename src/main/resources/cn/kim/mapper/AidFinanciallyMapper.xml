@@ -65,6 +65,7 @@
             <if test="BAF_SEMESTER != null">BAF_SEMESTER,</if>
             <if test="BAF_TYPE != null">BAF_TYPE,</if>
             <if test="BAF_AID_TYPE != null">BAF_AID_TYPE,</if>
+            <if test="BAF_SUBSIDY_TYPE != null">BAF_SUBSIDY_TYPE,</if>
             <if test="BAF_REDUCTION_QUOTA != null">BAF_REDUCTION_QUOTA,</if>
             <if test="BAF_DIFFICULTY_QUOTA != null">BAF_DIFFICULTY_QUOTA,</if>
             <if test="BAF_ENTRY_TIME != null">BAF_ENTRY_TIME,</if>
@@ -80,6 +81,7 @@
             <if test="BAF_SEMESTER != null">#{BAF_SEMESTER},</if>
             <if test="BAF_TYPE != null">#{BAF_TYPE},</if>
             <if test="BAF_AID_TYPE != null">#{BAF_AID_TYPE},</if>
+            <if test="BAF_SUBSIDY_TYPE != null">#{BAF_SUBSIDY_TYPE},</if>
             <if test="BAF_REDUCTION_QUOTA != null">#{BAF_REDUCTION_QUOTA},</if>
             <if test="BAF_DIFFICULTY_QUOTA != null">#{BAF_DIFFICULTY_QUOTA},</if>
             <if test="BAF_ENTRY_TIME != null">#{BAF_ENTRY_TIME},</if>
@@ -100,6 +102,7 @@
             <if test="BAF_SEMESTER != null">BAF_SEMESTER=#{BAF_SEMESTER},</if>
             <if test="BAF_TYPE != null">BAF_TYPE=#{BAF_TYPE},</if>
             <if test="BAF_AID_TYPE != null">BAF_AID_TYPE=#{BAF_AID_TYPE},</if>
+            <if test="BAF_SUBSIDY_TYPE != null">BAF_SUBSIDY_TYPE=#{BAF_SUBSIDY_TYPE},</if>
             <if test="BAF_REDUCTION_QUOTA != null">BAF_REDUCTION_QUOTA=#{BAF_REDUCTION_QUOTA},</if>
             <if test="BAF_DIFFICULTY_QUOTA != null">BAF_DIFFICULTY_QUOTA=#{BAF_DIFFICULTY_QUOTA},</if>
             <if test="BAF_ENTRY_TIME != null">BAF_ENTRY_TIME=#{BAF_ENTRY_TIME},</if>

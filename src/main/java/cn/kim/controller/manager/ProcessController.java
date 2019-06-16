@@ -260,6 +260,7 @@ public class ProcessController extends BaseController {
                     paramMap.put("SPS_ID", schedule.get("ID"));
                     paramMap.put("SPL_TABLE_ID", ID);
                     paramMap.put("SPL_PROCESS_STATUS_ARRAY", TextUtil.interceptSymbol(SPS_PROCESS_STATUS_ARRAY.toString(), ","));
+                    paramMap.put("NOT_SPL_PROCESS_STATUS", "0," + schedule.get("SPS_BACK_STATUS_TRANSACTOR"));
                     paramMap.put("SPL_TYPE", "0");
                     paramMap.put("IS_GROUP", true);
                     List<Map<String, Object>> processLogList = processService.selectProcessLogList(paramMap);
@@ -715,5 +716,68 @@ public class ProcessController extends BaseController {
 
         model.addAttribute("SPSC", cancel);
         return "admin/system/process/schedule/addAndEdit";
+    }
+
+
+    /********   时间控制    ********/
+
+    @GetMapping("/timeControl/add")
+    @RequiresPermissions("SYSTEM:PROCESS_TIME_CONTROL_INSERT")
+    @Token(save = true)
+    public String addHtmlProcessTimeControl(String SPD_ID, Model model) throws Exception {
+        model.addAttribute("SPD_ID", SPD_ID);
+        return "admin/system/process/timeControl/addAndEdit";
+    }
+
+    @PostMapping("/timeControl/add")
+    @RequiresPermissions("SYSTEM:PROCESS_TIME_CONTROL_INSERT")
+    @SystemControllerLog(useType = UseType.USE, event = "添加流程时间控制")
+    @Token(remove = true)
+    @Validate("SYS_PROCESS_TIME_CONTROL")
+    @ResponseBody
+    public ResultState addProcessTimeControl(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = processService.insertAndUpdateProcessTimeControl(mapParam);
+
+        return resultState(resultMap);
+    }
+
+    @GetMapping("/timeControl/update/{ID}")
+    @RequiresPermissions("SYSTEM:PROCESS_TIME_CONTROL_UPDATE")
+    public String updateHtmlProcessTimeControl(Model model, @PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        model.addAttribute("SPTC", processService.selectProcessTimeControl(mapParam));
+        return "admin/system/process/timeControl/addAndEdit";
+    }
+
+    @PutMapping("/timeControl/update")
+    @RequiresPermissions("SYSTEM:PROCESS_TIME_CONTROL_UPDATE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改流程时间控制")
+    @Validate("SYS_PROCESS_TIME_CONTROL")
+    @ResponseBody
+    public ResultState updateProcessTimeControl(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = processService.insertAndUpdateProcessTimeControl(mapParam);
+        return resultState(resultMap);
+    }
+
+    @PutMapping("/timeControl/switchStatus")
+    @RequiresPermissions("SYSTEM:PROCESS_TIME_CONTROL_UPDATE")
+    @SystemControllerLog(useType = UseType.USE, event = "修改流程时间控制状态")
+    @ResponseBody
+    public ResultState switchStatusProcessTimeControl(@RequestParam Map<String, Object> mapParam) throws Exception {
+        Map<String, Object> resultMap = processService.changeProcessTimeControlStatus(mapParam);
+
+        return resultState(resultMap);
+    }
+
+    @DeleteMapping("/timeControl/delete/{ID}")
+    @RequiresPermissions("SYSTEM:PROCESS_TIME_CONTROL_DELETE")
+    @SystemControllerLog(useType = UseType.USE, event = "删除流程时间控制")
+    @ResponseBody
+    public ResultState deleteProcessTimeControl(@PathVariable("ID") String ID) throws Exception {
+        Map<String, Object> mapParam = Maps.newHashMapWithExpectedSize(1);
+        mapParam.put("ID", ID);
+        Map<String, Object> resultMap = processService.deleteProcessTimeControl(mapParam);
+        return resultState(resultMap);
     }
 }
