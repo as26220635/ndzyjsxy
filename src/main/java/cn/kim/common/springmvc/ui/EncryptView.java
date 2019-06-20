@@ -21,7 +21,7 @@ public class EncryptView extends JstlView {
     private static final String[] ENCRYPT_OBJ = {"java.lang.String", "java.lang.Object"};
 
     @Override
-    protected void renderMergedOutputModel(Map<String, Object> map, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+    protected void renderMergedOutputModel(Map<String, Object> map, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         try {
             //ID加密
             if (!ValidateUtil.isEmpty(map)) {
