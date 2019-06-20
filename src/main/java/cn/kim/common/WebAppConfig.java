@@ -39,12 +39,6 @@ public class WebAppConfig {
         return new RedissonSpringCacheManager(redissonClient, "classpath:redis/spring-cache-config.yaml");
     }
 
-    /**
-     * 异步
-     *
-     * @param redissonClient
-     * @return
-     */
     @Bean("remoteService")
     public RRemoteService rRemoteService(RedissonClient redissonClient) {
         RRemoteService remoteService = redissonClient.getRemoteService();
@@ -54,9 +48,14 @@ public class WebAppConfig {
         return remoteService;
     }
 
-
+    /**
+     * 异步
+     * @param remoteService
+     * @return
+     */
     @Bean("LogRemoteInterfaceAsync")
     public LogRemoteInterfaceAsync logRemoteInterfaceAsync(RRemoteService remoteService) {
+        // 发送即不管（Fire-and-Forget）模式，无需应答回执，不等待结果
         RemoteInvocationOptions options = RemoteInvocationOptions.defaults().noAck().noResult();
         return remoteService.get(LogRemoteInterfaceAsync.class, options);
     }
