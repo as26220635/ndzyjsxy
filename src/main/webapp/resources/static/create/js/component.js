@@ -796,7 +796,7 @@ validator = {
 
 /**
  * 模态框
- * @type {{btnName: {WITHDRAW: string, SUBMIT: string, EXPORT: string, BACK: string, DEL: string, SAVE: string, CLOSE: string, RESET: string, OK: string}, confirm: model.confirm, init: model.init, hide: model.hide, size: {MAX: string, SM: string, LG: string, NONE: string}, footerModel: {MY_HOME: string, ADMIN: string}, alert: model.alert, closeSubmit: model.closeSubmit, noDelay: model.noDelay, show: Function, class: {DANGER: string, SUCCESS: string, PRIMARY: string, INFO: string, WARNING: string, DEFAULT: string}}}
+ * @type {{btnName: {WITHDRAW: string, SUBMIT: string, EXPORT: string, BACK: string, DEL: string, SAVE: string, CLOSE: string, RESET: string, OK: string}, confirm: model.confirm, init: model.init, hide: model.hide, size: {MAX: string, SM: string, LG: string, NONE: string}, footerModel: {MY_HOME: string, ADMIN: string}, alert: model.alert, closeSubmit: model.closeSubmit, noDelay: model.noDelay, show: Function, class: {DANGER: string, SUCCESS: string, PRIMARY: string, INFO: string, WARNING: string, DEFAULT: string}, content: {RESET_PASSWORD: string}}}
  */
 model = {
     //模态框大小
@@ -809,6 +809,72 @@ model = {
         WARNING: 'modal-warning',
         SUCCESS: 'modal-success',
         DANGER: 'modal-danger'
+    },
+    content: {
+        RESET_PASSWORD:
+            '<form id="model-edit-password-form">' +
+            '   <div class="form-group has-feedback">' +
+            '        <input type="password" class="form-control" placeholder="新密码" id="model_password" name="model_password">' +
+            '        <a href="javascript:void(0)" class="glyphicon glyphicon-eye-open form-control-feedback"' +
+            '           style="pointer-events: auto;"></a>' +
+            '    </div>' +
+            '    <div class="form-group has-feedback">' +
+            '        <input type="password" class="form-control" placeholder="确认新密码" id="model_confirmPassword" name="model_confirmPassword">' +
+            '        <a href="javascript:void(0)" class="glyphicon glyphicon-eye-open form-control-feedback"' +
+            '           style="pointer-events: auto;"></a>' +
+            '    </div>' +
+            '</form>' +
+            '<script>' +
+            '    $("#model-edit-password-form a").click(function () {' +
+            '        var pswd = $(this).siblings("input");' +
+            '        if ($(this).hasClass("glyphicon-eye-open")) {' +
+            '            pswd.prop("type", "text");' +
+            '            $(this).removeClass("glyphicon-eye-open").addClass("glyphicon-eye-close");' +
+            '        } else {' +
+            '            pswd.prop("type", "password");' +
+            '            $(this).removeClass("glyphicon-eye-close").addClass("glyphicon-eye-open");' +
+            '        }' +
+            '    });' +
+            '' +
+            '    validator.init({' +
+            '        form: $(\'#model-edit-password-form\'),' +
+            '        fields: {' +
+            '            model_password: {' +
+            '                validators: {' +
+            '                    notEmpty: {' +
+            '                        message: \'密码不能为空\'' +
+            '                    },' +
+            '                    stringLength: {' +
+            '                        min: 6,' +
+            '                        max: 16,' +
+            '                        message: \'新密码长度必须在6到16位之间\'' +
+            '                    },' +
+            '                    identical: {' +
+            '                        field: \'model_confirmPassword\',' +
+            '                        message: \'密码和确认密码不一致\'' +
+            '                    }' +
+            '                }' +
+            '            },' +
+            '            model_confirmPassword: {' +
+            '                validators: {' +
+            '                    notEmpty: {' +
+            '                        message: \'确认密码不能为空\'' +
+            '                    },' +
+            '                    stringLength: {' +
+            '                        min: 6,' +
+            '                        max: 16,' +
+            '                        message: \'确认密码长度必须在6到16位之间\'' +
+            '                    },' +
+            '                    identical: {' +
+            '                        field: \'model_password\',' +
+            '                        message: \'密码和确认密码不一致\'' +
+            '                    }' +
+            '                }' +
+            '            },' +
+            '' +
+            '        }' +
+            '    });' +
+            '</script>',
     },
     //按钮名字
     btnName: {
@@ -835,6 +901,7 @@ model = {
     init: function (options) {
         var settings = $.extend({
             isConfirm: false,
+            isPassword:false,
             okBtnName: model.btnName.SAVE,
             closeBtnName: model.btnName.CLOSE,
             id: uuid(),
@@ -914,7 +981,20 @@ model = {
         //确定事件
         $('#' + confirmBtnId).on('click', function () {
             if (settings.confirm != undefined) {
-                settings.confirm(jquery);
+                if (settings.isPassword) {
+                    //修改密码
+                    let $form = $('#model-edit-password-form');
+                    //验证
+                    if (!validator.formValidate($form)) {
+                        demo.showNotify(ALERT_WARNING, VALIDATE_FAIL);
+                        return;
+                    }
+
+                    let password = $(jquery + " #model-edit-password-form #model_password").val();
+                    settings.confirm(jquery, password);
+                }else{
+                    settings.confirm(jquery);
+                }
             }
         });
         //是否垂直居中
@@ -1076,8 +1156,8 @@ choiceBox = {
 
         //添加选择框 序号字段
         let fields = [];
-        fields.unshift({min_width: 30, name: '序号', data: null});
-        fields.unshift({min_width: 30, name: '', data: null});
+        fields.push({min_width: 45, name: '', data: null});
+        fields.push({min_width: 45, name: '序号', data: null});
         for (let i in settings.fields) {
             fields.push(settings.fields[i]);
         }
@@ -2340,16 +2420,16 @@ $.fn.inputRightIcon = function (options, callback) {
  * @param callback
  */
 $.fn.selectInput = function (callback) {
-    var $input = $(this);
+    let $input = $(this);
     //输入框才添加选择按钮
     if ($input.is("input")) {
-        var $parent = $input.parent();
-        var isLabel = $input.siblings('label').length > 0;
-        var searchBtnId = uuid();
-        var searchDivId = uuid();
-        var searchBtn = '#' + searchBtnId;
-        var searchDiv = '#' + searchDivId;
-        var searchBtnHtml = '<div  id="' + searchDivId + '" style="position: absolute;text-align: right;top:' + (isLabel ? 25 : 0) + 'px;width: 100%"><button id="' + searchBtnId + '" class="btn btn-default btn-select-input">选择</button></div>';
+        let $parent = $input.parent();
+        let isLabel = $input.siblings('label').length > 0;
+        let searchBtnId = uuid();
+        let searchDivId = uuid();
+        let searchBtn = '#' + searchBtnId;
+        let searchDiv = '#' + searchDivId;
+        let searchBtnHtml = '<div  id="' + searchDivId + '" style="position: absolute;text-align: right;top:' + (isLabel ? 25 : 0) + 'px;width: 100%"><button id="' + searchBtnId + '" class="btn btn-default btn-select-input">选择</button></div>';
         $parent.append(searchBtnHtml);
         $input.css('background-color', '#fff');
 

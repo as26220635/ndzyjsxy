@@ -85,6 +85,20 @@ public class AidFinanciallyServiceImpl extends BaseServiceImpl implements AidFin
                 paramMap.put("SO_ID", getActiveUser().getId());
                 paramMap.put("BAF_ENTRY_TIME", getDate());
 
+                if (BAF_TYPE == AidType.COMMEND.getType()) {
+                    //年度表彰
+                    //查询学年平均成绩
+                    Map<String, Object> avgMap = Maps.newHashMapWithExpectedSize(10);
+                    avgMap.put("BS_ID", mapParam.get("BS_ID"));
+                    avgMap.put("BSC_YEAR", mapParam.get("BAF_YEAR"));
+                    Map<String, Object> avgScore = baseDao.selectOne(NameSpace.StudentExtendMapper, "selectStudentAvgYearScore", avgMap);
+
+                    paramMap.put("BSC_TOTAL", avgScore.get("BSC_TOTAL"));
+                    paramMap.put("BSC_TOTAL_RANK", avgScore.get("BSC_TOTAL_RANK"));
+                    paramMap.put("BSC_ACADEMIC_RECORD", avgScore.get("BSC_ACADEMIC_RECORD"));
+                    paramMap.put("BSC_ACADEMIC_RECORD_RANK", avgScore.get("BSC_ACADEMIC_RECORD_RANK"));
+                }
+
                 baseDao.insert(NameSpace.AidFinanciallyMapper, "insertAidFinancially", paramMap);
 
                 if (BAF_TYPE == AidType.NATIONAL_SCHOLARSHIP.getType()) {

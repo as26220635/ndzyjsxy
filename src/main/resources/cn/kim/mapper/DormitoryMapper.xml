@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kim.mapper.DormitoryMapper">
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+
+    <!--查询-->
+    <select id="selectDormitoryFloor" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DORMITORY_FLOOR
+        <where>
+            <if test="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入-->
+    <insert id="insertDormitoryFloor" parameterType="java.util.Map">
+        INSERT INTO BUS_DORMITORY_FLOOR
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ID != null">ID,</if>
+            <if test="BDF_NAME != null">BDF_NAME,</if>
+            <if test="BDF_ADDRESS != null">BDF_ADDRESS,</if>
+            <if test="BDF_NUMBER != null">BDF_NUMBER,</if>
+            <if test="BDF_REMARKS != null">BDF_REMARKS,</if>
+            <if test="BDF_ENTRY_TIME != null">BDF_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ID != null">#{ID},</if>
+            <if test="BDF_NAME != null">#{BDF_NAME},</if>
+            <if test="BDF_ADDRESS != null">#{BDF_ADDRESS},</if>
+            <if test="BDF_NUMBER != null">#{BDF_NUMBER},</if>
+            <if test="BDF_REMARKS != null">#{BDF_REMARKS},</if>
+            <if test="BDF_ENTRY_TIME != null">#{BDF_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑-->
+    <update id="updateDormitoryFloor" parameterType="java.util.Map">
+        UPDATE BUS_DORMITORY_FLOOR
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BDF_NAME != null">BDF_NAME=#{BDF_NAME},</if>
+            <if test="BDF_ADDRESS != null">BDF_ADDRESS=#{BDF_ADDRESS},</if>
+            <if test="BDF_NUMBER != null">BDF_NUMBER=#{BDF_NUMBER},</if>
+            <if test="BDF_REMARKS != null">BDF_REMARKS=#{BDF_REMARKS},</if>
+            <if test="BDF_ENTRY_TIME != null">BDF_ENTRY_TIME=#{BDF_ENTRY_TIME},</if>
+        </set>
+        <where>
+            ID=#{ID}
+        </where>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteDormitoryFloor" parameterType="java.util.Map">
+		DELETE FROM BUS_DORMITORY_FLOOR WHERE ID = #{ID}
+	</delete>
+
+    <!--查询-->
+    <select id="selectDormitoryRoom" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DORMITORY_ROOM
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--查询-->
+    <select id="selectDormitoryRoomCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT IFNULL(COUNT(*),0) FROM BUS_DORMITORY_ROOM
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test ="BDF_ID != NULL and BDF_ID != ''">
+                AND BDF_ID = #{BDF_ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入-->
+    <insert id="insertDormitoryRoom" parameterType="java.util.Map">
+        INSERT INTO BUS_DORMITORY_ROOM
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BDF_ID != null">BDF_ID,</if>
+            <if test="BDR_NAME != null">BDR_NAME,</if>
+            <if test="BDR_NUMBER != null">BDR_NUMBER,</if>
+            <if test="BDR_REMARKS != null">BDR_REMARKS,</if>
+            <if test="BDR_ENTRY_TIME != null">BDR_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BDF_ID != null">#{BDF_ID},</if>
+            <if test="BDR_NAME != null">#{BDR_NAME},</if>
+            <if test="BDR_NUMBER != null">#{BDR_NUMBER},</if>
+            <if test="BDR_REMARKS != null">#{BDR_REMARKS},</if>
+            <if test="BDR_ENTRY_TIME != null">#{BDR_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑-->
+    <update id="updateDormitoryRoom" parameterType="java.util.Map">
+        UPDATE BUS_DORMITORY_ROOM
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BDF_ID != null">BDF_ID=#{BDF_ID},</if>
+            <if test="BDR_NAME != null">BDR_NAME=#{BDR_NAME},</if>
+            <if test="BDR_NUMBER != null">BDR_NUMBER=#{BDR_NUMBER},</if>
+            <if test="BDR_REMARKS != null">BDR_REMARKS=#{BDR_REMARKS},</if>
+            <if test="BDR_ENTRY_TIME != null">BDR_ENTRY_TIME=#{BDR_ENTRY_TIME},</if>
+        </set>
+        <where>
+            ID=#{ID}
+        </where>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteDormitoryRoom" parameterType="java.util.Map">
+		DELETE FROM BUS_DORMITORY_ROOM WHERE ID = #{ID}
+	</delete>
+
+    <!--查询-->
+    <select id="selectDormitoryBerth" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DORMITORY_BERTH
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--查询-->
+    <select id="selectDormitoryBerthCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT IFNULL(COUNT(*),0) FROM BUS_DORMITORY_BERTH
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test ="BDR_ID != NULL and BDR_ID != ''">
+                AND BDR_ID = #{BDR_ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入-->
+    <insert id="insertDormitoryBerth" parameterType="java.util.Map">
+        INSERT INTO BUS_DORMITORY_BERTH
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BDR_ID != null">BDR_ID,</if>
+            <if test="BDB_NAME != null">BDB_NAME,</if>
+            <if test="BDB_REMARKS != null">BDB_REMARKS,</if>
+            <if test="BDB_ENTRY_TIME != null">BDB_ENTRY_TIME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BDR_ID != null">#{BDR_ID},</if>
+            <if test="BDB_NAME != null">#{BDB_NAME},</if>
+            <if test="BDB_REMARKS != null">#{BDB_REMARKS},</if>
+            <if test="BDB_ENTRY_TIME != null">#{BDB_ENTRY_TIME},</if>
+        </trim>
+    </insert>
+
+    <!--编辑-->
+    <update id="updateDormitoryBerth" parameterType="java.util.Map">
+        UPDATE BUS_DORMITORY_BERTH
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BDR_ID != null">BDR_ID=#{BDR_ID},</if>
+            <if test="BDB_NAME != null">BDB_NAME=#{BDB_NAME},</if>
+            <if test="BDB_REMARKS != null">BDB_REMARKS=#{BDB_REMARKS},</if>
+            <if test="BDB_ENTRY_TIME != null">BDB_ENTRY_TIME=#{BDB_ENTRY_TIME},</if>
+        </set>
+        <where>
+            ID=#{ID}
+        </where>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteDormitoryBerth" parameterType="java.util.Map">
+		DELETE FROM BUS_DORMITORY_BERTH WHERE ID = #{ID}
+	</delete>
+
+    <select id="selectDormitoryBerthList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT *
+        FROM V_DORMITORY_BERTH
+        <where>
+            <if test="whereClause != null and whereClause != ''">
+                ${whereClause}
+            </if>
+        </where>
+        <if test="orderByClause != null and orderByClause != ''">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+
+    <select id="selectDormitoryBerthListCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM V_DORMITORY_BERTH
+        <where>
+            <if test="whereClause != null and whereClause != ''">
+                ${whereClause}
+            </if>
+        </where>
+    </select>
+
+    <!--查询-->
+    <select id="selectDormitoryPersonnel" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DORMITORY_PERSONNEL
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+            <if test ="NOT_ID != NULL and NOT_ID != ''">
+                AND ID != #{NOT_ID}
+            </if>
+            <if test ="BDB_ID != NULL and BDB_ID != ''">
+                AND BDB_ID = #{BDB_ID}
+            </if>
+            <if test ="BDP_OPERATOR_ID != NULL and BDP_OPERATOR_ID != ''">
+                AND BDP_OPERATOR_ID = #{BDP_OPERATOR_ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入-->
+    <insert id="insertDormitoryPersonnel" parameterType="java.util.Map">
+        INSERT INTO BUS_DORMITORY_PERSONNEL
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BDB_ID != null">BDB_ID,</if>
+            <if test="BDF_NAME != null">BDF_NAME,</if>
+            <if test="BDR_NAME != null">BDR_NAME,</if>
+            <if test="BDB_NAME != null">BDB_NAME,</if>
+            <if test="BDP_JOIN_NAME != null">BDP_JOIN_NAME,</if>
+            <if test="BDP_OPERATOR_ID != null">BDP_OPERATOR_ID,</if>
+            <if test="BDP_OPERATOR_NAME != null">BDP_OPERATOR_NAME,</if>
+            <if test="BDP_OPERATOR_TYPE != null">BDP_OPERATOR_TYPE,</if>
+            <if test="BDP_ENTRY_TIME != null">BDP_ENTRY_TIME,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BDB_ID != null">#{BDB_ID},</if>
+            <if test="BDF_NAME != null">#{BDF_NAME},</if>
+            <if test="BDR_NAME != null">#{BDR_NAME},</if>
+            <if test="BDB_NAME != null">#{BDB_NAME},</if>
+            <if test="BDP_JOIN_NAME != null">#{BDP_JOIN_NAME},</if>
+            <if test="BDP_OPERATOR_ID != null">#{BDP_OPERATOR_ID},</if>
+            <if test="BDP_OPERATOR_NAME != null">#{BDP_OPERATOR_NAME},</if>
+            <if test="BDP_OPERATOR_TYPE != null">#{BDP_OPERATOR_TYPE},</if>
+            <if test="BDP_ENTRY_TIME != null">#{BDP_ENTRY_TIME},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+        </trim>
+    </insert>
+
+    <!--编辑-->
+    <update id="updateDormitoryPersonnel" parameterType="java.util.Map">
+        UPDATE BUS_DORMITORY_PERSONNEL
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BDB_ID != null">BDB_ID=#{BDB_ID},</if>
+            <if test="BDF_NAME != null">BDF_NAME=#{BDF_NAME},</if>
+            <if test="BDR_NAME != null">BDR_NAME=#{BDR_NAME},</if>
+            <if test="BDB_NAME != null">BDB_NAME=#{BDB_NAME},</if>
+            <if test="BDP_JOIN_NAME != null">BDP_JOIN_NAME=#{BDP_JOIN_NAME},</if>
+            <if test="BDP_OPERATOR_ID != null">BDP_OPERATOR_ID=#{BDP_OPERATOR_ID},</if>
+            <if test="BDP_OPERATOR_NAME != null">BDP_OPERATOR_NAME=#{BDP_OPERATOR_NAME},</if>
+            <if test="BDP_OPERATOR_TYPE != null">BDP_OPERATOR_TYPE=#{BDP_OPERATOR_TYPE},</if>
+            <if test="BDP_ENTRY_TIME != null">BDP_ENTRY_TIME=#{BDP_ENTRY_TIME},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+        </set>
+        <where>
+            ID=#{ID}
+        </where>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteDormitoryPersonnel" parameterType="java.util.Map">
+		DELETE FROM BUS_DORMITORY_PERSONNEL WHERE ID = #{ID}
+	</delete>
+
+    <!--查询-->
+    <select id="selectDormitoryLog" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM BUS_DORMITORY_LOG
+        <where>
+            <if test ="ID != NULL and ID != ''">
+                AND ID = #{ID}
+            </if>
+        </where>
+    </select>
+
+    <!--插入-->
+    <insert id="insertDormitoryLog" parameterType="java.util.Map">
+        INSERT INTO BUS_DORMITORY_LOG
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="ID != null">ID,</if>
+            <if test="BDF_ID != null">BDF_ID,</if>
+            <if test="BDR_ID != null">BDR_ID,</if>
+            <if test="BDB_ID != null">BDB_ID,</if>
+            <if test="BDF_NAME != null">BDF_NAME,</if>
+            <if test="BDR_NAME != null">BDR_NAME,</if>
+            <if test="BDB_NAME != null">BDB_NAME,</if>
+            <if test="BDL_JOIN_NAME != null">BDL_JOIN_NAME,</if>
+            <if test="BDL_OPERATOR_ID != null">BDL_OPERATOR_ID,</if>
+            <if test="BDL_OPERATOR_NAME != null">BDL_OPERATOR_NAME,</if>
+            <if test="BDL_OPERATOR_TYPE != null">BDL_OPERATOR_TYPE,</if>
+            <if test="BDL_ENRTY_TIME != null">BDL_ENRTY_TIME,</if>
+            <if test="SO_ID != null">SO_ID,</if>
+            <if test="BDL_TYPE != null">BDL_TYPE,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ID != null">#{ID},</if>
+            <if test="BDF_ID != null">#{BDF_ID},</if>
+            <if test="BDR_ID != null">#{BDR_ID},</if>
+            <if test="BDB_ID != null">#{BDB_ID},</if>
+            <if test="BDF_NAME != null">#{BDF_NAME},</if>
+            <if test="BDR_NAME != null">#{BDR_NAME},</if>
+            <if test="BDB_NAME != null">#{BDB_NAME},</if>
+            <if test="BDL_JOIN_NAME != null">#{BDL_JOIN_NAME},</if>
+            <if test="BDL_OPERATOR_ID != null">#{BDL_OPERATOR_ID},</if>
+            <if test="BDL_OPERATOR_NAME != null">#{BDL_OPERATOR_NAME},</if>
+            <if test="BDL_OPERATOR_TYPE != null">#{BDL_OPERATOR_TYPE},</if>
+            <if test="BDL_ENRTY_TIME != null">#{BDL_ENRTY_TIME},</if>
+            <if test="SO_ID != null">#{SO_ID},</if>
+            <if test="BDL_TYPE != null">#{BDL_TYPE},</if>
+        </trim>
+    </insert>
+
+    <!--编辑-->
+    <update id="updateDormitoryLog" parameterType="java.util.Map">
+        UPDATE BUS_DORMITORY_LOG
+        <set>
+            <if test="ID != null">ID=#{ID},</if>
+            <if test="BDF_ID != null">BDF_ID=#{BDF_ID},</if>
+            <if test="BDR_ID != null">BDR_ID=#{BDR_ID},</if>
+            <if test="BDB_ID != null">BDB_ID=#{BDB_ID},</if>
+            <if test="BDF_NAME != null">BDF_NAME=#{BDF_NAME},</if>
+            <if test="BDR_NAME != null">BDR_NAME=#{BDR_NAME},</if>
+            <if test="BDB_NAME != null">BDB_NAME=#{BDB_NAME},</if>
+            <if test="BDL_JOIN_NAME != null">BDL_JOIN_NAME=#{BDL_JOIN_NAME},</if>
+            <if test="BDL_OPERATOR_ID != null">BDL_OPERATOR_ID=#{BDL_OPERATOR_ID},</if>
+            <if test="BDL_OPERATOR_NAME != null">BDL_OPERATOR_NAME=#{BDL_OPERATOR_NAME},</if>
+            <if test="BDL_OPERATOR_TYPE != null">BDL_OPERATOR_TYPE=#{BDL_OPERATOR_TYPE},</if>
+            <if test="BDL_ENRTY_TIME != null">BDL_ENRTY_TIME=#{BDL_ENRTY_TIME},</if>
+            <if test="SO_ID != null">SO_ID=#{SO_ID},</if>
+            <if test="BDL_TYPE != null">BDL_TYPE=#{BDL_TYPE},</if>
+        </set>
+        <where>
+            ID=#{ID}
+        </where>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteDormitoryLog" parameterType="java.util.Map">
+		DELETE FROM BUS_DORMITORY_LOG WHERE ID = #{ID}
+	</delete>
+</mapper>

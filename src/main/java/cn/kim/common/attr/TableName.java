@@ -225,4 +225,21 @@ public class TableName {
      * 勤工助学月工资
      */
     public static final String BUS_DILIGENT_STUDY_MONTH_WAGES = "BUS_DILIGENT_STUDY_MONTH_WAGES";
+
+    /**
+     * 宿舍楼
+     */
+    public static final String BUS_DORMITORY_FLOOR = "BUS_DORMITORY_FLOOR";
+    /**
+     * 宿舍室
+     */
+    public static final String BUS_DORMITORY_ROOM = "BUS_DORMITORY_ROOM";
+    /**
+     * 宿舍铺位
+     */
+    public static final String BUS_DORMITORY_BERTH = "BUS_DORMITORY_BERTH";
+    /**
+     * 宿舍铺位人员
+     */
+    public static final String BUS_DORMITORY_PERSONNEL = "BUS_DORMITORY_PERSONNEL";
 }

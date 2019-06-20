@@ -526,6 +526,61 @@ public abstract class BaseServiceImpl extends BaseData implements BaseService {
         return baseDao.selectOne(NameSpace.RoleMapper, "selectRole", paramMap);
     }
 
+    /**
+     * 查询accountinfo
+     *
+     * @param SO_ID
+     * @return
+     */
+    protected Map<String, Object> selectAccountInfo(Object SO_ID) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+        paramMap.put("SO_ID", SO_ID);
+        return baseDao.selectOne(NameSpace.OperatorMapper, "selectAccountInfo", paramMap);
+    }
+
+    /**
+     * 插入宿舍日志
+     *
+     * @param baseDao
+     * @param BDB_ID 铺位ID
+     * @param BDP_OPERATOR_ID 人员ID
+     * @param BDL_TYPE        插入类型 1插入 2更新 3删除
+     */
+    protected void insertDormitoryLog(BaseDao baseDao, String BDB_ID, String BDP_OPERATOR_ID, int BDL_TYPE) {
+        Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
+
+        paramMap.put("ID", BDB_ID);
+        Map<String, Object> berth = baseDao.selectOne(NameSpace.DormitoryMapper, "selectDormitoryBerth", paramMap);
+
+        paramMap.clear();
+        paramMap.put("ID", berth.get("BDR_ID"));
+        Map<String, Object> room = baseDao.selectOne(NameSpace.DormitoryMapper, "selectDormitoryRoom", paramMap);
+
+        paramMap.clear();
+        paramMap.put("ID", room.get("BDF_ID"));
+        Map<String, Object> floor = baseDao.selectOne(NameSpace.DormitoryMapper, "selectDormitoryFloor", paramMap);
+
+        Map<String, Object> accountInfo = selectAccountInfo(BDP_OPERATOR_ID);
+
+        paramMap.clear();
+        paramMap.put("ID", getId());
+        paramMap.put("BDF_ID", floor.get("ID"));
+        paramMap.put("BDR_ID", room.get("ID"));
+        paramMap.put("BDB_ID", BDB_ID);
+        paramMap.put("BDF_NAME", floor.get("BDF_NAME"));
+        paramMap.put("BDR_NAME", room.get("BDR_NAME"));
+        paramMap.put("BDB_NAME", berth.get("BDB_NAME"));
+        paramMap.put("BDL_JOIN_NAME", TextUtil.joinValue("-", toString(floor.get("BDF_NAME")), toString(room.get("BDR_NAME")), toString(berth.get("BDB_NAME"))));
+        paramMap.put("BDL_OPERATOR_ID", accountInfo.get("SO_ID"));
+        paramMap.put("BDL_OPERATOR_NAME", accountInfo.get("SAI_NAME"));
+        paramMap.put("BDL_OPERATOR_TYPE", accountInfo.get("SAI_TYPE"));
+        paramMap.put("BDL_ENRTY_TIME", getDate());
+        paramMap.put("BDL_TYPE", BDL_TYPE);
+        paramMap.put("SO_ID", getActiveUser().getId());
+        baseDao.selectOne(NameSpace.DormitoryMapper, "insertDormitoryLog", paramMap);
+    }
+
+
     /*****************  流程使用    *******************/
 
     /**

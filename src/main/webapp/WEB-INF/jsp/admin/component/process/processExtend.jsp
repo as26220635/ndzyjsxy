@@ -55,21 +55,14 @@
                             demo.showNotify(ALERT_WARNING, '请选择办理流程!');
                             return;
                         }
-
+                        
                         //弹出确认框
                         model.confirm({
                             message: '是否' + okBtnName + '流程!',
                             callback: function (result) {
                                 if (result) {
                                     ajax.put('${BASE_URL}${Url.PROCESS_SUBMIT}', params, function (data) {
-                                        ajaxReturn.data(data, $model, option.dataGrid, false, {
-                                            error: function () {
-                                                model.alert({
-                                                    title: '流程异常',
-                                                    message: data.message,
-                                                });
-                                            }
-                                        });
+                                        ajaxReturn.data(data, $model, option.dataGrid, false);
                                     });
                                 }
                             }

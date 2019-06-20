@@ -14,10 +14,10 @@
     <input type="hidden" name="BC_NAME" value="${cls.BC_NAME}">
     <div class="form-group has-feedback">
         <label>辅导员:</label>
-        <input type="hidden" ${fns:validField("BUS_DEPARTMENT_INSTRUCTOR", "BDMP_ID")}
+        <input type="hidden" ${fns:validField(TableName.BUS_DEPARTMENT_INSTRUCTOR, "BDMP_ID")}
                value="${cls.BDMP_ID}">
         <input type="text"
-               class="form-control" ${fns:validField("BUS_DEPARTMENT_INSTRUCTOR", "BDMP_NAME")}
+               class="form-control" ${fns:validField(TableName.BUS_DEPARTMENT_INSTRUCTOR, "BDMP_NAME")}
                value="${cls.BDMP_NAME}">
     </div>
 </form>

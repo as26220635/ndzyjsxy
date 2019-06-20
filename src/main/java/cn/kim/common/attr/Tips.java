@@ -28,6 +28,9 @@ public class Tips {
     public static final String ID_NULL_ERROR = "ID不能为空!";
 
     public static final String CLASS_LOCKED = "班级已经锁定无法修改!";
+
+    public static final String PASSWORD_ERROR = "密码填写错误!";
+
     /**
      * 日志
      */

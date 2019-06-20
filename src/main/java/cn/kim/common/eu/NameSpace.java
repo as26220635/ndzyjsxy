@@ -61,6 +61,8 @@ public enum NameSpace {
     DocumentMapper("cn.kim.mapper.DocumentMapper"),
     //勤工助学
     DiligentStudyMapper("cn.kim.mapper.DiligentStudyMapper"),
+    //宿舍管理
+    DormitoryMapper("cn.kim.mapper.DormitoryMapper"),
     ;
 
     private final String value;

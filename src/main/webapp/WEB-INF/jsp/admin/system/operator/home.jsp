@@ -107,14 +107,14 @@
         var id = data.ID;
 
         model.show({
-            title: '重置密码',
-            content: '是否重置操作员:' + data.SAI_NAME + '的密码',
-            class: model.class.WARNING,
+            title: '重置密码(' + data.SAI_NAME + ')',
+            content: model.content.RESET_PASSWORD,
             okBtnName: model.btnName.RESET,
             footerModel: model.footerModel.ADMIN,
             isConfirm: true,
-            confirm: function ($model) {
-                ajax.put('${BASE_URL}${Url.OPERATOR_RESET_PWD_URL}', {ID: id}, function (data) {
+            isPassword: true,
+            confirm: function ($model, password) {
+                ajax.put('${BASE_URL}${Url.OPERATOR_RESET_PWD_URL}', {ID: id, PASSWORD: password}, function (data) {
                     ajaxReturn.data(data, $model, null, null);
                 });
             }

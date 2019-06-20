@@ -72,6 +72,10 @@
             <if test="BUS_PROCESS != null">BUS_PROCESS,</if>
             <if test="BUS_PROCESS2 != null">BUS_PROCESS2,</if>
             <if test="BUS_REMARKS != null">BUS_REMARKS,</if>
+            <if test="BSC_TOTAL != null">BSC_TOTAL,</if>
+            <if test="BSC_TOTAL_RANK != null">BSC_TOTAL_RANK,</if>
+            <if test="BSC_ACADEMIC_RECORD != null">BSC_ACADEMIC_RECORD,</if>
+            <if test="BSC_ACADEMIC_RECORD_RANK != null">BSC_ACADEMIC_RECORD_RANK,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
             <if test="ID != null">#{ID},</if>
@@ -88,6 +92,10 @@
             <if test="BUS_PROCESS != null">#{BUS_PROCESS},</if>
             <if test="BUS_PROCESS2 != null">#{BUS_PROCESS2},</if>
             <if test="BUS_REMARKS != null">#{BUS_REMARKS},</if>
+            <if test="BSC_TOTAL != null">#{BSC_TOTAL},</if>
+            <if test="BSC_TOTAL_RANK != null">#{BSC_TOTAL_RANK},</if>
+            <if test="BSC_ACADEMIC_RECORD != null">#{BSC_ACADEMIC_RECORD},</if>
+            <if test="BSC_ACADEMIC_RECORD_RANK != null">#{BSC_ACADEMIC_RECORD_RANK},</if>
         </trim>
     </insert>
 
@@ -109,6 +117,10 @@
             <if test="BUS_PROCESS != null">BUS_PROCESS=#{BUS_PROCESS},</if>
             <if test="BUS_PROCESS2 != null">BUS_PROCESS2=#{BUS_PROCESS2},</if>
             <if test="BUS_REMARKS != null">BUS_REMARKS=#{BUS_REMARKS},</if>
+            <if test="BSC_TOTAL != null">BSC_TOTAL=#{BSC_TOTAL},</if>
+            <if test="BSC_TOTAL_RANK != null">BSC_TOTAL_RANK=#{BSC_TOTAL_RANK},</if>
+            <if test="BSC_ACADEMIC_RECORD != null">BSC_ACADEMIC_RECORD=#{BSC_ACADEMIC_RECORD},</if>
+            <if test="BSC_ACADEMIC_RECORD_RANK != null">BSC_ACADEMIC_RECORD_RANK=#{BSC_ACADEMIC_RECORD_RANK},</if>
         </set>
         <where>
             <if test="ID !=null">ID=#{ID}</if>

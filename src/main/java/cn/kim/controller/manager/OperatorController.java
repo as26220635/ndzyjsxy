@@ -4,6 +4,7 @@ import cn.kim.common.annotation.SystemControllerLog;
 import cn.kim.common.annotation.Token;
 import cn.kim.common.annotation.Validate;
 import cn.kim.common.eu.UseType;
+import cn.kim.entity.DataTablesView;
 import cn.kim.entity.ResultState;
 import cn.kim.entity.Tree;
 import cn.kim.service.OperatorService;
@@ -28,6 +29,20 @@ public class OperatorController extends BaseController {
 
     @Autowired
     private OperatorService operatorService;
+
+    /**
+     * 操作员列表
+     * @param mapParam
+     * @return
+     */
+    @GetMapping("/list")
+    @RequiresPermissions(value = {"DORMITORY:PERSONNEL"}, logical = Logical.OR)
+    @ResponseBody
+    public DataTablesView<?> selectOperatorList(@RequestParam Map<String, Object> mapParam) {
+        DataTablesView<?> view = operatorService.selectOperatorList(mapParam);
+        view.setDraw(toInt(mapParam.get("draw")));
+        return view;
+    }
 
     @GetMapping("/add")
     @RequiresPermissions("SYSTEM:OPERATOR_INSERT")

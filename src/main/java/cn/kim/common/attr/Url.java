@@ -188,6 +188,7 @@ public class Url {
     public static final String OPERATOR_DELETE_URL = OPERATOR_BASE_URL + "delete";
     public static final String OPERATOR_TREE_ROLE_DATA_URL = OPERATOR_BASE_URL + "roles";
     public static final String OPERATOR_TREE_ROLE_DATA_UPDATE_URL = OPERATOR_BASE_URL + "updateOperatorRoles";
+    public static final String OPERATOR_LIST_URL = OPERATOR_BASE_URL + "list";
     /**
      * 操作员账号列表
      */
@@ -476,4 +477,35 @@ public class Url {
     public static final String DILIGENT_STUDY_MONTH_WAGES_UPDATE_URL = DILIGENT_STUDY_MONTH_WAGES_BASE_URL + "update";
     public static final String DILIGENT_STUDY_MONTH_WAGES_DELETE_URL = DILIGENT_STUDY_MONTH_WAGES_BASE_URL + "delete";
     public static final String DILIGENT_STUDY_MONTH_WAGES_IMPORT_URL = DILIGENT_STUDY_MONTH_WAGES_BASE_URL + "import";
+
+    /**
+     * 宿舍-楼
+     */
+    public static final String DORMITORY_BASE_URL = MANAGER_URL + "dormitory/";
+    public static final String DORMITORY_FLOOR_BASE_URL = DORMITORY_BASE_URL + "floor/";
+    public static final String DORMITORY_FLOOR_ADD_URL = DORMITORY_FLOOR_BASE_URL + "add";
+    public static final String DORMITORY_FLOOR_UPDATE_URL = DORMITORY_FLOOR_BASE_URL + "update";
+    public static final String DORMITORY_FLOOR_DELETE_URL = DORMITORY_FLOOR_BASE_URL + "delete";
+    /**
+     * 室
+     */
+    public static final String DORMITORY_ROOM_BASE_URL = DORMITORY_BASE_URL + "room/";
+    public static final String DORMITORY_ROOM_ADD_URL = DORMITORY_ROOM_BASE_URL + "add";
+    public static final String DORMITORY_ROOM_UPDATE_URL = DORMITORY_ROOM_BASE_URL + "update";
+    public static final String DORMITORY_ROOM_DELETE_URL = DORMITORY_ROOM_BASE_URL + "delete";
+    /**
+     * 铺位
+     */
+    public static final String DORMITORY_BERTH_BASE_URL = DORMITORY_BASE_URL + "berth/";
+    public static final String DORMITORY_BERTH_ADD_URL = DORMITORY_BERTH_BASE_URL + "add";
+    public static final String DORMITORY_BERTH_UPDATE_URL = DORMITORY_BERTH_BASE_URL + "update";
+    public static final String DORMITORY_BERTH_DELETE_URL = DORMITORY_BERTH_BASE_URL + "delete";
+    public static final String DORMITORY_BERTH_LIST_URL = DORMITORY_BERTH_BASE_URL + "list";
+    /**
+     * 铺位人员
+     */
+    public static final String DORMITORY_PERSONNEL_BASE_URL = DORMITORY_BASE_URL + "personnel/";
+    public static final String DORMITORY_PERSONNEL_ADD_URL = DORMITORY_PERSONNEL_BASE_URL + "add";
+    public static final String DORMITORY_PERSONNEL_UPDATE_URL = DORMITORY_PERSONNEL_BASE_URL + "update";
+    public static final String DORMITORY_PERSONNEL_DELETE_URL = DORMITORY_PERSONNEL_BASE_URL + "delete";
 }

@@ -1,5 +1,6 @@
 package cn.kim.service;
 
+import cn.kim.entity.DataTablesView;
 import cn.kim.entity.Tree;
 import cn.kim.entity.Tree;
 
@@ -10,6 +11,14 @@ import java.util.Map;
  * Created by 余庚鑫 on 2018/3/27
  */
 public interface OperatorService extends BaseService {
+    /**
+     * 查询操作员
+     *
+     * @param mapParam
+     * @return
+     */
+    DataTablesView<?> selectOperatorList(Map<String, Object> mapParam);
+
     /**
      * 查询操作员
      *

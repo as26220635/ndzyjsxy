@@ -3,8 +3,7 @@ package cn.kim.service.impl;
 import cn.kim.common.attr.*;
 import cn.kim.common.eu.NameSpace;
 import cn.kim.common.eu.SystemEnum;
-import cn.kim.entity.ActiveUser;
-import cn.kim.entity.Tree;
+import cn.kim.entity.*;
 import cn.kim.exception.CustomException;
 import cn.kim.service.OperatorService;
 import cn.kim.util.*;
@@ -22,6 +21,34 @@ import java.util.stream.Collectors;
  */
 @Service
 public class OperatorServiceImpl extends BaseServiceImpl implements OperatorService {
+
+    @Override
+    public DataTablesView<?> selectOperatorList(Map<String, Object> mapParam) {
+        DataTablesView<Map<String, Object>> dataTablesView = new DataTablesView<>();
+        QuerySet querySet = new QuerySet();
+
+        //连接名称
+        if (!isEmpty(mapParam.get("name"))) {
+            querySet.set(QuerySet.LIKE, "SAI_NAME", mapParam.get("name"));
+        }
+
+        int offset = toInt(mapParam.get("start"));
+        int limit = toInt(mapParam.get("length"));
+
+        querySet.setOffset(offset);
+        querySet.setLimit(limit);
+
+        long count = baseDao.selectOne(NameSpace.OperatorMapper, "selectOperatorListCount", querySet.getWhereMap());
+        dataTablesView.setRecordsTotal(count);
+        dataTablesView.setTotalPages(CommonUtil.getPage(count, limit));
+
+        System.out.println(toString(querySet.getWhereMap()));
+        List<Map<String, Object>> dataList = baseDao.selectList(NameSpace.OperatorMapper, "selectOperatorList", querySet.getWhereMap());
+        dataTablesView.setData(dataList);
+
+        return dataTablesView;
+    }
+
     @Override
     public Map<String, Object> selectOperator(Map<String, Object> mapParam) {
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
@@ -162,12 +189,18 @@ public class OperatorServiceImpl extends BaseServiceImpl implements OperatorServ
         try {
             Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(3);
             String id = toString(mapParam.get("ID"));
-
+            String password = toString(mapParam.get("PASSWORD"));
+            if (isEmpty(id)) {
+                throw new CustomException(Tips.ID_NULL_ERROR);
+            }
+            if (isEmpty(password)) {
+                throw new CustomException(Tips.PASSWORD_ERROR);
+            }
             paramMap.put("ID", id);
             //设置账号和盐
             String salt = RandomSalt.salt();
             paramMap.put("SO_SALT", salt);
-            paramMap.put("SO_PASSWORD", PasswordMd5.password(Constants.INITIAL_PASSWORD, salt));
+            paramMap.put("SO_PASSWORD", PasswordMd5.password(password, salt));
             //是默认密码 第一次登陆需要修改
             paramMap.put("IS_DEFAULT_PWD", STATUS_SUCCESS);
 

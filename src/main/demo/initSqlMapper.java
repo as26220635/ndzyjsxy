@@ -9,9 +9,9 @@ public class initSqlMapper {
 
     public static void main(String[] args) throws IOException {
         //字段
-        String str = "ID\tSPD_ID\tSPDT_START_TIME\tSPDT_END_TIME\tSPDT_ENTRY_TIME\tIS_STATUS";
+        String str = "ID\tBDF_ID\tBDR_ID\tBDB_ID\tBDF_NAME\tBDR_NAME\tBDB_NAME\tBDL_JOIN_NAME\tBDL_OPERATOR_ID\tBDL_OPERATOR_NAME\tBDL_OPERATOR_TYPE\tBDL_ENRTY_TIME\tSO_ID";
         //表名
-        String tablename = "sys_process_time_control";
+        String tablename = "bus_dormitory_log";
         creatsql(str, tablename);
     }
 
@@ -81,14 +81,14 @@ public class initSqlMapper {
         System.out.println("Controller:");
         System.out.println(str4);
         System.out.println(str2);
-        System.err.println(strr.length);
+//        System.err.println(strr.length);
 
         for (String string : strr) {
             str6 += "paramMap.put(\"" + string + "\", mapParam.get(\"" + string + "\"));\n";
         }
         System.out.println("ServiceImpl:");
         System.out.println(str6);
-        System.err.println(strr.length);
+//        System.err.println(strr.length);
     }
 
 }

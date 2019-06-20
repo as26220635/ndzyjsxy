@@ -5,4 +5,4 @@
 <c:set var="MANAGER_HTML_MENU_SMALL_TITLE" value="<b>X</b>X" scope="application"/>
 <c:set var="MANAGER_HTML_MENU_NAME" value="菜单栏" scope="application"/>
 <%--js css版本--%>
-<c:set var="VERSION" value="201808272214" scope="application"/>
+<c:set var="VERSION" value="201906171654" scope="application"/>

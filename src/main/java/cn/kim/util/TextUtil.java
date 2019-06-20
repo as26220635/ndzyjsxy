@@ -494,6 +494,20 @@ public class TextUtil {
     }
 
     /**
+     * 连接参数
+     * @param symbol
+     * @param params
+     * @return
+     */
+    public static String joinValue(String symbol,String... params) {
+        StringBuilder builder =new StringBuilder();
+        for (String param : params) {
+            builder.append(param+symbol);
+        }
+
+        return interceptSymbol(builder.toString(), symbol);
+    }
+    /**
      * BASE64加密
      *
      * @param src

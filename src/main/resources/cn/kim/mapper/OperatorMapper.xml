@@ -2,6 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.kim.mapper.OperatorMapper">
 
+    <select id="selectOperatorList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT *
+        FROM V_OPERATOR
+        <where>
+            <if test="whereClause != null and whereClause != ''">
+                ${whereClause}
+            </if>
+        </where>
+        <if test="orderByClause != null and orderByClause != ''">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+
+    <select id="selectOperatorListCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM V_OPERATOR
+        <where>
+            <if test="whereClause != null and whereClause != ''">
+                ${whereClause}
+            </if>
+        </where>
+    </select>
+
     <!--查询账号-->
     <select id="selectOperator" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT SO.*,SAI.SAI_NAME,SAI.SAI_PHONE,SAI.SAI_EMAIL,SOR.SR_NAME,SOR.SR_ID
@@ -209,6 +240,9 @@
         <where>
             <if test="ID != NULL and ID != ''">
                 AND ID = #{ID}
+            </if>
+            <if test="SO_ID != NULL and SO_ID != ''">
+                AND SO_ID = #{SO_ID}
             </if>
         </where>
     </select>

@@ -500,6 +500,10 @@
                     demo.showNotify(ALERT_WARNING, '请选择处于同一审核状态的流程!');
                     return;
                 }
+                if (data.SPS_AUDIT_STATUS == 999) {
+                    demo.showNotify(ALERT_WARNING, '流程已经审核通过!');
+                    return;
+                }
             }
 
             BUS_PROCESS = data.BUS_PROCESS;
