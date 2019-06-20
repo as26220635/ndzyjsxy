@@ -3,8 +3,8 @@ package cn.kim.common.shiro;
 import cn.kim.common.attr.*;
 import cn.kim.common.eu.UseType;
 import cn.kim.entity.ActiveUser;
+import cn.kim.remote.LogRemoteInterfaceAsync;
 import cn.kim.service.ManagerService;
-import cn.kim.service.MenuService;
 import cn.kim.util.*;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -14,7 +14,6 @@ import org.apache.shiro.cache.Cache;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -28,7 +27,7 @@ public class CustomHashedCredentialsMatcher extends HashedCredentialsMatcher {
     private ManagerService managerService;
 
     @Autowired
-    private MenuService menuService;
+    private LogRemoteInterfaceAsync logRemoteInterfaceAsync;
 
     @Override
     public boolean doCredentialsMatch(AuthenticationToken authcToken, AuthenticationInfo info) {
@@ -66,7 +65,7 @@ public class CustomHashedCredentialsMatcher extends HashedCredentialsMatcher {
             activeUser.setTypeName(ParamTypeResolve.getOpeatorTypeName(activeUser.getType()));
 
             //获得登录地址
-            String loginAddress = HttpUtil.getIpAddressName(HttpUtil.getIpAddr(HttpUtil.getRequest()));
+            String ip = HttpUtil.getIpAddr(HttpUtil.getRequest());
             //清除验证码SESSION
             SessionUtil.remove("validateCode");
             //密码是否输入正确
@@ -74,26 +73,17 @@ public class CustomHashedCredentialsMatcher extends HashedCredentialsMatcher {
             if (matchs) {
                 //移除输入失败记录
                 cache.remove(username);
-                //登录成功，查询信息放入SESSION中
-                //添加菜单树
-//                List<Map<String, Object>> menus = managerService.queryOperatorMenuTree(activeUser.getId());
-//                activeUser.setMenus(menus);
-                //查询按钮权限
-//                Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(1);
-//                paramMap.put("SO_ID", activeUser.getId());
-//                activeUser.setMenuButtons(managerService.queryOperatorMenuButtonPrecode(paramMap));
-
                 //设置到session中
                 SessionUtil.set(Constants.SESSION_USERNAME, activeUser);
 
                 //记录日志
-                LogUtil.recordLog("登录", "登录成功!登录地址:" + loginAddress, UseType.PERSONAL.getType(), Attribute.STATUS_SUCCESS);
+                logRemoteInterfaceAsync.recordLoginLog(ip, activeUser.getId(), MagicValue.LOG_LOGIN_EVENT, "登录成功!登录地址:#{IP_ADDRESS},登录时间:" + DateUtil.getDate(), UseType.PERSONAL.getType(), Attribute.STATUS_SUCCESS);
             } else {
                 retryCount.getAndIncrement();
                 cache.put(username, retryCount);
-                //记录日志
                 SessionUtil.set(Constants.SESSION_USERNAME, activeUser);
-                LogUtil.recordLog("登录", "登录失败!第" + retryCount.get() + "次!登录地址:" + loginAddress, UseType.PERSONAL.getType(), Attribute.STATUS_ERROR);
+                //记录日志
+                logRemoteInterfaceAsync.recordLoginLog(ip, activeUser.getId(), MagicValue.LOG_LOGIN_EVENT, "登录失败!第" + retryCount.get() + "次!登录地址:#{IP_ADDRESS},登录时间:" + DateUtil.getDate(), UseType.PERSONAL.getType(), Attribute.STATUS_ERROR);
                 SessionUtil.remove(Constants.SESSION_USERNAME);
             }
             return matchs;
