@@ -215,6 +215,7 @@ public class CreateImageCode {
 
     public void write(OutputStream sos) throws IOException {
         ImageIO.write(buffImg, "jpg", sos);
+        sos.flush();
         sos.close();
     }
 

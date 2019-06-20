@@ -1,7 +1,12 @@
 package cn.kim.common;
 
+import cn.kim.remote.LogRemoteInterface;
+import cn.kim.remote.LogRemoteInterfaceAsync;
+import cn.kim.remote.impl.LogRemoteServiceImpl;
 import org.redisson.Redisson;
+import org.redisson.api.RRemoteService;
 import org.redisson.api.RedissonClient;
+import org.redisson.api.RemoteInvocationOptions;
 import org.redisson.config.Config;
 import org.redisson.spring.cache.RedissonSpringCacheManager;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,4 +39,25 @@ public class WebAppConfig {
         return new RedissonSpringCacheManager(redissonClient, "classpath:redis/spring-cache-config.yaml");
     }
 
+    /**
+     * 异步
+     *
+     * @param redissonClient
+     * @return
+     */
+    @Bean("remoteService")
+    public RRemoteService rRemoteService(RedissonClient redissonClient) {
+        RRemoteService remoteService = redissonClient.getRemoteService();
+        LogRemoteInterface serviceImpl = new LogRemoteServiceImpl();
+        remoteService.register(LogRemoteInterface.class, serviceImpl);
+
+        return remoteService;
+    }
+
+
+    @Bean("LogRemoteInterfaceAsync")
+    public LogRemoteInterfaceAsync logRemoteInterfaceAsync(RRemoteService remoteService) {
+        RemoteInvocationOptions options = RemoteInvocationOptions.defaults().noAck().noResult();
+        return remoteService.get(LogRemoteInterfaceAsync.class, options);
+    }
 }

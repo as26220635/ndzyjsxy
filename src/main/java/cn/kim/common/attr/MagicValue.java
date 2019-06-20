@@ -64,6 +64,10 @@ public class MagicValue {
     public static final String GREATER_THAN = "&gt;";
     public static final String LESS_THAN = "&lt;";
     public static final String NBSP = "&nbsp;";
+    /**
+     * 日志登录事件
+     */
+    public static final String LOG_LOGIN_EVENT = "登录";
 
     /**
      * 数据记录类型

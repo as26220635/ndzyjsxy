@@ -1,7 +1,10 @@
 package cn.kim.util;
 
+import cn.kim.common.attr.MagicValue;
 import cn.kim.common.attr.ParamTypeResolve;
 import cn.kim.entity.ActiveUser;
+import cn.kim.remote.LogRemoteInterface;
+import cn.kim.remote.LogRemoteInterfaceAsync;
 import cn.kim.service.LogService;
 import cn.kim.common.attr.ParamTypeResolve;
 import cn.kim.entity.ActiveUser;
@@ -10,6 +13,10 @@ import com.google.common.collect.Maps;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.SecurityUtils;
+import org.checkerframework.checker.units.qual.A;
+import org.redisson.api.RFuture;
+import org.redisson.api.RRemoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +46,7 @@ public class LogUtil {
         this.logService = logService;
     }
 
+
     @PostConstruct
     public void init() {
         logUtil = this;
@@ -51,25 +59,34 @@ public class LogUtil {
      * @param logEvent
      * @param logTextContent
      * @param logType
-     * @param logResult      操作结果
+     * @param logResult
      */
     public static void recordLog(String logEvent, String logTextContent, int logType, int logResult) {
-        if (ValidateUtil.isEmpty(logTextContent)) {
-            return;
-        }
         HttpServletRequest request = HttpUtil.getRequest();
+        ActiveUser activeUser = AuthcUtil.getCurrentUser();
+
+        String operatorId = activeUser != null ? activeUser.getId() : null;
+        String ip = request != null ? HttpUtil.getIpAddr(request) : null;
+        recordLog(ip, operatorId, logEvent, logTextContent, logType, logResult);
+    }
+
+    /**
+     * 记录日志
+     *
+     * @param ip
+     * @param operatorId
+     * @param logEvent
+     * @param logTextContent
+     * @param logType
+     * @param logResult
+     */
+    public static void recordLog(String ip, String operatorId, String logEvent, String logTextContent, int logType, int logResult) {
 
         Map<String, Object> paramMap = Maps.newHashMapWithExpectedSize(7);
 
         try {
-            ActiveUser activeUser = AuthcUtil.getCurrentUser();
-            if (activeUser != null) {
-                paramMap.put("SO_ID", activeUser.getId());
-            }
-            if (request != null) {
-                paramMap.put("SL_IP", HttpUtil.getIpAddr(request));
-            }
-
+            paramMap.put("SO_ID", operatorId);
+            paramMap.put("SL_IP", ip);
             paramMap.put("SL_EVENT", logEvent);
             paramMap.put("SL_ENTERTIME", DateUtil.getDate());
             paramMap.put("SL_TYPE", logType);
@@ -78,14 +95,20 @@ public class LogUtil {
             //日志内容
             paramMap.put("SLT_CONTENT", logTextContent);
             //防止重复记录
-            if (!toString(paramMap).equals(SessionUtil.get(PREV_LOG_SAVE_KEY))) {
-                SessionUtil.set(PREV_LOG_SAVE_KEY, toString(paramMap));
+            if (MagicValue.LOG_LOGIN_EVENT.equals(logEvent)) {
                 logUtil.logService.insertLog(paramMap);
-                log.info("身份:" + (activeUser != null ? ParamTypeResolve.getOpeatorTypeName(activeUser.getType()) : "")
-                        + ",用户:" + activeUser.getUsername()
-                        + ",操作:" + logEvent
-                        + ",内容:" + logTextContent
-                        + ",结果:" + logResult);
+            } else {
+                if (!toString(paramMap).equals(SessionUtil.get(PREV_LOG_SAVE_KEY))) {
+                    SessionUtil.set(PREV_LOG_SAVE_KEY, toString(paramMap));
+                    logUtil.logService.insertLog(paramMap);
+
+                    ActiveUser activeUser = AuthcUtil.getCurrentUser();
+                    log.info("身份:" + (activeUser != null ? ParamTypeResolve.getOpeatorTypeName(activeUser.getType()) : "")
+                            + ",用户:" + activeUser.getUsername()
+                            + ",操作:" + logEvent
+                            + ",内容:" + logTextContent
+                            + ",结果:" + logResult);
+                }
             }
         } catch (Exception e) {
             log.error("日志操作错误:" + e + "-------------" + e.getMessage());
