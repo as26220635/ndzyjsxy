@@ -38,7 +38,7 @@
         <mysql.version>8.0.11</mysql.version>
         <redisson.version>3.11.0</redisson.version>
         <fst.version>2.57</fst.version>
-        <jackson.version>2.9.0</jackson.version>
+        <jackson.version>2.10.3</jackson.version>
         <fastjson.version>1.2.47</fastjson.version>
         <druid.version>1.1.10</druid.version>
         <aspectjweaver.version>1.9.1</aspectjweaver.version>
