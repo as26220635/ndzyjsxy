@@ -46,7 +46,7 @@
         <shiro.version>1.4.0</shiro.version>
         <quartz.version>2.3.0</quartz.version>
         <servlet.version>3.1.0</servlet.version>
-        <log4j2.version>2.11.0</log4j2.version>
+        <log4j2.version>2.13.3</log4j2.version>
         <slf4j.version>1.8.0-alpha2</slf4j.version>
         <jsoup.version>1.11.3</jsoup.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
