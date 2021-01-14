@@ -63,7 +63,7 @@
         <thumbnailator.version>0.4.8</thumbnailator.version>
         <jjwt.version>0.9.0</jjwt.version>
         <javax.mail.version>1.6.1</javax.mail.version>
-        <poi.version>3.15</poi.version>
+        <poi.version>4.1.2</poi.version>
         <bcprov.version>1.60</bcprov.version>
         <lombok.version>1.18.2</lombok.version>
         <jaxb.version>2.3.0</jaxb.version>
