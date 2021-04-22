@@ -43,7 +43,7 @@
         <druid.version>1.1.10</druid.version>
         <aspectjweaver.version>1.9.1</aspectjweaver.version>
         <!--<ehcache.version>2.6.11</ehcache.version>-->
-        <shiro.version>1.4.0</shiro.version>
+        <shiro.version>1.7.1</shiro.version>
         <quartz.version>2.3.0</quartz.version>
         <servlet.version>3.1.0</servlet.version>
         <log4j2.version>2.11.0</log4j2.version>
