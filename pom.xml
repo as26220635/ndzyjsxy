@@ -58,7 +58,7 @@
         <commons-net.version>3.6</commons-net.version>
         <commons-codec.version>1.10</commons-codec.version>
         <guava.version>25.1-jre</guava.version>
-        <httpclient.version>4.5.5</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <httpcore.version>4.4.9</httpcore.version>
         <thumbnailator.version>0.4.8</thumbnailator.version>
         <jjwt.version>0.9.0</jjwt.version>
